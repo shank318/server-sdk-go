@@ -3,17 +3,17 @@
 package client
 
 import (
-	analytics "github.com/fern-demo/vapi-go-sdk/analytics"
-	assistants "github.com/fern-demo/vapi-go-sdk/assistants"
-	blocks "github.com/fern-demo/vapi-go-sdk/blocks"
-	calls "github.com/fern-demo/vapi-go-sdk/calls"
-	core "github.com/fern-demo/vapi-go-sdk/core"
-	files "github.com/fern-demo/vapi-go-sdk/files"
-	logs "github.com/fern-demo/vapi-go-sdk/logs"
-	option "github.com/fern-demo/vapi-go-sdk/option"
-	phonenumbers "github.com/fern-demo/vapi-go-sdk/phonenumbers"
-	squads "github.com/fern-demo/vapi-go-sdk/squads"
-	tools "github.com/fern-demo/vapi-go-sdk/tools"
+	analytics "github.com/VapiAI/server-sdk-go/analytics"
+	assistants "github.com/VapiAI/server-sdk-go/assistants"
+	blocks "github.com/VapiAI/server-sdk-go/blocks"
+	calls "github.com/VapiAI/server-sdk-go/calls"
+	core "github.com/VapiAI/server-sdk-go/core"
+	files "github.com/VapiAI/server-sdk-go/files"
+	logs "github.com/VapiAI/server-sdk-go/logs"
+	option "github.com/VapiAI/server-sdk-go/option"
+	phonenumbers "github.com/VapiAI/server-sdk-go/phonenumbers"
+	squads "github.com/VapiAI/server-sdk-go/squads"
+	tools "github.com/VapiAI/server-sdk-go/tools"
 	http "net/http"
 )
 

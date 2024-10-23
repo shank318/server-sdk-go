@@ -4,9 +4,9 @@ package analytics
 
 import (
 	context "context"
-	vapigosdk "github.com/fern-demo/vapi-go-sdk"
-	core "github.com/fern-demo/vapi-go-sdk/core"
-	option "github.com/fern-demo/vapi-go-sdk/option"
+	serversdkgo "github.com/VapiAI/server-sdk-go"
+	core "github.com/VapiAI/server-sdk-go/core"
+	option "github.com/VapiAI/server-sdk-go/option"
 	http "net/http"
 )
 
@@ -32,9 +32,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) Get(
 	ctx context.Context,
-	request *vapigosdk.AnalyticsQueryDto,
+	request *serversdkgo.AnalyticsQueryDto,
 	opts ...option.RequestOption,
-) ([]*vapigosdk.AnalyticsQueryResult, error) {
+) ([]*serversdkgo.AnalyticsQueryResult, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -49,7 +49,7 @@ func (c *Client) Get(
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	headers.Set("Content-Type", "application/json")
 
-	var response []*vapigosdk.AnalyticsQueryResult
+	var response []*serversdkgo.AnalyticsQueryResult
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

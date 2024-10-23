@@ -23,7 +23,7 @@ type LogsGetRequest struct {
 	// This is the ID of the call.
 	CallId *string `json:"-" url:"callId,omitempty"`
 	// This is the page number to return. Defaults to 1.
-	Page *float64 `json:"-" url:"page,omitempty"`
+	Page *int `json:"-" url:"page,omitempty"`
 	// This is the sort order for pagination. Defaults to 'ASC'.
 	SortOrder *LogsGetRequestSortOrder `json:"-" url:"sortOrder,omitempty"`
 	// This is the maximum number of items to return. Defaults to 100.

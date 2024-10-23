@@ -7,9 +7,9 @@ import (
 	context "context"
 	json "encoding/json"
 	errors "errors"
-	vapigosdk "github.com/fern-demo/vapi-go-sdk"
-	core "github.com/fern-demo/vapi-go-sdk/core"
-	option "github.com/fern-demo/vapi-go-sdk/option"
+	serversdkgo "github.com/VapiAI/server-sdk-go"
+	core "github.com/VapiAI/server-sdk-go/core"
+	option "github.com/VapiAI/server-sdk-go/option"
 	io "io"
 	multipart "mime/multipart"
 	http "net/http"
@@ -38,7 +38,7 @@ func NewClient(opts ...option.RequestOption) *Client {
 func (c *Client) List(
 	ctx context.Context,
 	opts ...option.RequestOption,
-) ([]*vapigosdk.File, error) {
+) ([]*serversdkgo.File, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -52,7 +52,7 @@ func (c *Client) List(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response []*vapigosdk.File
+	var response []*serversdkgo.File
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -75,7 +75,7 @@ func (c *Client) Create(
 	ctx context.Context,
 	file io.Reader,
 	opts ...option.RequestOption,
-) (*vapigosdk.File, error) {
+) (*serversdkgo.File, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -98,7 +98,7 @@ func (c *Client) Create(
 		decoder := json.NewDecoder(bytes.NewReader(raw))
 		switch statusCode {
 		case 400:
-			value := new(vapigosdk.BadRequestError)
+			value := new(serversdkgo.BadRequestError)
 			value.APIError = apiError
 			if err := decoder.Decode(value); err != nil {
 				return apiError
@@ -108,7 +108,7 @@ func (c *Client) Create(
 		return apiError
 	}
 
-	var response *vapigosdk.File
+	var response *serversdkgo.File
 	requestBuffer := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(requestBuffer)
 	fileFilename := "file_filename"
@@ -151,7 +151,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*vapigosdk.File, error) {
+) (*serversdkgo.File, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -165,7 +165,7 @@ func (c *Client) Get(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response *vapigosdk.File
+	var response *serversdkgo.File
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -188,7 +188,7 @@ func (c *Client) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*vapigosdk.File, error) {
+) (*serversdkgo.File, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -202,7 +202,7 @@ func (c *Client) Delete(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response *vapigosdk.File
+	var response *serversdkgo.File
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -224,9 +224,9 @@ func (c *Client) Delete(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *vapigosdk.UpdateFileDto,
+	request *serversdkgo.UpdateFileDto,
 	opts ...option.RequestOption,
-) (*vapigosdk.File, error) {
+) (*serversdkgo.File, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -241,7 +241,7 @@ func (c *Client) Update(
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	headers.Set("Content-Type", "application/json")
 
-	var response *vapigosdk.File
+	var response *serversdkgo.File
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

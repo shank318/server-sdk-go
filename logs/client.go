@@ -5,9 +5,9 @@ package logs
 import (
 	context "context"
 	fmt "fmt"
-	vapigosdk "github.com/fern-demo/vapi-go-sdk"
-	core "github.com/fern-demo/vapi-go-sdk/core"
-	option "github.com/fern-demo/vapi-go-sdk/option"
+	serversdkgo "github.com/VapiAI/server-sdk-go"
+	core "github.com/VapiAI/server-sdk-go/core"
+	option "github.com/VapiAI/server-sdk-go/option"
 	http "net/http"
 )
 
@@ -33,9 +33,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) Get(
 	ctx context.Context,
-	request *vapigosdk.LogsGetRequest,
+	request *serversdkgo.LogsGetRequest,
 	opts ...option.RequestOption,
-) (*core.Page[*vapigosdk.Log], error) {
+) (*core.Page[*serversdkgo.Log], error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -54,7 +54,7 @@ func (c *Client) Get(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	prepareCall := func(pageRequest *core.PageRequest[*float64]) *core.CallParams {
+	prepareCall := func(pageRequest *core.PageRequest[*int]) *core.CallParams {
 		if pageRequest.Cursor != nil {
 			queryParams.Set("page", fmt.Sprintf("%v", *pageRequest.Cursor))
 		}
@@ -77,10 +77,10 @@ func (c *Client) Get(
 	if request.Page != nil {
 		next = *request.Page
 	}
-	readPageResponse := func(response *vapigosdk.LogsPaginatedResponse) *core.PageResponse[*float64, *vapigosdk.Log] {
+	readPageResponse := func(response *serversdkgo.LogsPaginatedResponse) *core.PageResponse[*int, *serversdkgo.Log] {
 		next += 1
 		results := response.Results
-		return &core.PageResponse[*float64, *vapigosdk.Log]{
+		return &core.PageResponse[*int, *serversdkgo.Log]{
 			Next:    &next,
 			Results: results,
 		}

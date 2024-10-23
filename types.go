@@ -5,7 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
-	core "github.com/fern-demo/vapi-go-sdk/core"
+	core "github.com/VapiAI/server-sdk-go/core"
 	time "time"
 )
 
@@ -3165,7 +3165,7 @@ type AzureVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId *AzureVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *AzureVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// This is the speed multiplier that will be used.
 	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
 	// This is the plan for chunking the model output before it is sent to the voice provider.
@@ -3236,60 +3236,15 @@ func (a *AzureVoice) String() string {
 }
 
 // This is the provider-specific ID that will be used.
-type AzureVoiceVoiceId struct {
-	andrewStringLiteral string
-	brianStringLiteral  string
-	emmaStringLiteral   string
-	String              string
+type AzureVoiceId struct {
+	AzureVoiceIdEnum AzureVoiceIdEnum
+	String           string
 }
 
-func NewAzureVoiceVoiceIdWithAndrewStringLiteral() *AzureVoiceVoiceId {
-	return &AzureVoiceVoiceId{andrewStringLiteral: "andrew"}
-}
-
-func NewAzureVoiceVoiceIdWithBrianStringLiteral() *AzureVoiceVoiceId {
-	return &AzureVoiceVoiceId{brianStringLiteral: "brian"}
-}
-
-func NewAzureVoiceVoiceIdWithEmmaStringLiteral() *AzureVoiceVoiceId {
-	return &AzureVoiceVoiceId{emmaStringLiteral: "emma"}
-}
-
-func (a *AzureVoiceVoiceId) AndrewStringLiteral() string {
-	return a.andrewStringLiteral
-}
-
-func (a *AzureVoiceVoiceId) BrianStringLiteral() string {
-	return a.brianStringLiteral
-}
-
-func (a *AzureVoiceVoiceId) EmmaStringLiteral() string {
-	return a.emmaStringLiteral
-}
-
-func (a *AzureVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueAndrewStringLiteral string
-	if err := json.Unmarshal(data, &valueAndrewStringLiteral); err == nil {
-		a.andrewStringLiteral = valueAndrewStringLiteral
-		if a.andrewStringLiteral != "andrew" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "andrew", valueAndrewStringLiteral)
-		}
-		return nil
-	}
-	var valueBrianStringLiteral string
-	if err := json.Unmarshal(data, &valueBrianStringLiteral); err == nil {
-		a.brianStringLiteral = valueBrianStringLiteral
-		if a.brianStringLiteral != "brian" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "brian", valueBrianStringLiteral)
-		}
-		return nil
-	}
-	var valueEmmaStringLiteral string
-	if err := json.Unmarshal(data, &valueEmmaStringLiteral); err == nil {
-		a.emmaStringLiteral = valueEmmaStringLiteral
-		if a.emmaStringLiteral != "emma" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "emma", valueEmmaStringLiteral)
-		}
+func (a *AzureVoiceId) UnmarshalJSON(data []byte) error {
+	var valueAzureVoiceIdEnum AzureVoiceIdEnum
+	if err := json.Unmarshal(data, &valueAzureVoiceIdEnum); err == nil {
+		a.AzureVoiceIdEnum = valueAzureVoiceIdEnum
 		return nil
 	}
 	var valueString string
@@ -3300,15 +3255,9 @@ func (a *AzureVoiceVoiceId) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
 }
 
-func (a AzureVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if a.andrewStringLiteral != "" {
-		return json.Marshal("andrew")
-	}
-	if a.brianStringLiteral != "" {
-		return json.Marshal("brian")
-	}
-	if a.emmaStringLiteral != "" {
-		return json.Marshal("emma")
+func (a AzureVoiceId) MarshalJSON() ([]byte, error) {
+	if a.AzureVoiceIdEnum != "" {
+		return json.Marshal(a.AzureVoiceIdEnum)
 	}
 	if a.String != "" {
 		return json.Marshal(a.String)
@@ -3316,27 +3265,44 @@ func (a AzureVoiceVoiceId) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
 }
 
-type AzureVoiceVoiceIdVisitor interface {
-	VisitAndrewStringLiteral(string) error
-	VisitBrianStringLiteral(string) error
-	VisitEmmaStringLiteral(string) error
+type AzureVoiceIdVisitor interface {
+	VisitAzureVoiceIdEnum(AzureVoiceIdEnum) error
 	VisitString(string) error
 }
 
-func (a *AzureVoiceVoiceId) Accept(visitor AzureVoiceVoiceIdVisitor) error {
-	if a.andrewStringLiteral != "" {
-		return visitor.VisitAndrewStringLiteral(a.andrewStringLiteral)
-	}
-	if a.brianStringLiteral != "" {
-		return visitor.VisitBrianStringLiteral(a.brianStringLiteral)
-	}
-	if a.emmaStringLiteral != "" {
-		return visitor.VisitEmmaStringLiteral(a.emmaStringLiteral)
+func (a *AzureVoiceId) Accept(visitor AzureVoiceIdVisitor) error {
+	if a.AzureVoiceIdEnum != "" {
+		return visitor.VisitAzureVoiceIdEnum(a.AzureVoiceIdEnum)
 	}
 	if a.String != "" {
 		return visitor.VisitString(a.String)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type AzureVoiceIdEnum string
+
+const (
+	AzureVoiceIdEnumAndrew AzureVoiceIdEnum = "andrew"
+	AzureVoiceIdEnumBrian  AzureVoiceIdEnum = "brian"
+	AzureVoiceIdEnumEmma   AzureVoiceIdEnum = "emma"
+)
+
+func NewAzureVoiceIdEnumFromString(s string) (AzureVoiceIdEnum, error) {
+	switch s {
+	case "andrew":
+		return AzureVoiceIdEnumAndrew, nil
+	case "brian":
+		return AzureVoiceIdEnumBrian, nil
+	case "emma":
+		return AzureVoiceIdEnumEmma, nil
+	}
+	var t AzureVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AzureVoiceIdEnum) Ptr() *AzureVoiceIdEnum {
+	return &a
 }
 
 type BlockCompleteMessage struct {
@@ -14250,7 +14216,7 @@ type DeepgramVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId *DeepgramVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *DeepgramVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// This is the plan for chunking the model output before it is sent to the voice provider.
 	ChunkPlan *ChunkPlan `json:"chunkPlan,omitempty" url:"chunkPlan,omitempty"`
 	provider  string
@@ -14319,213 +14285,15 @@ func (d *DeepgramVoice) String() string {
 }
 
 // This is the provider-specific ID that will be used.
-type DeepgramVoiceVoiceId struct {
-	asteriaStringLiteral string
-	lunaStringLiteral    string
-	stellaStringLiteral  string
-	athenaStringLiteral  string
-	heraStringLiteral    string
-	orionStringLiteral   string
-	arcasStringLiteral   string
-	perseusStringLiteral string
-	angusStringLiteral   string
-	orpheusStringLiteral string
-	heliosStringLiteral  string
-	zeusStringLiteral    string
-	String               string
+type DeepgramVoiceId struct {
+	DeepgramVoiceIdEnum DeepgramVoiceIdEnum
+	String              string
 }
 
-func NewDeepgramVoiceVoiceIdWithAsteriaStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{asteriaStringLiteral: "asteria"}
-}
-
-func NewDeepgramVoiceVoiceIdWithLunaStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{lunaStringLiteral: "luna"}
-}
-
-func NewDeepgramVoiceVoiceIdWithStellaStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{stellaStringLiteral: "stella"}
-}
-
-func NewDeepgramVoiceVoiceIdWithAthenaStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{athenaStringLiteral: "athena"}
-}
-
-func NewDeepgramVoiceVoiceIdWithHeraStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{heraStringLiteral: "hera"}
-}
-
-func NewDeepgramVoiceVoiceIdWithOrionStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{orionStringLiteral: "orion"}
-}
-
-func NewDeepgramVoiceVoiceIdWithArcasStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{arcasStringLiteral: "arcas"}
-}
-
-func NewDeepgramVoiceVoiceIdWithPerseusStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{perseusStringLiteral: "perseus"}
-}
-
-func NewDeepgramVoiceVoiceIdWithAngusStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{angusStringLiteral: "angus"}
-}
-
-func NewDeepgramVoiceVoiceIdWithOrpheusStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{orpheusStringLiteral: "orpheus"}
-}
-
-func NewDeepgramVoiceVoiceIdWithHeliosStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{heliosStringLiteral: "helios"}
-}
-
-func NewDeepgramVoiceVoiceIdWithZeusStringLiteral() *DeepgramVoiceVoiceId {
-	return &DeepgramVoiceVoiceId{zeusStringLiteral: "zeus"}
-}
-
-func (d *DeepgramVoiceVoiceId) AsteriaStringLiteral() string {
-	return d.asteriaStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) LunaStringLiteral() string {
-	return d.lunaStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) StellaStringLiteral() string {
-	return d.stellaStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) AthenaStringLiteral() string {
-	return d.athenaStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) HeraStringLiteral() string {
-	return d.heraStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) OrionStringLiteral() string {
-	return d.orionStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) ArcasStringLiteral() string {
-	return d.arcasStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) PerseusStringLiteral() string {
-	return d.perseusStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) AngusStringLiteral() string {
-	return d.angusStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) OrpheusStringLiteral() string {
-	return d.orpheusStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) HeliosStringLiteral() string {
-	return d.heliosStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) ZeusStringLiteral() string {
-	return d.zeusStringLiteral
-}
-
-func (d *DeepgramVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueAsteriaStringLiteral string
-	if err := json.Unmarshal(data, &valueAsteriaStringLiteral); err == nil {
-		d.asteriaStringLiteral = valueAsteriaStringLiteral
-		if d.asteriaStringLiteral != "asteria" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "asteria", valueAsteriaStringLiteral)
-		}
-		return nil
-	}
-	var valueLunaStringLiteral string
-	if err := json.Unmarshal(data, &valueLunaStringLiteral); err == nil {
-		d.lunaStringLiteral = valueLunaStringLiteral
-		if d.lunaStringLiteral != "luna" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "luna", valueLunaStringLiteral)
-		}
-		return nil
-	}
-	var valueStellaStringLiteral string
-	if err := json.Unmarshal(data, &valueStellaStringLiteral); err == nil {
-		d.stellaStringLiteral = valueStellaStringLiteral
-		if d.stellaStringLiteral != "stella" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "stella", valueStellaStringLiteral)
-		}
-		return nil
-	}
-	var valueAthenaStringLiteral string
-	if err := json.Unmarshal(data, &valueAthenaStringLiteral); err == nil {
-		d.athenaStringLiteral = valueAthenaStringLiteral
-		if d.athenaStringLiteral != "athena" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "athena", valueAthenaStringLiteral)
-		}
-		return nil
-	}
-	var valueHeraStringLiteral string
-	if err := json.Unmarshal(data, &valueHeraStringLiteral); err == nil {
-		d.heraStringLiteral = valueHeraStringLiteral
-		if d.heraStringLiteral != "hera" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "hera", valueHeraStringLiteral)
-		}
-		return nil
-	}
-	var valueOrionStringLiteral string
-	if err := json.Unmarshal(data, &valueOrionStringLiteral); err == nil {
-		d.orionStringLiteral = valueOrionStringLiteral
-		if d.orionStringLiteral != "orion" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "orion", valueOrionStringLiteral)
-		}
-		return nil
-	}
-	var valueArcasStringLiteral string
-	if err := json.Unmarshal(data, &valueArcasStringLiteral); err == nil {
-		d.arcasStringLiteral = valueArcasStringLiteral
-		if d.arcasStringLiteral != "arcas" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "arcas", valueArcasStringLiteral)
-		}
-		return nil
-	}
-	var valuePerseusStringLiteral string
-	if err := json.Unmarshal(data, &valuePerseusStringLiteral); err == nil {
-		d.perseusStringLiteral = valuePerseusStringLiteral
-		if d.perseusStringLiteral != "perseus" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "perseus", valuePerseusStringLiteral)
-		}
-		return nil
-	}
-	var valueAngusStringLiteral string
-	if err := json.Unmarshal(data, &valueAngusStringLiteral); err == nil {
-		d.angusStringLiteral = valueAngusStringLiteral
-		if d.angusStringLiteral != "angus" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "angus", valueAngusStringLiteral)
-		}
-		return nil
-	}
-	var valueOrpheusStringLiteral string
-	if err := json.Unmarshal(data, &valueOrpheusStringLiteral); err == nil {
-		d.orpheusStringLiteral = valueOrpheusStringLiteral
-		if d.orpheusStringLiteral != "orpheus" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "orpheus", valueOrpheusStringLiteral)
-		}
-		return nil
-	}
-	var valueHeliosStringLiteral string
-	if err := json.Unmarshal(data, &valueHeliosStringLiteral); err == nil {
-		d.heliosStringLiteral = valueHeliosStringLiteral
-		if d.heliosStringLiteral != "helios" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "helios", valueHeliosStringLiteral)
-		}
-		return nil
-	}
-	var valueZeusStringLiteral string
-	if err := json.Unmarshal(data, &valueZeusStringLiteral); err == nil {
-		d.zeusStringLiteral = valueZeusStringLiteral
-		if d.zeusStringLiteral != "zeus" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "zeus", valueZeusStringLiteral)
-		}
+func (d *DeepgramVoiceId) UnmarshalJSON(data []byte) error {
+	var valueDeepgramVoiceIdEnum DeepgramVoiceIdEnum
+	if err := json.Unmarshal(data, &valueDeepgramVoiceIdEnum); err == nil {
+		d.DeepgramVoiceIdEnum = valueDeepgramVoiceIdEnum
 		return nil
 	}
 	var valueString string
@@ -14536,42 +14304,9 @@ func (d *DeepgramVoiceVoiceId) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, d)
 }
 
-func (d DeepgramVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if d.asteriaStringLiteral != "" {
-		return json.Marshal("asteria")
-	}
-	if d.lunaStringLiteral != "" {
-		return json.Marshal("luna")
-	}
-	if d.stellaStringLiteral != "" {
-		return json.Marshal("stella")
-	}
-	if d.athenaStringLiteral != "" {
-		return json.Marshal("athena")
-	}
-	if d.heraStringLiteral != "" {
-		return json.Marshal("hera")
-	}
-	if d.orionStringLiteral != "" {
-		return json.Marshal("orion")
-	}
-	if d.arcasStringLiteral != "" {
-		return json.Marshal("arcas")
-	}
-	if d.perseusStringLiteral != "" {
-		return json.Marshal("perseus")
-	}
-	if d.angusStringLiteral != "" {
-		return json.Marshal("angus")
-	}
-	if d.orpheusStringLiteral != "" {
-		return json.Marshal("orpheus")
-	}
-	if d.heliosStringLiteral != "" {
-		return json.Marshal("helios")
-	}
-	if d.zeusStringLiteral != "" {
-		return json.Marshal("zeus")
+func (d DeepgramVoiceId) MarshalJSON() ([]byte, error) {
+	if d.DeepgramVoiceIdEnum != "" {
+		return json.Marshal(d.DeepgramVoiceIdEnum)
 	}
 	if d.String != "" {
 		return json.Marshal(d.String)
@@ -14579,63 +14314,71 @@ func (d DeepgramVoiceVoiceId) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", d)
 }
 
-type DeepgramVoiceVoiceIdVisitor interface {
-	VisitAsteriaStringLiteral(string) error
-	VisitLunaStringLiteral(string) error
-	VisitStellaStringLiteral(string) error
-	VisitAthenaStringLiteral(string) error
-	VisitHeraStringLiteral(string) error
-	VisitOrionStringLiteral(string) error
-	VisitArcasStringLiteral(string) error
-	VisitPerseusStringLiteral(string) error
-	VisitAngusStringLiteral(string) error
-	VisitOrpheusStringLiteral(string) error
-	VisitHeliosStringLiteral(string) error
-	VisitZeusStringLiteral(string) error
+type DeepgramVoiceIdVisitor interface {
+	VisitDeepgramVoiceIdEnum(DeepgramVoiceIdEnum) error
 	VisitString(string) error
 }
 
-func (d *DeepgramVoiceVoiceId) Accept(visitor DeepgramVoiceVoiceIdVisitor) error {
-	if d.asteriaStringLiteral != "" {
-		return visitor.VisitAsteriaStringLiteral(d.asteriaStringLiteral)
-	}
-	if d.lunaStringLiteral != "" {
-		return visitor.VisitLunaStringLiteral(d.lunaStringLiteral)
-	}
-	if d.stellaStringLiteral != "" {
-		return visitor.VisitStellaStringLiteral(d.stellaStringLiteral)
-	}
-	if d.athenaStringLiteral != "" {
-		return visitor.VisitAthenaStringLiteral(d.athenaStringLiteral)
-	}
-	if d.heraStringLiteral != "" {
-		return visitor.VisitHeraStringLiteral(d.heraStringLiteral)
-	}
-	if d.orionStringLiteral != "" {
-		return visitor.VisitOrionStringLiteral(d.orionStringLiteral)
-	}
-	if d.arcasStringLiteral != "" {
-		return visitor.VisitArcasStringLiteral(d.arcasStringLiteral)
-	}
-	if d.perseusStringLiteral != "" {
-		return visitor.VisitPerseusStringLiteral(d.perseusStringLiteral)
-	}
-	if d.angusStringLiteral != "" {
-		return visitor.VisitAngusStringLiteral(d.angusStringLiteral)
-	}
-	if d.orpheusStringLiteral != "" {
-		return visitor.VisitOrpheusStringLiteral(d.orpheusStringLiteral)
-	}
-	if d.heliosStringLiteral != "" {
-		return visitor.VisitHeliosStringLiteral(d.heliosStringLiteral)
-	}
-	if d.zeusStringLiteral != "" {
-		return visitor.VisitZeusStringLiteral(d.zeusStringLiteral)
+func (d *DeepgramVoiceId) Accept(visitor DeepgramVoiceIdVisitor) error {
+	if d.DeepgramVoiceIdEnum != "" {
+		return visitor.VisitDeepgramVoiceIdEnum(d.DeepgramVoiceIdEnum)
 	}
 	if d.String != "" {
 		return visitor.VisitString(d.String)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
+type DeepgramVoiceIdEnum string
+
+const (
+	DeepgramVoiceIdEnumAsteria DeepgramVoiceIdEnum = "asteria"
+	DeepgramVoiceIdEnumLuna    DeepgramVoiceIdEnum = "luna"
+	DeepgramVoiceIdEnumStella  DeepgramVoiceIdEnum = "stella"
+	DeepgramVoiceIdEnumAthena  DeepgramVoiceIdEnum = "athena"
+	DeepgramVoiceIdEnumHera    DeepgramVoiceIdEnum = "hera"
+	DeepgramVoiceIdEnumOrion   DeepgramVoiceIdEnum = "orion"
+	DeepgramVoiceIdEnumArcas   DeepgramVoiceIdEnum = "arcas"
+	DeepgramVoiceIdEnumPerseus DeepgramVoiceIdEnum = "perseus"
+	DeepgramVoiceIdEnumAngus   DeepgramVoiceIdEnum = "angus"
+	DeepgramVoiceIdEnumOrpheus DeepgramVoiceIdEnum = "orpheus"
+	DeepgramVoiceIdEnumHelios  DeepgramVoiceIdEnum = "helios"
+	DeepgramVoiceIdEnumZeus    DeepgramVoiceIdEnum = "zeus"
+)
+
+func NewDeepgramVoiceIdEnumFromString(s string) (DeepgramVoiceIdEnum, error) {
+	switch s {
+	case "asteria":
+		return DeepgramVoiceIdEnumAsteria, nil
+	case "luna":
+		return DeepgramVoiceIdEnumLuna, nil
+	case "stella":
+		return DeepgramVoiceIdEnumStella, nil
+	case "athena":
+		return DeepgramVoiceIdEnumAthena, nil
+	case "hera":
+		return DeepgramVoiceIdEnumHera, nil
+	case "orion":
+		return DeepgramVoiceIdEnumOrion, nil
+	case "arcas":
+		return DeepgramVoiceIdEnumArcas, nil
+	case "perseus":
+		return DeepgramVoiceIdEnumPerseus, nil
+	case "angus":
+		return DeepgramVoiceIdEnumAngus, nil
+	case "orpheus":
+		return DeepgramVoiceIdEnumOrpheus, nil
+	case "helios":
+		return DeepgramVoiceIdEnumHelios, nil
+	case "zeus":
+		return DeepgramVoiceIdEnumZeus, nil
+	}
+	var t DeepgramVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (d DeepgramVoiceIdEnum) Ptr() *DeepgramVoiceIdEnum {
+	return &d
 }
 
 type DtmfTool struct {
@@ -14905,7 +14648,7 @@ type ElevenLabsVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used. Ensure the Voice is present in your 11Labs Voice Library.
-	VoiceId *ElevenLabsVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *ElevenLabsVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// Defines the stability for voice settings.
 	Stability *float64 `json:"stability,omitempty" url:"stability,omitempty"`
 	// Defines the similarity boost for voice settings.
@@ -14991,6 +14734,112 @@ func (e *ElevenLabsVoice) String() string {
 	return fmt.Sprintf("%#v", e)
 }
 
+// This is the provider-specific ID that will be used. Ensure the Voice is present in your 11Labs Voice Library.
+type ElevenLabsVoiceId struct {
+	ElevenLabsVoiceIdEnum ElevenLabsVoiceIdEnum
+	String                string
+}
+
+func (e *ElevenLabsVoiceId) UnmarshalJSON(data []byte) error {
+	var valueElevenLabsVoiceIdEnum ElevenLabsVoiceIdEnum
+	if err := json.Unmarshal(data, &valueElevenLabsVoiceIdEnum); err == nil {
+		e.ElevenLabsVoiceIdEnum = valueElevenLabsVoiceIdEnum
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		e.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, e)
+}
+
+func (e ElevenLabsVoiceId) MarshalJSON() ([]byte, error) {
+	if e.ElevenLabsVoiceIdEnum != "" {
+		return json.Marshal(e.ElevenLabsVoiceIdEnum)
+	}
+	if e.String != "" {
+		return json.Marshal(e.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
+}
+
+type ElevenLabsVoiceIdVisitor interface {
+	VisitElevenLabsVoiceIdEnum(ElevenLabsVoiceIdEnum) error
+	VisitString(string) error
+}
+
+func (e *ElevenLabsVoiceId) Accept(visitor ElevenLabsVoiceIdVisitor) error {
+	if e.ElevenLabsVoiceIdEnum != "" {
+		return visitor.VisitElevenLabsVoiceIdEnum(e.ElevenLabsVoiceIdEnum)
+	}
+	if e.String != "" {
+		return visitor.VisitString(e.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", e)
+}
+
+type ElevenLabsVoiceIdEnum string
+
+const (
+	ElevenLabsVoiceIdEnumBurt    ElevenLabsVoiceIdEnum = "burt"
+	ElevenLabsVoiceIdEnumMarissa ElevenLabsVoiceIdEnum = "marissa"
+	ElevenLabsVoiceIdEnumAndrea  ElevenLabsVoiceIdEnum = "andrea"
+	ElevenLabsVoiceIdEnumSarah   ElevenLabsVoiceIdEnum = "sarah"
+	ElevenLabsVoiceIdEnumPhillip ElevenLabsVoiceIdEnum = "phillip"
+	ElevenLabsVoiceIdEnumSteve   ElevenLabsVoiceIdEnum = "steve"
+	ElevenLabsVoiceIdEnumJoseph  ElevenLabsVoiceIdEnum = "joseph"
+	ElevenLabsVoiceIdEnumMyra    ElevenLabsVoiceIdEnum = "myra"
+	ElevenLabsVoiceIdEnumPaula   ElevenLabsVoiceIdEnum = "paula"
+	ElevenLabsVoiceIdEnumRyan    ElevenLabsVoiceIdEnum = "ryan"
+	ElevenLabsVoiceIdEnumDrew    ElevenLabsVoiceIdEnum = "drew"
+	ElevenLabsVoiceIdEnumPaul    ElevenLabsVoiceIdEnum = "paul"
+	ElevenLabsVoiceIdEnumMrb     ElevenLabsVoiceIdEnum = "mrb"
+	ElevenLabsVoiceIdEnumMatilda ElevenLabsVoiceIdEnum = "matilda"
+	ElevenLabsVoiceIdEnumMark    ElevenLabsVoiceIdEnum = "mark"
+)
+
+func NewElevenLabsVoiceIdEnumFromString(s string) (ElevenLabsVoiceIdEnum, error) {
+	switch s {
+	case "burt":
+		return ElevenLabsVoiceIdEnumBurt, nil
+	case "marissa":
+		return ElevenLabsVoiceIdEnumMarissa, nil
+	case "andrea":
+		return ElevenLabsVoiceIdEnumAndrea, nil
+	case "sarah":
+		return ElevenLabsVoiceIdEnumSarah, nil
+	case "phillip":
+		return ElevenLabsVoiceIdEnumPhillip, nil
+	case "steve":
+		return ElevenLabsVoiceIdEnumSteve, nil
+	case "joseph":
+		return ElevenLabsVoiceIdEnumJoseph, nil
+	case "myra":
+		return ElevenLabsVoiceIdEnumMyra, nil
+	case "paula":
+		return ElevenLabsVoiceIdEnumPaula, nil
+	case "ryan":
+		return ElevenLabsVoiceIdEnumRyan, nil
+	case "drew":
+		return ElevenLabsVoiceIdEnumDrew, nil
+	case "paul":
+		return ElevenLabsVoiceIdEnumPaul, nil
+	case "mrb":
+		return ElevenLabsVoiceIdEnumMrb, nil
+	case "matilda":
+		return ElevenLabsVoiceIdEnumMatilda, nil
+	case "mark":
+		return ElevenLabsVoiceIdEnumMark, nil
+	}
+	var t ElevenLabsVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (e ElevenLabsVoiceIdEnum) Ptr() *ElevenLabsVoiceIdEnum {
+	return &e
+}
+
 // This is the model that will be used. Defaults to 'eleven_turbo_v2' if not specified.
 type ElevenLabsVoiceModel string
 
@@ -15018,398 +14867,6 @@ func NewElevenLabsVoiceModelFromString(s string) (ElevenLabsVoiceModel, error) {
 
 func (e ElevenLabsVoiceModel) Ptr() *ElevenLabsVoiceModel {
 	return &e
-}
-
-// This is the provider-specific ID that will be used. Ensure the Voice is present in your 11Labs Voice Library.
-type ElevenLabsVoiceVoiceId struct {
-	burtStringLiteral    string
-	marissaStringLiteral string
-	andreaStringLiteral  string
-	sarahStringLiteral   string
-	phillipStringLiteral string
-	steveStringLiteral   string
-	josephStringLiteral  string
-	myraStringLiteral    string
-	paulaStringLiteral   string
-	ryanStringLiteral    string
-	drewStringLiteral    string
-	paulStringLiteral    string
-	mrbStringLiteral     string
-	matildaStringLiteral string
-	markStringLiteral    string
-	String               string
-}
-
-func NewElevenLabsVoiceVoiceIdWithBurtStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{burtStringLiteral: "burt"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithMarissaStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{marissaStringLiteral: "marissa"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithAndreaStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{andreaStringLiteral: "andrea"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithSarahStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{sarahStringLiteral: "sarah"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithPhillipStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{phillipStringLiteral: "phillip"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithSteveStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{steveStringLiteral: "steve"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithJosephStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{josephStringLiteral: "joseph"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithMyraStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{myraStringLiteral: "myra"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithPaulaStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{paulaStringLiteral: "paula"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithRyanStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{ryanStringLiteral: "ryan"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithDrewStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{drewStringLiteral: "drew"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithPaulStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{paulStringLiteral: "paul"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithMrbStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{mrbStringLiteral: "mrb"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithMatildaStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{matildaStringLiteral: "matilda"}
-}
-
-func NewElevenLabsVoiceVoiceIdWithMarkStringLiteral() *ElevenLabsVoiceVoiceId {
-	return &ElevenLabsVoiceVoiceId{markStringLiteral: "mark"}
-}
-
-func (e *ElevenLabsVoiceVoiceId) BurtStringLiteral() string {
-	return e.burtStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) MarissaStringLiteral() string {
-	return e.marissaStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) AndreaStringLiteral() string {
-	return e.andreaStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) SarahStringLiteral() string {
-	return e.sarahStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) PhillipStringLiteral() string {
-	return e.phillipStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) SteveStringLiteral() string {
-	return e.steveStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) JosephStringLiteral() string {
-	return e.josephStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) MyraStringLiteral() string {
-	return e.myraStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) PaulaStringLiteral() string {
-	return e.paulaStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) RyanStringLiteral() string {
-	return e.ryanStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) DrewStringLiteral() string {
-	return e.drewStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) PaulStringLiteral() string {
-	return e.paulStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) MrbStringLiteral() string {
-	return e.mrbStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) MatildaStringLiteral() string {
-	return e.matildaStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) MarkStringLiteral() string {
-	return e.markStringLiteral
-}
-
-func (e *ElevenLabsVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueBurtStringLiteral string
-	if err := json.Unmarshal(data, &valueBurtStringLiteral); err == nil {
-		e.burtStringLiteral = valueBurtStringLiteral
-		if e.burtStringLiteral != "burt" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "burt", valueBurtStringLiteral)
-		}
-		return nil
-	}
-	var valueMarissaStringLiteral string
-	if err := json.Unmarshal(data, &valueMarissaStringLiteral); err == nil {
-		e.marissaStringLiteral = valueMarissaStringLiteral
-		if e.marissaStringLiteral != "marissa" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "marissa", valueMarissaStringLiteral)
-		}
-		return nil
-	}
-	var valueAndreaStringLiteral string
-	if err := json.Unmarshal(data, &valueAndreaStringLiteral); err == nil {
-		e.andreaStringLiteral = valueAndreaStringLiteral
-		if e.andreaStringLiteral != "andrea" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "andrea", valueAndreaStringLiteral)
-		}
-		return nil
-	}
-	var valueSarahStringLiteral string
-	if err := json.Unmarshal(data, &valueSarahStringLiteral); err == nil {
-		e.sarahStringLiteral = valueSarahStringLiteral
-		if e.sarahStringLiteral != "sarah" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "sarah", valueSarahStringLiteral)
-		}
-		return nil
-	}
-	var valuePhillipStringLiteral string
-	if err := json.Unmarshal(data, &valuePhillipStringLiteral); err == nil {
-		e.phillipStringLiteral = valuePhillipStringLiteral
-		if e.phillipStringLiteral != "phillip" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "phillip", valuePhillipStringLiteral)
-		}
-		return nil
-	}
-	var valueSteveStringLiteral string
-	if err := json.Unmarshal(data, &valueSteveStringLiteral); err == nil {
-		e.steveStringLiteral = valueSteveStringLiteral
-		if e.steveStringLiteral != "steve" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "steve", valueSteveStringLiteral)
-		}
-		return nil
-	}
-	var valueJosephStringLiteral string
-	if err := json.Unmarshal(data, &valueJosephStringLiteral); err == nil {
-		e.josephStringLiteral = valueJosephStringLiteral
-		if e.josephStringLiteral != "joseph" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "joseph", valueJosephStringLiteral)
-		}
-		return nil
-	}
-	var valueMyraStringLiteral string
-	if err := json.Unmarshal(data, &valueMyraStringLiteral); err == nil {
-		e.myraStringLiteral = valueMyraStringLiteral
-		if e.myraStringLiteral != "myra" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "myra", valueMyraStringLiteral)
-		}
-		return nil
-	}
-	var valuePaulaStringLiteral string
-	if err := json.Unmarshal(data, &valuePaulaStringLiteral); err == nil {
-		e.paulaStringLiteral = valuePaulaStringLiteral
-		if e.paulaStringLiteral != "paula" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "paula", valuePaulaStringLiteral)
-		}
-		return nil
-	}
-	var valueRyanStringLiteral string
-	if err := json.Unmarshal(data, &valueRyanStringLiteral); err == nil {
-		e.ryanStringLiteral = valueRyanStringLiteral
-		if e.ryanStringLiteral != "ryan" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "ryan", valueRyanStringLiteral)
-		}
-		return nil
-	}
-	var valueDrewStringLiteral string
-	if err := json.Unmarshal(data, &valueDrewStringLiteral); err == nil {
-		e.drewStringLiteral = valueDrewStringLiteral
-		if e.drewStringLiteral != "drew" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "drew", valueDrewStringLiteral)
-		}
-		return nil
-	}
-	var valuePaulStringLiteral string
-	if err := json.Unmarshal(data, &valuePaulStringLiteral); err == nil {
-		e.paulStringLiteral = valuePaulStringLiteral
-		if e.paulStringLiteral != "paul" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "paul", valuePaulStringLiteral)
-		}
-		return nil
-	}
-	var valueMrbStringLiteral string
-	if err := json.Unmarshal(data, &valueMrbStringLiteral); err == nil {
-		e.mrbStringLiteral = valueMrbStringLiteral
-		if e.mrbStringLiteral != "mrb" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "mrb", valueMrbStringLiteral)
-		}
-		return nil
-	}
-	var valueMatildaStringLiteral string
-	if err := json.Unmarshal(data, &valueMatildaStringLiteral); err == nil {
-		e.matildaStringLiteral = valueMatildaStringLiteral
-		if e.matildaStringLiteral != "matilda" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "matilda", valueMatildaStringLiteral)
-		}
-		return nil
-	}
-	var valueMarkStringLiteral string
-	if err := json.Unmarshal(data, &valueMarkStringLiteral); err == nil {
-		e.markStringLiteral = valueMarkStringLiteral
-		if e.markStringLiteral != "mark" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", e, "mark", valueMarkStringLiteral)
-		}
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		e.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, e)
-}
-
-func (e ElevenLabsVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if e.burtStringLiteral != "" {
-		return json.Marshal("burt")
-	}
-	if e.marissaStringLiteral != "" {
-		return json.Marshal("marissa")
-	}
-	if e.andreaStringLiteral != "" {
-		return json.Marshal("andrea")
-	}
-	if e.sarahStringLiteral != "" {
-		return json.Marshal("sarah")
-	}
-	if e.phillipStringLiteral != "" {
-		return json.Marshal("phillip")
-	}
-	if e.steveStringLiteral != "" {
-		return json.Marshal("steve")
-	}
-	if e.josephStringLiteral != "" {
-		return json.Marshal("joseph")
-	}
-	if e.myraStringLiteral != "" {
-		return json.Marshal("myra")
-	}
-	if e.paulaStringLiteral != "" {
-		return json.Marshal("paula")
-	}
-	if e.ryanStringLiteral != "" {
-		return json.Marshal("ryan")
-	}
-	if e.drewStringLiteral != "" {
-		return json.Marshal("drew")
-	}
-	if e.paulStringLiteral != "" {
-		return json.Marshal("paul")
-	}
-	if e.mrbStringLiteral != "" {
-		return json.Marshal("mrb")
-	}
-	if e.matildaStringLiteral != "" {
-		return json.Marshal("matilda")
-	}
-	if e.markStringLiteral != "" {
-		return json.Marshal("mark")
-	}
-	if e.String != "" {
-		return json.Marshal(e.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
-}
-
-type ElevenLabsVoiceVoiceIdVisitor interface {
-	VisitBurtStringLiteral(string) error
-	VisitMarissaStringLiteral(string) error
-	VisitAndreaStringLiteral(string) error
-	VisitSarahStringLiteral(string) error
-	VisitPhillipStringLiteral(string) error
-	VisitSteveStringLiteral(string) error
-	VisitJosephStringLiteral(string) error
-	VisitMyraStringLiteral(string) error
-	VisitPaulaStringLiteral(string) error
-	VisitRyanStringLiteral(string) error
-	VisitDrewStringLiteral(string) error
-	VisitPaulStringLiteral(string) error
-	VisitMrbStringLiteral(string) error
-	VisitMatildaStringLiteral(string) error
-	VisitMarkStringLiteral(string) error
-	VisitString(string) error
-}
-
-func (e *ElevenLabsVoiceVoiceId) Accept(visitor ElevenLabsVoiceVoiceIdVisitor) error {
-	if e.burtStringLiteral != "" {
-		return visitor.VisitBurtStringLiteral(e.burtStringLiteral)
-	}
-	if e.marissaStringLiteral != "" {
-		return visitor.VisitMarissaStringLiteral(e.marissaStringLiteral)
-	}
-	if e.andreaStringLiteral != "" {
-		return visitor.VisitAndreaStringLiteral(e.andreaStringLiteral)
-	}
-	if e.sarahStringLiteral != "" {
-		return visitor.VisitSarahStringLiteral(e.sarahStringLiteral)
-	}
-	if e.phillipStringLiteral != "" {
-		return visitor.VisitPhillipStringLiteral(e.phillipStringLiteral)
-	}
-	if e.steveStringLiteral != "" {
-		return visitor.VisitSteveStringLiteral(e.steveStringLiteral)
-	}
-	if e.josephStringLiteral != "" {
-		return visitor.VisitJosephStringLiteral(e.josephStringLiteral)
-	}
-	if e.myraStringLiteral != "" {
-		return visitor.VisitMyraStringLiteral(e.myraStringLiteral)
-	}
-	if e.paulaStringLiteral != "" {
-		return visitor.VisitPaulaStringLiteral(e.paulaStringLiteral)
-	}
-	if e.ryanStringLiteral != "" {
-		return visitor.VisitRyanStringLiteral(e.ryanStringLiteral)
-	}
-	if e.drewStringLiteral != "" {
-		return visitor.VisitDrewStringLiteral(e.drewStringLiteral)
-	}
-	if e.paulStringLiteral != "" {
-		return visitor.VisitPaulStringLiteral(e.paulStringLiteral)
-	}
-	if e.mrbStringLiteral != "" {
-		return visitor.VisitMrbStringLiteral(e.mrbStringLiteral)
-	}
-	if e.matildaStringLiteral != "" {
-		return visitor.VisitMatildaStringLiteral(e.matildaStringLiteral)
-	}
-	if e.markStringLiteral != "" {
-		return visitor.VisitMarkStringLiteral(e.markStringLiteral)
-	}
-	if e.String != "" {
-		return visitor.VisitString(e.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", e)
 }
 
 type EndCallTool struct {
@@ -18576,6 +18033,73 @@ func (k *KnowledgeBase) String() string {
 	return fmt.Sprintf("%#v", k)
 }
 
+// This is the provider-specific ID that will be used.
+type LmntVoiceId struct {
+	LmntVoiceIdEnum LmntVoiceIdEnum
+	String          string
+}
+
+func (l *LmntVoiceId) UnmarshalJSON(data []byte) error {
+	var valueLmntVoiceIdEnum LmntVoiceIdEnum
+	if err := json.Unmarshal(data, &valueLmntVoiceIdEnum); err == nil {
+		l.LmntVoiceIdEnum = valueLmntVoiceIdEnum
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		l.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
+}
+
+func (l LmntVoiceId) MarshalJSON() ([]byte, error) {
+	if l.LmntVoiceIdEnum != "" {
+		return json.Marshal(l.LmntVoiceIdEnum)
+	}
+	if l.String != "" {
+		return json.Marshal(l.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LmntVoiceIdVisitor interface {
+	VisitLmntVoiceIdEnum(LmntVoiceIdEnum) error
+	VisitString(string) error
+}
+
+func (l *LmntVoiceId) Accept(visitor LmntVoiceIdVisitor) error {
+	if l.LmntVoiceIdEnum != "" {
+		return visitor.VisitLmntVoiceIdEnum(l.LmntVoiceIdEnum)
+	}
+	if l.String != "" {
+		return visitor.VisitString(l.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", l)
+}
+
+type LmntVoiceIdEnum string
+
+const (
+	LmntVoiceIdEnumLily   LmntVoiceIdEnum = "lily"
+	LmntVoiceIdEnumDaniel LmntVoiceIdEnum = "daniel"
+)
+
+func NewLmntVoiceIdEnumFromString(s string) (LmntVoiceIdEnum, error) {
+	switch s {
+	case "lily":
+		return LmntVoiceIdEnumLily, nil
+	case "daniel":
+		return LmntVoiceIdEnumDaniel, nil
+	}
+	var t LmntVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LmntVoiceIdEnum) Ptr() *LmntVoiceIdEnum {
+	return &l
+}
+
 type LmntCredential struct {
 	// This is not returned in the API.
 	ApiKey string `json:"apiKey" url:"apiKey"`
@@ -18667,7 +18191,7 @@ type LmntVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId *LmntVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *LmntVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// This is the speed multiplier that will be used.
 	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
 	// This is the plan for chunking the model output before it is sent to the voice provider.
@@ -18735,86 +18259,6 @@ func (l *LmntVoice) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", l)
-}
-
-// This is the provider-specific ID that will be used.
-type LmntVoiceVoiceId struct {
-	lilyStringLiteral   string
-	danielStringLiteral string
-	String              string
-}
-
-func NewLmntVoiceVoiceIdWithLilyStringLiteral() *LmntVoiceVoiceId {
-	return &LmntVoiceVoiceId{lilyStringLiteral: "lily"}
-}
-
-func NewLmntVoiceVoiceIdWithDanielStringLiteral() *LmntVoiceVoiceId {
-	return &LmntVoiceVoiceId{danielStringLiteral: "daniel"}
-}
-
-func (l *LmntVoiceVoiceId) LilyStringLiteral() string {
-	return l.lilyStringLiteral
-}
-
-func (l *LmntVoiceVoiceId) DanielStringLiteral() string {
-	return l.danielStringLiteral
-}
-
-func (l *LmntVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueLilyStringLiteral string
-	if err := json.Unmarshal(data, &valueLilyStringLiteral); err == nil {
-		l.lilyStringLiteral = valueLilyStringLiteral
-		if l.lilyStringLiteral != "lily" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", l, "lily", valueLilyStringLiteral)
-		}
-		return nil
-	}
-	var valueDanielStringLiteral string
-	if err := json.Unmarshal(data, &valueDanielStringLiteral); err == nil {
-		l.danielStringLiteral = valueDanielStringLiteral
-		if l.danielStringLiteral != "daniel" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", l, "daniel", valueDanielStringLiteral)
-		}
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		l.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, l)
-}
-
-func (l LmntVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if l.lilyStringLiteral != "" {
-		return json.Marshal("lily")
-	}
-	if l.danielStringLiteral != "" {
-		return json.Marshal("daniel")
-	}
-	if l.String != "" {
-		return json.Marshal(l.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", l)
-}
-
-type LmntVoiceVoiceIdVisitor interface {
-	VisitLilyStringLiteral(string) error
-	VisitDanielStringLiteral(string) error
-	VisitString(string) error
-}
-
-func (l *LmntVoiceVoiceId) Accept(visitor LmntVoiceVoiceIdVisitor) error {
-	if l.lilyStringLiteral != "" {
-		return visitor.VisitLilyStringLiteral(l.lilyStringLiteral)
-	}
-	if l.danielStringLiteral != "" {
-		return visitor.VisitDanielStringLiteral(l.danielStringLiteral)
-	}
-	if l.String != "" {
-		return visitor.VisitString(l.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", l)
 }
 
 type Log struct {
@@ -19987,7 +19431,7 @@ type NeetsVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId *NeetsVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *NeetsVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// This is the plan for chunking the model output before it is sent to the voice provider.
 	ChunkPlan *ChunkPlan `json:"chunkPlan,omitempty" url:"chunkPlan,omitempty"`
 	provider  string
@@ -20056,43 +19500,15 @@ func (n *NeetsVoice) String() string {
 }
 
 // This is the provider-specific ID that will be used.
-type NeetsVoiceVoiceId struct {
-	vitsStringLiteral string
-	vitsStringLiteral string
-	String            string
+type NeetsVoiceId struct {
+	NeetsVoiceIdEnum NeetsVoiceIdEnum
+	String           string
 }
 
-func NewNeetsVoiceVoiceIdWithVitsStringLiteral() *NeetsVoiceVoiceId {
-	return &NeetsVoiceVoiceId{vitsStringLiteral: "vits"}
-}
-
-func NewNeetsVoiceVoiceIdWithVitsStringLiteral() *NeetsVoiceVoiceId {
-	return &NeetsVoiceVoiceId{vitsStringLiteral: "vits"}
-}
-
-func (n *NeetsVoiceVoiceId) VitsStringLiteral() string {
-	return n.vitsStringLiteral
-}
-
-func (n *NeetsVoiceVoiceId) VitsStringLiteral() string {
-	return n.vitsStringLiteral
-}
-
-func (n *NeetsVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueVitsStringLiteral string
-	if err := json.Unmarshal(data, &valueVitsStringLiteral); err == nil {
-		n.vitsStringLiteral = valueVitsStringLiteral
-		if n.vitsStringLiteral != "vits" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", n, "vits", valueVitsStringLiteral)
-		}
-		return nil
-	}
-	var valueVitsStringLiteral string
-	if err := json.Unmarshal(data, &valueVitsStringLiteral); err == nil {
-		n.vitsStringLiteral = valueVitsStringLiteral
-		if n.vitsStringLiteral != "vits" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", n, "vits", valueVitsStringLiteral)
-		}
+func (n *NeetsVoiceId) UnmarshalJSON(data []byte) error {
+	var valueNeetsVoiceIdEnum NeetsVoiceIdEnum
+	if err := json.Unmarshal(data, &valueNeetsVoiceIdEnum); err == nil {
+		n.NeetsVoiceIdEnum = valueNeetsVoiceIdEnum
 		return nil
 	}
 	var valueString string
@@ -20103,12 +19519,9 @@ func (n *NeetsVoiceVoiceId) UnmarshalJSON(data []byte) error {
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, n)
 }
 
-func (n NeetsVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if n.vitsStringLiteral != "" {
-		return json.Marshal("vits")
-	}
-	if n.vitsStringLiteral != "" {
-		return json.Marshal("vits")
+func (n NeetsVoiceId) MarshalJSON() ([]byte, error) {
+	if n.NeetsVoiceIdEnum != "" {
+		return json.Marshal(n.NeetsVoiceIdEnum)
 	}
 	if n.String != "" {
 		return json.Marshal(n.String)
@@ -20116,23 +19529,73 @@ func (n NeetsVoiceVoiceId) MarshalJSON() ([]byte, error) {
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", n)
 }
 
-type NeetsVoiceVoiceIdVisitor interface {
-	VisitVitsStringLiteral(string) error
-	VisitVitsStringLiteral(string) error
+type NeetsVoiceIdVisitor interface {
+	VisitNeetsVoiceIdEnum(NeetsVoiceIdEnum) error
 	VisitString(string) error
 }
 
-func (n *NeetsVoiceVoiceId) Accept(visitor NeetsVoiceVoiceIdVisitor) error {
-	if n.vitsStringLiteral != "" {
-		return visitor.VisitVitsStringLiteral(n.vitsStringLiteral)
-	}
-	if n.vitsStringLiteral != "" {
-		return visitor.VisitVitsStringLiteral(n.vitsStringLiteral)
+func (n *NeetsVoiceId) Accept(visitor NeetsVoiceIdVisitor) error {
+	if n.NeetsVoiceIdEnum != "" {
+		return visitor.VisitNeetsVoiceIdEnum(n.NeetsVoiceIdEnum)
 	}
 	if n.String != "" {
 		return visitor.VisitString(n.String)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", n)
+}
+
+type NeetsVoiceIdEnum string
+
+const (
+	NeetsVoiceIdEnumVits NeetsVoiceIdEnum = "vits"
+)
+
+func NewNeetsVoiceIdEnumFromString(s string) (NeetsVoiceIdEnum, error) {
+	switch s {
+	case "vits":
+		return NeetsVoiceIdEnumVits, nil
+	}
+	var t NeetsVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (n NeetsVoiceIdEnum) Ptr() *NeetsVoiceIdEnum {
+	return &n
+}
+
+// This is the provider-specific ID that will be used.
+type OpenAiVoiceId string
+
+const (
+	OpenAiVoiceIdAlloy   OpenAiVoiceId = "alloy"
+	OpenAiVoiceIdEcho    OpenAiVoiceId = "echo"
+	OpenAiVoiceIdFable   OpenAiVoiceId = "fable"
+	OpenAiVoiceIdOnyx    OpenAiVoiceId = "onyx"
+	OpenAiVoiceIdNova    OpenAiVoiceId = "nova"
+	OpenAiVoiceIdShimmer OpenAiVoiceId = "shimmer"
+)
+
+func NewOpenAiVoiceIdFromString(s string) (OpenAiVoiceId, error) {
+	switch s {
+	case "alloy":
+		return OpenAiVoiceIdAlloy, nil
+	case "echo":
+		return OpenAiVoiceIdEcho, nil
+	case "fable":
+		return OpenAiVoiceIdFable, nil
+	case "onyx":
+		return OpenAiVoiceIdOnyx, nil
+	case "nova":
+		return OpenAiVoiceIdNova, nil
+	case "shimmer":
+		return OpenAiVoiceIdShimmer, nil
+	}
+	var t OpenAiVoiceId
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (o OpenAiVoiceId) Ptr() *OpenAiVoiceId {
+	return &o
 }
 
 type OpenAiCredential struct {
@@ -20767,7 +20230,7 @@ type OpenAiVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId OpenAiVoiceVoiceId `json:"voiceId" url:"voiceId"`
+	VoiceId OpenAiVoiceId `json:"voiceId" url:"voiceId"`
 	// This is the speed multiplier that will be used.
 	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
 	// This is the plan for chunking the model output before it is sent to the voice provider.
@@ -20835,41 +20298,6 @@ func (o *OpenAiVoice) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", o)
-}
-
-// This is the provider-specific ID that will be used.
-type OpenAiVoiceVoiceId string
-
-const (
-	OpenAiVoiceVoiceIdAlloy   OpenAiVoiceVoiceId = "alloy"
-	OpenAiVoiceVoiceIdEcho    OpenAiVoiceVoiceId = "echo"
-	OpenAiVoiceVoiceIdFable   OpenAiVoiceVoiceId = "fable"
-	OpenAiVoiceVoiceIdOnyx    OpenAiVoiceVoiceId = "onyx"
-	OpenAiVoiceVoiceIdNova    OpenAiVoiceVoiceId = "nova"
-	OpenAiVoiceVoiceIdShimmer OpenAiVoiceVoiceId = "shimmer"
-)
-
-func NewOpenAiVoiceVoiceIdFromString(s string) (OpenAiVoiceVoiceId, error) {
-	switch s {
-	case "alloy":
-		return OpenAiVoiceVoiceIdAlloy, nil
-	case "echo":
-		return OpenAiVoiceVoiceIdEcho, nil
-	case "fable":
-		return OpenAiVoiceVoiceIdFable, nil
-	case "onyx":
-		return OpenAiVoiceVoiceIdOnyx, nil
-	case "nova":
-		return OpenAiVoiceVoiceIdNova, nil
-	case "shimmer":
-		return OpenAiVoiceVoiceIdShimmer, nil
-	}
-	var t OpenAiVoiceVoiceId
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (o OpenAiVoiceVoiceId) Ptr() *OpenAiVoiceVoiceId {
-	return &o
 }
 
 type OpenRouterCredential struct {
@@ -21812,6 +21240,97 @@ func (p *PerplexityAiModelToolsItem) Accept(visitor PerplexityAiModelToolsItemVi
 	return fmt.Errorf("type %T does not include a non-empty union type", p)
 }
 
+// This is the provider-specific ID that will be used.
+type PlayHtVoiceId struct {
+	PlayHtVoiceIdEnum PlayHtVoiceIdEnum
+	String            string
+}
+
+func (p *PlayHtVoiceId) UnmarshalJSON(data []byte) error {
+	var valuePlayHtVoiceIdEnum PlayHtVoiceIdEnum
+	if err := json.Unmarshal(data, &valuePlayHtVoiceIdEnum); err == nil {
+		p.PlayHtVoiceIdEnum = valuePlayHtVoiceIdEnum
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		p.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
+}
+
+func (p PlayHtVoiceId) MarshalJSON() ([]byte, error) {
+	if p.PlayHtVoiceIdEnum != "" {
+		return json.Marshal(p.PlayHtVoiceIdEnum)
+	}
+	if p.String != "" {
+		return json.Marshal(p.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", p)
+}
+
+type PlayHtVoiceIdVisitor interface {
+	VisitPlayHtVoiceIdEnum(PlayHtVoiceIdEnum) error
+	VisitString(string) error
+}
+
+func (p *PlayHtVoiceId) Accept(visitor PlayHtVoiceIdVisitor) error {
+	if p.PlayHtVoiceIdEnum != "" {
+		return visitor.VisitPlayHtVoiceIdEnum(p.PlayHtVoiceIdEnum)
+	}
+	if p.String != "" {
+		return visitor.VisitString(p.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", p)
+}
+
+type PlayHtVoiceIdEnum string
+
+const (
+	PlayHtVoiceIdEnumJennifer PlayHtVoiceIdEnum = "jennifer"
+	PlayHtVoiceIdEnumMelissa  PlayHtVoiceIdEnum = "melissa"
+	PlayHtVoiceIdEnumWill     PlayHtVoiceIdEnum = "will"
+	PlayHtVoiceIdEnumChris    PlayHtVoiceIdEnum = "chris"
+	PlayHtVoiceIdEnumMatt     PlayHtVoiceIdEnum = "matt"
+	PlayHtVoiceIdEnumJack     PlayHtVoiceIdEnum = "jack"
+	PlayHtVoiceIdEnumRuby     PlayHtVoiceIdEnum = "ruby"
+	PlayHtVoiceIdEnumDavis    PlayHtVoiceIdEnum = "davis"
+	PlayHtVoiceIdEnumDonna    PlayHtVoiceIdEnum = "donna"
+	PlayHtVoiceIdEnumMichael  PlayHtVoiceIdEnum = "michael"
+)
+
+func NewPlayHtVoiceIdEnumFromString(s string) (PlayHtVoiceIdEnum, error) {
+	switch s {
+	case "jennifer":
+		return PlayHtVoiceIdEnumJennifer, nil
+	case "melissa":
+		return PlayHtVoiceIdEnumMelissa, nil
+	case "will":
+		return PlayHtVoiceIdEnumWill, nil
+	case "chris":
+		return PlayHtVoiceIdEnumChris, nil
+	case "matt":
+		return PlayHtVoiceIdEnumMatt, nil
+	case "jack":
+		return PlayHtVoiceIdEnumJack, nil
+	case "ruby":
+		return PlayHtVoiceIdEnumRuby, nil
+	case "davis":
+		return PlayHtVoiceIdEnumDavis, nil
+	case "donna":
+		return PlayHtVoiceIdEnumDonna, nil
+	case "michael":
+		return PlayHtVoiceIdEnumMichael, nil
+	}
+	var t PlayHtVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (p PlayHtVoiceIdEnum) Ptr() *PlayHtVoiceIdEnum {
+	return &p
+}
+
 type PlayHtCredential struct {
 	// This is not returned in the API.
 	ApiKey string `json:"apiKey" url:"apiKey"`
@@ -21904,7 +21423,7 @@ type PlayHtVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId *PlayHtVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *PlayHtVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// This is the speed multiplier that will be used.
 	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
 	// A floating point number between 0, exclusive, and 2, inclusive. If equal to null or not provided, the model's default temperature will be used. The temperature parameter controls variance. Lower temperatures result in more predictable results, higher temperatures allow each run to vary more, so the voice may sound less like the baseline voice.
@@ -22035,278 +21554,6 @@ func NewPlayHtVoiceEmotionFromString(s string) (PlayHtVoiceEmotion, error) {
 
 func (p PlayHtVoiceEmotion) Ptr() *PlayHtVoiceEmotion {
 	return &p
-}
-
-// This is the provider-specific ID that will be used.
-type PlayHtVoiceVoiceId struct {
-	jenniferStringLiteral string
-	melissaStringLiteral  string
-	willStringLiteral     string
-	chrisStringLiteral    string
-	mattStringLiteral     string
-	jackStringLiteral     string
-	rubyStringLiteral     string
-	davisStringLiteral    string
-	donnaStringLiteral    string
-	michaelStringLiteral  string
-	String                string
-}
-
-func NewPlayHtVoiceVoiceIdWithJenniferStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{jenniferStringLiteral: "jennifer"}
-}
-
-func NewPlayHtVoiceVoiceIdWithMelissaStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{melissaStringLiteral: "melissa"}
-}
-
-func NewPlayHtVoiceVoiceIdWithWillStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{willStringLiteral: "will"}
-}
-
-func NewPlayHtVoiceVoiceIdWithChrisStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{chrisStringLiteral: "chris"}
-}
-
-func NewPlayHtVoiceVoiceIdWithMattStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{mattStringLiteral: "matt"}
-}
-
-func NewPlayHtVoiceVoiceIdWithJackStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{jackStringLiteral: "jack"}
-}
-
-func NewPlayHtVoiceVoiceIdWithRubyStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{rubyStringLiteral: "ruby"}
-}
-
-func NewPlayHtVoiceVoiceIdWithDavisStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{davisStringLiteral: "davis"}
-}
-
-func NewPlayHtVoiceVoiceIdWithDonnaStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{donnaStringLiteral: "donna"}
-}
-
-func NewPlayHtVoiceVoiceIdWithMichaelStringLiteral() *PlayHtVoiceVoiceId {
-	return &PlayHtVoiceVoiceId{michaelStringLiteral: "michael"}
-}
-
-func (p *PlayHtVoiceVoiceId) JenniferStringLiteral() string {
-	return p.jenniferStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) MelissaStringLiteral() string {
-	return p.melissaStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) WillStringLiteral() string {
-	return p.willStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) ChrisStringLiteral() string {
-	return p.chrisStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) MattStringLiteral() string {
-	return p.mattStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) JackStringLiteral() string {
-	return p.jackStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) RubyStringLiteral() string {
-	return p.rubyStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) DavisStringLiteral() string {
-	return p.davisStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) DonnaStringLiteral() string {
-	return p.donnaStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) MichaelStringLiteral() string {
-	return p.michaelStringLiteral
-}
-
-func (p *PlayHtVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueJenniferStringLiteral string
-	if err := json.Unmarshal(data, &valueJenniferStringLiteral); err == nil {
-		p.jenniferStringLiteral = valueJenniferStringLiteral
-		if p.jenniferStringLiteral != "jennifer" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "jennifer", valueJenniferStringLiteral)
-		}
-		return nil
-	}
-	var valueMelissaStringLiteral string
-	if err := json.Unmarshal(data, &valueMelissaStringLiteral); err == nil {
-		p.melissaStringLiteral = valueMelissaStringLiteral
-		if p.melissaStringLiteral != "melissa" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "melissa", valueMelissaStringLiteral)
-		}
-		return nil
-	}
-	var valueWillStringLiteral string
-	if err := json.Unmarshal(data, &valueWillStringLiteral); err == nil {
-		p.willStringLiteral = valueWillStringLiteral
-		if p.willStringLiteral != "will" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "will", valueWillStringLiteral)
-		}
-		return nil
-	}
-	var valueChrisStringLiteral string
-	if err := json.Unmarshal(data, &valueChrisStringLiteral); err == nil {
-		p.chrisStringLiteral = valueChrisStringLiteral
-		if p.chrisStringLiteral != "chris" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "chris", valueChrisStringLiteral)
-		}
-		return nil
-	}
-	var valueMattStringLiteral string
-	if err := json.Unmarshal(data, &valueMattStringLiteral); err == nil {
-		p.mattStringLiteral = valueMattStringLiteral
-		if p.mattStringLiteral != "matt" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "matt", valueMattStringLiteral)
-		}
-		return nil
-	}
-	var valueJackStringLiteral string
-	if err := json.Unmarshal(data, &valueJackStringLiteral); err == nil {
-		p.jackStringLiteral = valueJackStringLiteral
-		if p.jackStringLiteral != "jack" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "jack", valueJackStringLiteral)
-		}
-		return nil
-	}
-	var valueRubyStringLiteral string
-	if err := json.Unmarshal(data, &valueRubyStringLiteral); err == nil {
-		p.rubyStringLiteral = valueRubyStringLiteral
-		if p.rubyStringLiteral != "ruby" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "ruby", valueRubyStringLiteral)
-		}
-		return nil
-	}
-	var valueDavisStringLiteral string
-	if err := json.Unmarshal(data, &valueDavisStringLiteral); err == nil {
-		p.davisStringLiteral = valueDavisStringLiteral
-		if p.davisStringLiteral != "davis" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "davis", valueDavisStringLiteral)
-		}
-		return nil
-	}
-	var valueDonnaStringLiteral string
-	if err := json.Unmarshal(data, &valueDonnaStringLiteral); err == nil {
-		p.donnaStringLiteral = valueDonnaStringLiteral
-		if p.donnaStringLiteral != "donna" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "donna", valueDonnaStringLiteral)
-		}
-		return nil
-	}
-	var valueMichaelStringLiteral string
-	if err := json.Unmarshal(data, &valueMichaelStringLiteral); err == nil {
-		p.michaelStringLiteral = valueMichaelStringLiteral
-		if p.michaelStringLiteral != "michael" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "michael", valueMichaelStringLiteral)
-		}
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		p.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
-}
-
-func (p PlayHtVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if p.jenniferStringLiteral != "" {
-		return json.Marshal("jennifer")
-	}
-	if p.melissaStringLiteral != "" {
-		return json.Marshal("melissa")
-	}
-	if p.willStringLiteral != "" {
-		return json.Marshal("will")
-	}
-	if p.chrisStringLiteral != "" {
-		return json.Marshal("chris")
-	}
-	if p.mattStringLiteral != "" {
-		return json.Marshal("matt")
-	}
-	if p.jackStringLiteral != "" {
-		return json.Marshal("jack")
-	}
-	if p.rubyStringLiteral != "" {
-		return json.Marshal("ruby")
-	}
-	if p.davisStringLiteral != "" {
-		return json.Marshal("davis")
-	}
-	if p.donnaStringLiteral != "" {
-		return json.Marshal("donna")
-	}
-	if p.michaelStringLiteral != "" {
-		return json.Marshal("michael")
-	}
-	if p.String != "" {
-		return json.Marshal(p.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", p)
-}
-
-type PlayHtVoiceVoiceIdVisitor interface {
-	VisitJenniferStringLiteral(string) error
-	VisitMelissaStringLiteral(string) error
-	VisitWillStringLiteral(string) error
-	VisitChrisStringLiteral(string) error
-	VisitMattStringLiteral(string) error
-	VisitJackStringLiteral(string) error
-	VisitRubyStringLiteral(string) error
-	VisitDavisStringLiteral(string) error
-	VisitDonnaStringLiteral(string) error
-	VisitMichaelStringLiteral(string) error
-	VisitString(string) error
-}
-
-func (p *PlayHtVoiceVoiceId) Accept(visitor PlayHtVoiceVoiceIdVisitor) error {
-	if p.jenniferStringLiteral != "" {
-		return visitor.VisitJenniferStringLiteral(p.jenniferStringLiteral)
-	}
-	if p.melissaStringLiteral != "" {
-		return visitor.VisitMelissaStringLiteral(p.melissaStringLiteral)
-	}
-	if p.willStringLiteral != "" {
-		return visitor.VisitWillStringLiteral(p.willStringLiteral)
-	}
-	if p.chrisStringLiteral != "" {
-		return visitor.VisitChrisStringLiteral(p.chrisStringLiteral)
-	}
-	if p.mattStringLiteral != "" {
-		return visitor.VisitMattStringLiteral(p.mattStringLiteral)
-	}
-	if p.jackStringLiteral != "" {
-		return visitor.VisitJackStringLiteral(p.jackStringLiteral)
-	}
-	if p.rubyStringLiteral != "" {
-		return visitor.VisitRubyStringLiteral(p.rubyStringLiteral)
-	}
-	if p.davisStringLiteral != "" {
-		return visitor.VisitDavisStringLiteral(p.davisStringLiteral)
-	}
-	if p.donnaStringLiteral != "" {
-		return visitor.VisitDonnaStringLiteral(p.donnaStringLiteral)
-	}
-	if p.michaelStringLiteral != "" {
-		return visitor.VisitMichaelStringLiteral(p.michaelStringLiteral)
-	}
-	if p.String != "" {
-		return visitor.VisitString(p.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", p)
 }
 
 type PunctuationBoundary string
@@ -22548,6 +21795,310 @@ func (r *RegexReplacement) String() string {
 	return fmt.Sprintf("%#v", r)
 }
 
+// This is the provider-specific ID that will be used.
+type RimeAiVoiceId struct {
+	RimeAiVoiceIdEnum RimeAiVoiceIdEnum
+	String            string
+}
+
+func (r *RimeAiVoiceId) UnmarshalJSON(data []byte) error {
+	var valueRimeAiVoiceIdEnum RimeAiVoiceIdEnum
+	if err := json.Unmarshal(data, &valueRimeAiVoiceIdEnum); err == nil {
+		r.RimeAiVoiceIdEnum = valueRimeAiVoiceIdEnum
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		r.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, r)
+}
+
+func (r RimeAiVoiceId) MarshalJSON() ([]byte, error) {
+	if r.RimeAiVoiceIdEnum != "" {
+		return json.Marshal(r.RimeAiVoiceIdEnum)
+	}
+	if r.String != "" {
+		return json.Marshal(r.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", r)
+}
+
+type RimeAiVoiceIdVisitor interface {
+	VisitRimeAiVoiceIdEnum(RimeAiVoiceIdEnum) error
+	VisitString(string) error
+}
+
+func (r *RimeAiVoiceId) Accept(visitor RimeAiVoiceIdVisitor) error {
+	if r.RimeAiVoiceIdEnum != "" {
+		return visitor.VisitRimeAiVoiceIdEnum(r.RimeAiVoiceIdEnum)
+	}
+	if r.String != "" {
+		return visitor.VisitString(r.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", r)
+}
+
+type RimeAiVoiceIdEnum string
+
+const (
+	RimeAiVoiceIdEnumMarsh      RimeAiVoiceIdEnum = "marsh"
+	RimeAiVoiceIdEnumBayou      RimeAiVoiceIdEnum = "bayou"
+	RimeAiVoiceIdEnumCreek      RimeAiVoiceIdEnum = "creek"
+	RimeAiVoiceIdEnumBrook      RimeAiVoiceIdEnum = "brook"
+	RimeAiVoiceIdEnumFlower     RimeAiVoiceIdEnum = "flower"
+	RimeAiVoiceIdEnumSpore      RimeAiVoiceIdEnum = "spore"
+	RimeAiVoiceIdEnumGlacier    RimeAiVoiceIdEnum = "glacier"
+	RimeAiVoiceIdEnumGulch      RimeAiVoiceIdEnum = "gulch"
+	RimeAiVoiceIdEnumAlpine     RimeAiVoiceIdEnum = "alpine"
+	RimeAiVoiceIdEnumCove       RimeAiVoiceIdEnum = "cove"
+	RimeAiVoiceIdEnumLagoon     RimeAiVoiceIdEnum = "lagoon"
+	RimeAiVoiceIdEnumTundra     RimeAiVoiceIdEnum = "tundra"
+	RimeAiVoiceIdEnumSteppe     RimeAiVoiceIdEnum = "steppe"
+	RimeAiVoiceIdEnumMesa       RimeAiVoiceIdEnum = "mesa"
+	RimeAiVoiceIdEnumGrove      RimeAiVoiceIdEnum = "grove"
+	RimeAiVoiceIdEnumRainforest RimeAiVoiceIdEnum = "rainforest"
+	RimeAiVoiceIdEnumMoraine    RimeAiVoiceIdEnum = "moraine"
+	RimeAiVoiceIdEnumWildflower RimeAiVoiceIdEnum = "wildflower"
+	RimeAiVoiceIdEnumPeak       RimeAiVoiceIdEnum = "peak"
+	RimeAiVoiceIdEnumBoulder    RimeAiVoiceIdEnum = "boulder"
+	RimeAiVoiceIdEnumAbbie      RimeAiVoiceIdEnum = "abbie"
+	RimeAiVoiceIdEnumAllison    RimeAiVoiceIdEnum = "allison"
+	RimeAiVoiceIdEnumAlly       RimeAiVoiceIdEnum = "ally"
+	RimeAiVoiceIdEnumAlona      RimeAiVoiceIdEnum = "alona"
+	RimeAiVoiceIdEnumAmber      RimeAiVoiceIdEnum = "amber"
+	RimeAiVoiceIdEnumAna        RimeAiVoiceIdEnum = "ana"
+	RimeAiVoiceIdEnumAntoine    RimeAiVoiceIdEnum = "antoine"
+	RimeAiVoiceIdEnumArmon      RimeAiVoiceIdEnum = "armon"
+	RimeAiVoiceIdEnumBrenda     RimeAiVoiceIdEnum = "brenda"
+	RimeAiVoiceIdEnumBrittany   RimeAiVoiceIdEnum = "brittany"
+	RimeAiVoiceIdEnumCarol      RimeAiVoiceIdEnum = "carol"
+	RimeAiVoiceIdEnumColin      RimeAiVoiceIdEnum = "colin"
+	RimeAiVoiceIdEnumCourtney   RimeAiVoiceIdEnum = "courtney"
+	RimeAiVoiceIdEnumElena      RimeAiVoiceIdEnum = "elena"
+	RimeAiVoiceIdEnumElliot     RimeAiVoiceIdEnum = "elliot"
+	RimeAiVoiceIdEnumEva        RimeAiVoiceIdEnum = "eva"
+	RimeAiVoiceIdEnumGeoff      RimeAiVoiceIdEnum = "geoff"
+	RimeAiVoiceIdEnumGerald     RimeAiVoiceIdEnum = "gerald"
+	RimeAiVoiceIdEnumHank       RimeAiVoiceIdEnum = "hank"
+	RimeAiVoiceIdEnumHelen      RimeAiVoiceIdEnum = "helen"
+	RimeAiVoiceIdEnumHera       RimeAiVoiceIdEnum = "hera"
+	RimeAiVoiceIdEnumJen        RimeAiVoiceIdEnum = "jen"
+	RimeAiVoiceIdEnumJoe        RimeAiVoiceIdEnum = "joe"
+	RimeAiVoiceIdEnumJoy        RimeAiVoiceIdEnum = "joy"
+	RimeAiVoiceIdEnumJuan       RimeAiVoiceIdEnum = "juan"
+	RimeAiVoiceIdEnumKendra     RimeAiVoiceIdEnum = "kendra"
+	RimeAiVoiceIdEnumKendrick   RimeAiVoiceIdEnum = "kendrick"
+	RimeAiVoiceIdEnumKenneth    RimeAiVoiceIdEnum = "kenneth"
+	RimeAiVoiceIdEnumKevin      RimeAiVoiceIdEnum = "kevin"
+	RimeAiVoiceIdEnumKris       RimeAiVoiceIdEnum = "kris"
+	RimeAiVoiceIdEnumLinda      RimeAiVoiceIdEnum = "linda"
+	RimeAiVoiceIdEnumMadison    RimeAiVoiceIdEnum = "madison"
+	RimeAiVoiceIdEnumMarge      RimeAiVoiceIdEnum = "marge"
+	RimeAiVoiceIdEnumMarina     RimeAiVoiceIdEnum = "marina"
+	RimeAiVoiceIdEnumMarissa    RimeAiVoiceIdEnum = "marissa"
+	RimeAiVoiceIdEnumMarta      RimeAiVoiceIdEnum = "marta"
+	RimeAiVoiceIdEnumMaya       RimeAiVoiceIdEnum = "maya"
+	RimeAiVoiceIdEnumNicholas   RimeAiVoiceIdEnum = "nicholas"
+	RimeAiVoiceIdEnumNyles      RimeAiVoiceIdEnum = "nyles"
+	RimeAiVoiceIdEnumPhil       RimeAiVoiceIdEnum = "phil"
+	RimeAiVoiceIdEnumReba       RimeAiVoiceIdEnum = "reba"
+	RimeAiVoiceIdEnumRex        RimeAiVoiceIdEnum = "rex"
+	RimeAiVoiceIdEnumRick       RimeAiVoiceIdEnum = "rick"
+	RimeAiVoiceIdEnumRitu       RimeAiVoiceIdEnum = "ritu"
+	RimeAiVoiceIdEnumRob        RimeAiVoiceIdEnum = "rob"
+	RimeAiVoiceIdEnumRodney     RimeAiVoiceIdEnum = "rodney"
+	RimeAiVoiceIdEnumRohan      RimeAiVoiceIdEnum = "rohan"
+	RimeAiVoiceIdEnumRosco      RimeAiVoiceIdEnum = "rosco"
+	RimeAiVoiceIdEnumSamantha   RimeAiVoiceIdEnum = "samantha"
+	RimeAiVoiceIdEnumSandy      RimeAiVoiceIdEnum = "sandy"
+	RimeAiVoiceIdEnumSelena     RimeAiVoiceIdEnum = "selena"
+	RimeAiVoiceIdEnumSeth       RimeAiVoiceIdEnum = "seth"
+	RimeAiVoiceIdEnumSharon     RimeAiVoiceIdEnum = "sharon"
+	RimeAiVoiceIdEnumStan       RimeAiVoiceIdEnum = "stan"
+	RimeAiVoiceIdEnumTamra      RimeAiVoiceIdEnum = "tamra"
+	RimeAiVoiceIdEnumTanya      RimeAiVoiceIdEnum = "tanya"
+	RimeAiVoiceIdEnumTibur      RimeAiVoiceIdEnum = "tibur"
+	RimeAiVoiceIdEnumTj         RimeAiVoiceIdEnum = "tj"
+	RimeAiVoiceIdEnumTyler      RimeAiVoiceIdEnum = "tyler"
+	RimeAiVoiceIdEnumViv        RimeAiVoiceIdEnum = "viv"
+	RimeAiVoiceIdEnumYadira     RimeAiVoiceIdEnum = "yadira"
+)
+
+func NewRimeAiVoiceIdEnumFromString(s string) (RimeAiVoiceIdEnum, error) {
+	switch s {
+	case "marsh":
+		return RimeAiVoiceIdEnumMarsh, nil
+	case "bayou":
+		return RimeAiVoiceIdEnumBayou, nil
+	case "creek":
+		return RimeAiVoiceIdEnumCreek, nil
+	case "brook":
+		return RimeAiVoiceIdEnumBrook, nil
+	case "flower":
+		return RimeAiVoiceIdEnumFlower, nil
+	case "spore":
+		return RimeAiVoiceIdEnumSpore, nil
+	case "glacier":
+		return RimeAiVoiceIdEnumGlacier, nil
+	case "gulch":
+		return RimeAiVoiceIdEnumGulch, nil
+	case "alpine":
+		return RimeAiVoiceIdEnumAlpine, nil
+	case "cove":
+		return RimeAiVoiceIdEnumCove, nil
+	case "lagoon":
+		return RimeAiVoiceIdEnumLagoon, nil
+	case "tundra":
+		return RimeAiVoiceIdEnumTundra, nil
+	case "steppe":
+		return RimeAiVoiceIdEnumSteppe, nil
+	case "mesa":
+		return RimeAiVoiceIdEnumMesa, nil
+	case "grove":
+		return RimeAiVoiceIdEnumGrove, nil
+	case "rainforest":
+		return RimeAiVoiceIdEnumRainforest, nil
+	case "moraine":
+		return RimeAiVoiceIdEnumMoraine, nil
+	case "wildflower":
+		return RimeAiVoiceIdEnumWildflower, nil
+	case "peak":
+		return RimeAiVoiceIdEnumPeak, nil
+	case "boulder":
+		return RimeAiVoiceIdEnumBoulder, nil
+	case "abbie":
+		return RimeAiVoiceIdEnumAbbie, nil
+	case "allison":
+		return RimeAiVoiceIdEnumAllison, nil
+	case "ally":
+		return RimeAiVoiceIdEnumAlly, nil
+	case "alona":
+		return RimeAiVoiceIdEnumAlona, nil
+	case "amber":
+		return RimeAiVoiceIdEnumAmber, nil
+	case "ana":
+		return RimeAiVoiceIdEnumAna, nil
+	case "antoine":
+		return RimeAiVoiceIdEnumAntoine, nil
+	case "armon":
+		return RimeAiVoiceIdEnumArmon, nil
+	case "brenda":
+		return RimeAiVoiceIdEnumBrenda, nil
+	case "brittany":
+		return RimeAiVoiceIdEnumBrittany, nil
+	case "carol":
+		return RimeAiVoiceIdEnumCarol, nil
+	case "colin":
+		return RimeAiVoiceIdEnumColin, nil
+	case "courtney":
+		return RimeAiVoiceIdEnumCourtney, nil
+	case "elena":
+		return RimeAiVoiceIdEnumElena, nil
+	case "elliot":
+		return RimeAiVoiceIdEnumElliot, nil
+	case "eva":
+		return RimeAiVoiceIdEnumEva, nil
+	case "geoff":
+		return RimeAiVoiceIdEnumGeoff, nil
+	case "gerald":
+		return RimeAiVoiceIdEnumGerald, nil
+	case "hank":
+		return RimeAiVoiceIdEnumHank, nil
+	case "helen":
+		return RimeAiVoiceIdEnumHelen, nil
+	case "hera":
+		return RimeAiVoiceIdEnumHera, nil
+	case "jen":
+		return RimeAiVoiceIdEnumJen, nil
+	case "joe":
+		return RimeAiVoiceIdEnumJoe, nil
+	case "joy":
+		return RimeAiVoiceIdEnumJoy, nil
+	case "juan":
+		return RimeAiVoiceIdEnumJuan, nil
+	case "kendra":
+		return RimeAiVoiceIdEnumKendra, nil
+	case "kendrick":
+		return RimeAiVoiceIdEnumKendrick, nil
+	case "kenneth":
+		return RimeAiVoiceIdEnumKenneth, nil
+	case "kevin":
+		return RimeAiVoiceIdEnumKevin, nil
+	case "kris":
+		return RimeAiVoiceIdEnumKris, nil
+	case "linda":
+		return RimeAiVoiceIdEnumLinda, nil
+	case "madison":
+		return RimeAiVoiceIdEnumMadison, nil
+	case "marge":
+		return RimeAiVoiceIdEnumMarge, nil
+	case "marina":
+		return RimeAiVoiceIdEnumMarina, nil
+	case "marissa":
+		return RimeAiVoiceIdEnumMarissa, nil
+	case "marta":
+		return RimeAiVoiceIdEnumMarta, nil
+	case "maya":
+		return RimeAiVoiceIdEnumMaya, nil
+	case "nicholas":
+		return RimeAiVoiceIdEnumNicholas, nil
+	case "nyles":
+		return RimeAiVoiceIdEnumNyles, nil
+	case "phil":
+		return RimeAiVoiceIdEnumPhil, nil
+	case "reba":
+		return RimeAiVoiceIdEnumReba, nil
+	case "rex":
+		return RimeAiVoiceIdEnumRex, nil
+	case "rick":
+		return RimeAiVoiceIdEnumRick, nil
+	case "ritu":
+		return RimeAiVoiceIdEnumRitu, nil
+	case "rob":
+		return RimeAiVoiceIdEnumRob, nil
+	case "rodney":
+		return RimeAiVoiceIdEnumRodney, nil
+	case "rohan":
+		return RimeAiVoiceIdEnumRohan, nil
+	case "rosco":
+		return RimeAiVoiceIdEnumRosco, nil
+	case "samantha":
+		return RimeAiVoiceIdEnumSamantha, nil
+	case "sandy":
+		return RimeAiVoiceIdEnumSandy, nil
+	case "selena":
+		return RimeAiVoiceIdEnumSelena, nil
+	case "seth":
+		return RimeAiVoiceIdEnumSeth, nil
+	case "sharon":
+		return RimeAiVoiceIdEnumSharon, nil
+	case "stan":
+		return RimeAiVoiceIdEnumStan, nil
+	case "tamra":
+		return RimeAiVoiceIdEnumTamra, nil
+	case "tanya":
+		return RimeAiVoiceIdEnumTanya, nil
+	case "tibur":
+		return RimeAiVoiceIdEnumTibur, nil
+	case "tj":
+		return RimeAiVoiceIdEnumTj, nil
+	case "tyler":
+		return RimeAiVoiceIdEnumTyler, nil
+	case "viv":
+		return RimeAiVoiceIdEnumViv, nil
+	case "yadira":
+		return RimeAiVoiceIdEnumYadira, nil
+	}
+	var t RimeAiVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (r RimeAiVoiceIdEnum) Ptr() *RimeAiVoiceIdEnum {
+	return &r
+}
+
 type RimeAiCredential struct {
 	// This is not returned in the API.
 	ApiKey string `json:"apiKey" url:"apiKey"`
@@ -22639,7 +22190,7 @@ type RimeAiVoice struct {
 	FillerInjectionEnabled *bool `json:"fillerInjectionEnabled,omitempty" url:"fillerInjectionEnabled,omitempty"`
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	VoiceId *RimeAiVoiceVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	VoiceId *RimeAiVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
 	// This is the model that will be used. Defaults to 'v1' when not specified.
 	Model *RimeAiVoiceModel `json:"model,omitempty" url:"model,omitempty"`
 	// This is the speed multiplier that will be used.
@@ -22732,1982 +22283,6 @@ func NewRimeAiVoiceModelFromString(s string) (RimeAiVoiceModel, error) {
 
 func (r RimeAiVoiceModel) Ptr() *RimeAiVoiceModel {
 	return &r
-}
-
-// This is the provider-specific ID that will be used.
-type RimeAiVoiceVoiceId struct {
-	marshStringLiteral      string
-	bayouStringLiteral      string
-	creekStringLiteral      string
-	brookStringLiteral      string
-	flowerStringLiteral     string
-	sporeStringLiteral      string
-	glacierStringLiteral    string
-	gulchStringLiteral      string
-	alpineStringLiteral     string
-	coveStringLiteral       string
-	lagoonStringLiteral     string
-	tundraStringLiteral     string
-	steppeStringLiteral     string
-	mesaStringLiteral       string
-	groveStringLiteral      string
-	rainforestStringLiteral string
-	moraineStringLiteral    string
-	wildflowerStringLiteral string
-	peakStringLiteral       string
-	boulderStringLiteral    string
-	abbieStringLiteral      string
-	allisonStringLiteral    string
-	allyStringLiteral       string
-	alonaStringLiteral      string
-	amberStringLiteral      string
-	anaStringLiteral        string
-	antoineStringLiteral    string
-	armonStringLiteral      string
-	brendaStringLiteral     string
-	brittanyStringLiteral   string
-	carolStringLiteral      string
-	colinStringLiteral      string
-	courtneyStringLiteral   string
-	elenaStringLiteral      string
-	elliotStringLiteral     string
-	evaStringLiteral        string
-	geoffStringLiteral      string
-	geraldStringLiteral     string
-	hankStringLiteral       string
-	helenStringLiteral      string
-	heraStringLiteral       string
-	jenStringLiteral        string
-	joeStringLiteral        string
-	joyStringLiteral        string
-	juanStringLiteral       string
-	kendraStringLiteral     string
-	kendrickStringLiteral   string
-	kennethStringLiteral    string
-	kevinStringLiteral      string
-	krisStringLiteral       string
-	lindaStringLiteral      string
-	madisonStringLiteral    string
-	margeStringLiteral      string
-	marinaStringLiteral     string
-	marissaStringLiteral    string
-	martaStringLiteral      string
-	mayaStringLiteral       string
-	nicholasStringLiteral   string
-	nylesStringLiteral      string
-	philStringLiteral       string
-	rebaStringLiteral       string
-	rexStringLiteral        string
-	rickStringLiteral       string
-	rituStringLiteral       string
-	robStringLiteral        string
-	rodneyStringLiteral     string
-	rohanStringLiteral      string
-	roscoStringLiteral      string
-	samanthaStringLiteral   string
-	sandyStringLiteral      string
-	selenaStringLiteral     string
-	sethStringLiteral       string
-	sharonStringLiteral     string
-	stanStringLiteral       string
-	tamraStringLiteral      string
-	tanyaStringLiteral      string
-	tiburStringLiteral      string
-	tjStringLiteral         string
-	tylerStringLiteral      string
-	vivStringLiteral        string
-	yadiraStringLiteral     string
-	String                  string
-}
-
-func NewRimeAiVoiceVoiceIdWithMarshStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{marshStringLiteral: "marsh"}
-}
-
-func NewRimeAiVoiceVoiceIdWithBayouStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{bayouStringLiteral: "bayou"}
-}
-
-func NewRimeAiVoiceVoiceIdWithCreekStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{creekStringLiteral: "creek"}
-}
-
-func NewRimeAiVoiceVoiceIdWithBrookStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{brookStringLiteral: "brook"}
-}
-
-func NewRimeAiVoiceVoiceIdWithFlowerStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{flowerStringLiteral: "flower"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSporeStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{sporeStringLiteral: "spore"}
-}
-
-func NewRimeAiVoiceVoiceIdWithGlacierStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{glacierStringLiteral: "glacier"}
-}
-
-func NewRimeAiVoiceVoiceIdWithGulchStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{gulchStringLiteral: "gulch"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAlpineStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{alpineStringLiteral: "alpine"}
-}
-
-func NewRimeAiVoiceVoiceIdWithCoveStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{coveStringLiteral: "cove"}
-}
-
-func NewRimeAiVoiceVoiceIdWithLagoonStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{lagoonStringLiteral: "lagoon"}
-}
-
-func NewRimeAiVoiceVoiceIdWithTundraStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{tundraStringLiteral: "tundra"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSteppeStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{steppeStringLiteral: "steppe"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMesaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{mesaStringLiteral: "mesa"}
-}
-
-func NewRimeAiVoiceVoiceIdWithGroveStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{groveStringLiteral: "grove"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRainforestStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rainforestStringLiteral: "rainforest"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMoraineStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{moraineStringLiteral: "moraine"}
-}
-
-func NewRimeAiVoiceVoiceIdWithWildflowerStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{wildflowerStringLiteral: "wildflower"}
-}
-
-func NewRimeAiVoiceVoiceIdWithPeakStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{peakStringLiteral: "peak"}
-}
-
-func NewRimeAiVoiceVoiceIdWithBoulderStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{boulderStringLiteral: "boulder"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAbbieStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{abbieStringLiteral: "abbie"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAllisonStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{allisonStringLiteral: "allison"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAllyStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{allyStringLiteral: "ally"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAlonaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{alonaStringLiteral: "alona"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAmberStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{amberStringLiteral: "amber"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAnaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{anaStringLiteral: "ana"}
-}
-
-func NewRimeAiVoiceVoiceIdWithAntoineStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{antoineStringLiteral: "antoine"}
-}
-
-func NewRimeAiVoiceVoiceIdWithArmonStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{armonStringLiteral: "armon"}
-}
-
-func NewRimeAiVoiceVoiceIdWithBrendaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{brendaStringLiteral: "brenda"}
-}
-
-func NewRimeAiVoiceVoiceIdWithBrittanyStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{brittanyStringLiteral: "brittany"}
-}
-
-func NewRimeAiVoiceVoiceIdWithCarolStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{carolStringLiteral: "carol"}
-}
-
-func NewRimeAiVoiceVoiceIdWithColinStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{colinStringLiteral: "colin"}
-}
-
-func NewRimeAiVoiceVoiceIdWithCourtneyStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{courtneyStringLiteral: "courtney"}
-}
-
-func NewRimeAiVoiceVoiceIdWithElenaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{elenaStringLiteral: "elena"}
-}
-
-func NewRimeAiVoiceVoiceIdWithElliotStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{elliotStringLiteral: "elliot"}
-}
-
-func NewRimeAiVoiceVoiceIdWithEvaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{evaStringLiteral: "eva"}
-}
-
-func NewRimeAiVoiceVoiceIdWithGeoffStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{geoffStringLiteral: "geoff"}
-}
-
-func NewRimeAiVoiceVoiceIdWithGeraldStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{geraldStringLiteral: "gerald"}
-}
-
-func NewRimeAiVoiceVoiceIdWithHankStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{hankStringLiteral: "hank"}
-}
-
-func NewRimeAiVoiceVoiceIdWithHelenStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{helenStringLiteral: "helen"}
-}
-
-func NewRimeAiVoiceVoiceIdWithHeraStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{heraStringLiteral: "hera"}
-}
-
-func NewRimeAiVoiceVoiceIdWithJenStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{jenStringLiteral: "jen"}
-}
-
-func NewRimeAiVoiceVoiceIdWithJoeStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{joeStringLiteral: "joe"}
-}
-
-func NewRimeAiVoiceVoiceIdWithJoyStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{joyStringLiteral: "joy"}
-}
-
-func NewRimeAiVoiceVoiceIdWithJuanStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{juanStringLiteral: "juan"}
-}
-
-func NewRimeAiVoiceVoiceIdWithKendraStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{kendraStringLiteral: "kendra"}
-}
-
-func NewRimeAiVoiceVoiceIdWithKendrickStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{kendrickStringLiteral: "kendrick"}
-}
-
-func NewRimeAiVoiceVoiceIdWithKennethStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{kennethStringLiteral: "kenneth"}
-}
-
-func NewRimeAiVoiceVoiceIdWithKevinStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{kevinStringLiteral: "kevin"}
-}
-
-func NewRimeAiVoiceVoiceIdWithKrisStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{krisStringLiteral: "kris"}
-}
-
-func NewRimeAiVoiceVoiceIdWithLindaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{lindaStringLiteral: "linda"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMadisonStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{madisonStringLiteral: "madison"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMargeStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{margeStringLiteral: "marge"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMarinaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{marinaStringLiteral: "marina"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMarissaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{marissaStringLiteral: "marissa"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMartaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{martaStringLiteral: "marta"}
-}
-
-func NewRimeAiVoiceVoiceIdWithMayaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{mayaStringLiteral: "maya"}
-}
-
-func NewRimeAiVoiceVoiceIdWithNicholasStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{nicholasStringLiteral: "nicholas"}
-}
-
-func NewRimeAiVoiceVoiceIdWithNylesStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{nylesStringLiteral: "nyles"}
-}
-
-func NewRimeAiVoiceVoiceIdWithPhilStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{philStringLiteral: "phil"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRebaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rebaStringLiteral: "reba"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRexStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rexStringLiteral: "rex"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRickStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rickStringLiteral: "rick"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRituStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rituStringLiteral: "ritu"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRobStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{robStringLiteral: "rob"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRodneyStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rodneyStringLiteral: "rodney"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRohanStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{rohanStringLiteral: "rohan"}
-}
-
-func NewRimeAiVoiceVoiceIdWithRoscoStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{roscoStringLiteral: "rosco"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSamanthaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{samanthaStringLiteral: "samantha"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSandyStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{sandyStringLiteral: "sandy"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSelenaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{selenaStringLiteral: "selena"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSethStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{sethStringLiteral: "seth"}
-}
-
-func NewRimeAiVoiceVoiceIdWithSharonStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{sharonStringLiteral: "sharon"}
-}
-
-func NewRimeAiVoiceVoiceIdWithStanStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{stanStringLiteral: "stan"}
-}
-
-func NewRimeAiVoiceVoiceIdWithTamraStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{tamraStringLiteral: "tamra"}
-}
-
-func NewRimeAiVoiceVoiceIdWithTanyaStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{tanyaStringLiteral: "tanya"}
-}
-
-func NewRimeAiVoiceVoiceIdWithTiburStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{tiburStringLiteral: "tibur"}
-}
-
-func NewRimeAiVoiceVoiceIdWithTjStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{tjStringLiteral: "tj"}
-}
-
-func NewRimeAiVoiceVoiceIdWithTylerStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{tylerStringLiteral: "tyler"}
-}
-
-func NewRimeAiVoiceVoiceIdWithVivStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{vivStringLiteral: "viv"}
-}
-
-func NewRimeAiVoiceVoiceIdWithYadiraStringLiteral() *RimeAiVoiceVoiceId {
-	return &RimeAiVoiceVoiceId{yadiraStringLiteral: "yadira"}
-}
-
-func (r *RimeAiVoiceVoiceId) MarshStringLiteral() string {
-	return r.marshStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) BayouStringLiteral() string {
-	return r.bayouStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) CreekStringLiteral() string {
-	return r.creekStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) BrookStringLiteral() string {
-	return r.brookStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) FlowerStringLiteral() string {
-	return r.flowerStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SporeStringLiteral() string {
-	return r.sporeStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) GlacierStringLiteral() string {
-	return r.glacierStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) GulchStringLiteral() string {
-	return r.gulchStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AlpineStringLiteral() string {
-	return r.alpineStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) CoveStringLiteral() string {
-	return r.coveStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) LagoonStringLiteral() string {
-	return r.lagoonStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) TundraStringLiteral() string {
-	return r.tundraStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SteppeStringLiteral() string {
-	return r.steppeStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MesaStringLiteral() string {
-	return r.mesaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) GroveStringLiteral() string {
-	return r.groveStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RainforestStringLiteral() string {
-	return r.rainforestStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MoraineStringLiteral() string {
-	return r.moraineStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) WildflowerStringLiteral() string {
-	return r.wildflowerStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) PeakStringLiteral() string {
-	return r.peakStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) BoulderStringLiteral() string {
-	return r.boulderStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AbbieStringLiteral() string {
-	return r.abbieStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AllisonStringLiteral() string {
-	return r.allisonStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AllyStringLiteral() string {
-	return r.allyStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AlonaStringLiteral() string {
-	return r.alonaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AmberStringLiteral() string {
-	return r.amberStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AnaStringLiteral() string {
-	return r.anaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) AntoineStringLiteral() string {
-	return r.antoineStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) ArmonStringLiteral() string {
-	return r.armonStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) BrendaStringLiteral() string {
-	return r.brendaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) BrittanyStringLiteral() string {
-	return r.brittanyStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) CarolStringLiteral() string {
-	return r.carolStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) ColinStringLiteral() string {
-	return r.colinStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) CourtneyStringLiteral() string {
-	return r.courtneyStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) ElenaStringLiteral() string {
-	return r.elenaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) ElliotStringLiteral() string {
-	return r.elliotStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) EvaStringLiteral() string {
-	return r.evaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) GeoffStringLiteral() string {
-	return r.geoffStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) GeraldStringLiteral() string {
-	return r.geraldStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) HankStringLiteral() string {
-	return r.hankStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) HelenStringLiteral() string {
-	return r.helenStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) HeraStringLiteral() string {
-	return r.heraStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) JenStringLiteral() string {
-	return r.jenStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) JoeStringLiteral() string {
-	return r.joeStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) JoyStringLiteral() string {
-	return r.joyStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) JuanStringLiteral() string {
-	return r.juanStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) KendraStringLiteral() string {
-	return r.kendraStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) KendrickStringLiteral() string {
-	return r.kendrickStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) KennethStringLiteral() string {
-	return r.kennethStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) KevinStringLiteral() string {
-	return r.kevinStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) KrisStringLiteral() string {
-	return r.krisStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) LindaStringLiteral() string {
-	return r.lindaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MadisonStringLiteral() string {
-	return r.madisonStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MargeStringLiteral() string {
-	return r.margeStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MarinaStringLiteral() string {
-	return r.marinaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MarissaStringLiteral() string {
-	return r.marissaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MartaStringLiteral() string {
-	return r.martaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) MayaStringLiteral() string {
-	return r.mayaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) NicholasStringLiteral() string {
-	return r.nicholasStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) NylesStringLiteral() string {
-	return r.nylesStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) PhilStringLiteral() string {
-	return r.philStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RebaStringLiteral() string {
-	return r.rebaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RexStringLiteral() string {
-	return r.rexStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RickStringLiteral() string {
-	return r.rickStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RituStringLiteral() string {
-	return r.rituStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RobStringLiteral() string {
-	return r.robStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RodneyStringLiteral() string {
-	return r.rodneyStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RohanStringLiteral() string {
-	return r.rohanStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) RoscoStringLiteral() string {
-	return r.roscoStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SamanthaStringLiteral() string {
-	return r.samanthaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SandyStringLiteral() string {
-	return r.sandyStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SelenaStringLiteral() string {
-	return r.selenaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SethStringLiteral() string {
-	return r.sethStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) SharonStringLiteral() string {
-	return r.sharonStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) StanStringLiteral() string {
-	return r.stanStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) TamraStringLiteral() string {
-	return r.tamraStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) TanyaStringLiteral() string {
-	return r.tanyaStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) TiburStringLiteral() string {
-	return r.tiburStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) TjStringLiteral() string {
-	return r.tjStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) TylerStringLiteral() string {
-	return r.tylerStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) VivStringLiteral() string {
-	return r.vivStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) YadiraStringLiteral() string {
-	return r.yadiraStringLiteral
-}
-
-func (r *RimeAiVoiceVoiceId) UnmarshalJSON(data []byte) error {
-	var valueMarshStringLiteral string
-	if err := json.Unmarshal(data, &valueMarshStringLiteral); err == nil {
-		r.marshStringLiteral = valueMarshStringLiteral
-		if r.marshStringLiteral != "marsh" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "marsh", valueMarshStringLiteral)
-		}
-		return nil
-	}
-	var valueBayouStringLiteral string
-	if err := json.Unmarshal(data, &valueBayouStringLiteral); err == nil {
-		r.bayouStringLiteral = valueBayouStringLiteral
-		if r.bayouStringLiteral != "bayou" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "bayou", valueBayouStringLiteral)
-		}
-		return nil
-	}
-	var valueCreekStringLiteral string
-	if err := json.Unmarshal(data, &valueCreekStringLiteral); err == nil {
-		r.creekStringLiteral = valueCreekStringLiteral
-		if r.creekStringLiteral != "creek" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "creek", valueCreekStringLiteral)
-		}
-		return nil
-	}
-	var valueBrookStringLiteral string
-	if err := json.Unmarshal(data, &valueBrookStringLiteral); err == nil {
-		r.brookStringLiteral = valueBrookStringLiteral
-		if r.brookStringLiteral != "brook" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "brook", valueBrookStringLiteral)
-		}
-		return nil
-	}
-	var valueFlowerStringLiteral string
-	if err := json.Unmarshal(data, &valueFlowerStringLiteral); err == nil {
-		r.flowerStringLiteral = valueFlowerStringLiteral
-		if r.flowerStringLiteral != "flower" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "flower", valueFlowerStringLiteral)
-		}
-		return nil
-	}
-	var valueSporeStringLiteral string
-	if err := json.Unmarshal(data, &valueSporeStringLiteral); err == nil {
-		r.sporeStringLiteral = valueSporeStringLiteral
-		if r.sporeStringLiteral != "spore" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "spore", valueSporeStringLiteral)
-		}
-		return nil
-	}
-	var valueGlacierStringLiteral string
-	if err := json.Unmarshal(data, &valueGlacierStringLiteral); err == nil {
-		r.glacierStringLiteral = valueGlacierStringLiteral
-		if r.glacierStringLiteral != "glacier" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "glacier", valueGlacierStringLiteral)
-		}
-		return nil
-	}
-	var valueGulchStringLiteral string
-	if err := json.Unmarshal(data, &valueGulchStringLiteral); err == nil {
-		r.gulchStringLiteral = valueGulchStringLiteral
-		if r.gulchStringLiteral != "gulch" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "gulch", valueGulchStringLiteral)
-		}
-		return nil
-	}
-	var valueAlpineStringLiteral string
-	if err := json.Unmarshal(data, &valueAlpineStringLiteral); err == nil {
-		r.alpineStringLiteral = valueAlpineStringLiteral
-		if r.alpineStringLiteral != "alpine" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "alpine", valueAlpineStringLiteral)
-		}
-		return nil
-	}
-	var valueCoveStringLiteral string
-	if err := json.Unmarshal(data, &valueCoveStringLiteral); err == nil {
-		r.coveStringLiteral = valueCoveStringLiteral
-		if r.coveStringLiteral != "cove" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "cove", valueCoveStringLiteral)
-		}
-		return nil
-	}
-	var valueLagoonStringLiteral string
-	if err := json.Unmarshal(data, &valueLagoonStringLiteral); err == nil {
-		r.lagoonStringLiteral = valueLagoonStringLiteral
-		if r.lagoonStringLiteral != "lagoon" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "lagoon", valueLagoonStringLiteral)
-		}
-		return nil
-	}
-	var valueTundraStringLiteral string
-	if err := json.Unmarshal(data, &valueTundraStringLiteral); err == nil {
-		r.tundraStringLiteral = valueTundraStringLiteral
-		if r.tundraStringLiteral != "tundra" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "tundra", valueTundraStringLiteral)
-		}
-		return nil
-	}
-	var valueSteppeStringLiteral string
-	if err := json.Unmarshal(data, &valueSteppeStringLiteral); err == nil {
-		r.steppeStringLiteral = valueSteppeStringLiteral
-		if r.steppeStringLiteral != "steppe" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "steppe", valueSteppeStringLiteral)
-		}
-		return nil
-	}
-	var valueMesaStringLiteral string
-	if err := json.Unmarshal(data, &valueMesaStringLiteral); err == nil {
-		r.mesaStringLiteral = valueMesaStringLiteral
-		if r.mesaStringLiteral != "mesa" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "mesa", valueMesaStringLiteral)
-		}
-		return nil
-	}
-	var valueGroveStringLiteral string
-	if err := json.Unmarshal(data, &valueGroveStringLiteral); err == nil {
-		r.groveStringLiteral = valueGroveStringLiteral
-		if r.groveStringLiteral != "grove" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "grove", valueGroveStringLiteral)
-		}
-		return nil
-	}
-	var valueRainforestStringLiteral string
-	if err := json.Unmarshal(data, &valueRainforestStringLiteral); err == nil {
-		r.rainforestStringLiteral = valueRainforestStringLiteral
-		if r.rainforestStringLiteral != "rainforest" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rainforest", valueRainforestStringLiteral)
-		}
-		return nil
-	}
-	var valueMoraineStringLiteral string
-	if err := json.Unmarshal(data, &valueMoraineStringLiteral); err == nil {
-		r.moraineStringLiteral = valueMoraineStringLiteral
-		if r.moraineStringLiteral != "moraine" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "moraine", valueMoraineStringLiteral)
-		}
-		return nil
-	}
-	var valueWildflowerStringLiteral string
-	if err := json.Unmarshal(data, &valueWildflowerStringLiteral); err == nil {
-		r.wildflowerStringLiteral = valueWildflowerStringLiteral
-		if r.wildflowerStringLiteral != "wildflower" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "wildflower", valueWildflowerStringLiteral)
-		}
-		return nil
-	}
-	var valuePeakStringLiteral string
-	if err := json.Unmarshal(data, &valuePeakStringLiteral); err == nil {
-		r.peakStringLiteral = valuePeakStringLiteral
-		if r.peakStringLiteral != "peak" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "peak", valuePeakStringLiteral)
-		}
-		return nil
-	}
-	var valueBoulderStringLiteral string
-	if err := json.Unmarshal(data, &valueBoulderStringLiteral); err == nil {
-		r.boulderStringLiteral = valueBoulderStringLiteral
-		if r.boulderStringLiteral != "boulder" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "boulder", valueBoulderStringLiteral)
-		}
-		return nil
-	}
-	var valueAbbieStringLiteral string
-	if err := json.Unmarshal(data, &valueAbbieStringLiteral); err == nil {
-		r.abbieStringLiteral = valueAbbieStringLiteral
-		if r.abbieStringLiteral != "abbie" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "abbie", valueAbbieStringLiteral)
-		}
-		return nil
-	}
-	var valueAllisonStringLiteral string
-	if err := json.Unmarshal(data, &valueAllisonStringLiteral); err == nil {
-		r.allisonStringLiteral = valueAllisonStringLiteral
-		if r.allisonStringLiteral != "allison" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "allison", valueAllisonStringLiteral)
-		}
-		return nil
-	}
-	var valueAllyStringLiteral string
-	if err := json.Unmarshal(data, &valueAllyStringLiteral); err == nil {
-		r.allyStringLiteral = valueAllyStringLiteral
-		if r.allyStringLiteral != "ally" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "ally", valueAllyStringLiteral)
-		}
-		return nil
-	}
-	var valueAlonaStringLiteral string
-	if err := json.Unmarshal(data, &valueAlonaStringLiteral); err == nil {
-		r.alonaStringLiteral = valueAlonaStringLiteral
-		if r.alonaStringLiteral != "alona" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "alona", valueAlonaStringLiteral)
-		}
-		return nil
-	}
-	var valueAmberStringLiteral string
-	if err := json.Unmarshal(data, &valueAmberStringLiteral); err == nil {
-		r.amberStringLiteral = valueAmberStringLiteral
-		if r.amberStringLiteral != "amber" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "amber", valueAmberStringLiteral)
-		}
-		return nil
-	}
-	var valueAnaStringLiteral string
-	if err := json.Unmarshal(data, &valueAnaStringLiteral); err == nil {
-		r.anaStringLiteral = valueAnaStringLiteral
-		if r.anaStringLiteral != "ana" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "ana", valueAnaStringLiteral)
-		}
-		return nil
-	}
-	var valueAntoineStringLiteral string
-	if err := json.Unmarshal(data, &valueAntoineStringLiteral); err == nil {
-		r.antoineStringLiteral = valueAntoineStringLiteral
-		if r.antoineStringLiteral != "antoine" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "antoine", valueAntoineStringLiteral)
-		}
-		return nil
-	}
-	var valueArmonStringLiteral string
-	if err := json.Unmarshal(data, &valueArmonStringLiteral); err == nil {
-		r.armonStringLiteral = valueArmonStringLiteral
-		if r.armonStringLiteral != "armon" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "armon", valueArmonStringLiteral)
-		}
-		return nil
-	}
-	var valueBrendaStringLiteral string
-	if err := json.Unmarshal(data, &valueBrendaStringLiteral); err == nil {
-		r.brendaStringLiteral = valueBrendaStringLiteral
-		if r.brendaStringLiteral != "brenda" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "brenda", valueBrendaStringLiteral)
-		}
-		return nil
-	}
-	var valueBrittanyStringLiteral string
-	if err := json.Unmarshal(data, &valueBrittanyStringLiteral); err == nil {
-		r.brittanyStringLiteral = valueBrittanyStringLiteral
-		if r.brittanyStringLiteral != "brittany" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "brittany", valueBrittanyStringLiteral)
-		}
-		return nil
-	}
-	var valueCarolStringLiteral string
-	if err := json.Unmarshal(data, &valueCarolStringLiteral); err == nil {
-		r.carolStringLiteral = valueCarolStringLiteral
-		if r.carolStringLiteral != "carol" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "carol", valueCarolStringLiteral)
-		}
-		return nil
-	}
-	var valueColinStringLiteral string
-	if err := json.Unmarshal(data, &valueColinStringLiteral); err == nil {
-		r.colinStringLiteral = valueColinStringLiteral
-		if r.colinStringLiteral != "colin" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "colin", valueColinStringLiteral)
-		}
-		return nil
-	}
-	var valueCourtneyStringLiteral string
-	if err := json.Unmarshal(data, &valueCourtneyStringLiteral); err == nil {
-		r.courtneyStringLiteral = valueCourtneyStringLiteral
-		if r.courtneyStringLiteral != "courtney" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "courtney", valueCourtneyStringLiteral)
-		}
-		return nil
-	}
-	var valueElenaStringLiteral string
-	if err := json.Unmarshal(data, &valueElenaStringLiteral); err == nil {
-		r.elenaStringLiteral = valueElenaStringLiteral
-		if r.elenaStringLiteral != "elena" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "elena", valueElenaStringLiteral)
-		}
-		return nil
-	}
-	var valueElliotStringLiteral string
-	if err := json.Unmarshal(data, &valueElliotStringLiteral); err == nil {
-		r.elliotStringLiteral = valueElliotStringLiteral
-		if r.elliotStringLiteral != "elliot" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "elliot", valueElliotStringLiteral)
-		}
-		return nil
-	}
-	var valueEvaStringLiteral string
-	if err := json.Unmarshal(data, &valueEvaStringLiteral); err == nil {
-		r.evaStringLiteral = valueEvaStringLiteral
-		if r.evaStringLiteral != "eva" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "eva", valueEvaStringLiteral)
-		}
-		return nil
-	}
-	var valueGeoffStringLiteral string
-	if err := json.Unmarshal(data, &valueGeoffStringLiteral); err == nil {
-		r.geoffStringLiteral = valueGeoffStringLiteral
-		if r.geoffStringLiteral != "geoff" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "geoff", valueGeoffStringLiteral)
-		}
-		return nil
-	}
-	var valueGeraldStringLiteral string
-	if err := json.Unmarshal(data, &valueGeraldStringLiteral); err == nil {
-		r.geraldStringLiteral = valueGeraldStringLiteral
-		if r.geraldStringLiteral != "gerald" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "gerald", valueGeraldStringLiteral)
-		}
-		return nil
-	}
-	var valueHankStringLiteral string
-	if err := json.Unmarshal(data, &valueHankStringLiteral); err == nil {
-		r.hankStringLiteral = valueHankStringLiteral
-		if r.hankStringLiteral != "hank" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "hank", valueHankStringLiteral)
-		}
-		return nil
-	}
-	var valueHelenStringLiteral string
-	if err := json.Unmarshal(data, &valueHelenStringLiteral); err == nil {
-		r.helenStringLiteral = valueHelenStringLiteral
-		if r.helenStringLiteral != "helen" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "helen", valueHelenStringLiteral)
-		}
-		return nil
-	}
-	var valueHeraStringLiteral string
-	if err := json.Unmarshal(data, &valueHeraStringLiteral); err == nil {
-		r.heraStringLiteral = valueHeraStringLiteral
-		if r.heraStringLiteral != "hera" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "hera", valueHeraStringLiteral)
-		}
-		return nil
-	}
-	var valueJenStringLiteral string
-	if err := json.Unmarshal(data, &valueJenStringLiteral); err == nil {
-		r.jenStringLiteral = valueJenStringLiteral
-		if r.jenStringLiteral != "jen" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "jen", valueJenStringLiteral)
-		}
-		return nil
-	}
-	var valueJoeStringLiteral string
-	if err := json.Unmarshal(data, &valueJoeStringLiteral); err == nil {
-		r.joeStringLiteral = valueJoeStringLiteral
-		if r.joeStringLiteral != "joe" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "joe", valueJoeStringLiteral)
-		}
-		return nil
-	}
-	var valueJoyStringLiteral string
-	if err := json.Unmarshal(data, &valueJoyStringLiteral); err == nil {
-		r.joyStringLiteral = valueJoyStringLiteral
-		if r.joyStringLiteral != "joy" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "joy", valueJoyStringLiteral)
-		}
-		return nil
-	}
-	var valueJuanStringLiteral string
-	if err := json.Unmarshal(data, &valueJuanStringLiteral); err == nil {
-		r.juanStringLiteral = valueJuanStringLiteral
-		if r.juanStringLiteral != "juan" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "juan", valueJuanStringLiteral)
-		}
-		return nil
-	}
-	var valueKendraStringLiteral string
-	if err := json.Unmarshal(data, &valueKendraStringLiteral); err == nil {
-		r.kendraStringLiteral = valueKendraStringLiteral
-		if r.kendraStringLiteral != "kendra" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "kendra", valueKendraStringLiteral)
-		}
-		return nil
-	}
-	var valueKendrickStringLiteral string
-	if err := json.Unmarshal(data, &valueKendrickStringLiteral); err == nil {
-		r.kendrickStringLiteral = valueKendrickStringLiteral
-		if r.kendrickStringLiteral != "kendrick" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "kendrick", valueKendrickStringLiteral)
-		}
-		return nil
-	}
-	var valueKennethStringLiteral string
-	if err := json.Unmarshal(data, &valueKennethStringLiteral); err == nil {
-		r.kennethStringLiteral = valueKennethStringLiteral
-		if r.kennethStringLiteral != "kenneth" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "kenneth", valueKennethStringLiteral)
-		}
-		return nil
-	}
-	var valueKevinStringLiteral string
-	if err := json.Unmarshal(data, &valueKevinStringLiteral); err == nil {
-		r.kevinStringLiteral = valueKevinStringLiteral
-		if r.kevinStringLiteral != "kevin" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "kevin", valueKevinStringLiteral)
-		}
-		return nil
-	}
-	var valueKrisStringLiteral string
-	if err := json.Unmarshal(data, &valueKrisStringLiteral); err == nil {
-		r.krisStringLiteral = valueKrisStringLiteral
-		if r.krisStringLiteral != "kris" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "kris", valueKrisStringLiteral)
-		}
-		return nil
-	}
-	var valueLindaStringLiteral string
-	if err := json.Unmarshal(data, &valueLindaStringLiteral); err == nil {
-		r.lindaStringLiteral = valueLindaStringLiteral
-		if r.lindaStringLiteral != "linda" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "linda", valueLindaStringLiteral)
-		}
-		return nil
-	}
-	var valueMadisonStringLiteral string
-	if err := json.Unmarshal(data, &valueMadisonStringLiteral); err == nil {
-		r.madisonStringLiteral = valueMadisonStringLiteral
-		if r.madisonStringLiteral != "madison" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "madison", valueMadisonStringLiteral)
-		}
-		return nil
-	}
-	var valueMargeStringLiteral string
-	if err := json.Unmarshal(data, &valueMargeStringLiteral); err == nil {
-		r.margeStringLiteral = valueMargeStringLiteral
-		if r.margeStringLiteral != "marge" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "marge", valueMargeStringLiteral)
-		}
-		return nil
-	}
-	var valueMarinaStringLiteral string
-	if err := json.Unmarshal(data, &valueMarinaStringLiteral); err == nil {
-		r.marinaStringLiteral = valueMarinaStringLiteral
-		if r.marinaStringLiteral != "marina" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "marina", valueMarinaStringLiteral)
-		}
-		return nil
-	}
-	var valueMarissaStringLiteral string
-	if err := json.Unmarshal(data, &valueMarissaStringLiteral); err == nil {
-		r.marissaStringLiteral = valueMarissaStringLiteral
-		if r.marissaStringLiteral != "marissa" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "marissa", valueMarissaStringLiteral)
-		}
-		return nil
-	}
-	var valueMartaStringLiteral string
-	if err := json.Unmarshal(data, &valueMartaStringLiteral); err == nil {
-		r.martaStringLiteral = valueMartaStringLiteral
-		if r.martaStringLiteral != "marta" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "marta", valueMartaStringLiteral)
-		}
-		return nil
-	}
-	var valueMayaStringLiteral string
-	if err := json.Unmarshal(data, &valueMayaStringLiteral); err == nil {
-		r.mayaStringLiteral = valueMayaStringLiteral
-		if r.mayaStringLiteral != "maya" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "maya", valueMayaStringLiteral)
-		}
-		return nil
-	}
-	var valueNicholasStringLiteral string
-	if err := json.Unmarshal(data, &valueNicholasStringLiteral); err == nil {
-		r.nicholasStringLiteral = valueNicholasStringLiteral
-		if r.nicholasStringLiteral != "nicholas" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "nicholas", valueNicholasStringLiteral)
-		}
-		return nil
-	}
-	var valueNylesStringLiteral string
-	if err := json.Unmarshal(data, &valueNylesStringLiteral); err == nil {
-		r.nylesStringLiteral = valueNylesStringLiteral
-		if r.nylesStringLiteral != "nyles" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "nyles", valueNylesStringLiteral)
-		}
-		return nil
-	}
-	var valuePhilStringLiteral string
-	if err := json.Unmarshal(data, &valuePhilStringLiteral); err == nil {
-		r.philStringLiteral = valuePhilStringLiteral
-		if r.philStringLiteral != "phil" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "phil", valuePhilStringLiteral)
-		}
-		return nil
-	}
-	var valueRebaStringLiteral string
-	if err := json.Unmarshal(data, &valueRebaStringLiteral); err == nil {
-		r.rebaStringLiteral = valueRebaStringLiteral
-		if r.rebaStringLiteral != "reba" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "reba", valueRebaStringLiteral)
-		}
-		return nil
-	}
-	var valueRexStringLiteral string
-	if err := json.Unmarshal(data, &valueRexStringLiteral); err == nil {
-		r.rexStringLiteral = valueRexStringLiteral
-		if r.rexStringLiteral != "rex" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rex", valueRexStringLiteral)
-		}
-		return nil
-	}
-	var valueRickStringLiteral string
-	if err := json.Unmarshal(data, &valueRickStringLiteral); err == nil {
-		r.rickStringLiteral = valueRickStringLiteral
-		if r.rickStringLiteral != "rick" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rick", valueRickStringLiteral)
-		}
-		return nil
-	}
-	var valueRituStringLiteral string
-	if err := json.Unmarshal(data, &valueRituStringLiteral); err == nil {
-		r.rituStringLiteral = valueRituStringLiteral
-		if r.rituStringLiteral != "ritu" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "ritu", valueRituStringLiteral)
-		}
-		return nil
-	}
-	var valueRobStringLiteral string
-	if err := json.Unmarshal(data, &valueRobStringLiteral); err == nil {
-		r.robStringLiteral = valueRobStringLiteral
-		if r.robStringLiteral != "rob" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rob", valueRobStringLiteral)
-		}
-		return nil
-	}
-	var valueRodneyStringLiteral string
-	if err := json.Unmarshal(data, &valueRodneyStringLiteral); err == nil {
-		r.rodneyStringLiteral = valueRodneyStringLiteral
-		if r.rodneyStringLiteral != "rodney" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rodney", valueRodneyStringLiteral)
-		}
-		return nil
-	}
-	var valueRohanStringLiteral string
-	if err := json.Unmarshal(data, &valueRohanStringLiteral); err == nil {
-		r.rohanStringLiteral = valueRohanStringLiteral
-		if r.rohanStringLiteral != "rohan" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rohan", valueRohanStringLiteral)
-		}
-		return nil
-	}
-	var valueRoscoStringLiteral string
-	if err := json.Unmarshal(data, &valueRoscoStringLiteral); err == nil {
-		r.roscoStringLiteral = valueRoscoStringLiteral
-		if r.roscoStringLiteral != "rosco" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "rosco", valueRoscoStringLiteral)
-		}
-		return nil
-	}
-	var valueSamanthaStringLiteral string
-	if err := json.Unmarshal(data, &valueSamanthaStringLiteral); err == nil {
-		r.samanthaStringLiteral = valueSamanthaStringLiteral
-		if r.samanthaStringLiteral != "samantha" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "samantha", valueSamanthaStringLiteral)
-		}
-		return nil
-	}
-	var valueSandyStringLiteral string
-	if err := json.Unmarshal(data, &valueSandyStringLiteral); err == nil {
-		r.sandyStringLiteral = valueSandyStringLiteral
-		if r.sandyStringLiteral != "sandy" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "sandy", valueSandyStringLiteral)
-		}
-		return nil
-	}
-	var valueSelenaStringLiteral string
-	if err := json.Unmarshal(data, &valueSelenaStringLiteral); err == nil {
-		r.selenaStringLiteral = valueSelenaStringLiteral
-		if r.selenaStringLiteral != "selena" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "selena", valueSelenaStringLiteral)
-		}
-		return nil
-	}
-	var valueSethStringLiteral string
-	if err := json.Unmarshal(data, &valueSethStringLiteral); err == nil {
-		r.sethStringLiteral = valueSethStringLiteral
-		if r.sethStringLiteral != "seth" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "seth", valueSethStringLiteral)
-		}
-		return nil
-	}
-	var valueSharonStringLiteral string
-	if err := json.Unmarshal(data, &valueSharonStringLiteral); err == nil {
-		r.sharonStringLiteral = valueSharonStringLiteral
-		if r.sharonStringLiteral != "sharon" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "sharon", valueSharonStringLiteral)
-		}
-		return nil
-	}
-	var valueStanStringLiteral string
-	if err := json.Unmarshal(data, &valueStanStringLiteral); err == nil {
-		r.stanStringLiteral = valueStanStringLiteral
-		if r.stanStringLiteral != "stan" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "stan", valueStanStringLiteral)
-		}
-		return nil
-	}
-	var valueTamraStringLiteral string
-	if err := json.Unmarshal(data, &valueTamraStringLiteral); err == nil {
-		r.tamraStringLiteral = valueTamraStringLiteral
-		if r.tamraStringLiteral != "tamra" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "tamra", valueTamraStringLiteral)
-		}
-		return nil
-	}
-	var valueTanyaStringLiteral string
-	if err := json.Unmarshal(data, &valueTanyaStringLiteral); err == nil {
-		r.tanyaStringLiteral = valueTanyaStringLiteral
-		if r.tanyaStringLiteral != "tanya" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "tanya", valueTanyaStringLiteral)
-		}
-		return nil
-	}
-	var valueTiburStringLiteral string
-	if err := json.Unmarshal(data, &valueTiburStringLiteral); err == nil {
-		r.tiburStringLiteral = valueTiburStringLiteral
-		if r.tiburStringLiteral != "tibur" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "tibur", valueTiburStringLiteral)
-		}
-		return nil
-	}
-	var valueTjStringLiteral string
-	if err := json.Unmarshal(data, &valueTjStringLiteral); err == nil {
-		r.tjStringLiteral = valueTjStringLiteral
-		if r.tjStringLiteral != "tj" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "tj", valueTjStringLiteral)
-		}
-		return nil
-	}
-	var valueTylerStringLiteral string
-	if err := json.Unmarshal(data, &valueTylerStringLiteral); err == nil {
-		r.tylerStringLiteral = valueTylerStringLiteral
-		if r.tylerStringLiteral != "tyler" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "tyler", valueTylerStringLiteral)
-		}
-		return nil
-	}
-	var valueVivStringLiteral string
-	if err := json.Unmarshal(data, &valueVivStringLiteral); err == nil {
-		r.vivStringLiteral = valueVivStringLiteral
-		if r.vivStringLiteral != "viv" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "viv", valueVivStringLiteral)
-		}
-		return nil
-	}
-	var valueYadiraStringLiteral string
-	if err := json.Unmarshal(data, &valueYadiraStringLiteral); err == nil {
-		r.yadiraStringLiteral = valueYadiraStringLiteral
-		if r.yadiraStringLiteral != "yadira" {
-			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", r, "yadira", valueYadiraStringLiteral)
-		}
-		return nil
-	}
-	var valueString string
-	if err := json.Unmarshal(data, &valueString); err == nil {
-		r.String = valueString
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, r)
-}
-
-func (r RimeAiVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if r.marshStringLiteral != "" {
-		return json.Marshal("marsh")
-	}
-	if r.bayouStringLiteral != "" {
-		return json.Marshal("bayou")
-	}
-	if r.creekStringLiteral != "" {
-		return json.Marshal("creek")
-	}
-	if r.brookStringLiteral != "" {
-		return json.Marshal("brook")
-	}
-	if r.flowerStringLiteral != "" {
-		return json.Marshal("flower")
-	}
-	if r.sporeStringLiteral != "" {
-		return json.Marshal("spore")
-	}
-	if r.glacierStringLiteral != "" {
-		return json.Marshal("glacier")
-	}
-	if r.gulchStringLiteral != "" {
-		return json.Marshal("gulch")
-	}
-	if r.alpineStringLiteral != "" {
-		return json.Marshal("alpine")
-	}
-	if r.coveStringLiteral != "" {
-		return json.Marshal("cove")
-	}
-	if r.lagoonStringLiteral != "" {
-		return json.Marshal("lagoon")
-	}
-	if r.tundraStringLiteral != "" {
-		return json.Marshal("tundra")
-	}
-	if r.steppeStringLiteral != "" {
-		return json.Marshal("steppe")
-	}
-	if r.mesaStringLiteral != "" {
-		return json.Marshal("mesa")
-	}
-	if r.groveStringLiteral != "" {
-		return json.Marshal("grove")
-	}
-	if r.rainforestStringLiteral != "" {
-		return json.Marshal("rainforest")
-	}
-	if r.moraineStringLiteral != "" {
-		return json.Marshal("moraine")
-	}
-	if r.wildflowerStringLiteral != "" {
-		return json.Marshal("wildflower")
-	}
-	if r.peakStringLiteral != "" {
-		return json.Marshal("peak")
-	}
-	if r.boulderStringLiteral != "" {
-		return json.Marshal("boulder")
-	}
-	if r.abbieStringLiteral != "" {
-		return json.Marshal("abbie")
-	}
-	if r.allisonStringLiteral != "" {
-		return json.Marshal("allison")
-	}
-	if r.allyStringLiteral != "" {
-		return json.Marshal("ally")
-	}
-	if r.alonaStringLiteral != "" {
-		return json.Marshal("alona")
-	}
-	if r.amberStringLiteral != "" {
-		return json.Marshal("amber")
-	}
-	if r.anaStringLiteral != "" {
-		return json.Marshal("ana")
-	}
-	if r.antoineStringLiteral != "" {
-		return json.Marshal("antoine")
-	}
-	if r.armonStringLiteral != "" {
-		return json.Marshal("armon")
-	}
-	if r.brendaStringLiteral != "" {
-		return json.Marshal("brenda")
-	}
-	if r.brittanyStringLiteral != "" {
-		return json.Marshal("brittany")
-	}
-	if r.carolStringLiteral != "" {
-		return json.Marshal("carol")
-	}
-	if r.colinStringLiteral != "" {
-		return json.Marshal("colin")
-	}
-	if r.courtneyStringLiteral != "" {
-		return json.Marshal("courtney")
-	}
-	if r.elenaStringLiteral != "" {
-		return json.Marshal("elena")
-	}
-	if r.elliotStringLiteral != "" {
-		return json.Marshal("elliot")
-	}
-	if r.evaStringLiteral != "" {
-		return json.Marshal("eva")
-	}
-	if r.geoffStringLiteral != "" {
-		return json.Marshal("geoff")
-	}
-	if r.geraldStringLiteral != "" {
-		return json.Marshal("gerald")
-	}
-	if r.hankStringLiteral != "" {
-		return json.Marshal("hank")
-	}
-	if r.helenStringLiteral != "" {
-		return json.Marshal("helen")
-	}
-	if r.heraStringLiteral != "" {
-		return json.Marshal("hera")
-	}
-	if r.jenStringLiteral != "" {
-		return json.Marshal("jen")
-	}
-	if r.joeStringLiteral != "" {
-		return json.Marshal("joe")
-	}
-	if r.joyStringLiteral != "" {
-		return json.Marshal("joy")
-	}
-	if r.juanStringLiteral != "" {
-		return json.Marshal("juan")
-	}
-	if r.kendraStringLiteral != "" {
-		return json.Marshal("kendra")
-	}
-	if r.kendrickStringLiteral != "" {
-		return json.Marshal("kendrick")
-	}
-	if r.kennethStringLiteral != "" {
-		return json.Marshal("kenneth")
-	}
-	if r.kevinStringLiteral != "" {
-		return json.Marshal("kevin")
-	}
-	if r.krisStringLiteral != "" {
-		return json.Marshal("kris")
-	}
-	if r.lindaStringLiteral != "" {
-		return json.Marshal("linda")
-	}
-	if r.madisonStringLiteral != "" {
-		return json.Marshal("madison")
-	}
-	if r.margeStringLiteral != "" {
-		return json.Marshal("marge")
-	}
-	if r.marinaStringLiteral != "" {
-		return json.Marshal("marina")
-	}
-	if r.marissaStringLiteral != "" {
-		return json.Marshal("marissa")
-	}
-	if r.martaStringLiteral != "" {
-		return json.Marshal("marta")
-	}
-	if r.mayaStringLiteral != "" {
-		return json.Marshal("maya")
-	}
-	if r.nicholasStringLiteral != "" {
-		return json.Marshal("nicholas")
-	}
-	if r.nylesStringLiteral != "" {
-		return json.Marshal("nyles")
-	}
-	if r.philStringLiteral != "" {
-		return json.Marshal("phil")
-	}
-	if r.rebaStringLiteral != "" {
-		return json.Marshal("reba")
-	}
-	if r.rexStringLiteral != "" {
-		return json.Marshal("rex")
-	}
-	if r.rickStringLiteral != "" {
-		return json.Marshal("rick")
-	}
-	if r.rituStringLiteral != "" {
-		return json.Marshal("ritu")
-	}
-	if r.robStringLiteral != "" {
-		return json.Marshal("rob")
-	}
-	if r.rodneyStringLiteral != "" {
-		return json.Marshal("rodney")
-	}
-	if r.rohanStringLiteral != "" {
-		return json.Marshal("rohan")
-	}
-	if r.roscoStringLiteral != "" {
-		return json.Marshal("rosco")
-	}
-	if r.samanthaStringLiteral != "" {
-		return json.Marshal("samantha")
-	}
-	if r.sandyStringLiteral != "" {
-		return json.Marshal("sandy")
-	}
-	if r.selenaStringLiteral != "" {
-		return json.Marshal("selena")
-	}
-	if r.sethStringLiteral != "" {
-		return json.Marshal("seth")
-	}
-	if r.sharonStringLiteral != "" {
-		return json.Marshal("sharon")
-	}
-	if r.stanStringLiteral != "" {
-		return json.Marshal("stan")
-	}
-	if r.tamraStringLiteral != "" {
-		return json.Marshal("tamra")
-	}
-	if r.tanyaStringLiteral != "" {
-		return json.Marshal("tanya")
-	}
-	if r.tiburStringLiteral != "" {
-		return json.Marshal("tibur")
-	}
-	if r.tjStringLiteral != "" {
-		return json.Marshal("tj")
-	}
-	if r.tylerStringLiteral != "" {
-		return json.Marshal("tyler")
-	}
-	if r.vivStringLiteral != "" {
-		return json.Marshal("viv")
-	}
-	if r.yadiraStringLiteral != "" {
-		return json.Marshal("yadira")
-	}
-	if r.String != "" {
-		return json.Marshal(r.String)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", r)
-}
-
-type RimeAiVoiceVoiceIdVisitor interface {
-	VisitMarshStringLiteral(string) error
-	VisitBayouStringLiteral(string) error
-	VisitCreekStringLiteral(string) error
-	VisitBrookStringLiteral(string) error
-	VisitFlowerStringLiteral(string) error
-	VisitSporeStringLiteral(string) error
-	VisitGlacierStringLiteral(string) error
-	VisitGulchStringLiteral(string) error
-	VisitAlpineStringLiteral(string) error
-	VisitCoveStringLiteral(string) error
-	VisitLagoonStringLiteral(string) error
-	VisitTundraStringLiteral(string) error
-	VisitSteppeStringLiteral(string) error
-	VisitMesaStringLiteral(string) error
-	VisitGroveStringLiteral(string) error
-	VisitRainforestStringLiteral(string) error
-	VisitMoraineStringLiteral(string) error
-	VisitWildflowerStringLiteral(string) error
-	VisitPeakStringLiteral(string) error
-	VisitBoulderStringLiteral(string) error
-	VisitAbbieStringLiteral(string) error
-	VisitAllisonStringLiteral(string) error
-	VisitAllyStringLiteral(string) error
-	VisitAlonaStringLiteral(string) error
-	VisitAmberStringLiteral(string) error
-	VisitAnaStringLiteral(string) error
-	VisitAntoineStringLiteral(string) error
-	VisitArmonStringLiteral(string) error
-	VisitBrendaStringLiteral(string) error
-	VisitBrittanyStringLiteral(string) error
-	VisitCarolStringLiteral(string) error
-	VisitColinStringLiteral(string) error
-	VisitCourtneyStringLiteral(string) error
-	VisitElenaStringLiteral(string) error
-	VisitElliotStringLiteral(string) error
-	VisitEvaStringLiteral(string) error
-	VisitGeoffStringLiteral(string) error
-	VisitGeraldStringLiteral(string) error
-	VisitHankStringLiteral(string) error
-	VisitHelenStringLiteral(string) error
-	VisitHeraStringLiteral(string) error
-	VisitJenStringLiteral(string) error
-	VisitJoeStringLiteral(string) error
-	VisitJoyStringLiteral(string) error
-	VisitJuanStringLiteral(string) error
-	VisitKendraStringLiteral(string) error
-	VisitKendrickStringLiteral(string) error
-	VisitKennethStringLiteral(string) error
-	VisitKevinStringLiteral(string) error
-	VisitKrisStringLiteral(string) error
-	VisitLindaStringLiteral(string) error
-	VisitMadisonStringLiteral(string) error
-	VisitMargeStringLiteral(string) error
-	VisitMarinaStringLiteral(string) error
-	VisitMarissaStringLiteral(string) error
-	VisitMartaStringLiteral(string) error
-	VisitMayaStringLiteral(string) error
-	VisitNicholasStringLiteral(string) error
-	VisitNylesStringLiteral(string) error
-	VisitPhilStringLiteral(string) error
-	VisitRebaStringLiteral(string) error
-	VisitRexStringLiteral(string) error
-	VisitRickStringLiteral(string) error
-	VisitRituStringLiteral(string) error
-	VisitRobStringLiteral(string) error
-	VisitRodneyStringLiteral(string) error
-	VisitRohanStringLiteral(string) error
-	VisitRoscoStringLiteral(string) error
-	VisitSamanthaStringLiteral(string) error
-	VisitSandyStringLiteral(string) error
-	VisitSelenaStringLiteral(string) error
-	VisitSethStringLiteral(string) error
-	VisitSharonStringLiteral(string) error
-	VisitStanStringLiteral(string) error
-	VisitTamraStringLiteral(string) error
-	VisitTanyaStringLiteral(string) error
-	VisitTiburStringLiteral(string) error
-	VisitTjStringLiteral(string) error
-	VisitTylerStringLiteral(string) error
-	VisitVivStringLiteral(string) error
-	VisitYadiraStringLiteral(string) error
-	VisitString(string) error
-}
-
-func (r *RimeAiVoiceVoiceId) Accept(visitor RimeAiVoiceVoiceIdVisitor) error {
-	if r.marshStringLiteral != "" {
-		return visitor.VisitMarshStringLiteral(r.marshStringLiteral)
-	}
-	if r.bayouStringLiteral != "" {
-		return visitor.VisitBayouStringLiteral(r.bayouStringLiteral)
-	}
-	if r.creekStringLiteral != "" {
-		return visitor.VisitCreekStringLiteral(r.creekStringLiteral)
-	}
-	if r.brookStringLiteral != "" {
-		return visitor.VisitBrookStringLiteral(r.brookStringLiteral)
-	}
-	if r.flowerStringLiteral != "" {
-		return visitor.VisitFlowerStringLiteral(r.flowerStringLiteral)
-	}
-	if r.sporeStringLiteral != "" {
-		return visitor.VisitSporeStringLiteral(r.sporeStringLiteral)
-	}
-	if r.glacierStringLiteral != "" {
-		return visitor.VisitGlacierStringLiteral(r.glacierStringLiteral)
-	}
-	if r.gulchStringLiteral != "" {
-		return visitor.VisitGulchStringLiteral(r.gulchStringLiteral)
-	}
-	if r.alpineStringLiteral != "" {
-		return visitor.VisitAlpineStringLiteral(r.alpineStringLiteral)
-	}
-	if r.coveStringLiteral != "" {
-		return visitor.VisitCoveStringLiteral(r.coveStringLiteral)
-	}
-	if r.lagoonStringLiteral != "" {
-		return visitor.VisitLagoonStringLiteral(r.lagoonStringLiteral)
-	}
-	if r.tundraStringLiteral != "" {
-		return visitor.VisitTundraStringLiteral(r.tundraStringLiteral)
-	}
-	if r.steppeStringLiteral != "" {
-		return visitor.VisitSteppeStringLiteral(r.steppeStringLiteral)
-	}
-	if r.mesaStringLiteral != "" {
-		return visitor.VisitMesaStringLiteral(r.mesaStringLiteral)
-	}
-	if r.groveStringLiteral != "" {
-		return visitor.VisitGroveStringLiteral(r.groveStringLiteral)
-	}
-	if r.rainforestStringLiteral != "" {
-		return visitor.VisitRainforestStringLiteral(r.rainforestStringLiteral)
-	}
-	if r.moraineStringLiteral != "" {
-		return visitor.VisitMoraineStringLiteral(r.moraineStringLiteral)
-	}
-	if r.wildflowerStringLiteral != "" {
-		return visitor.VisitWildflowerStringLiteral(r.wildflowerStringLiteral)
-	}
-	if r.peakStringLiteral != "" {
-		return visitor.VisitPeakStringLiteral(r.peakStringLiteral)
-	}
-	if r.boulderStringLiteral != "" {
-		return visitor.VisitBoulderStringLiteral(r.boulderStringLiteral)
-	}
-	if r.abbieStringLiteral != "" {
-		return visitor.VisitAbbieStringLiteral(r.abbieStringLiteral)
-	}
-	if r.allisonStringLiteral != "" {
-		return visitor.VisitAllisonStringLiteral(r.allisonStringLiteral)
-	}
-	if r.allyStringLiteral != "" {
-		return visitor.VisitAllyStringLiteral(r.allyStringLiteral)
-	}
-	if r.alonaStringLiteral != "" {
-		return visitor.VisitAlonaStringLiteral(r.alonaStringLiteral)
-	}
-	if r.amberStringLiteral != "" {
-		return visitor.VisitAmberStringLiteral(r.amberStringLiteral)
-	}
-	if r.anaStringLiteral != "" {
-		return visitor.VisitAnaStringLiteral(r.anaStringLiteral)
-	}
-	if r.antoineStringLiteral != "" {
-		return visitor.VisitAntoineStringLiteral(r.antoineStringLiteral)
-	}
-	if r.armonStringLiteral != "" {
-		return visitor.VisitArmonStringLiteral(r.armonStringLiteral)
-	}
-	if r.brendaStringLiteral != "" {
-		return visitor.VisitBrendaStringLiteral(r.brendaStringLiteral)
-	}
-	if r.brittanyStringLiteral != "" {
-		return visitor.VisitBrittanyStringLiteral(r.brittanyStringLiteral)
-	}
-	if r.carolStringLiteral != "" {
-		return visitor.VisitCarolStringLiteral(r.carolStringLiteral)
-	}
-	if r.colinStringLiteral != "" {
-		return visitor.VisitColinStringLiteral(r.colinStringLiteral)
-	}
-	if r.courtneyStringLiteral != "" {
-		return visitor.VisitCourtneyStringLiteral(r.courtneyStringLiteral)
-	}
-	if r.elenaStringLiteral != "" {
-		return visitor.VisitElenaStringLiteral(r.elenaStringLiteral)
-	}
-	if r.elliotStringLiteral != "" {
-		return visitor.VisitElliotStringLiteral(r.elliotStringLiteral)
-	}
-	if r.evaStringLiteral != "" {
-		return visitor.VisitEvaStringLiteral(r.evaStringLiteral)
-	}
-	if r.geoffStringLiteral != "" {
-		return visitor.VisitGeoffStringLiteral(r.geoffStringLiteral)
-	}
-	if r.geraldStringLiteral != "" {
-		return visitor.VisitGeraldStringLiteral(r.geraldStringLiteral)
-	}
-	if r.hankStringLiteral != "" {
-		return visitor.VisitHankStringLiteral(r.hankStringLiteral)
-	}
-	if r.helenStringLiteral != "" {
-		return visitor.VisitHelenStringLiteral(r.helenStringLiteral)
-	}
-	if r.heraStringLiteral != "" {
-		return visitor.VisitHeraStringLiteral(r.heraStringLiteral)
-	}
-	if r.jenStringLiteral != "" {
-		return visitor.VisitJenStringLiteral(r.jenStringLiteral)
-	}
-	if r.joeStringLiteral != "" {
-		return visitor.VisitJoeStringLiteral(r.joeStringLiteral)
-	}
-	if r.joyStringLiteral != "" {
-		return visitor.VisitJoyStringLiteral(r.joyStringLiteral)
-	}
-	if r.juanStringLiteral != "" {
-		return visitor.VisitJuanStringLiteral(r.juanStringLiteral)
-	}
-	if r.kendraStringLiteral != "" {
-		return visitor.VisitKendraStringLiteral(r.kendraStringLiteral)
-	}
-	if r.kendrickStringLiteral != "" {
-		return visitor.VisitKendrickStringLiteral(r.kendrickStringLiteral)
-	}
-	if r.kennethStringLiteral != "" {
-		return visitor.VisitKennethStringLiteral(r.kennethStringLiteral)
-	}
-	if r.kevinStringLiteral != "" {
-		return visitor.VisitKevinStringLiteral(r.kevinStringLiteral)
-	}
-	if r.krisStringLiteral != "" {
-		return visitor.VisitKrisStringLiteral(r.krisStringLiteral)
-	}
-	if r.lindaStringLiteral != "" {
-		return visitor.VisitLindaStringLiteral(r.lindaStringLiteral)
-	}
-	if r.madisonStringLiteral != "" {
-		return visitor.VisitMadisonStringLiteral(r.madisonStringLiteral)
-	}
-	if r.margeStringLiteral != "" {
-		return visitor.VisitMargeStringLiteral(r.margeStringLiteral)
-	}
-	if r.marinaStringLiteral != "" {
-		return visitor.VisitMarinaStringLiteral(r.marinaStringLiteral)
-	}
-	if r.marissaStringLiteral != "" {
-		return visitor.VisitMarissaStringLiteral(r.marissaStringLiteral)
-	}
-	if r.martaStringLiteral != "" {
-		return visitor.VisitMartaStringLiteral(r.martaStringLiteral)
-	}
-	if r.mayaStringLiteral != "" {
-		return visitor.VisitMayaStringLiteral(r.mayaStringLiteral)
-	}
-	if r.nicholasStringLiteral != "" {
-		return visitor.VisitNicholasStringLiteral(r.nicholasStringLiteral)
-	}
-	if r.nylesStringLiteral != "" {
-		return visitor.VisitNylesStringLiteral(r.nylesStringLiteral)
-	}
-	if r.philStringLiteral != "" {
-		return visitor.VisitPhilStringLiteral(r.philStringLiteral)
-	}
-	if r.rebaStringLiteral != "" {
-		return visitor.VisitRebaStringLiteral(r.rebaStringLiteral)
-	}
-	if r.rexStringLiteral != "" {
-		return visitor.VisitRexStringLiteral(r.rexStringLiteral)
-	}
-	if r.rickStringLiteral != "" {
-		return visitor.VisitRickStringLiteral(r.rickStringLiteral)
-	}
-	if r.rituStringLiteral != "" {
-		return visitor.VisitRituStringLiteral(r.rituStringLiteral)
-	}
-	if r.robStringLiteral != "" {
-		return visitor.VisitRobStringLiteral(r.robStringLiteral)
-	}
-	if r.rodneyStringLiteral != "" {
-		return visitor.VisitRodneyStringLiteral(r.rodneyStringLiteral)
-	}
-	if r.rohanStringLiteral != "" {
-		return visitor.VisitRohanStringLiteral(r.rohanStringLiteral)
-	}
-	if r.roscoStringLiteral != "" {
-		return visitor.VisitRoscoStringLiteral(r.roscoStringLiteral)
-	}
-	if r.samanthaStringLiteral != "" {
-		return visitor.VisitSamanthaStringLiteral(r.samanthaStringLiteral)
-	}
-	if r.sandyStringLiteral != "" {
-		return visitor.VisitSandyStringLiteral(r.sandyStringLiteral)
-	}
-	if r.selenaStringLiteral != "" {
-		return visitor.VisitSelenaStringLiteral(r.selenaStringLiteral)
-	}
-	if r.sethStringLiteral != "" {
-		return visitor.VisitSethStringLiteral(r.sethStringLiteral)
-	}
-	if r.sharonStringLiteral != "" {
-		return visitor.VisitSharonStringLiteral(r.sharonStringLiteral)
-	}
-	if r.stanStringLiteral != "" {
-		return visitor.VisitStanStringLiteral(r.stanStringLiteral)
-	}
-	if r.tamraStringLiteral != "" {
-		return visitor.VisitTamraStringLiteral(r.tamraStringLiteral)
-	}
-	if r.tanyaStringLiteral != "" {
-		return visitor.VisitTanyaStringLiteral(r.tanyaStringLiteral)
-	}
-	if r.tiburStringLiteral != "" {
-		return visitor.VisitTiburStringLiteral(r.tiburStringLiteral)
-	}
-	if r.tjStringLiteral != "" {
-		return visitor.VisitTjStringLiteral(r.tjStringLiteral)
-	}
-	if r.tylerStringLiteral != "" {
-		return visitor.VisitTylerStringLiteral(r.tylerStringLiteral)
-	}
-	if r.vivStringLiteral != "" {
-		return visitor.VisitVivStringLiteral(r.vivStringLiteral)
-	}
-	if r.yadiraStringLiteral != "" {
-		return visitor.VisitYadiraStringLiteral(r.yadiraStringLiteral)
-	}
-	if r.String != "" {
-		return visitor.VisitString(r.String)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", r)
 }
 
 type RuleBasedCondition struct {

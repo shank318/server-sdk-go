@@ -1,4 +1,4 @@
-module github.com/fern-demo/vapi-go-sdk
+module github.com/VapiAI/server-sdk-go
 
 go 1.18
 

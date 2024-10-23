@@ -4,9 +4,9 @@ package blocks
 
 import (
 	context "context"
-	vapigosdk "github.com/fern-demo/vapi-go-sdk"
-	core "github.com/fern-demo/vapi-go-sdk/core"
-	option "github.com/fern-demo/vapi-go-sdk/option"
+	serversdkgo "github.com/VapiAI/server-sdk-go"
+	core "github.com/VapiAI/server-sdk-go/core"
+	option "github.com/VapiAI/server-sdk-go/option"
 	http "net/http"
 )
 
@@ -32,9 +32,9 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) List(
 	ctx context.Context,
-	request *vapigosdk.BlocksListRequest,
+	request *serversdkgo.BlocksListRequest,
 	opts ...option.RequestOption,
-) ([]*vapigosdk.BlocksListResponseItem, error) {
+) ([]*serversdkgo.BlocksListResponseItem, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -56,7 +56,7 @@ func (c *Client) List(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response []*vapigosdk.BlocksListResponseItem
+	var response []*serversdkgo.BlocksListResponseItem
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -77,9 +77,9 @@ func (c *Client) List(
 
 func (c *Client) Create(
 	ctx context.Context,
-	request *vapigosdk.BlocksCreateRequest,
+	request *serversdkgo.BlocksCreateRequest,
 	opts ...option.RequestOption,
-) (*vapigosdk.BlocksCreateResponse, error) {
+) (*serversdkgo.BlocksCreateResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -94,7 +94,7 @@ func (c *Client) Create(
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	headers.Set("Content-Type", "application/json")
 
-	var response *vapigosdk.BlocksCreateResponse
+	var response *serversdkgo.BlocksCreateResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -118,7 +118,7 @@ func (c *Client) Get(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*vapigosdk.BlocksGetResponse, error) {
+) (*serversdkgo.BlocksGetResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -132,7 +132,7 @@ func (c *Client) Get(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response *vapigosdk.BlocksGetResponse
+	var response *serversdkgo.BlocksGetResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -155,7 +155,7 @@ func (c *Client) Delete(
 	ctx context.Context,
 	id string,
 	opts ...option.RequestOption,
-) (*vapigosdk.BlocksDeleteResponse, error) {
+) (*serversdkgo.BlocksDeleteResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -169,7 +169,7 @@ func (c *Client) Delete(
 
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 
-	var response *vapigosdk.BlocksDeleteResponse
+	var response *serversdkgo.BlocksDeleteResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{
@@ -191,9 +191,9 @@ func (c *Client) Delete(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *vapigosdk.UpdateBlockDto,
+	request *serversdkgo.UpdateBlockDto,
 	opts ...option.RequestOption,
-) (*vapigosdk.BlocksUpdateResponse, error) {
+) (*serversdkgo.BlocksUpdateResponse, error) {
 	options := core.NewRequestOptions(opts...)
 
 	baseURL := "https://api.vapi.ai"
@@ -208,7 +208,7 @@ func (c *Client) Update(
 	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
 	headers.Set("Content-Type", "application/json")
 
-	var response *vapigosdk.BlocksUpdateResponse
+	var response *serversdkgo.BlocksUpdateResponse
 	if err := c.caller.Call(
 		ctx,
 		&core.CallParams{

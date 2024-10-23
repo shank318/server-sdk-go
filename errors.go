@@ -4,7 +4,7 @@ package api
 
 import (
 	json "encoding/json"
-	core "github.com/fern-demo/vapi-go-sdk/core"
+	core "github.com/VapiAI/server-sdk-go/core"
 )
 
 // Invalid file

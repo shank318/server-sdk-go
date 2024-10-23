@@ -3,7 +3,7 @@
 package option
 
 import (
-	core "github.com/fern-demo/vapi-go-sdk/core"
+	core "github.com/VapiAI/server-sdk-go/core"
 	http "net/http"
 	url "net/url"
 )
