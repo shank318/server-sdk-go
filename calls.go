@@ -3,6 +3,9 @@
 package api
 
 import (
+	json "encoding/json"
+	fmt "fmt"
+	internal "github.com/VapiAI/server-sdk-go/internal"
 	time "time"
 )
 
@@ -38,8 +41,14 @@ type CreateCallDto struct {
 }
 
 type CallsListRequest struct {
+	// This is the unique identifier for the call.
+	Id *string `json:"-" url:"id,omitempty"`
 	// This will return calls with the specified assistantId.
 	AssistantId *string `json:"-" url:"assistantId,omitempty"`
+	// This is the phone number that will be used for the call. To use a transient number, use `phoneNumber` instead.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	PhoneNumberId *string `json:"-" url:"phoneNumberId,omitempty"`
 	// This is the maximum number of items to return. Defaults to 100.
 	Limit *float64 `json:"-" url:"limit,omitempty"`
 	// This will return items where the createdAt is greater than the specified value.
@@ -58,6 +67,3510 @@ type CallsListRequest struct {
 	UpdatedAtGe *time.Time `json:"-" url:"updatedAtGe,omitempty"`
 	// This will return items where the updatedAt is less than or equal to the specified value.
 	UpdatedAtLe *time.Time `json:"-" url:"updatedAtLe,omitempty"`
+}
+
+type Analysis struct {
+	// This is the summary of the call. Customize by setting `assistant.analysisPlan.summaryPrompt`.
+	Summary *string `json:"summary,omitempty" url:"summary,omitempty"`
+	// This is the structured data extracted from the call. Customize by setting `assistant.analysisPlan.structuredDataPrompt` and/or `assistant.analysisPlan.structuredDataSchema`.
+	StructuredData map[string]interface{} `json:"structuredData,omitempty" url:"structuredData,omitempty"`
+	// This is the evaluation of the call. Customize by setting `assistant.analysisPlan.successEvaluationPrompt` and/or `assistant.analysisPlan.successEvaluationRubric`.
+	SuccessEvaluation *string `json:"successEvaluation,omitempty" url:"successEvaluation,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *Analysis) GetSummary() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Summary
+}
+
+func (a *Analysis) GetStructuredData() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.StructuredData
+}
+
+func (a *Analysis) GetSuccessEvaluation() *string {
+	if a == nil {
+		return nil
+	}
+	return a.SuccessEvaluation
+}
+
+func (a *Analysis) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *Analysis) UnmarshalJSON(data []byte) error {
+	type unmarshaler Analysis
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = Analysis(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *Analysis) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type AnalysisCost struct {
+	// This is the type of cost, always 'analysis' for this class.
+	// This is the type of analysis performed.
+	AnalysisType AnalysisCostAnalysisType `json:"analysisType" url:"analysisType"`
+	// This is the model that was used to perform the analysis.
+	Model map[string]interface{} `json:"model,omitempty" url:"model,omitempty"`
+	// This is the number of prompt tokens used in the analysis.
+	PromptTokens float64 `json:"promptTokens" url:"promptTokens"`
+	// This is the number of completion tokens generated in the analysis.
+	CompletionTokens float64 `json:"completionTokens" url:"completionTokens"`
+	// This is the cost of the component in USD.
+	Cost  float64 `json:"cost" url:"cost"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AnalysisCost) GetAnalysisType() AnalysisCostAnalysisType {
+	if a == nil {
+		return ""
+	}
+	return a.AnalysisType
+}
+
+func (a *AnalysisCost) GetModel() map[string]interface{} {
+	if a == nil {
+		return nil
+	}
+	return a.Model
+}
+
+func (a *AnalysisCost) GetPromptTokens() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.PromptTokens
+}
+
+func (a *AnalysisCost) GetCompletionTokens() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.CompletionTokens
+}
+
+func (a *AnalysisCost) GetCost() float64 {
+	if a == nil {
+		return 0
+	}
+	return a.Cost
+}
+
+func (a *AnalysisCost) Type() string {
+	return a.type_
+}
+
+func (a *AnalysisCost) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AnalysisCost) UnmarshalJSON(data []byte) error {
+	type embed AnalysisCost
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*a = AnalysisCost(unmarshaler.embed)
+	if unmarshaler.Type != "analysis" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "analysis", unmarshaler.Type)
+	}
+	a.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *a, "type")
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AnalysisCost) MarshalJSON() ([]byte, error) {
+	type embed AnalysisCost
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*a),
+		Type:  "analysis",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (a *AnalysisCost) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// This is the type of analysis performed.
+type AnalysisCostAnalysisType string
+
+const (
+	AnalysisCostAnalysisTypeSummary           AnalysisCostAnalysisType = "summary"
+	AnalysisCostAnalysisTypeStructuredData    AnalysisCostAnalysisType = "structuredData"
+	AnalysisCostAnalysisTypeSuccessEvaluation AnalysisCostAnalysisType = "successEvaluation"
+)
+
+func NewAnalysisCostAnalysisTypeFromString(s string) (AnalysisCostAnalysisType, error) {
+	switch s {
+	case "summary":
+		return AnalysisCostAnalysisTypeSummary, nil
+	case "structuredData":
+		return AnalysisCostAnalysisTypeStructuredData, nil
+	case "successEvaluation":
+		return AnalysisCostAnalysisTypeSuccessEvaluation, nil
+	}
+	var t AnalysisCostAnalysisType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AnalysisCostAnalysisType) Ptr() *AnalysisCostAnalysisType {
+	return &a
+}
+
+type AnalysisCostBreakdown struct {
+	// This is the cost to summarize the call.
+	Summary *float64 `json:"summary,omitempty" url:"summary,omitempty"`
+	// This is the number of prompt tokens used to summarize the call.
+	SummaryPromptTokens *float64 `json:"summaryPromptTokens,omitempty" url:"summaryPromptTokens,omitempty"`
+	// This is the number of completion tokens used to summarize the call.
+	SummaryCompletionTokens *float64 `json:"summaryCompletionTokens,omitempty" url:"summaryCompletionTokens,omitempty"`
+	// This is the cost to extract structured data from the call.
+	StructuredData *float64 `json:"structuredData,omitempty" url:"structuredData,omitempty"`
+	// This is the number of prompt tokens used to extract structured data from the call.
+	StructuredDataPromptTokens *float64 `json:"structuredDataPromptTokens,omitempty" url:"structuredDataPromptTokens,omitempty"`
+	// This is the number of completion tokens used to extract structured data from the call.
+	StructuredDataCompletionTokens *float64 `json:"structuredDataCompletionTokens,omitempty" url:"structuredDataCompletionTokens,omitempty"`
+	// This is the cost to evaluate if the call was successful.
+	SuccessEvaluation *float64 `json:"successEvaluation,omitempty" url:"successEvaluation,omitempty"`
+	// This is the number of prompt tokens used to evaluate if the call was successful.
+	SuccessEvaluationPromptTokens *float64 `json:"successEvaluationPromptTokens,omitempty" url:"successEvaluationPromptTokens,omitempty"`
+	// This is the number of completion tokens used to evaluate if the call was successful.
+	SuccessEvaluationCompletionTokens *float64 `json:"successEvaluationCompletionTokens,omitempty" url:"successEvaluationCompletionTokens,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AnalysisCostBreakdown) GetSummary() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.Summary
+}
+
+func (a *AnalysisCostBreakdown) GetSummaryPromptTokens() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SummaryPromptTokens
+}
+
+func (a *AnalysisCostBreakdown) GetSummaryCompletionTokens() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SummaryCompletionTokens
+}
+
+func (a *AnalysisCostBreakdown) GetStructuredData() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.StructuredData
+}
+
+func (a *AnalysisCostBreakdown) GetStructuredDataPromptTokens() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.StructuredDataPromptTokens
+}
+
+func (a *AnalysisCostBreakdown) GetStructuredDataCompletionTokens() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.StructuredDataCompletionTokens
+}
+
+func (a *AnalysisCostBreakdown) GetSuccessEvaluation() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SuccessEvaluation
+}
+
+func (a *AnalysisCostBreakdown) GetSuccessEvaluationPromptTokens() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SuccessEvaluationPromptTokens
+}
+
+func (a *AnalysisCostBreakdown) GetSuccessEvaluationCompletionTokens() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.SuccessEvaluationCompletionTokens
+}
+
+func (a *AnalysisCostBreakdown) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AnalysisCostBreakdown) UnmarshalJSON(data []byte) error {
+	type unmarshaler AnalysisCostBreakdown
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = AnalysisCostBreakdown(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AnalysisCostBreakdown) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type Artifact struct {
+	// These are the messages that were spoken during the call.
+	Messages []*ArtifactMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// These are the messages that were spoken during the call, formatted for OpenAI.
+	MessagesOpenAiFormatted []*OpenAiMessage `json:"messagesOpenAIFormatted,omitempty" url:"messagesOpenAIFormatted,omitempty"`
+	// This is the recording url for the call. To enable, set `assistant.artifactPlan.recordingEnabled`.
+	RecordingUrl *string `json:"recordingUrl,omitempty" url:"recordingUrl,omitempty"`
+	// This is the stereo recording url for the call. To enable, set `assistant.artifactPlan.recordingEnabled`.
+	StereoRecordingUrl *string `json:"stereoRecordingUrl,omitempty" url:"stereoRecordingUrl,omitempty"`
+	// This is video recording url for the call. To enable, set `assistant.artifactPlan.videoRecordingEnabled`.
+	VideoRecordingUrl *string `json:"videoRecordingUrl,omitempty" url:"videoRecordingUrl,omitempty"`
+	// This is video recording start delay in ms. To enable, set `assistant.artifactPlan.videoRecordingEnabled`. This can be used to align the playback of the recording with artifact.messages timestamps.
+	VideoRecordingStartDelaySeconds *float64 `json:"videoRecordingStartDelaySeconds,omitempty" url:"videoRecordingStartDelaySeconds,omitempty"`
+	// This is the transcript of the call. This is derived from `artifact.messages` but provided for convenience.
+	Transcript *string `json:"transcript,omitempty" url:"transcript,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *Artifact) GetMessages() []*ArtifactMessagesItem {
+	if a == nil {
+		return nil
+	}
+	return a.Messages
+}
+
+func (a *Artifact) GetMessagesOpenAiFormatted() []*OpenAiMessage {
+	if a == nil {
+		return nil
+	}
+	return a.MessagesOpenAiFormatted
+}
+
+func (a *Artifact) GetRecordingUrl() *string {
+	if a == nil {
+		return nil
+	}
+	return a.RecordingUrl
+}
+
+func (a *Artifact) GetStereoRecordingUrl() *string {
+	if a == nil {
+		return nil
+	}
+	return a.StereoRecordingUrl
+}
+
+func (a *Artifact) GetVideoRecordingUrl() *string {
+	if a == nil {
+		return nil
+	}
+	return a.VideoRecordingUrl
+}
+
+func (a *Artifact) GetVideoRecordingStartDelaySeconds() *float64 {
+	if a == nil {
+		return nil
+	}
+	return a.VideoRecordingStartDelaySeconds
+}
+
+func (a *Artifact) GetTranscript() *string {
+	if a == nil {
+		return nil
+	}
+	return a.Transcript
+}
+
+func (a *Artifact) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *Artifact) UnmarshalJSON(data []byte) error {
+	type unmarshaler Artifact
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*a = Artifact(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *a)
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *Artifact) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+type ArtifactMessagesItem struct {
+	UserMessage           *UserMessage
+	SystemMessage         *SystemMessage
+	BotMessage            *BotMessage
+	ToolCallMessage       *ToolCallMessage
+	ToolCallResultMessage *ToolCallResultMessage
+
+	typ string
+}
+
+func (a *ArtifactMessagesItem) GetUserMessage() *UserMessage {
+	if a == nil {
+		return nil
+	}
+	return a.UserMessage
+}
+
+func (a *ArtifactMessagesItem) GetSystemMessage() *SystemMessage {
+	if a == nil {
+		return nil
+	}
+	return a.SystemMessage
+}
+
+func (a *ArtifactMessagesItem) GetBotMessage() *BotMessage {
+	if a == nil {
+		return nil
+	}
+	return a.BotMessage
+}
+
+func (a *ArtifactMessagesItem) GetToolCallMessage() *ToolCallMessage {
+	if a == nil {
+		return nil
+	}
+	return a.ToolCallMessage
+}
+
+func (a *ArtifactMessagesItem) GetToolCallResultMessage() *ToolCallResultMessage {
+	if a == nil {
+		return nil
+	}
+	return a.ToolCallResultMessage
+}
+
+func (a *ArtifactMessagesItem) UnmarshalJSON(data []byte) error {
+	valueUserMessage := new(UserMessage)
+	if err := json.Unmarshal(data, &valueUserMessage); err == nil {
+		a.typ = "UserMessage"
+		a.UserMessage = valueUserMessage
+		return nil
+	}
+	valueSystemMessage := new(SystemMessage)
+	if err := json.Unmarshal(data, &valueSystemMessage); err == nil {
+		a.typ = "SystemMessage"
+		a.SystemMessage = valueSystemMessage
+		return nil
+	}
+	valueBotMessage := new(BotMessage)
+	if err := json.Unmarshal(data, &valueBotMessage); err == nil {
+		a.typ = "BotMessage"
+		a.BotMessage = valueBotMessage
+		return nil
+	}
+	valueToolCallMessage := new(ToolCallMessage)
+	if err := json.Unmarshal(data, &valueToolCallMessage); err == nil {
+		a.typ = "ToolCallMessage"
+		a.ToolCallMessage = valueToolCallMessage
+		return nil
+	}
+	valueToolCallResultMessage := new(ToolCallResultMessage)
+	if err := json.Unmarshal(data, &valueToolCallResultMessage); err == nil {
+		a.typ = "ToolCallResultMessage"
+		a.ToolCallResultMessage = valueToolCallResultMessage
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
+}
+
+func (a ArtifactMessagesItem) MarshalJSON() ([]byte, error) {
+	if a.typ == "UserMessage" || a.UserMessage != nil {
+		return json.Marshal(a.UserMessage)
+	}
+	if a.typ == "SystemMessage" || a.SystemMessage != nil {
+		return json.Marshal(a.SystemMessage)
+	}
+	if a.typ == "BotMessage" || a.BotMessage != nil {
+		return json.Marshal(a.BotMessage)
+	}
+	if a.typ == "ToolCallMessage" || a.ToolCallMessage != nil {
+		return json.Marshal(a.ToolCallMessage)
+	}
+	if a.typ == "ToolCallResultMessage" || a.ToolCallResultMessage != nil {
+		return json.Marshal(a.ToolCallResultMessage)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type ArtifactMessagesItemVisitor interface {
+	VisitUserMessage(*UserMessage) error
+	VisitSystemMessage(*SystemMessage) error
+	VisitBotMessage(*BotMessage) error
+	VisitToolCallMessage(*ToolCallMessage) error
+	VisitToolCallResultMessage(*ToolCallResultMessage) error
+}
+
+func (a *ArtifactMessagesItem) Accept(visitor ArtifactMessagesItemVisitor) error {
+	if a.typ == "UserMessage" || a.UserMessage != nil {
+		return visitor.VisitUserMessage(a.UserMessage)
+	}
+	if a.typ == "SystemMessage" || a.SystemMessage != nil {
+		return visitor.VisitSystemMessage(a.SystemMessage)
+	}
+	if a.typ == "BotMessage" || a.BotMessage != nil {
+		return visitor.VisitBotMessage(a.BotMessage)
+	}
+	if a.typ == "ToolCallMessage" || a.ToolCallMessage != nil {
+		return visitor.VisitToolCallMessage(a.ToolCallMessage)
+	}
+	if a.typ == "ToolCallResultMessage" || a.ToolCallResultMessage != nil {
+		return visitor.VisitToolCallResultMessage(a.ToolCallResultMessage)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type BotMessage struct {
+	// The role of the bot in the conversation.
+	Role string `json:"role" url:"role"`
+	// The message content from the bot.
+	Message string `json:"message" url:"message"`
+	// The timestamp when the message was sent.
+	Time float64 `json:"time" url:"time"`
+	// The timestamp when the message ended.
+	EndTime float64 `json:"endTime" url:"endTime"`
+	// The number of seconds from the start of the conversation.
+	SecondsFromStart float64 `json:"secondsFromStart" url:"secondsFromStart"`
+	// The source of the message.
+	Source *string `json:"source,omitempty" url:"source,omitempty"`
+	// The duration of the message in seconds.
+	Duration *float64 `json:"duration,omitempty" url:"duration,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BotMessage) GetRole() string {
+	if b == nil {
+		return ""
+	}
+	return b.Role
+}
+
+func (b *BotMessage) GetMessage() string {
+	if b == nil {
+		return ""
+	}
+	return b.Message
+}
+
+func (b *BotMessage) GetTime() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.Time
+}
+
+func (b *BotMessage) GetEndTime() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.EndTime
+}
+
+func (b *BotMessage) GetSecondsFromStart() float64 {
+	if b == nil {
+		return 0
+	}
+	return b.SecondsFromStart
+}
+
+func (b *BotMessage) GetSource() *string {
+	if b == nil {
+		return nil
+	}
+	return b.Source
+}
+
+func (b *BotMessage) GetDuration() *float64 {
+	if b == nil {
+		return nil
+	}
+	return b.Duration
+}
+
+func (b *BotMessage) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BotMessage) UnmarshalJSON(data []byte) error {
+	type unmarshaler BotMessage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*b = BotMessage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *b)
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BotMessage) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type Call struct {
+	// This is the type of call.
+	Type *CallType `json:"type,omitempty" url:"type,omitempty"`
+	// These are the costs of individual components of the call in USD.
+	Costs    []*CallCostsItem    `json:"costs,omitempty" url:"costs,omitempty"`
+	Messages []*CallMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// This is the provider of the call.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	PhoneCallProvider *CallPhoneCallProvider `json:"phoneCallProvider,omitempty" url:"phoneCallProvider,omitempty"`
+	// This is the transport of the phone call.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	PhoneCallTransport *CallPhoneCallTransport `json:"phoneCallTransport,omitempty" url:"phoneCallTransport,omitempty"`
+	// This is the status of the call.
+	Status *CallStatus `json:"status,omitempty" url:"status,omitempty"`
+	// This is the explanation for how the call ended.
+	EndedReason *CallEndedReason `json:"endedReason,omitempty" url:"endedReason,omitempty"`
+	// This is the destination where the call ended up being transferred to. If the call was not transferred, this will be empty.
+	Destination *CallDestination `json:"destination,omitempty" url:"destination,omitempty"`
+	// This is the unique identifier for the call.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the org that this call belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the call was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the call was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the ISO 8601 date-time string of when the call was started.
+	StartedAt *time.Time `json:"startedAt,omitempty" url:"startedAt,omitempty"`
+	// This is the ISO 8601 date-time string of when the call was ended.
+	EndedAt *time.Time `json:"endedAt,omitempty" url:"endedAt,omitempty"`
+	// This is the cost of the call in USD.
+	Cost *float64 `json:"cost,omitempty" url:"cost,omitempty"`
+	// This is the cost of the call in USD.
+	CostBreakdown *CostBreakdown `json:"costBreakdown,omitempty" url:"costBreakdown,omitempty"`
+	// This is a copy of assistant artifact plan. This isn't actually stored on the call but rather just returned in POST /call/web to enable artifact creation client side.
+	ArtifactPlan *ArtifactPlan `json:"artifactPlan,omitempty" url:"artifactPlan,omitempty"`
+	// This is the analysis of the call. Configure in `assistant.analysisPlan`.
+	Analysis *Analysis `json:"analysis,omitempty" url:"analysis,omitempty"`
+	// This is to real-time monitor the call. Configure in `assistant.monitorPlan`.
+	Monitor *Monitor `json:"monitor,omitempty" url:"monitor,omitempty"`
+	// These are the artifacts created from the call. Configure in `assistant.artifactPlan`.
+	Artifact *Artifact `json:"artifact,omitempty" url:"artifact,omitempty"`
+	// This is the transport used for the call.
+	Transport *Transport `json:"transport,omitempty" url:"transport,omitempty"`
+	// The ID of the call as provided by the phone number service. callSid in Twilio. conversationUuid in Vonage.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	PhoneCallProviderId *string `json:"phoneCallProviderId,omitempty" url:"phoneCallProviderId,omitempty"`
+	// This is the assistant that will be used for the call. To use a transient assistant, use `assistant` instead.
+	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	// This is the assistant that will be used for the call. To use an existing assistant, use `assistantId` instead.
+	Assistant *CreateAssistantDto `json:"assistant,omitempty" url:"assistant,omitempty"`
+	// These are the overrides for the `assistant` or `assistantId`'s settings and template variables.
+	AssistantOverrides *AssistantOverrides `json:"assistantOverrides,omitempty" url:"assistantOverrides,omitempty"`
+	// This is the squad that will be used for the call. To use a transient squad, use `squad` instead.
+	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
+	// This is a squad that will be used for the call. To use an existing squad, use `squadId` instead.
+	Squad *CreateSquadDto `json:"squad,omitempty" url:"squad,omitempty"`
+	// This is the phone number that will be used for the call. To use a transient number, use `phoneNumber` instead.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	PhoneNumberId *string `json:"phoneNumberId,omitempty" url:"phoneNumberId,omitempty"`
+	// This is the phone number that will be used for the call. To use an existing number, use `phoneNumberId` instead.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	PhoneNumber *ImportTwilioPhoneNumberDto `json:"phoneNumber,omitempty" url:"phoneNumber,omitempty"`
+	// This is the customer that will be called. To call a transient customer , use `customer` instead.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	CustomerId *string `json:"customerId,omitempty" url:"customerId,omitempty"`
+	// This is the customer that will be called. To call an existing customer, use `customerId` instead.
+	//
+	// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+	Customer *CreateCustomerDto `json:"customer,omitempty" url:"customer,omitempty"`
+	// This is the name of the call. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *Call) GetType() *CallType {
+	if c == nil {
+		return nil
+	}
+	return c.Type
+}
+
+func (c *Call) GetCosts() []*CallCostsItem {
+	if c == nil {
+		return nil
+	}
+	return c.Costs
+}
+
+func (c *Call) GetMessages() []*CallMessagesItem {
+	if c == nil {
+		return nil
+	}
+	return c.Messages
+}
+
+func (c *Call) GetPhoneCallProvider() *CallPhoneCallProvider {
+	if c == nil {
+		return nil
+	}
+	return c.PhoneCallProvider
+}
+
+func (c *Call) GetPhoneCallTransport() *CallPhoneCallTransport {
+	if c == nil {
+		return nil
+	}
+	return c.PhoneCallTransport
+}
+
+func (c *Call) GetStatus() *CallStatus {
+	if c == nil {
+		return nil
+	}
+	return c.Status
+}
+
+func (c *Call) GetEndedReason() *CallEndedReason {
+	if c == nil {
+		return nil
+	}
+	return c.EndedReason
+}
+
+func (c *Call) GetDestination() *CallDestination {
+	if c == nil {
+		return nil
+	}
+	return c.Destination
+}
+
+func (c *Call) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *Call) GetOrgId() string {
+	if c == nil {
+		return ""
+	}
+	return c.OrgId
+}
+
+func (c *Call) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *Call) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *Call) GetStartedAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.StartedAt
+}
+
+func (c *Call) GetEndedAt() *time.Time {
+	if c == nil {
+		return nil
+	}
+	return c.EndedAt
+}
+
+func (c *Call) GetCost() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Cost
+}
+
+func (c *Call) GetCostBreakdown() *CostBreakdown {
+	if c == nil {
+		return nil
+	}
+	return c.CostBreakdown
+}
+
+func (c *Call) GetArtifactPlan() *ArtifactPlan {
+	if c == nil {
+		return nil
+	}
+	return c.ArtifactPlan
+}
+
+func (c *Call) GetAnalysis() *Analysis {
+	if c == nil {
+		return nil
+	}
+	return c.Analysis
+}
+
+func (c *Call) GetMonitor() *Monitor {
+	if c == nil {
+		return nil
+	}
+	return c.Monitor
+}
+
+func (c *Call) GetArtifact() *Artifact {
+	if c == nil {
+		return nil
+	}
+	return c.Artifact
+}
+
+func (c *Call) GetTransport() *Transport {
+	if c == nil {
+		return nil
+	}
+	return c.Transport
+}
+
+func (c *Call) GetPhoneCallProviderId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.PhoneCallProviderId
+}
+
+func (c *Call) GetAssistantId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AssistantId
+}
+
+func (c *Call) GetAssistant() *CreateAssistantDto {
+	if c == nil {
+		return nil
+	}
+	return c.Assistant
+}
+
+func (c *Call) GetAssistantOverrides() *AssistantOverrides {
+	if c == nil {
+		return nil
+	}
+	return c.AssistantOverrides
+}
+
+func (c *Call) GetSquadId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SquadId
+}
+
+func (c *Call) GetSquad() *CreateSquadDto {
+	if c == nil {
+		return nil
+	}
+	return c.Squad
+}
+
+func (c *Call) GetPhoneNumberId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.PhoneNumberId
+}
+
+func (c *Call) GetPhoneNumber() *ImportTwilioPhoneNumberDto {
+	if c == nil {
+		return nil
+	}
+	return c.PhoneNumber
+}
+
+func (c *Call) GetCustomerId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.CustomerId
+}
+
+func (c *Call) GetCustomer() *CreateCustomerDto {
+	if c == nil {
+		return nil
+	}
+	return c.Customer
+}
+
+func (c *Call) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *Call) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *Call) UnmarshalJSON(data []byte) error {
+	type embed Call
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		StartedAt *internal.DateTime `json:"startedAt,omitempty"`
+		EndedAt   *internal.DateTime `json:"endedAt,omitempty"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = Call(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	c.StartedAt = unmarshaler.StartedAt.TimePtr()
+	c.EndedAt = unmarshaler.EndedAt.TimePtr()
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *Call) MarshalJSON() ([]byte, error) {
+	type embed Call
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		StartedAt *internal.DateTime `json:"startedAt,omitempty"`
+		EndedAt   *internal.DateTime `json:"endedAt,omitempty"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
+		StartedAt: internal.NewOptionalDateTime(c.StartedAt),
+		EndedAt:   internal.NewOptionalDateTime(c.EndedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *Call) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CallCostsItem struct {
+	TransportCost   *TransportCost
+	TranscriberCost *TranscriberCost
+	ModelCost       *ModelCost
+	VoiceCost       *VoiceCost
+	VapiCost        *VapiCost
+	AnalysisCost    *AnalysisCost
+
+	typ string
+}
+
+func (c *CallCostsItem) GetTransportCost() *TransportCost {
+	if c == nil {
+		return nil
+	}
+	return c.TransportCost
+}
+
+func (c *CallCostsItem) GetTranscriberCost() *TranscriberCost {
+	if c == nil {
+		return nil
+	}
+	return c.TranscriberCost
+}
+
+func (c *CallCostsItem) GetModelCost() *ModelCost {
+	if c == nil {
+		return nil
+	}
+	return c.ModelCost
+}
+
+func (c *CallCostsItem) GetVoiceCost() *VoiceCost {
+	if c == nil {
+		return nil
+	}
+	return c.VoiceCost
+}
+
+func (c *CallCostsItem) GetVapiCost() *VapiCost {
+	if c == nil {
+		return nil
+	}
+	return c.VapiCost
+}
+
+func (c *CallCostsItem) GetAnalysisCost() *AnalysisCost {
+	if c == nil {
+		return nil
+	}
+	return c.AnalysisCost
+}
+
+func (c *CallCostsItem) UnmarshalJSON(data []byte) error {
+	valueTransportCost := new(TransportCost)
+	if err := json.Unmarshal(data, &valueTransportCost); err == nil {
+		c.typ = "TransportCost"
+		c.TransportCost = valueTransportCost
+		return nil
+	}
+	valueTranscriberCost := new(TranscriberCost)
+	if err := json.Unmarshal(data, &valueTranscriberCost); err == nil {
+		c.typ = "TranscriberCost"
+		c.TranscriberCost = valueTranscriberCost
+		return nil
+	}
+	valueModelCost := new(ModelCost)
+	if err := json.Unmarshal(data, &valueModelCost); err == nil {
+		c.typ = "ModelCost"
+		c.ModelCost = valueModelCost
+		return nil
+	}
+	valueVoiceCost := new(VoiceCost)
+	if err := json.Unmarshal(data, &valueVoiceCost); err == nil {
+		c.typ = "VoiceCost"
+		c.VoiceCost = valueVoiceCost
+		return nil
+	}
+	valueVapiCost := new(VapiCost)
+	if err := json.Unmarshal(data, &valueVapiCost); err == nil {
+		c.typ = "VapiCost"
+		c.VapiCost = valueVapiCost
+		return nil
+	}
+	valueAnalysisCost := new(AnalysisCost)
+	if err := json.Unmarshal(data, &valueAnalysisCost); err == nil {
+		c.typ = "AnalysisCost"
+		c.AnalysisCost = valueAnalysisCost
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CallCostsItem) MarshalJSON() ([]byte, error) {
+	if c.typ == "TransportCost" || c.TransportCost != nil {
+		return json.Marshal(c.TransportCost)
+	}
+	if c.typ == "TranscriberCost" || c.TranscriberCost != nil {
+		return json.Marshal(c.TranscriberCost)
+	}
+	if c.typ == "ModelCost" || c.ModelCost != nil {
+		return json.Marshal(c.ModelCost)
+	}
+	if c.typ == "VoiceCost" || c.VoiceCost != nil {
+		return json.Marshal(c.VoiceCost)
+	}
+	if c.typ == "VapiCost" || c.VapiCost != nil {
+		return json.Marshal(c.VapiCost)
+	}
+	if c.typ == "AnalysisCost" || c.AnalysisCost != nil {
+		return json.Marshal(c.AnalysisCost)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CallCostsItemVisitor interface {
+	VisitTransportCost(*TransportCost) error
+	VisitTranscriberCost(*TranscriberCost) error
+	VisitModelCost(*ModelCost) error
+	VisitVoiceCost(*VoiceCost) error
+	VisitVapiCost(*VapiCost) error
+	VisitAnalysisCost(*AnalysisCost) error
+}
+
+func (c *CallCostsItem) Accept(visitor CallCostsItemVisitor) error {
+	if c.typ == "TransportCost" || c.TransportCost != nil {
+		return visitor.VisitTransportCost(c.TransportCost)
+	}
+	if c.typ == "TranscriberCost" || c.TranscriberCost != nil {
+		return visitor.VisitTranscriberCost(c.TranscriberCost)
+	}
+	if c.typ == "ModelCost" || c.ModelCost != nil {
+		return visitor.VisitModelCost(c.ModelCost)
+	}
+	if c.typ == "VoiceCost" || c.VoiceCost != nil {
+		return visitor.VisitVoiceCost(c.VoiceCost)
+	}
+	if c.typ == "VapiCost" || c.VapiCost != nil {
+		return visitor.VisitVapiCost(c.VapiCost)
+	}
+	if c.typ == "AnalysisCost" || c.AnalysisCost != nil {
+		return visitor.VisitAnalysisCost(c.AnalysisCost)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// This is the destination where the call ended up being transferred to. If the call was not transferred, this will be empty.
+type CallDestination struct {
+	TransferDestinationNumber *TransferDestinationNumber
+	TransferDestinationSip    *TransferDestinationSip
+
+	typ string
+}
+
+func (c *CallDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
+	if c == nil {
+		return nil
+	}
+	return c.TransferDestinationNumber
+}
+
+func (c *CallDestination) GetTransferDestinationSip() *TransferDestinationSip {
+	if c == nil {
+		return nil
+	}
+	return c.TransferDestinationSip
+}
+
+func (c *CallDestination) UnmarshalJSON(data []byte) error {
+	valueTransferDestinationNumber := new(TransferDestinationNumber)
+	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
+		c.typ = "TransferDestinationNumber"
+		c.TransferDestinationNumber = valueTransferDestinationNumber
+		return nil
+	}
+	valueTransferDestinationSip := new(TransferDestinationSip)
+	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
+		c.typ = "TransferDestinationSip"
+		c.TransferDestinationSip = valueTransferDestinationSip
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CallDestination) MarshalJSON() ([]byte, error) {
+	if c.typ == "TransferDestinationNumber" || c.TransferDestinationNumber != nil {
+		return json.Marshal(c.TransferDestinationNumber)
+	}
+	if c.typ == "TransferDestinationSip" || c.TransferDestinationSip != nil {
+		return json.Marshal(c.TransferDestinationSip)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CallDestinationVisitor interface {
+	VisitTransferDestinationNumber(*TransferDestinationNumber) error
+	VisitTransferDestinationSip(*TransferDestinationSip) error
+}
+
+func (c *CallDestination) Accept(visitor CallDestinationVisitor) error {
+	if c.typ == "TransferDestinationNumber" || c.TransferDestinationNumber != nil {
+		return visitor.VisitTransferDestinationNumber(c.TransferDestinationNumber)
+	}
+	if c.typ == "TransferDestinationSip" || c.TransferDestinationSip != nil {
+		return visitor.VisitTransferDestinationSip(c.TransferDestinationSip)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// This is the explanation for how the call ended.
+type CallEndedReason string
+
+const (
+	CallEndedReasonPipelineErrorOpenaiVoiceFailed                                                             CallEndedReason = "pipeline-error-openai-voice-failed"
+	CallEndedReasonPipelineErrorCartesiaVoiceFailed                                                           CallEndedReason = "pipeline-error-cartesia-voice-failed"
+	CallEndedReasonPipelineErrorDeepgramVoiceFailed                                                           CallEndedReason = "pipeline-error-deepgram-voice-failed"
+	CallEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         CallEndedReason = "pipeline-error-eleven-labs-voice-failed"
+	CallEndedReasonPipelineErrorPlayhtVoiceFailed                                                             CallEndedReason = "pipeline-error-playht-voice-failed"
+	CallEndedReasonPipelineErrorLmntVoiceFailed                                                               CallEndedReason = "pipeline-error-lmnt-voice-failed"
+	CallEndedReasonPipelineErrorAzureVoiceFailed                                                              CallEndedReason = "pipeline-error-azure-voice-failed"
+	CallEndedReasonPipelineErrorRimeAiVoiceFailed                                                             CallEndedReason = "pipeline-error-rime-ai-voice-failed"
+	CallEndedReasonPipelineErrorNeetsVoiceFailed                                                              CallEndedReason = "pipeline-error-neets-voice-failed"
+	CallEndedReasonDbError                                                                                    CallEndedReason = "db-error"
+	CallEndedReasonAssistantNotFound                                                                          CallEndedReason = "assistant-not-found"
+	CallEndedReasonLicenseCheckFailed                                                                         CallEndedReason = "license-check-failed"
+	CallEndedReasonPipelineErrorVapiLlmFailed                                                                 CallEndedReason = "pipeline-error-vapi-llm-failed"
+	CallEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             CallEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorVapi401Unauthorized                                                           CallEndedReason = "pipeline-error-vapi-401-unauthorized"
+	CallEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      CallEndedReason = "pipeline-error-vapi-403-model-access-denied"
+	CallEndedReasonPipelineErrorVapi429ExceededQuota                                                          CallEndedReason = "pipeline-error-vapi-429-exceeded-quota"
+	CallEndedReasonPipelineErrorVapi500ServerError                                                            CallEndedReason = "pipeline-error-vapi-500-server-error"
+	CallEndedReasonPipelineNoAvailableModel                                                                   CallEndedReason = "pipeline-no-available-model"
+	CallEndedReasonWorkerShutdown                                                                             CallEndedReason = "worker-shutdown"
+	CallEndedReasonUnknownError                                                                               CallEndedReason = "unknown-error"
+	CallEndedReasonVonageDisconnected                                                                         CallEndedReason = "vonage-disconnected"
+	CallEndedReasonVonageFailedToConnectCall                                                                  CallEndedReason = "vonage-failed-to-connect-call"
+	CallEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            CallEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
+	CallEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   CallEndedReason = "vapifault-phone-call-worker-setup-socket-error"
+	CallEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           CallEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
+	CallEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   CallEndedReason = "vapifault-phone-call-worker-could-not-find-call"
+	CallEndedReasonVapifaultTransportNeverConnected                                                           CallEndedReason = "vapifault-transport-never-connected"
+	CallEndedReasonVapifaultWebCallWorkerSetupFailed                                                          CallEndedReason = "vapifault-web-call-worker-setup-failed"
+	CallEndedReasonVapifaultTransportConnectedButCallNotActive                                                CallEndedReason = "vapifault-transport-connected-but-call-not-active"
+	CallEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        CallEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
+	CallEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     CallEndedReason = "pipeline-error-deepgram-transcriber-failed"
+	CallEndedReasonPipelineErrorGladiaTranscriberFailed                                                       CallEndedReason = "pipeline-error-gladia-transcriber-failed"
+	CallEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   CallEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
+	CallEndedReasonPipelineErrorOpenaiLlmFailed                                                               CallEndedReason = "pipeline-error-openai-llm-failed"
+	CallEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          CallEndedReason = "pipeline-error-azure-openai-llm-failed"
+	CallEndedReasonPipelineErrorGroqLlmFailed                                                                 CallEndedReason = "pipeline-error-groq-llm-failed"
+	CallEndedReasonPipelineErrorGoogleLlmFailed                                                               CallEndedReason = "pipeline-error-google-llm-failed"
+	CallEndedReasonPipelineErrorXaiLlmFailed                                                                  CallEndedReason = "pipeline-error-xai-llm-failed"
+	CallEndedReasonPipelineErrorInflectionAiLlmFailed                                                         CallEndedReason = "pipeline-error-inflection-ai-llm-failed"
+	CallEndedReasonAssistantNotInvalid                                                                        CallEndedReason = "assistant-not-invalid"
+	CallEndedReasonAssistantNotProvided                                                                       CallEndedReason = "assistant-not-provided"
+	CallEndedReasonCallStartErrorNeitherAssistantNorServerSet                                                 CallEndedReason = "call-start-error-neither-assistant-nor-server-set"
+	CallEndedReasonAssistantRequestFailed                                                                     CallEndedReason = "assistant-request-failed"
+	CallEndedReasonAssistantRequestReturnedError                                                              CallEndedReason = "assistant-request-returned-error"
+	CallEndedReasonAssistantRequestReturnedUnspeakableError                                                   CallEndedReason = "assistant-request-returned-unspeakable-error"
+	CallEndedReasonAssistantRequestReturnedInvalidAssistant                                                   CallEndedReason = "assistant-request-returned-invalid-assistant"
+	CallEndedReasonAssistantRequestReturnedNoAssistant                                                        CallEndedReason = "assistant-request-returned-no-assistant"
+	CallEndedReasonAssistantRequestReturnedForwardingPhoneNumber                                              CallEndedReason = "assistant-request-returned-forwarding-phone-number"
+	CallEndedReasonAssistantEndedCall                                                                         CallEndedReason = "assistant-ended-call"
+	CallEndedReasonAssistantSaidEndCallPhrase                                                                 CallEndedReason = "assistant-said-end-call-phrase"
+	CallEndedReasonAssistantForwardedCall                                                                     CallEndedReason = "assistant-forwarded-call"
+	CallEndedReasonAssistantJoinTimedOut                                                                      CallEndedReason = "assistant-join-timed-out"
+	CallEndedReasonCustomerBusy                                                                               CallEndedReason = "customer-busy"
+	CallEndedReasonCustomerEndedCall                                                                          CallEndedReason = "customer-ended-call"
+	CallEndedReasonCustomerDidNotAnswer                                                                       CallEndedReason = "customer-did-not-answer"
+	CallEndedReasonCustomerDidNotGiveMicrophonePermission                                                     CallEndedReason = "customer-did-not-give-microphone-permission"
+	CallEndedReasonAssistantSaidMessageWithEndCallEnabled                                                     CallEndedReason = "assistant-said-message-with-end-call-enabled"
+	CallEndedReasonExceededMaxDuration                                                                        CallEndedReason = "exceeded-max-duration"
+	CallEndedReasonManuallyCanceled                                                                           CallEndedReason = "manually-canceled"
+	CallEndedReasonPhoneCallProviderClosedWebsocket                                                           CallEndedReason = "phone-call-provider-closed-websocket"
+	CallEndedReasonPipelineErrorOpenai400BadRequestValidationFailed                                           CallEndedReason = "pipeline-error-openai-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorOpenai401Unauthorized                                                         CallEndedReason = "pipeline-error-openai-401-unauthorized"
+	CallEndedReasonPipelineErrorOpenai403ModelAccessDenied                                                    CallEndedReason = "pipeline-error-openai-403-model-access-denied"
+	CallEndedReasonPipelineErrorOpenai429ExceededQuota                                                        CallEndedReason = "pipeline-error-openai-429-exceeded-quota"
+	CallEndedReasonPipelineErrorOpenai500ServerError                                                          CallEndedReason = "pipeline-error-openai-500-server-error"
+	CallEndedReasonPipelineErrorGoogle400BadRequestValidationFailed                                           CallEndedReason = "pipeline-error-google-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorGoogle401Unauthorized                                                         CallEndedReason = "pipeline-error-google-401-unauthorized"
+	CallEndedReasonPipelineErrorGoogle403ModelAccessDenied                                                    CallEndedReason = "pipeline-error-google-403-model-access-denied"
+	CallEndedReasonPipelineErrorGoogle429ExceededQuota                                                        CallEndedReason = "pipeline-error-google-429-exceeded-quota"
+	CallEndedReasonPipelineErrorGoogle500ServerError                                                          CallEndedReason = "pipeline-error-google-500-server-error"
+	CallEndedReasonPipelineErrorXai400BadRequestValidationFailed                                              CallEndedReason = "pipeline-error-xai-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorXai401Unauthorized                                                            CallEndedReason = "pipeline-error-xai-401-unauthorized"
+	CallEndedReasonPipelineErrorXai403ModelAccessDenied                                                       CallEndedReason = "pipeline-error-xai-403-model-access-denied"
+	CallEndedReasonPipelineErrorXai429ExceededQuota                                                           CallEndedReason = "pipeline-error-xai-429-exceeded-quota"
+	CallEndedReasonPipelineErrorXai500ServerError                                                             CallEndedReason = "pipeline-error-xai-500-server-error"
+	CallEndedReasonPipelineErrorInflectionAi400BadRequestValidationFailed                                     CallEndedReason = "pipeline-error-inflection-ai-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorInflectionAi401Unauthorized                                                   CallEndedReason = "pipeline-error-inflection-ai-401-unauthorized"
+	CallEndedReasonPipelineErrorInflectionAi403ModelAccessDenied                                              CallEndedReason = "pipeline-error-inflection-ai-403-model-access-denied"
+	CallEndedReasonPipelineErrorInflectionAi429ExceededQuota                                                  CallEndedReason = "pipeline-error-inflection-ai-429-exceeded-quota"
+	CallEndedReasonPipelineErrorInflectionAi500ServerError                                                    CallEndedReason = "pipeline-error-inflection-ai-500-server-error"
+	CallEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed                                      CallEndedReason = "pipeline-error-azure-openai-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorAzureOpenai401Unauthorized                                                    CallEndedReason = "pipeline-error-azure-openai-401-unauthorized"
+	CallEndedReasonPipelineErrorAzureOpenai403ModelAccessDenied                                               CallEndedReason = "pipeline-error-azure-openai-403-model-access-denied"
+	CallEndedReasonPipelineErrorAzureOpenai429ExceededQuota                                                   CallEndedReason = "pipeline-error-azure-openai-429-exceeded-quota"
+	CallEndedReasonPipelineErrorAzureOpenai500ServerError                                                     CallEndedReason = "pipeline-error-azure-openai-500-server-error"
+	CallEndedReasonPipelineErrorGroq400BadRequestValidationFailed                                             CallEndedReason = "pipeline-error-groq-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorGroq401Unauthorized                                                           CallEndedReason = "pipeline-error-groq-401-unauthorized"
+	CallEndedReasonPipelineErrorGroq403ModelAccessDenied                                                      CallEndedReason = "pipeline-error-groq-403-model-access-denied"
+	CallEndedReasonPipelineErrorGroq429ExceededQuota                                                          CallEndedReason = "pipeline-error-groq-429-exceeded-quota"
+	CallEndedReasonPipelineErrorGroq500ServerError                                                            CallEndedReason = "pipeline-error-groq-500-server-error"
+	CallEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed                                        CallEndedReason = "pipeline-error-anthropic-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorAnthropic401Unauthorized                                                      CallEndedReason = "pipeline-error-anthropic-401-unauthorized"
+	CallEndedReasonPipelineErrorAnthropic403ModelAccessDenied                                                 CallEndedReason = "pipeline-error-anthropic-403-model-access-denied"
+	CallEndedReasonPipelineErrorAnthropic429ExceededQuota                                                     CallEndedReason = "pipeline-error-anthropic-429-exceeded-quota"
+	CallEndedReasonPipelineErrorAnthropic500ServerError                                                       CallEndedReason = "pipeline-error-anthropic-500-server-error"
+	CallEndedReasonPipelineErrorAnthropicLlmFailed                                                            CallEndedReason = "pipeline-error-anthropic-llm-failed"
+	CallEndedReasonPipelineErrorTogetherAi400BadRequestValidationFailed                                       CallEndedReason = "pipeline-error-together-ai-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorTogetherAi401Unauthorized                                                     CallEndedReason = "pipeline-error-together-ai-401-unauthorized"
+	CallEndedReasonPipelineErrorTogetherAi403ModelAccessDenied                                                CallEndedReason = "pipeline-error-together-ai-403-model-access-denied"
+	CallEndedReasonPipelineErrorTogetherAi429ExceededQuota                                                    CallEndedReason = "pipeline-error-together-ai-429-exceeded-quota"
+	CallEndedReasonPipelineErrorTogetherAi500ServerError                                                      CallEndedReason = "pipeline-error-together-ai-500-server-error"
+	CallEndedReasonPipelineErrorTogetherAiLlmFailed                                                           CallEndedReason = "pipeline-error-together-ai-llm-failed"
+	CallEndedReasonPipelineErrorAnyscale400BadRequestValidationFailed                                         CallEndedReason = "pipeline-error-anyscale-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorAnyscale401Unauthorized                                                       CallEndedReason = "pipeline-error-anyscale-401-unauthorized"
+	CallEndedReasonPipelineErrorAnyscale403ModelAccessDenied                                                  CallEndedReason = "pipeline-error-anyscale-403-model-access-denied"
+	CallEndedReasonPipelineErrorAnyscale429ExceededQuota                                                      CallEndedReason = "pipeline-error-anyscale-429-exceeded-quota"
+	CallEndedReasonPipelineErrorAnyscale500ServerError                                                        CallEndedReason = "pipeline-error-anyscale-500-server-error"
+	CallEndedReasonPipelineErrorAnyscaleLlmFailed                                                             CallEndedReason = "pipeline-error-anyscale-llm-failed"
+	CallEndedReasonPipelineErrorOpenrouter400BadRequestValidationFailed                                       CallEndedReason = "pipeline-error-openrouter-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorOpenrouter401Unauthorized                                                     CallEndedReason = "pipeline-error-openrouter-401-unauthorized"
+	CallEndedReasonPipelineErrorOpenrouter403ModelAccessDenied                                                CallEndedReason = "pipeline-error-openrouter-403-model-access-denied"
+	CallEndedReasonPipelineErrorOpenrouter429ExceededQuota                                                    CallEndedReason = "pipeline-error-openrouter-429-exceeded-quota"
+	CallEndedReasonPipelineErrorOpenrouter500ServerError                                                      CallEndedReason = "pipeline-error-openrouter-500-server-error"
+	CallEndedReasonPipelineErrorOpenrouterLlmFailed                                                           CallEndedReason = "pipeline-error-openrouter-llm-failed"
+	CallEndedReasonPipelineErrorPerplexityAi400BadRequestValidationFailed                                     CallEndedReason = "pipeline-error-perplexity-ai-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorPerplexityAi401Unauthorized                                                   CallEndedReason = "pipeline-error-perplexity-ai-401-unauthorized"
+	CallEndedReasonPipelineErrorPerplexityAi403ModelAccessDenied                                              CallEndedReason = "pipeline-error-perplexity-ai-403-model-access-denied"
+	CallEndedReasonPipelineErrorPerplexityAi429ExceededQuota                                                  CallEndedReason = "pipeline-error-perplexity-ai-429-exceeded-quota"
+	CallEndedReasonPipelineErrorPerplexityAi500ServerError                                                    CallEndedReason = "pipeline-error-perplexity-ai-500-server-error"
+	CallEndedReasonPipelineErrorPerplexityAiLlmFailed                                                         CallEndedReason = "pipeline-error-perplexity-ai-llm-failed"
+	CallEndedReasonPipelineErrorDeepinfra400BadRequestValidationFailed                                        CallEndedReason = "pipeline-error-deepinfra-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorDeepinfra401Unauthorized                                                      CallEndedReason = "pipeline-error-deepinfra-401-unauthorized"
+	CallEndedReasonPipelineErrorDeepinfra403ModelAccessDenied                                                 CallEndedReason = "pipeline-error-deepinfra-403-model-access-denied"
+	CallEndedReasonPipelineErrorDeepinfra429ExceededQuota                                                     CallEndedReason = "pipeline-error-deepinfra-429-exceeded-quota"
+	CallEndedReasonPipelineErrorDeepinfra500ServerError                                                       CallEndedReason = "pipeline-error-deepinfra-500-server-error"
+	CallEndedReasonPipelineErrorDeepinfraLlmFailed                                                            CallEndedReason = "pipeline-error-deepinfra-llm-failed"
+	CallEndedReasonPipelineErrorRunpod400BadRequestValidationFailed                                           CallEndedReason = "pipeline-error-runpod-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorRunpod401Unauthorized                                                         CallEndedReason = "pipeline-error-runpod-401-unauthorized"
+	CallEndedReasonPipelineErrorRunpod403ModelAccessDenied                                                    CallEndedReason = "pipeline-error-runpod-403-model-access-denied"
+	CallEndedReasonPipelineErrorRunpod429ExceededQuota                                                        CallEndedReason = "pipeline-error-runpod-429-exceeded-quota"
+	CallEndedReasonPipelineErrorRunpod500ServerError                                                          CallEndedReason = "pipeline-error-runpod-500-server-error"
+	CallEndedReasonPipelineErrorRunpodLlmFailed                                                               CallEndedReason = "pipeline-error-runpod-llm-failed"
+	CallEndedReasonPipelineErrorCustomLlm400BadRequestValidationFailed                                        CallEndedReason = "pipeline-error-custom-llm-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorCustomLlm401Unauthorized                                                      CallEndedReason = "pipeline-error-custom-llm-401-unauthorized"
+	CallEndedReasonPipelineErrorCustomLlm403ModelAccessDenied                                                 CallEndedReason = "pipeline-error-custom-llm-403-model-access-denied"
+	CallEndedReasonPipelineErrorCustomLlm429ExceededQuota                                                     CallEndedReason = "pipeline-error-custom-llm-429-exceeded-quota"
+	CallEndedReasonPipelineErrorCustomLlm500ServerError                                                       CallEndedReason = "pipeline-error-custom-llm-500-server-error"
+	CallEndedReasonPipelineErrorCustomLlmLlmFailed                                                            CallEndedReason = "pipeline-error-custom-llm-llm-failed"
+	CallEndedReasonPipelineErrorCustomVoiceFailed                                                             CallEndedReason = "pipeline-error-custom-voice-failed"
+	CallEndedReasonPipelineErrorCartesiaSocketHangUp                                                          CallEndedReason = "pipeline-error-cartesia-socket-hang-up"
+	CallEndedReasonPipelineErrorCartesiaRequestedPayment                                                      CallEndedReason = "pipeline-error-cartesia-requested-payment"
+	CallEndedReasonPipelineErrorCartesia500ServerError                                                        CallEndedReason = "pipeline-error-cartesia-500-server-error"
+	CallEndedReasonPipelineErrorCartesia503ServerError                                                        CallEndedReason = "pipeline-error-cartesia-503-server-error"
+	CallEndedReasonPipelineErrorCartesia522ServerError                                                        CallEndedReason = "pipeline-error-cartesia-522-server-error"
+	CallEndedReasonPipelineErrorElevenLabsVoiceNotFound                                                       CallEndedReason = "pipeline-error-eleven-labs-voice-not-found"
+	CallEndedReasonPipelineErrorElevenLabsQuotaExceeded                                                       CallEndedReason = "pipeline-error-eleven-labs-quota-exceeded"
+	CallEndedReasonPipelineErrorElevenLabsUnauthorizedAccess                                                  CallEndedReason = "pipeline-error-eleven-labs-unauthorized-access"
+	CallEndedReasonPipelineErrorElevenLabsUnauthorizedToAccessModel                                           CallEndedReason = "pipeline-error-eleven-labs-unauthorized-to-access-model"
+	CallEndedReasonPipelineErrorElevenLabsProfessionalVoicesOnlyForCreatorPlus                                CallEndedReason = "pipeline-error-eleven-labs-professional-voices-only-for-creator-plus"
+	CallEndedReasonPipelineErrorElevenLabsBlockedFreePlanAndRequestedUpgrade                                  CallEndedReason = "pipeline-error-eleven-labs-blocked-free-plan-and-requested-upgrade"
+	CallEndedReasonPipelineErrorElevenLabsBlockedConcurrentRequestsAndRequestedUpgrade                        CallEndedReason = "pipeline-error-eleven-labs-blocked-concurrent-requests-and-requested-upgrade"
+	CallEndedReasonPipelineErrorElevenLabsBlockedUsingInstantVoiceCloneAndRequestedUpgrade                    CallEndedReason = "pipeline-error-eleven-labs-blocked-using-instant-voice-clone-and-requested-upgrade"
+	CallEndedReasonPipelineErrorElevenLabsSystemBusyAndRequestedUpgrade                                       CallEndedReason = "pipeline-error-eleven-labs-system-busy-and-requested-upgrade"
+	CallEndedReasonPipelineErrorElevenLabsVoiceNotFineTuned                                                   CallEndedReason = "pipeline-error-eleven-labs-voice-not-fine-tuned"
+	CallEndedReasonPipelineErrorElevenLabsInvalidApiKey                                                       CallEndedReason = "pipeline-error-eleven-labs-invalid-api-key"
+	CallEndedReasonPipelineErrorElevenLabsInvalidVoiceSamples                                                 CallEndedReason = "pipeline-error-eleven-labs-invalid-voice-samples"
+	CallEndedReasonPipelineErrorElevenLabsVoiceDisabledByOwner                                                CallEndedReason = "pipeline-error-eleven-labs-voice-disabled-by-owner"
+	CallEndedReasonPipelineErrorElevenLabsBlockedAccountInProbation                                           CallEndedReason = "pipeline-error-eleven-labs-blocked-account-in-probation"
+	CallEndedReasonPipelineErrorElevenLabsBlockedContentAgainstTheirPolicy                                    CallEndedReason = "pipeline-error-eleven-labs-blocked-content-against-their-policy"
+	CallEndedReasonPipelineErrorElevenLabsMissingSamplesForVoiceClone                                         CallEndedReason = "pipeline-error-eleven-labs-missing-samples-for-voice-clone"
+	CallEndedReasonPipelineErrorElevenLabsVoiceNotFineTunedAndCannotBeUsed                                    CallEndedReason = "pipeline-error-eleven-labs-voice-not-fine-tuned-and-cannot-be-used"
+	CallEndedReasonPipelineErrorElevenLabsVoiceNotAllowedForFreeUsers                                         CallEndedReason = "pipeline-error-eleven-labs-voice-not-allowed-for-free-users"
+	CallEndedReasonPipelineErrorElevenLabs500ServerError                                                      CallEndedReason = "pipeline-error-eleven-labs-500-server-error"
+	CallEndedReasonPipelineErrorElevenLabsMaxCharacterLimitExceeded                                           CallEndedReason = "pipeline-error-eleven-labs-max-character-limit-exceeded"
+	CallEndedReasonPipelineErrorElevenLabsBlockedVoicePotentiallyAgainstTermsOfServiceAndAwaitingVerification CallEndedReason = "pipeline-error-eleven-labs-blocked-voice-potentially-against-terms-of-service-and-awaiting-verification"
+	CallEndedReasonPipelineErrorPlayhtRequestTimedOut                                                         CallEndedReason = "pipeline-error-playht-request-timed-out"
+	CallEndedReasonPipelineErrorPlayhtInvalidVoice                                                            CallEndedReason = "pipeline-error-playht-invalid-voice"
+	CallEndedReasonPipelineErrorPlayhtUnexpectedError                                                         CallEndedReason = "pipeline-error-playht-unexpected-error"
+	CallEndedReasonPipelineErrorPlayhtOutOfCredits                                                            CallEndedReason = "pipeline-error-playht-out-of-credits"
+	CallEndedReasonPipelineErrorPlayhtInvalidEmotion                                                          CallEndedReason = "pipeline-error-playht-invalid-emotion"
+	CallEndedReasonPipelineErrorPlayhtVoiceMustBeAValidVoiceManifestUri                                       CallEndedReason = "pipeline-error-playht-voice-must-be-a-valid-voice-manifest-uri"
+	CallEndedReasonPipelineErrorPlayht401Unauthorized                                                         CallEndedReason = "pipeline-error-playht-401-unauthorized"
+	CallEndedReasonPipelineErrorPlayht403ForbiddenOutOfCharacters                                             CallEndedReason = "pipeline-error-playht-403-forbidden-out-of-characters"
+	CallEndedReasonPipelineErrorPlayht403ForbiddenApiAccessNotAvailable                                       CallEndedReason = "pipeline-error-playht-403-forbidden-api-access-not-available"
+	CallEndedReasonPipelineErrorPlayht429ExceededQuota                                                        CallEndedReason = "pipeline-error-playht-429-exceeded-quota"
+	CallEndedReasonPipelineErrorPlayht502GatewayError                                                         CallEndedReason = "pipeline-error-playht-502-gateway-error"
+	CallEndedReasonPipelineErrorPlayht504GatewayError                                                         CallEndedReason = "pipeline-error-playht-504-gateway-error"
+	CallEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied                                         CallEndedReason = "pipeline-error-deepgram-returning-403-model-access-denied"
+	CallEndedReasonPipelineErrorDeepgramReturning401InvalidCredentials                                        CallEndedReason = "pipeline-error-deepgram-returning-401-invalid-credentials"
+	CallEndedReasonPipelineErrorDeepgramReturning404NotFound                                                  CallEndedReason = "pipeline-error-deepgram-returning-404-not-found"
+	CallEndedReasonPipelineErrorDeepgramReturning400NoSuchModelLanguageTierCombination                        CallEndedReason = "pipeline-error-deepgram-returning-400-no-such-model-language-tier-combination"
+	CallEndedReasonPipelineErrorDeepgramReturning500InvalidJson                                               CallEndedReason = "pipeline-error-deepgram-returning-500-invalid-json"
+	CallEndedReasonPipelineErrorDeepgramReturning502NetworkError                                              CallEndedReason = "pipeline-error-deepgram-returning-502-network-error"
+	CallEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach                                    CallEndedReason = "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach"
+	CallEndedReasonPipelineErrorTavusVideoFailed                                                              CallEndedReason = "pipeline-error-tavus-video-failed"
+	CallEndedReasonPipelineErrorCustomTranscriberFailed                                                       CallEndedReason = "pipeline-error-custom-transcriber-failed"
+	CallEndedReasonSilenceTimedOut                                                                            CallEndedReason = "silence-timed-out"
+	CallEndedReasonSipGatewayFailedToConnectCall                                                              CallEndedReason = "sip-gateway-failed-to-connect-call"
+	CallEndedReasonTwilioFailedToConnectCall                                                                  CallEndedReason = "twilio-failed-to-connect-call"
+	CallEndedReasonTwilioReportedCustomerMisdialed                                                            CallEndedReason = "twilio-reported-customer-misdialed"
+	CallEndedReasonVonageRejected                                                                             CallEndedReason = "vonage-rejected"
+	CallEndedReasonVoicemail                                                                                  CallEndedReason = "voicemail"
+)
+
+func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
+	switch s {
+	case "pipeline-error-openai-voice-failed":
+		return CallEndedReasonPipelineErrorOpenaiVoiceFailed, nil
+	case "pipeline-error-cartesia-voice-failed":
+		return CallEndedReasonPipelineErrorCartesiaVoiceFailed, nil
+	case "pipeline-error-deepgram-voice-failed":
+		return CallEndedReasonPipelineErrorDeepgramVoiceFailed, nil
+	case "pipeline-error-eleven-labs-voice-failed":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
+	case "pipeline-error-playht-voice-failed":
+		return CallEndedReasonPipelineErrorPlayhtVoiceFailed, nil
+	case "pipeline-error-lmnt-voice-failed":
+		return CallEndedReasonPipelineErrorLmntVoiceFailed, nil
+	case "pipeline-error-azure-voice-failed":
+		return CallEndedReasonPipelineErrorAzureVoiceFailed, nil
+	case "pipeline-error-rime-ai-voice-failed":
+		return CallEndedReasonPipelineErrorRimeAiVoiceFailed, nil
+	case "pipeline-error-neets-voice-failed":
+		return CallEndedReasonPipelineErrorNeetsVoiceFailed, nil
+	case "db-error":
+		return CallEndedReasonDbError, nil
+	case "assistant-not-found":
+		return CallEndedReasonAssistantNotFound, nil
+	case "license-check-failed":
+		return CallEndedReasonLicenseCheckFailed, nil
+	case "pipeline-error-vapi-llm-failed":
+		return CallEndedReasonPipelineErrorVapiLlmFailed, nil
+	case "pipeline-error-vapi-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
+	case "pipeline-error-vapi-401-unauthorized":
+		return CallEndedReasonPipelineErrorVapi401Unauthorized, nil
+	case "pipeline-error-vapi-403-model-access-denied":
+		return CallEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
+	case "pipeline-error-vapi-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorVapi429ExceededQuota, nil
+	case "pipeline-error-vapi-500-server-error":
+		return CallEndedReasonPipelineErrorVapi500ServerError, nil
+	case "pipeline-no-available-model":
+		return CallEndedReasonPipelineNoAvailableModel, nil
+	case "worker-shutdown":
+		return CallEndedReasonWorkerShutdown, nil
+	case "unknown-error":
+		return CallEndedReasonUnknownError, nil
+	case "vonage-disconnected":
+		return CallEndedReasonVonageDisconnected, nil
+	case "vonage-failed-to-connect-call":
+		return CallEndedReasonVonageFailedToConnectCall, nil
+	case "phone-call-provider-bypass-enabled-but-no-call-received":
+		return CallEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
+	case "vapifault-phone-call-worker-setup-socket-error":
+		return CallEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
+	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
+		return CallEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
+	case "vapifault-phone-call-worker-could-not-find-call":
+		return CallEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
+	case "vapifault-transport-never-connected":
+		return CallEndedReasonVapifaultTransportNeverConnected, nil
+	case "vapifault-web-call-worker-setup-failed":
+		return CallEndedReasonVapifaultWebCallWorkerSetupFailed, nil
+	case "vapifault-transport-connected-but-call-not-active":
+		return CallEndedReasonVapifaultTransportConnectedButCallNotActive, nil
+	case "vapifault-call-started-but-connection-to-transport-missing":
+		return CallEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
+	case "pipeline-error-deepgram-transcriber-failed":
+		return CallEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
+	case "pipeline-error-gladia-transcriber-failed":
+		return CallEndedReasonPipelineErrorGladiaTranscriberFailed, nil
+	case "pipeline-error-assembly-ai-transcriber-failed":
+		return CallEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
+	case "pipeline-error-openai-llm-failed":
+		return CallEndedReasonPipelineErrorOpenaiLlmFailed, nil
+	case "pipeline-error-azure-openai-llm-failed":
+		return CallEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
+	case "pipeline-error-groq-llm-failed":
+		return CallEndedReasonPipelineErrorGroqLlmFailed, nil
+	case "pipeline-error-google-llm-failed":
+		return CallEndedReasonPipelineErrorGoogleLlmFailed, nil
+	case "pipeline-error-xai-llm-failed":
+		return CallEndedReasonPipelineErrorXaiLlmFailed, nil
+	case "pipeline-error-inflection-ai-llm-failed":
+		return CallEndedReasonPipelineErrorInflectionAiLlmFailed, nil
+	case "assistant-not-invalid":
+		return CallEndedReasonAssistantNotInvalid, nil
+	case "assistant-not-provided":
+		return CallEndedReasonAssistantNotProvided, nil
+	case "call-start-error-neither-assistant-nor-server-set":
+		return CallEndedReasonCallStartErrorNeitherAssistantNorServerSet, nil
+	case "assistant-request-failed":
+		return CallEndedReasonAssistantRequestFailed, nil
+	case "assistant-request-returned-error":
+		return CallEndedReasonAssistantRequestReturnedError, nil
+	case "assistant-request-returned-unspeakable-error":
+		return CallEndedReasonAssistantRequestReturnedUnspeakableError, nil
+	case "assistant-request-returned-invalid-assistant":
+		return CallEndedReasonAssistantRequestReturnedInvalidAssistant, nil
+	case "assistant-request-returned-no-assistant":
+		return CallEndedReasonAssistantRequestReturnedNoAssistant, nil
+	case "assistant-request-returned-forwarding-phone-number":
+		return CallEndedReasonAssistantRequestReturnedForwardingPhoneNumber, nil
+	case "assistant-ended-call":
+		return CallEndedReasonAssistantEndedCall, nil
+	case "assistant-said-end-call-phrase":
+		return CallEndedReasonAssistantSaidEndCallPhrase, nil
+	case "assistant-forwarded-call":
+		return CallEndedReasonAssistantForwardedCall, nil
+	case "assistant-join-timed-out":
+		return CallEndedReasonAssistantJoinTimedOut, nil
+	case "customer-busy":
+		return CallEndedReasonCustomerBusy, nil
+	case "customer-ended-call":
+		return CallEndedReasonCustomerEndedCall, nil
+	case "customer-did-not-answer":
+		return CallEndedReasonCustomerDidNotAnswer, nil
+	case "customer-did-not-give-microphone-permission":
+		return CallEndedReasonCustomerDidNotGiveMicrophonePermission, nil
+	case "assistant-said-message-with-end-call-enabled":
+		return CallEndedReasonAssistantSaidMessageWithEndCallEnabled, nil
+	case "exceeded-max-duration":
+		return CallEndedReasonExceededMaxDuration, nil
+	case "manually-canceled":
+		return CallEndedReasonManuallyCanceled, nil
+	case "phone-call-provider-closed-websocket":
+		return CallEndedReasonPhoneCallProviderClosedWebsocket, nil
+	case "pipeline-error-openai-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorOpenai400BadRequestValidationFailed, nil
+	case "pipeline-error-openai-401-unauthorized":
+		return CallEndedReasonPipelineErrorOpenai401Unauthorized, nil
+	case "pipeline-error-openai-403-model-access-denied":
+		return CallEndedReasonPipelineErrorOpenai403ModelAccessDenied, nil
+	case "pipeline-error-openai-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorOpenai429ExceededQuota, nil
+	case "pipeline-error-openai-500-server-error":
+		return CallEndedReasonPipelineErrorOpenai500ServerError, nil
+	case "pipeline-error-google-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorGoogle400BadRequestValidationFailed, nil
+	case "pipeline-error-google-401-unauthorized":
+		return CallEndedReasonPipelineErrorGoogle401Unauthorized, nil
+	case "pipeline-error-google-403-model-access-denied":
+		return CallEndedReasonPipelineErrorGoogle403ModelAccessDenied, nil
+	case "pipeline-error-google-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorGoogle429ExceededQuota, nil
+	case "pipeline-error-google-500-server-error":
+		return CallEndedReasonPipelineErrorGoogle500ServerError, nil
+	case "pipeline-error-xai-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorXai400BadRequestValidationFailed, nil
+	case "pipeline-error-xai-401-unauthorized":
+		return CallEndedReasonPipelineErrorXai401Unauthorized, nil
+	case "pipeline-error-xai-403-model-access-denied":
+		return CallEndedReasonPipelineErrorXai403ModelAccessDenied, nil
+	case "pipeline-error-xai-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorXai429ExceededQuota, nil
+	case "pipeline-error-xai-500-server-error":
+		return CallEndedReasonPipelineErrorXai500ServerError, nil
+	case "pipeline-error-inflection-ai-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorInflectionAi400BadRequestValidationFailed, nil
+	case "pipeline-error-inflection-ai-401-unauthorized":
+		return CallEndedReasonPipelineErrorInflectionAi401Unauthorized, nil
+	case "pipeline-error-inflection-ai-403-model-access-denied":
+		return CallEndedReasonPipelineErrorInflectionAi403ModelAccessDenied, nil
+	case "pipeline-error-inflection-ai-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorInflectionAi429ExceededQuota, nil
+	case "pipeline-error-inflection-ai-500-server-error":
+		return CallEndedReasonPipelineErrorInflectionAi500ServerError, nil
+	case "pipeline-error-azure-openai-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed, nil
+	case "pipeline-error-azure-openai-401-unauthorized":
+		return CallEndedReasonPipelineErrorAzureOpenai401Unauthorized, nil
+	case "pipeline-error-azure-openai-403-model-access-denied":
+		return CallEndedReasonPipelineErrorAzureOpenai403ModelAccessDenied, nil
+	case "pipeline-error-azure-openai-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorAzureOpenai429ExceededQuota, nil
+	case "pipeline-error-azure-openai-500-server-error":
+		return CallEndedReasonPipelineErrorAzureOpenai500ServerError, nil
+	case "pipeline-error-groq-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorGroq400BadRequestValidationFailed, nil
+	case "pipeline-error-groq-401-unauthorized":
+		return CallEndedReasonPipelineErrorGroq401Unauthorized, nil
+	case "pipeline-error-groq-403-model-access-denied":
+		return CallEndedReasonPipelineErrorGroq403ModelAccessDenied, nil
+	case "pipeline-error-groq-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorGroq429ExceededQuota, nil
+	case "pipeline-error-groq-500-server-error":
+		return CallEndedReasonPipelineErrorGroq500ServerError, nil
+	case "pipeline-error-anthropic-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed, nil
+	case "pipeline-error-anthropic-401-unauthorized":
+		return CallEndedReasonPipelineErrorAnthropic401Unauthorized, nil
+	case "pipeline-error-anthropic-403-model-access-denied":
+		return CallEndedReasonPipelineErrorAnthropic403ModelAccessDenied, nil
+	case "pipeline-error-anthropic-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorAnthropic429ExceededQuota, nil
+	case "pipeline-error-anthropic-500-server-error":
+		return CallEndedReasonPipelineErrorAnthropic500ServerError, nil
+	case "pipeline-error-anthropic-llm-failed":
+		return CallEndedReasonPipelineErrorAnthropicLlmFailed, nil
+	case "pipeline-error-together-ai-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorTogetherAi400BadRequestValidationFailed, nil
+	case "pipeline-error-together-ai-401-unauthorized":
+		return CallEndedReasonPipelineErrorTogetherAi401Unauthorized, nil
+	case "pipeline-error-together-ai-403-model-access-denied":
+		return CallEndedReasonPipelineErrorTogetherAi403ModelAccessDenied, nil
+	case "pipeline-error-together-ai-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorTogetherAi429ExceededQuota, nil
+	case "pipeline-error-together-ai-500-server-error":
+		return CallEndedReasonPipelineErrorTogetherAi500ServerError, nil
+	case "pipeline-error-together-ai-llm-failed":
+		return CallEndedReasonPipelineErrorTogetherAiLlmFailed, nil
+	case "pipeline-error-anyscale-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorAnyscale400BadRequestValidationFailed, nil
+	case "pipeline-error-anyscale-401-unauthorized":
+		return CallEndedReasonPipelineErrorAnyscale401Unauthorized, nil
+	case "pipeline-error-anyscale-403-model-access-denied":
+		return CallEndedReasonPipelineErrorAnyscale403ModelAccessDenied, nil
+	case "pipeline-error-anyscale-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorAnyscale429ExceededQuota, nil
+	case "pipeline-error-anyscale-500-server-error":
+		return CallEndedReasonPipelineErrorAnyscale500ServerError, nil
+	case "pipeline-error-anyscale-llm-failed":
+		return CallEndedReasonPipelineErrorAnyscaleLlmFailed, nil
+	case "pipeline-error-openrouter-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorOpenrouter400BadRequestValidationFailed, nil
+	case "pipeline-error-openrouter-401-unauthorized":
+		return CallEndedReasonPipelineErrorOpenrouter401Unauthorized, nil
+	case "pipeline-error-openrouter-403-model-access-denied":
+		return CallEndedReasonPipelineErrorOpenrouter403ModelAccessDenied, nil
+	case "pipeline-error-openrouter-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorOpenrouter429ExceededQuota, nil
+	case "pipeline-error-openrouter-500-server-error":
+		return CallEndedReasonPipelineErrorOpenrouter500ServerError, nil
+	case "pipeline-error-openrouter-llm-failed":
+		return CallEndedReasonPipelineErrorOpenrouterLlmFailed, nil
+	case "pipeline-error-perplexity-ai-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorPerplexityAi400BadRequestValidationFailed, nil
+	case "pipeline-error-perplexity-ai-401-unauthorized":
+		return CallEndedReasonPipelineErrorPerplexityAi401Unauthorized, nil
+	case "pipeline-error-perplexity-ai-403-model-access-denied":
+		return CallEndedReasonPipelineErrorPerplexityAi403ModelAccessDenied, nil
+	case "pipeline-error-perplexity-ai-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorPerplexityAi429ExceededQuota, nil
+	case "pipeline-error-perplexity-ai-500-server-error":
+		return CallEndedReasonPipelineErrorPerplexityAi500ServerError, nil
+	case "pipeline-error-perplexity-ai-llm-failed":
+		return CallEndedReasonPipelineErrorPerplexityAiLlmFailed, nil
+	case "pipeline-error-deepinfra-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorDeepinfra400BadRequestValidationFailed, nil
+	case "pipeline-error-deepinfra-401-unauthorized":
+		return CallEndedReasonPipelineErrorDeepinfra401Unauthorized, nil
+	case "pipeline-error-deepinfra-403-model-access-denied":
+		return CallEndedReasonPipelineErrorDeepinfra403ModelAccessDenied, nil
+	case "pipeline-error-deepinfra-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorDeepinfra429ExceededQuota, nil
+	case "pipeline-error-deepinfra-500-server-error":
+		return CallEndedReasonPipelineErrorDeepinfra500ServerError, nil
+	case "pipeline-error-deepinfra-llm-failed":
+		return CallEndedReasonPipelineErrorDeepinfraLlmFailed, nil
+	case "pipeline-error-runpod-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorRunpod400BadRequestValidationFailed, nil
+	case "pipeline-error-runpod-401-unauthorized":
+		return CallEndedReasonPipelineErrorRunpod401Unauthorized, nil
+	case "pipeline-error-runpod-403-model-access-denied":
+		return CallEndedReasonPipelineErrorRunpod403ModelAccessDenied, nil
+	case "pipeline-error-runpod-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorRunpod429ExceededQuota, nil
+	case "pipeline-error-runpod-500-server-error":
+		return CallEndedReasonPipelineErrorRunpod500ServerError, nil
+	case "pipeline-error-runpod-llm-failed":
+		return CallEndedReasonPipelineErrorRunpodLlmFailed, nil
+	case "pipeline-error-custom-llm-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorCustomLlm400BadRequestValidationFailed, nil
+	case "pipeline-error-custom-llm-401-unauthorized":
+		return CallEndedReasonPipelineErrorCustomLlm401Unauthorized, nil
+	case "pipeline-error-custom-llm-403-model-access-denied":
+		return CallEndedReasonPipelineErrorCustomLlm403ModelAccessDenied, nil
+	case "pipeline-error-custom-llm-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorCustomLlm429ExceededQuota, nil
+	case "pipeline-error-custom-llm-500-server-error":
+		return CallEndedReasonPipelineErrorCustomLlm500ServerError, nil
+	case "pipeline-error-custom-llm-llm-failed":
+		return CallEndedReasonPipelineErrorCustomLlmLlmFailed, nil
+	case "pipeline-error-custom-voice-failed":
+		return CallEndedReasonPipelineErrorCustomVoiceFailed, nil
+	case "pipeline-error-cartesia-socket-hang-up":
+		return CallEndedReasonPipelineErrorCartesiaSocketHangUp, nil
+	case "pipeline-error-cartesia-requested-payment":
+		return CallEndedReasonPipelineErrorCartesiaRequestedPayment, nil
+	case "pipeline-error-cartesia-500-server-error":
+		return CallEndedReasonPipelineErrorCartesia500ServerError, nil
+	case "pipeline-error-cartesia-503-server-error":
+		return CallEndedReasonPipelineErrorCartesia503ServerError, nil
+	case "pipeline-error-cartesia-522-server-error":
+		return CallEndedReasonPipelineErrorCartesia522ServerError, nil
+	case "pipeline-error-eleven-labs-voice-not-found":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceNotFound, nil
+	case "pipeline-error-eleven-labs-quota-exceeded":
+		return CallEndedReasonPipelineErrorElevenLabsQuotaExceeded, nil
+	case "pipeline-error-eleven-labs-unauthorized-access":
+		return CallEndedReasonPipelineErrorElevenLabsUnauthorizedAccess, nil
+	case "pipeline-error-eleven-labs-unauthorized-to-access-model":
+		return CallEndedReasonPipelineErrorElevenLabsUnauthorizedToAccessModel, nil
+	case "pipeline-error-eleven-labs-professional-voices-only-for-creator-plus":
+		return CallEndedReasonPipelineErrorElevenLabsProfessionalVoicesOnlyForCreatorPlus, nil
+	case "pipeline-error-eleven-labs-blocked-free-plan-and-requested-upgrade":
+		return CallEndedReasonPipelineErrorElevenLabsBlockedFreePlanAndRequestedUpgrade, nil
+	case "pipeline-error-eleven-labs-blocked-concurrent-requests-and-requested-upgrade":
+		return CallEndedReasonPipelineErrorElevenLabsBlockedConcurrentRequestsAndRequestedUpgrade, nil
+	case "pipeline-error-eleven-labs-blocked-using-instant-voice-clone-and-requested-upgrade":
+		return CallEndedReasonPipelineErrorElevenLabsBlockedUsingInstantVoiceCloneAndRequestedUpgrade, nil
+	case "pipeline-error-eleven-labs-system-busy-and-requested-upgrade":
+		return CallEndedReasonPipelineErrorElevenLabsSystemBusyAndRequestedUpgrade, nil
+	case "pipeline-error-eleven-labs-voice-not-fine-tuned":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceNotFineTuned, nil
+	case "pipeline-error-eleven-labs-invalid-api-key":
+		return CallEndedReasonPipelineErrorElevenLabsInvalidApiKey, nil
+	case "pipeline-error-eleven-labs-invalid-voice-samples":
+		return CallEndedReasonPipelineErrorElevenLabsInvalidVoiceSamples, nil
+	case "pipeline-error-eleven-labs-voice-disabled-by-owner":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceDisabledByOwner, nil
+	case "pipeline-error-eleven-labs-blocked-account-in-probation":
+		return CallEndedReasonPipelineErrorElevenLabsBlockedAccountInProbation, nil
+	case "pipeline-error-eleven-labs-blocked-content-against-their-policy":
+		return CallEndedReasonPipelineErrorElevenLabsBlockedContentAgainstTheirPolicy, nil
+	case "pipeline-error-eleven-labs-missing-samples-for-voice-clone":
+		return CallEndedReasonPipelineErrorElevenLabsMissingSamplesForVoiceClone, nil
+	case "pipeline-error-eleven-labs-voice-not-fine-tuned-and-cannot-be-used":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceNotFineTunedAndCannotBeUsed, nil
+	case "pipeline-error-eleven-labs-voice-not-allowed-for-free-users":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceNotAllowedForFreeUsers, nil
+	case "pipeline-error-eleven-labs-500-server-error":
+		return CallEndedReasonPipelineErrorElevenLabs500ServerError, nil
+	case "pipeline-error-eleven-labs-max-character-limit-exceeded":
+		return CallEndedReasonPipelineErrorElevenLabsMaxCharacterLimitExceeded, nil
+	case "pipeline-error-eleven-labs-blocked-voice-potentially-against-terms-of-service-and-awaiting-verification":
+		return CallEndedReasonPipelineErrorElevenLabsBlockedVoicePotentiallyAgainstTermsOfServiceAndAwaitingVerification, nil
+	case "pipeline-error-playht-request-timed-out":
+		return CallEndedReasonPipelineErrorPlayhtRequestTimedOut, nil
+	case "pipeline-error-playht-invalid-voice":
+		return CallEndedReasonPipelineErrorPlayhtInvalidVoice, nil
+	case "pipeline-error-playht-unexpected-error":
+		return CallEndedReasonPipelineErrorPlayhtUnexpectedError, nil
+	case "pipeline-error-playht-out-of-credits":
+		return CallEndedReasonPipelineErrorPlayhtOutOfCredits, nil
+	case "pipeline-error-playht-invalid-emotion":
+		return CallEndedReasonPipelineErrorPlayhtInvalidEmotion, nil
+	case "pipeline-error-playht-voice-must-be-a-valid-voice-manifest-uri":
+		return CallEndedReasonPipelineErrorPlayhtVoiceMustBeAValidVoiceManifestUri, nil
+	case "pipeline-error-playht-401-unauthorized":
+		return CallEndedReasonPipelineErrorPlayht401Unauthorized, nil
+	case "pipeline-error-playht-403-forbidden-out-of-characters":
+		return CallEndedReasonPipelineErrorPlayht403ForbiddenOutOfCharacters, nil
+	case "pipeline-error-playht-403-forbidden-api-access-not-available":
+		return CallEndedReasonPipelineErrorPlayht403ForbiddenApiAccessNotAvailable, nil
+	case "pipeline-error-playht-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorPlayht429ExceededQuota, nil
+	case "pipeline-error-playht-502-gateway-error":
+		return CallEndedReasonPipelineErrorPlayht502GatewayError, nil
+	case "pipeline-error-playht-504-gateway-error":
+		return CallEndedReasonPipelineErrorPlayht504GatewayError, nil
+	case "pipeline-error-deepgram-returning-403-model-access-denied":
+		return CallEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied, nil
+	case "pipeline-error-deepgram-returning-401-invalid-credentials":
+		return CallEndedReasonPipelineErrorDeepgramReturning401InvalidCredentials, nil
+	case "pipeline-error-deepgram-returning-404-not-found":
+		return CallEndedReasonPipelineErrorDeepgramReturning404NotFound, nil
+	case "pipeline-error-deepgram-returning-400-no-such-model-language-tier-combination":
+		return CallEndedReasonPipelineErrorDeepgramReturning400NoSuchModelLanguageTierCombination, nil
+	case "pipeline-error-deepgram-returning-500-invalid-json":
+		return CallEndedReasonPipelineErrorDeepgramReturning500InvalidJson, nil
+	case "pipeline-error-deepgram-returning-502-network-error":
+		return CallEndedReasonPipelineErrorDeepgramReturning502NetworkError, nil
+	case "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach":
+		return CallEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach, nil
+	case "pipeline-error-tavus-video-failed":
+		return CallEndedReasonPipelineErrorTavusVideoFailed, nil
+	case "pipeline-error-custom-transcriber-failed":
+		return CallEndedReasonPipelineErrorCustomTranscriberFailed, nil
+	case "silence-timed-out":
+		return CallEndedReasonSilenceTimedOut, nil
+	case "sip-gateway-failed-to-connect-call":
+		return CallEndedReasonSipGatewayFailedToConnectCall, nil
+	case "twilio-failed-to-connect-call":
+		return CallEndedReasonTwilioFailedToConnectCall, nil
+	case "twilio-reported-customer-misdialed":
+		return CallEndedReasonTwilioReportedCustomerMisdialed, nil
+	case "vonage-rejected":
+		return CallEndedReasonVonageRejected, nil
+	case "voicemail":
+		return CallEndedReasonVoicemail, nil
+	}
+	var t CallEndedReason
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CallEndedReason) Ptr() *CallEndedReason {
+	return &c
+}
+
+type CallMessagesItem struct {
+	UserMessage           *UserMessage
+	SystemMessage         *SystemMessage
+	BotMessage            *BotMessage
+	ToolCallMessage       *ToolCallMessage
+	ToolCallResultMessage *ToolCallResultMessage
+
+	typ string
+}
+
+func (c *CallMessagesItem) GetUserMessage() *UserMessage {
+	if c == nil {
+		return nil
+	}
+	return c.UserMessage
+}
+
+func (c *CallMessagesItem) GetSystemMessage() *SystemMessage {
+	if c == nil {
+		return nil
+	}
+	return c.SystemMessage
+}
+
+func (c *CallMessagesItem) GetBotMessage() *BotMessage {
+	if c == nil {
+		return nil
+	}
+	return c.BotMessage
+}
+
+func (c *CallMessagesItem) GetToolCallMessage() *ToolCallMessage {
+	if c == nil {
+		return nil
+	}
+	return c.ToolCallMessage
+}
+
+func (c *CallMessagesItem) GetToolCallResultMessage() *ToolCallResultMessage {
+	if c == nil {
+		return nil
+	}
+	return c.ToolCallResultMessage
+}
+
+func (c *CallMessagesItem) UnmarshalJSON(data []byte) error {
+	valueUserMessage := new(UserMessage)
+	if err := json.Unmarshal(data, &valueUserMessage); err == nil {
+		c.typ = "UserMessage"
+		c.UserMessage = valueUserMessage
+		return nil
+	}
+	valueSystemMessage := new(SystemMessage)
+	if err := json.Unmarshal(data, &valueSystemMessage); err == nil {
+		c.typ = "SystemMessage"
+		c.SystemMessage = valueSystemMessage
+		return nil
+	}
+	valueBotMessage := new(BotMessage)
+	if err := json.Unmarshal(data, &valueBotMessage); err == nil {
+		c.typ = "BotMessage"
+		c.BotMessage = valueBotMessage
+		return nil
+	}
+	valueToolCallMessage := new(ToolCallMessage)
+	if err := json.Unmarshal(data, &valueToolCallMessage); err == nil {
+		c.typ = "ToolCallMessage"
+		c.ToolCallMessage = valueToolCallMessage
+		return nil
+	}
+	valueToolCallResultMessage := new(ToolCallResultMessage)
+	if err := json.Unmarshal(data, &valueToolCallResultMessage); err == nil {
+		c.typ = "ToolCallResultMessage"
+		c.ToolCallResultMessage = valueToolCallResultMessage
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CallMessagesItem) MarshalJSON() ([]byte, error) {
+	if c.typ == "UserMessage" || c.UserMessage != nil {
+		return json.Marshal(c.UserMessage)
+	}
+	if c.typ == "SystemMessage" || c.SystemMessage != nil {
+		return json.Marshal(c.SystemMessage)
+	}
+	if c.typ == "BotMessage" || c.BotMessage != nil {
+		return json.Marshal(c.BotMessage)
+	}
+	if c.typ == "ToolCallMessage" || c.ToolCallMessage != nil {
+		return json.Marshal(c.ToolCallMessage)
+	}
+	if c.typ == "ToolCallResultMessage" || c.ToolCallResultMessage != nil {
+		return json.Marshal(c.ToolCallResultMessage)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CallMessagesItemVisitor interface {
+	VisitUserMessage(*UserMessage) error
+	VisitSystemMessage(*SystemMessage) error
+	VisitBotMessage(*BotMessage) error
+	VisitToolCallMessage(*ToolCallMessage) error
+	VisitToolCallResultMessage(*ToolCallResultMessage) error
+}
+
+func (c *CallMessagesItem) Accept(visitor CallMessagesItemVisitor) error {
+	if c.typ == "UserMessage" || c.UserMessage != nil {
+		return visitor.VisitUserMessage(c.UserMessage)
+	}
+	if c.typ == "SystemMessage" || c.SystemMessage != nil {
+		return visitor.VisitSystemMessage(c.SystemMessage)
+	}
+	if c.typ == "BotMessage" || c.BotMessage != nil {
+		return visitor.VisitBotMessage(c.BotMessage)
+	}
+	if c.typ == "ToolCallMessage" || c.ToolCallMessage != nil {
+		return visitor.VisitToolCallMessage(c.ToolCallMessage)
+	}
+	if c.typ == "ToolCallResultMessage" || c.ToolCallResultMessage != nil {
+		return visitor.VisitToolCallResultMessage(c.ToolCallResultMessage)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+// This is the provider of the call.
+//
+// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+type CallPhoneCallProvider string
+
+const (
+	CallPhoneCallProviderTwilio CallPhoneCallProvider = "twilio"
+	CallPhoneCallProviderVonage CallPhoneCallProvider = "vonage"
+	CallPhoneCallProviderVapi   CallPhoneCallProvider = "vapi"
+)
+
+func NewCallPhoneCallProviderFromString(s string) (CallPhoneCallProvider, error) {
+	switch s {
+	case "twilio":
+		return CallPhoneCallProviderTwilio, nil
+	case "vonage":
+		return CallPhoneCallProviderVonage, nil
+	case "vapi":
+		return CallPhoneCallProviderVapi, nil
+	}
+	var t CallPhoneCallProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CallPhoneCallProvider) Ptr() *CallPhoneCallProvider {
+	return &c
+}
+
+// This is the transport of the phone call.
+//
+// Only relevant for `outboundPhoneCall` and `inboundPhoneCall` type.
+type CallPhoneCallTransport string
+
+const (
+	CallPhoneCallTransportSip  CallPhoneCallTransport = "sip"
+	CallPhoneCallTransportPstn CallPhoneCallTransport = "pstn"
+)
+
+func NewCallPhoneCallTransportFromString(s string) (CallPhoneCallTransport, error) {
+	switch s {
+	case "sip":
+		return CallPhoneCallTransportSip, nil
+	case "pstn":
+		return CallPhoneCallTransportPstn, nil
+	}
+	var t CallPhoneCallTransport
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CallPhoneCallTransport) Ptr() *CallPhoneCallTransport {
+	return &c
+}
+
+// This is the status of the call.
+type CallStatus string
+
+const (
+	CallStatusQueued     CallStatus = "queued"
+	CallStatusRinging    CallStatus = "ringing"
+	CallStatusInProgress CallStatus = "in-progress"
+	CallStatusForwarding CallStatus = "forwarding"
+	CallStatusEnded      CallStatus = "ended"
+)
+
+func NewCallStatusFromString(s string) (CallStatus, error) {
+	switch s {
+	case "queued":
+		return CallStatusQueued, nil
+	case "ringing":
+		return CallStatusRinging, nil
+	case "in-progress":
+		return CallStatusInProgress, nil
+	case "forwarding":
+		return CallStatusForwarding, nil
+	case "ended":
+		return CallStatusEnded, nil
+	}
+	var t CallStatus
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CallStatus) Ptr() *CallStatus {
+	return &c
+}
+
+// This is the type of call.
+type CallType string
+
+const (
+	CallTypeInboundPhoneCall  CallType = "inboundPhoneCall"
+	CallTypeOutboundPhoneCall CallType = "outboundPhoneCall"
+	CallTypeWebCall           CallType = "webCall"
+)
+
+func NewCallTypeFromString(s string) (CallType, error) {
+	switch s {
+	case "inboundPhoneCall":
+		return CallTypeInboundPhoneCall, nil
+	case "outboundPhoneCall":
+		return CallTypeOutboundPhoneCall, nil
+	case "webCall":
+		return CallTypeWebCall, nil
+	}
+	var t CallType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CallType) Ptr() *CallType {
+	return &c
+}
+
+type CostBreakdown struct {
+	// This is the cost of the transport provider, like Twilio or Vonage.
+	Transport *float64 `json:"transport,omitempty" url:"transport,omitempty"`
+	// This is the cost of the speech-to-text service.
+	Stt *float64 `json:"stt,omitempty" url:"stt,omitempty"`
+	// This is the cost of the language model.
+	Llm *float64 `json:"llm,omitempty" url:"llm,omitempty"`
+	// This is the cost of the text-to-speech service.
+	Tts *float64 `json:"tts,omitempty" url:"tts,omitempty"`
+	// This is the cost of Vapi.
+	Vapi *float64 `json:"vapi,omitempty" url:"vapi,omitempty"`
+	// This is the total cost of the call.
+	Total *float64 `json:"total,omitempty" url:"total,omitempty"`
+	// This is the LLM prompt tokens used for the call.
+	LlmPromptTokens *float64 `json:"llmPromptTokens,omitempty" url:"llmPromptTokens,omitempty"`
+	// This is the LLM completion tokens used for the call.
+	LlmCompletionTokens *float64 `json:"llmCompletionTokens,omitempty" url:"llmCompletionTokens,omitempty"`
+	// This is the TTS characters used for the call.
+	TtsCharacters *float64 `json:"ttsCharacters,omitempty" url:"ttsCharacters,omitempty"`
+	// This is the cost of the analysis.
+	AnalysisCostBreakdown *AnalysisCostBreakdown `json:"analysisCostBreakdown,omitempty" url:"analysisCostBreakdown,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CostBreakdown) GetTransport() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Transport
+}
+
+func (c *CostBreakdown) GetStt() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Stt
+}
+
+func (c *CostBreakdown) GetLlm() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Llm
+}
+
+func (c *CostBreakdown) GetTts() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Tts
+}
+
+func (c *CostBreakdown) GetVapi() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Vapi
+}
+
+func (c *CostBreakdown) GetTotal() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.Total
+}
+
+func (c *CostBreakdown) GetLlmPromptTokens() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.LlmPromptTokens
+}
+
+func (c *CostBreakdown) GetLlmCompletionTokens() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.LlmCompletionTokens
+}
+
+func (c *CostBreakdown) GetTtsCharacters() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.TtsCharacters
+}
+
+func (c *CostBreakdown) GetAnalysisCostBreakdown() *AnalysisCostBreakdown {
+	if c == nil {
+		return nil
+	}
+	return c.AnalysisCostBreakdown
+}
+
+func (c *CostBreakdown) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CostBreakdown) UnmarshalJSON(data []byte) error {
+	type unmarshaler CostBreakdown
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CostBreakdown(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CostBreakdown) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateCustomerDto struct {
+	// This is the flag to toggle the E164 check for the `number` field. This is an advanced property which should be used if you know your use case requires it.
+	//
+	// Use cases:
+	// - `false`: To allow non-E164 numbers like `+001234567890`, `1234`, or `abc`. This is useful for dialing out to non-E164 numbers on your SIP trunks.
+	// - `true` (default): To allow only E164 numbers like `+14155551234`. This is standard for PSTN calls.
+	//
+	// If `false`, the `number` is still required to only contain alphanumeric characters (regex: `/^\+?[a-zA-Z0-9]+$/`).
+	//
+	// @default true (E164 check is enabled)
+	NumberE164CheckEnabled *bool `json:"numberE164CheckEnabled,omitempty" url:"numberE164CheckEnabled,omitempty"`
+	// This is the extension that will be dialed after the call is answered.
+	Extension *string `json:"extension,omitempty" url:"extension,omitempty"`
+	// This is the number of the customer.
+	Number *string `json:"number,omitempty" url:"number,omitempty"`
+	// This is the SIP URI of the customer.
+	SipUri *string `json:"sipUri,omitempty" url:"sipUri,omitempty"`
+	// This is the name of the customer. This is just for your own reference.
+	//
+	// For SIP inbound calls, this is extracted from the `From` SIP header with format `"Display Name" <sip:username@domain>`.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateCustomerDto) GetNumberE164CheckEnabled() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.NumberE164CheckEnabled
+}
+
+func (c *CreateCustomerDto) GetExtension() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Extension
+}
+
+func (c *CreateCustomerDto) GetNumber() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Number
+}
+
+func (c *CreateCustomerDto) GetSipUri() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SipUri
+}
+
+func (c *CreateCustomerDto) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CreateCustomerDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateCustomerDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler CreateCustomerDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CreateCustomerDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateCustomerDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ImportTwilioPhoneNumberDto struct {
+	// This is the fallback destination an inbound call will be transferred to if:
+	// 1. `assistantId` is not set
+	// 2. `squadId` is not set
+	// 3. and, `assistant-request` message to the `serverUrl` fails
+	//
+	// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+	FallbackDestination *ImportTwilioPhoneNumberDtoFallbackDestination `json:"fallbackDestination,omitempty" url:"fallbackDestination,omitempty"`
+	// These are the digits of the phone number you own on your Twilio.
+	TwilioPhoneNumber string `json:"twilioPhoneNumber" url:"twilioPhoneNumber"`
+	// This is your Twilio Account SID that will be used to handle this phone number.
+	TwilioAccountSid string `json:"twilioAccountSid" url:"twilioAccountSid"`
+	// This is the Twilio Auth Token that will be used to handle this phone number.
+	TwilioAuthToken string `json:"twilioAuthToken" url:"twilioAuthToken"`
+	// This is the name of the phone number. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the assistant that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	// This is the squad that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
+	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	//
+	// You can see the shape of the messages sent in `ServerMessage`.
+	//
+	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
+	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
+	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
+	//
+	// Same precedence logic as serverUrl.
+	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetFallbackDestination() *ImportTwilioPhoneNumberDtoFallbackDestination {
+	if i == nil {
+		return nil
+	}
+	return i.FallbackDestination
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetTwilioPhoneNumber() string {
+	if i == nil {
+		return ""
+	}
+	return i.TwilioPhoneNumber
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetTwilioAccountSid() string {
+	if i == nil {
+		return ""
+	}
+	return i.TwilioAccountSid
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetTwilioAuthToken() string {
+	if i == nil {
+		return ""
+	}
+	return i.TwilioAuthToken
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetName() *string {
+	if i == nil {
+		return nil
+	}
+	return i.Name
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetAssistantId() *string {
+	if i == nil {
+		return nil
+	}
+	return i.AssistantId
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetSquadId() *string {
+	if i == nil {
+		return nil
+	}
+	return i.SquadId
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetServerUrl() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ServerUrl
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetServerUrlSecret() *string {
+	if i == nil {
+		return nil
+	}
+	return i.ServerUrlSecret
+}
+
+func (i *ImportTwilioPhoneNumberDto) GetExtraProperties() map[string]interface{} {
+	return i.extraProperties
+}
+
+func (i *ImportTwilioPhoneNumberDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler ImportTwilioPhoneNumberDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*i = ImportTwilioPhoneNumberDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *i)
+	if err != nil {
+		return err
+	}
+	i.extraProperties = extraProperties
+	i.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (i *ImportTwilioPhoneNumberDto) String() string {
+	if len(i.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(i.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(i); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", i)
+}
+
+// This is the fallback destination an inbound call will be transferred to if:
+// 1. `assistantId` is not set
+// 2. `squadId` is not set
+// 3. and, `assistant-request` message to the `serverUrl` fails
+//
+// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+type ImportTwilioPhoneNumberDtoFallbackDestination struct {
+	TransferDestinationNumber *TransferDestinationNumber
+	TransferDestinationSip    *TransferDestinationSip
+
+	typ string
+}
+
+func (i *ImportTwilioPhoneNumberDtoFallbackDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
+	if i == nil {
+		return nil
+	}
+	return i.TransferDestinationNumber
+}
+
+func (i *ImportTwilioPhoneNumberDtoFallbackDestination) GetTransferDestinationSip() *TransferDestinationSip {
+	if i == nil {
+		return nil
+	}
+	return i.TransferDestinationSip
+}
+
+func (i *ImportTwilioPhoneNumberDtoFallbackDestination) UnmarshalJSON(data []byte) error {
+	valueTransferDestinationNumber := new(TransferDestinationNumber)
+	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
+		i.typ = "TransferDestinationNumber"
+		i.TransferDestinationNumber = valueTransferDestinationNumber
+		return nil
+	}
+	valueTransferDestinationSip := new(TransferDestinationSip)
+	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
+		i.typ = "TransferDestinationSip"
+		i.TransferDestinationSip = valueTransferDestinationSip
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, i)
+}
+
+func (i ImportTwilioPhoneNumberDtoFallbackDestination) MarshalJSON() ([]byte, error) {
+	if i.typ == "TransferDestinationNumber" || i.TransferDestinationNumber != nil {
+		return json.Marshal(i.TransferDestinationNumber)
+	}
+	if i.typ == "TransferDestinationSip" || i.TransferDestinationSip != nil {
+		return json.Marshal(i.TransferDestinationSip)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", i)
+}
+
+type ImportTwilioPhoneNumberDtoFallbackDestinationVisitor interface {
+	VisitTransferDestinationNumber(*TransferDestinationNumber) error
+	VisitTransferDestinationSip(*TransferDestinationSip) error
+}
+
+func (i *ImportTwilioPhoneNumberDtoFallbackDestination) Accept(visitor ImportTwilioPhoneNumberDtoFallbackDestinationVisitor) error {
+	if i.typ == "TransferDestinationNumber" || i.TransferDestinationNumber != nil {
+		return visitor.VisitTransferDestinationNumber(i.TransferDestinationNumber)
+	}
+	if i.typ == "TransferDestinationSip" || i.TransferDestinationSip != nil {
+		return visitor.VisitTransferDestinationSip(i.TransferDestinationSip)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", i)
+}
+
+type ModelCost struct {
+	// This is the type of cost, always 'model' for this class.
+	// This is the model that was used during the call.
+	//
+	// This matches one of the following:
+	// - `call.assistant.model`,
+	// - `call.assistantId->model`,
+	// - `call.squad[n].assistant.model`,
+	// - `call.squad[n].assistantId->model`,
+	// - `call.squadId->[n].assistant.model`,
+	// - `call.squadId->[n].assistantId->model`.
+	Model map[string]interface{} `json:"model,omitempty" url:"model,omitempty"`
+	// This is the number of prompt tokens used in the call. These should be total prompt tokens used in the call for single assistant calls, while squad calls will have multiple model costs one for each assistant that was used.
+	PromptTokens float64 `json:"promptTokens" url:"promptTokens"`
+	// This is the number of completion tokens generated in the call. These should be total completion tokens used in the call for single assistant calls, while squad calls will have multiple model costs one for each assistant that was used.
+	CompletionTokens float64 `json:"completionTokens" url:"completionTokens"`
+	// This is the cost of the component in USD.
+	Cost  float64 `json:"cost" url:"cost"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *ModelCost) GetModel() map[string]interface{} {
+	if m == nil {
+		return nil
+	}
+	return m.Model
+}
+
+func (m *ModelCost) GetPromptTokens() float64 {
+	if m == nil {
+		return 0
+	}
+	return m.PromptTokens
+}
+
+func (m *ModelCost) GetCompletionTokens() float64 {
+	if m == nil {
+		return 0
+	}
+	return m.CompletionTokens
+}
+
+func (m *ModelCost) GetCost() float64 {
+	if m == nil {
+		return 0
+	}
+	return m.Cost
+}
+
+func (m *ModelCost) Type() string {
+	return m.type_
+}
+
+func (m *ModelCost) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *ModelCost) UnmarshalJSON(data []byte) error {
+	type embed ModelCost
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*m),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*m = ModelCost(unmarshaler.embed)
+	if unmarshaler.Type != "model" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", m, "model", unmarshaler.Type)
+	}
+	m.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *m, "type")
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *ModelCost) MarshalJSON() ([]byte, error) {
+	type embed ModelCost
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*m),
+		Type:  "model",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (m *ModelCost) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type Monitor struct {
+	// This is the URL where the assistant's calls can be listened to in real-time. To enable, set `assistant.monitorPlan.listenEnabled` to `true`.
+	ListenUrl *string `json:"listenUrl,omitempty" url:"listenUrl,omitempty"`
+	// This is the URL where the assistant's calls can be controlled in real-time. To enable, set `assistant.monitorPlan.controlEnabled` to `true`.
+	ControlUrl *string `json:"controlUrl,omitempty" url:"controlUrl,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (m *Monitor) GetListenUrl() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ListenUrl
+}
+
+func (m *Monitor) GetControlUrl() *string {
+	if m == nil {
+		return nil
+	}
+	return m.ControlUrl
+}
+
+func (m *Monitor) GetExtraProperties() map[string]interface{} {
+	return m.extraProperties
+}
+
+func (m *Monitor) UnmarshalJSON(data []byte) error {
+	type unmarshaler Monitor
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*m = Monitor(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *m)
+	if err != nil {
+		return err
+	}
+	m.extraProperties = extraProperties
+	m.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (m *Monitor) String() string {
+	if len(m.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(m.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(m); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", m)
+}
+
+type SystemMessage struct {
+	// The role of the system in the conversation.
+	Role string `json:"role" url:"role"`
+	// The message content from the system.
+	Message string `json:"message" url:"message"`
+	// The timestamp when the message was sent.
+	Time float64 `json:"time" url:"time"`
+	// The number of seconds from the start of the conversation.
+	SecondsFromStart float64 `json:"secondsFromStart" url:"secondsFromStart"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SystemMessage) GetRole() string {
+	if s == nil {
+		return ""
+	}
+	return s.Role
+}
+
+func (s *SystemMessage) GetMessage() string {
+	if s == nil {
+		return ""
+	}
+	return s.Message
+}
+
+func (s *SystemMessage) GetTime() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.Time
+}
+
+func (s *SystemMessage) GetSecondsFromStart() float64 {
+	if s == nil {
+		return 0
+	}
+	return s.SecondsFromStart
+}
+
+func (s *SystemMessage) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SystemMessage) UnmarshalJSON(data []byte) error {
+	type unmarshaler SystemMessage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*s = SystemMessage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SystemMessage) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type ToolCallMessage struct {
+	// The role of the tool call in the conversation.
+	Role string `json:"role" url:"role"`
+	// The list of tool calls made during the conversation.
+	ToolCalls []map[string]interface{} `json:"toolCalls,omitempty" url:"toolCalls,omitempty"`
+	// The message content for the tool call.
+	Message string `json:"message" url:"message"`
+	// The timestamp when the message was sent.
+	Time float64 `json:"time" url:"time"`
+	// The number of seconds from the start of the conversation.
+	SecondsFromStart float64 `json:"secondsFromStart" url:"secondsFromStart"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *ToolCallMessage) GetRole() string {
+	if t == nil {
+		return ""
+	}
+	return t.Role
+}
+
+func (t *ToolCallMessage) GetToolCalls() []map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.ToolCalls
+}
+
+func (t *ToolCallMessage) GetMessage() string {
+	if t == nil {
+		return ""
+	}
+	return t.Message
+}
+
+func (t *ToolCallMessage) GetTime() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.Time
+}
+
+func (t *ToolCallMessage) GetSecondsFromStart() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.SecondsFromStart
+}
+
+func (t *ToolCallMessage) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *ToolCallMessage) UnmarshalJSON(data []byte) error {
+	type unmarshaler ToolCallMessage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = ToolCallMessage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *ToolCallMessage) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type ToolCallResultMessage struct {
+	// The role of the tool call result in the conversation.
+	Role string `json:"role" url:"role"`
+	// The ID of the tool call.
+	ToolCallId string `json:"toolCallId" url:"toolCallId"`
+	// The name of the tool that returned the result.
+	Name string `json:"name" url:"name"`
+	// The result of the tool call in JSON format.
+	Result string `json:"result" url:"result"`
+	// The timestamp when the message was sent.
+	Time float64 `json:"time" url:"time"`
+	// The number of seconds from the start of the conversation.
+	SecondsFromStart float64 `json:"secondsFromStart" url:"secondsFromStart"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *ToolCallResultMessage) GetRole() string {
+	if t == nil {
+		return ""
+	}
+	return t.Role
+}
+
+func (t *ToolCallResultMessage) GetToolCallId() string {
+	if t == nil {
+		return ""
+	}
+	return t.ToolCallId
+}
+
+func (t *ToolCallResultMessage) GetName() string {
+	if t == nil {
+		return ""
+	}
+	return t.Name
+}
+
+func (t *ToolCallResultMessage) GetResult() string {
+	if t == nil {
+		return ""
+	}
+	return t.Result
+}
+
+func (t *ToolCallResultMessage) GetTime() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.Time
+}
+
+func (t *ToolCallResultMessage) GetSecondsFromStart() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.SecondsFromStart
+}
+
+func (t *ToolCallResultMessage) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *ToolCallResultMessage) UnmarshalJSON(data []byte) error {
+	type unmarshaler ToolCallResultMessage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = ToolCallResultMessage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *ToolCallResultMessage) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TranscriberCost struct {
+	// This is the type of cost, always 'transcriber' for this class.
+	// This is the transcriber that was used during the call.
+	//
+	// This matches one of the below:
+	// - `call.assistant.transcriber`,
+	// - `call.assistantId->transcriber`,
+	// - `call.squad[n].assistant.transcriber`,
+	// - `call.squad[n].assistantId->transcriber`,
+	// - `call.squadId->[n].assistant.transcriber`,
+	// - `call.squadId->[n].assistantId->transcriber`.
+	Transcriber map[string]interface{} `json:"transcriber,omitempty" url:"transcriber,omitempty"`
+	// This is the minutes of `transcriber` usage. This should match `call.endedAt` - `call.startedAt` for single assistant calls, while squad calls will have multiple transcriber costs one for each assistant that was used.
+	Minutes float64 `json:"minutes" url:"minutes"`
+	// This is the cost of the component in USD.
+	Cost  float64 `json:"cost" url:"cost"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TranscriberCost) GetTranscriber() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.Transcriber
+}
+
+func (t *TranscriberCost) GetMinutes() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.Minutes
+}
+
+func (t *TranscriberCost) GetCost() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.Cost
+}
+
+func (t *TranscriberCost) Type() string {
+	return t.type_
+}
+
+func (t *TranscriberCost) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TranscriberCost) UnmarshalJSON(data []byte) error {
+	type embed TranscriberCost
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TranscriberCost(unmarshaler.embed)
+	if unmarshaler.Type != "transcriber" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "transcriber", unmarshaler.Type)
+	}
+	t.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *t, "type")
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TranscriberCost) MarshalJSON() ([]byte, error) {
+	type embed TranscriberCost
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+		Type:  "transcriber",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TranscriberCost) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type Transport struct {
+	// This is the provider used for the call.
+	Provider *TransportProvider `json:"provider,omitempty" url:"provider,omitempty"`
+	// This is determines whether the assistant will have video enabled.
+	//
+	// Only relevant for `webCall` type.
+	AssistantVideoEnabled *bool `json:"assistantVideoEnabled,omitempty" url:"assistantVideoEnabled,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *Transport) GetProvider() *TransportProvider {
+	if t == nil {
+		return nil
+	}
+	return t.Provider
+}
+
+func (t *Transport) GetAssistantVideoEnabled() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.AssistantVideoEnabled
+}
+
+func (t *Transport) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *Transport) UnmarshalJSON(data []byte) error {
+	type unmarshaler Transport
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*t = Transport(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *t)
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *Transport) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TransportCost struct {
+	// This is the type of cost, always 'transport' for this class.
+	Provider *TransportCostProvider `json:"provider,omitempty" url:"provider,omitempty"`
+	// This is the minutes of `transport` usage. This should match `call.endedAt` - `call.startedAt`.
+	Minutes float64 `json:"minutes" url:"minutes"`
+	// This is the cost of the component in USD.
+	Cost  float64 `json:"cost" url:"cost"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TransportCost) GetProvider() *TransportCostProvider {
+	if t == nil {
+		return nil
+	}
+	return t.Provider
+}
+
+func (t *TransportCost) GetMinutes() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.Minutes
+}
+
+func (t *TransportCost) GetCost() float64 {
+	if t == nil {
+		return 0
+	}
+	return t.Cost
+}
+
+func (t *TransportCost) Type() string {
+	return t.type_
+}
+
+func (t *TransportCost) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TransportCost) UnmarshalJSON(data []byte) error {
+	type embed TransportCost
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TransportCost(unmarshaler.embed)
+	if unmarshaler.Type != "transport" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "transport", unmarshaler.Type)
+	}
+	t.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *t, "type")
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TransportCost) MarshalJSON() ([]byte, error) {
+	type embed TransportCost
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+		Type:  "transport",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TransportCost) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TransportCostProvider string
+
+const (
+	TransportCostProviderTwilio TransportCostProvider = "twilio"
+	TransportCostProviderVonage TransportCostProvider = "vonage"
+	TransportCostProviderVapi   TransportCostProvider = "vapi"
+)
+
+func NewTransportCostProviderFromString(s string) (TransportCostProvider, error) {
+	switch s {
+	case "twilio":
+		return TransportCostProviderTwilio, nil
+	case "vonage":
+		return TransportCostProviderVonage, nil
+	case "vapi":
+		return TransportCostProviderVapi, nil
+	}
+	var t TransportCostProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (t TransportCostProvider) Ptr() *TransportCostProvider {
+	return &t
+}
+
+// This is the provider used for the call.
+type TransportProvider string
+
+const (
+	TransportProviderTwilio TransportProvider = "twilio"
+	TransportProviderVonage TransportProvider = "vonage"
+	TransportProviderVapi   TransportProvider = "vapi"
+	TransportProviderDaily  TransportProvider = "daily"
+)
+
+func NewTransportProviderFromString(s string) (TransportProvider, error) {
+	switch s {
+	case "twilio":
+		return TransportProviderTwilio, nil
+	case "vonage":
+		return TransportProviderVonage, nil
+	case "vapi":
+		return TransportProviderVapi, nil
+	case "daily":
+		return TransportProviderDaily, nil
+	}
+	var t TransportProvider
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (t TransportProvider) Ptr() *TransportProvider {
+	return &t
+}
+
+type UserMessage struct {
+	// The role of the user in the conversation.
+	Role string `json:"role" url:"role"`
+	// The message content from the user.
+	Message string `json:"message" url:"message"`
+	// The timestamp when the message was sent.
+	Time float64 `json:"time" url:"time"`
+	// The timestamp when the message ended.
+	EndTime float64 `json:"endTime" url:"endTime"`
+	// The number of seconds from the start of the conversation.
+	SecondsFromStart float64 `json:"secondsFromStart" url:"secondsFromStart"`
+	// The duration of the message in seconds.
+	Duration *float64 `json:"duration,omitempty" url:"duration,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UserMessage) GetRole() string {
+	if u == nil {
+		return ""
+	}
+	return u.Role
+}
+
+func (u *UserMessage) GetMessage() string {
+	if u == nil {
+		return ""
+	}
+	return u.Message
+}
+
+func (u *UserMessage) GetTime() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.Time
+}
+
+func (u *UserMessage) GetEndTime() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.EndTime
+}
+
+func (u *UserMessage) GetSecondsFromStart() float64 {
+	if u == nil {
+		return 0
+	}
+	return u.SecondsFromStart
+}
+
+func (u *UserMessage) GetDuration() *float64 {
+	if u == nil {
+		return nil
+	}
+	return u.Duration
+}
+
+func (u *UserMessage) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UserMessage) UnmarshalJSON(data []byte) error {
+	type unmarshaler UserMessage
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UserMessage(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UserMessage) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type VapiCost struct {
+	// This is the type of cost, always 'vapi' for this class.
+	// This is the sub type of the cost.
+	SubType VapiCostSubType `json:"subType" url:"subType"`
+	// This is the minutes of Vapi usage. This should match `call.endedAt` - `call.startedAt`.
+	Minutes float64 `json:"minutes" url:"minutes"`
+	// This is the cost of the component in USD.
+	Cost  float64 `json:"cost" url:"cost"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VapiCost) GetSubType() VapiCostSubType {
+	if v == nil {
+		return ""
+	}
+	return v.SubType
+}
+
+func (v *VapiCost) GetMinutes() float64 {
+	if v == nil {
+		return 0
+	}
+	return v.Minutes
+}
+
+func (v *VapiCost) GetCost() float64 {
+	if v == nil {
+		return 0
+	}
+	return v.Cost
+}
+
+func (v *VapiCost) Type() string {
+	return v.type_
+}
+
+func (v *VapiCost) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VapiCost) UnmarshalJSON(data []byte) error {
+	type embed VapiCost
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = VapiCost(unmarshaler.embed)
+	if unmarshaler.Type != "vapi" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", v, "vapi", unmarshaler.Type)
+	}
+	v.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *v, "type")
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VapiCost) MarshalJSON() ([]byte, error) {
+	type embed VapiCost
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*v),
+		Type:  "vapi",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *VapiCost) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
+}
+
+// This is the sub type of the cost.
+type VapiCostSubType string
+
+const (
+	VapiCostSubTypeNormal  VapiCostSubType = "normal"
+	VapiCostSubTypeOverage VapiCostSubType = "overage"
+)
+
+func NewVapiCostSubTypeFromString(s string) (VapiCostSubType, error) {
+	switch s {
+	case "normal":
+		return VapiCostSubTypeNormal, nil
+	case "overage":
+		return VapiCostSubTypeOverage, nil
+	}
+	var t VapiCostSubType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (v VapiCostSubType) Ptr() *VapiCostSubType {
+	return &v
+}
+
+type VoiceCost struct {
+	// This is the type of cost, always 'voice' for this class.
+	// This is the voice that was used during the call.
+	//
+	// This matches one of the following:
+	// - `call.assistant.voice`,
+	// - `call.assistantId->voice`,
+	// - `call.squad[n].assistant.voice`,
+	// - `call.squad[n].assistantId->voice`,
+	// - `call.squadId->[n].assistant.voice`,
+	// - `call.squadId->[n].assistantId->voice`.
+	Voice map[string]interface{} `json:"voice,omitempty" url:"voice,omitempty"`
+	// This is the number of characters that were generated during the call. These should be total characters used in the call for single assistant calls, while squad calls will have multiple voice costs one for each assistant that was used.
+	Characters float64 `json:"characters" url:"characters"`
+	// This is the cost of the component in USD.
+	Cost  float64 `json:"cost" url:"cost"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (v *VoiceCost) GetVoice() map[string]interface{} {
+	if v == nil {
+		return nil
+	}
+	return v.Voice
+}
+
+func (v *VoiceCost) GetCharacters() float64 {
+	if v == nil {
+		return 0
+	}
+	return v.Characters
+}
+
+func (v *VoiceCost) GetCost() float64 {
+	if v == nil {
+		return 0
+	}
+	return v.Cost
+}
+
+func (v *VoiceCost) Type() string {
+	return v.type_
+}
+
+func (v *VoiceCost) GetExtraProperties() map[string]interface{} {
+	return v.extraProperties
+}
+
+func (v *VoiceCost) UnmarshalJSON(data []byte) error {
+	type embed VoiceCost
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*v),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*v = VoiceCost(unmarshaler.embed)
+	if unmarshaler.Type != "voice" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", v, "voice", unmarshaler.Type)
+	}
+	v.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *v, "type")
+	if err != nil {
+		return err
+	}
+	v.extraProperties = extraProperties
+	v.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (v *VoiceCost) MarshalJSON() ([]byte, error) {
+	type embed VoiceCost
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*v),
+		Type:  "voice",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (v *VoiceCost) String() string {
+	if len(v.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(v.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(v); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", v)
 }
 
 type UpdateCallDto struct {

@@ -9,6 +9,8 @@ import (
 	calls "github.com/VapiAI/server-sdk-go/calls"
 	core "github.com/VapiAI/server-sdk-go/core"
 	files "github.com/VapiAI/server-sdk-go/files"
+	internal "github.com/VapiAI/server-sdk-go/internal"
+	knowledgebases "github.com/VapiAI/server-sdk-go/knowledgebases"
 	logs "github.com/VapiAI/server-sdk-go/logs"
 	option "github.com/VapiAI/server-sdk-go/option"
 	phonenumbers "github.com/VapiAI/server-sdk-go/phonenumbers"
@@ -19,39 +21,41 @@ import (
 
 type Client struct {
 	baseURL string
-	caller  *core.Caller
+	caller  *internal.Caller
 	header  http.Header
 
-	Calls        *calls.Client
-	Assistants   *assistants.Client
-	PhoneNumbers *phonenumbers.Client
-	Squads       *squads.Client
-	Blocks       *blocks.Client
-	Tools        *tools.Client
-	Files        *files.Client
-	Analytics    *analytics.Client
-	Logs         *logs.Client
+	Calls          *calls.Client
+	Assistants     *assistants.Client
+	PhoneNumbers   *phonenumbers.Client
+	Squads         *squads.Client
+	KnowledgeBases *knowledgebases.Client
+	Blocks         *blocks.Client
+	Tools          *tools.Client
+	Files          *files.Client
+	Analytics      *analytics.Client
+	Logs           *logs.Client
 }
 
 func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: core.NewCaller(
-			&core.CallerParams{
+		caller: internal.NewCaller(
+			&internal.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
 		),
-		header:       options.ToHeader(),
-		Calls:        calls.NewClient(opts...),
-		Assistants:   assistants.NewClient(opts...),
-		PhoneNumbers: phonenumbers.NewClient(opts...),
-		Squads:       squads.NewClient(opts...),
-		Blocks:       blocks.NewClient(opts...),
-		Tools:        tools.NewClient(opts...),
-		Files:        files.NewClient(opts...),
-		Analytics:    analytics.NewClient(opts...),
-		Logs:         logs.NewClient(opts...),
+		header:         options.ToHeader(),
+		Calls:          calls.NewClient(opts...),
+		Assistants:     assistants.NewClient(opts...),
+		PhoneNumbers:   phonenumbers.NewClient(opts...),
+		Squads:         squads.NewClient(opts...),
+		KnowledgeBases: knowledgebases.NewClient(opts...),
+		Blocks:         blocks.NewClient(opts...),
+		Tools:          tools.NewClient(opts...),
+		Files:          files.NewClient(opts...),
+		Analytics:      analytics.NewClient(opts...),
+		Logs:           logs.NewClient(opts...),
 	}
 }

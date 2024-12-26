@@ -3,6 +3,9 @@
 package api
 
 import (
+	json "encoding/json"
+	fmt "fmt"
+	internal "github.com/VapiAI/server-sdk-go/internal"
 	time "time"
 )
 
@@ -25,6 +28,133 @@ type SquadsListRequest struct {
 	UpdatedAtGe *time.Time `json:"-" url:"updatedAtGe,omitempty"`
 	// This will return items where the updatedAt is less than or equal to the specified value.
 	UpdatedAtLe *time.Time `json:"-" url:"updatedAtLe,omitempty"`
+}
+
+type Squad struct {
+	// This is the name of the squad.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the list of assistants that make up the squad.
+	//
+	// The call will start with the first assistant in the list.
+	Members []*SquadMemberDto `json:"members,omitempty" url:"members,omitempty"`
+	// This can be used to override all the assistants' settings and provide values for their template variables.
+	//
+	// Both `membersOverrides` and `members[n].assistantOverrides` can be used together. First, `members[n].assistantOverrides` is applied. Then, `membersOverrides` is applied as a global override.
+	MembersOverrides *AssistantOverrides `json:"membersOverrides,omitempty" url:"membersOverrides,omitempty"`
+	// This is the unique identifier for the squad.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the org that this squad belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the squad was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the squad was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *Squad) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *Squad) GetMembers() []*SquadMemberDto {
+	if s == nil {
+		return nil
+	}
+	return s.Members
+}
+
+func (s *Squad) GetMembersOverrides() *AssistantOverrides {
+	if s == nil {
+		return nil
+	}
+	return s.MembersOverrides
+}
+
+func (s *Squad) GetId() string {
+	if s == nil {
+		return ""
+	}
+	return s.Id
+}
+
+func (s *Squad) GetOrgId() string {
+	if s == nil {
+		return ""
+	}
+	return s.OrgId
+}
+
+func (s *Squad) GetCreatedAt() time.Time {
+	if s == nil {
+		return time.Time{}
+	}
+	return s.CreatedAt
+}
+
+func (s *Squad) GetUpdatedAt() time.Time {
+	if s == nil {
+		return time.Time{}
+	}
+	return s.UpdatedAt
+}
+
+func (s *Squad) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *Squad) UnmarshalJSON(data []byte) error {
+	type embed Squad
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = Squad(unmarshaler.embed)
+	s.CreatedAt = unmarshaler.CreatedAt.Time()
+	s.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	extraProperties, err := internal.ExtractExtraProperties(data, *s)
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Squad) MarshalJSON() ([]byte, error) {
+	type embed Squad
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+	}{
+		embed:     embed(*s),
+		CreatedAt: internal.NewDateTime(s.CreatedAt),
+		UpdatedAt: internal.NewDateTime(s.UpdatedAt),
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *Squad) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
 }
 
 type UpdateSquadDto struct {

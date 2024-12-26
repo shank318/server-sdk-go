@@ -7,13 +7,14 @@ import (
 	fmt "fmt"
 	serversdkgo "github.com/VapiAI/server-sdk-go"
 	core "github.com/VapiAI/server-sdk-go/core"
+	internal "github.com/VapiAI/server-sdk-go/internal"
 	option "github.com/VapiAI/server-sdk-go/option"
 	http "net/http"
 )
 
 type Client struct {
 	baseURL string
-	caller  *core.Caller
+	caller  *internal.Caller
 	header  http.Header
 }
 
@@ -21,8 +22,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: core.NewCaller(
-			&core.CallerParams{
+		caller: internal.NewCaller(
+			&internal.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
@@ -37,24 +38,22 @@ func (c *Client) Get(
 	opts ...option.RequestOption,
 ) (*core.Page[*serversdkgo.Log], error) {
 	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://api.vapi.ai"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		c.baseURL,
+		"https://api.vapi.ai",
+	)
 	endpointURL := baseURL + "/logs"
-
-	queryParams, err := core.QueryValues(request)
+	queryParams, err := internal.QueryValues(request)
 	if err != nil {
 		return nil, err
 	}
+	headers := internal.MergeHeaders(
+		c.header.Clone(),
+		options.ToHeader(),
+	)
 
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-
-	prepareCall := func(pageRequest *core.PageRequest[*int]) *core.CallParams {
+	prepareCall := func(pageRequest *internal.PageRequest[*float64]) *internal.CallParams {
 		if pageRequest.Cursor != nil {
 			queryParams.Set("page", fmt.Sprintf("%v", *pageRequest.Cursor))
 		}
@@ -62,11 +61,11 @@ func (c *Client) Get(
 		if len(queryParams) > 0 {
 			nextURL += "?" + queryParams.Encode()
 		}
-		return &core.CallParams{
+		return &internal.CallParams{
 			URL:             nextURL,
 			Method:          http.MethodGet,
-			MaxAttempts:     options.MaxAttempts,
 			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
@@ -77,15 +76,15 @@ func (c *Client) Get(
 	if request.Page != nil {
 		next = *request.Page
 	}
-	readPageResponse := func(response *serversdkgo.LogsPaginatedResponse) *core.PageResponse[*int, *serversdkgo.Log] {
+	readPageResponse := func(response *serversdkgo.LogsPaginatedResponse) *internal.PageResponse[*float64, *serversdkgo.Log] {
 		next += 1
 		results := response.Results
-		return &core.PageResponse[*int, *serversdkgo.Log]{
+		return &internal.PageResponse[*float64, *serversdkgo.Log]{
 			Next:    &next,
 			Results: results,
 		}
 	}
-	pager := core.NewOffsetPager(
+	pager := internal.NewOffsetPager(
 		c.caller,
 		prepareCall,
 		readPageResponse,

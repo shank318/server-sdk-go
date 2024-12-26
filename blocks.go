@@ -5,6 +5,7 @@ package api
 import (
 	json "encoding/json"
 	fmt "fmt"
+	internal "github.com/VapiAI/server-sdk-go/internal"
 	time "time"
 )
 
@@ -29,25 +30,992 @@ type BlocksListRequest struct {
 	UpdatedAtLe *time.Time `json:"-" url:"updatedAtLe,omitempty"`
 }
 
+type ConversationBlock struct {
+	// These are the pre-configured messages that will be spoken to the user while the block is running.
+	Messages []*ConversationBlockMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// This is the input schema for the block. This is the input the block needs to run. It's given to the block as `steps[0].input`
+	//
+	// These are accessible as variables:
+	// - ({{input.propertyName}}) in context of the block execution (step)
+	// - ({{stepName.input.propertyName}}) in context of the workflow
+	InputSchema *JsonSchema `json:"inputSchema,omitempty" url:"inputSchema,omitempty"`
+	// This is the output schema for the block. This is the output the block will return to the workflow (`{{stepName.output}}`).
+	//
+	// These are accessible as variables:
+	// - ({{output.propertyName}}) in context of the block execution (step)
+	// - ({{stepName.output.propertyName}}) in context of the workflow (read caveat #1)
+	// - ({{blockName.output.propertyName}}) in context of the workflow (read caveat #2)
+	//
+	// Caveats:
+	// 1. a workflow can execute a step multiple times. example, if a loop is used in the graph. {{stepName.output.propertyName}} will reference the latest usage of the step.
+	// 2. a workflow can execute a block multiple times. example, if a step is called multiple times or if a block is used in multiple steps. {{blockName.output.propertyName}} will reference the latest usage of the block. this liquid variable is just provided for convenience when creating blocks outside of a workflow with steps.
+	OutputSchema *JsonSchema `json:"outputSchema,omitempty" url:"outputSchema,omitempty"`
+	// This is the unique identifier for the block.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the organization that this block belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the block was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the block was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of the block. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the instruction to the model.
+	//
+	// You can reference any variable in the context of the current block execution (step):
+	// - "{{input.your-property-name}}" for the current step's input
+	// - "{{your-step-name.output.your-property-name}}" for another step's output (in the same workflow; read caveat #1)
+	// - "{{your-step-name.input.your-property-name}}" for another step's input (in the same workflow; read caveat #1)
+	// - "{{your-block-name.output.your-property-name}}" for another block's output (in the same workflow; read caveat #2)
+	// - "{{your-block-name.input.your-property-name}}" for another block's input (in the same workflow; read caveat #2)
+	// - "{{workflow.input.your-property-name}}" for the current workflow's input
+	// - "{{global.your-property-name}}" for the global context
+	//
+	// This can be as simple or as complex as you want it to be.
+	// - "say hello and ask the user about their day!"
+	// - "collect the user's first and last name"
+	// - "user is {{input.firstName}} {{input.lastName}}. their age is {{input.age}}. ask them about their salary and if they might be interested in buying a house. we offer {{input.offer}}"
+	//
+	// Caveats:
+	// 1. a workflow can execute a step multiple times. example, if a loop is used in the graph. {{stepName.output/input.propertyName}} will reference the latest usage of the step.
+	// 2. a workflow can execute a block multiple times. example, if a step is called multiple times or if a block is used in multiple steps. {{blockName.output/input.propertyName}} will reference the latest usage of the block. this liquid variable is just provided for convenience when creating blocks outside of a workflow with steps.
+	Instruction string `json:"instruction" url:"instruction"`
+	type_       string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ConversationBlock) GetMessages() []*ConversationBlockMessagesItem {
+	if c == nil {
+		return nil
+	}
+	return c.Messages
+}
+
+func (c *ConversationBlock) GetInputSchema() *JsonSchema {
+	if c == nil {
+		return nil
+	}
+	return c.InputSchema
+}
+
+func (c *ConversationBlock) GetOutputSchema() *JsonSchema {
+	if c == nil {
+		return nil
+	}
+	return c.OutputSchema
+}
+
+func (c *ConversationBlock) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *ConversationBlock) GetOrgId() string {
+	if c == nil {
+		return ""
+	}
+	return c.OrgId
+}
+
+func (c *ConversationBlock) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *ConversationBlock) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *ConversationBlock) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *ConversationBlock) GetInstruction() string {
+	if c == nil {
+		return ""
+	}
+	return c.Instruction
+}
+
+func (c *ConversationBlock) Type() string {
+	return c.type_
+}
+
+func (c *ConversationBlock) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ConversationBlock) UnmarshalJSON(data []byte) error {
+	type embed ConversationBlock
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ConversationBlock(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Type != "conversation" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "conversation", unmarshaler.Type)
+	}
+	c.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ConversationBlock) MarshalJSON() ([]byte, error) {
+	type embed ConversationBlock
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
+		Type:      "conversation",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ConversationBlock) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ConversationBlockMessagesItem struct {
+	BlockStartMessage    *BlockStartMessage
+	BlockCompleteMessage *BlockCompleteMessage
+
+	typ string
+}
+
+func (c *ConversationBlockMessagesItem) GetBlockStartMessage() *BlockStartMessage {
+	if c == nil {
+		return nil
+	}
+	return c.BlockStartMessage
+}
+
+func (c *ConversationBlockMessagesItem) GetBlockCompleteMessage() *BlockCompleteMessage {
+	if c == nil {
+		return nil
+	}
+	return c.BlockCompleteMessage
+}
+
+func (c *ConversationBlockMessagesItem) UnmarshalJSON(data []byte) error {
+	valueBlockStartMessage := new(BlockStartMessage)
+	if err := json.Unmarshal(data, &valueBlockStartMessage); err == nil {
+		c.typ = "BlockStartMessage"
+		c.BlockStartMessage = valueBlockStartMessage
+		return nil
+	}
+	valueBlockCompleteMessage := new(BlockCompleteMessage)
+	if err := json.Unmarshal(data, &valueBlockCompleteMessage); err == nil {
+		c.typ = "BlockCompleteMessage"
+		c.BlockCompleteMessage = valueBlockCompleteMessage
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ConversationBlockMessagesItem) MarshalJSON() ([]byte, error) {
+	if c.typ == "BlockStartMessage" || c.BlockStartMessage != nil {
+		return json.Marshal(c.BlockStartMessage)
+	}
+	if c.typ == "BlockCompleteMessage" || c.BlockCompleteMessage != nil {
+		return json.Marshal(c.BlockCompleteMessage)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ConversationBlockMessagesItemVisitor interface {
+	VisitBlockStartMessage(*BlockStartMessage) error
+	VisitBlockCompleteMessage(*BlockCompleteMessage) error
+}
+
+func (c *ConversationBlockMessagesItem) Accept(visitor ConversationBlockMessagesItemVisitor) error {
+	if c.typ == "BlockStartMessage" || c.BlockStartMessage != nil {
+		return visitor.VisitBlockStartMessage(c.BlockStartMessage)
+	}
+	if c.typ == "BlockCompleteMessage" || c.BlockCompleteMessage != nil {
+		return visitor.VisitBlockCompleteMessage(c.BlockCompleteMessage)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ToolCallBlock struct {
+	// These are the pre-configured messages that will be spoken to the user while the block is running.
+	Messages []*ToolCallBlockMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// This is the input schema for the block. This is the input the block needs to run. It's given to the block as `steps[0].input`
+	//
+	// These are accessible as variables:
+	// - ({{input.propertyName}}) in context of the block execution (step)
+	// - ({{stepName.input.propertyName}}) in context of the workflow
+	InputSchema *JsonSchema `json:"inputSchema,omitempty" url:"inputSchema,omitempty"`
+	// This is the output schema for the block. This is the output the block will return to the workflow (`{{stepName.output}}`).
+	//
+	// These are accessible as variables:
+	// - ({{output.propertyName}}) in context of the block execution (step)
+	// - ({{stepName.output.propertyName}}) in context of the workflow (read caveat #1)
+	// - ({{blockName.output.propertyName}}) in context of the workflow (read caveat #2)
+	//
+	// Caveats:
+	// 1. a workflow can execute a step multiple times. example, if a loop is used in the graph. {{stepName.output.propertyName}} will reference the latest usage of the step.
+	// 2. a workflow can execute a block multiple times. example, if a step is called multiple times or if a block is used in multiple steps. {{blockName.output.propertyName}} will reference the latest usage of the block. this liquid variable is just provided for convenience when creating blocks outside of a workflow with steps.
+	OutputSchema *JsonSchema `json:"outputSchema,omitempty" url:"outputSchema,omitempty"`
+	// This is the tool that the block will call. To use an existing tool, use `toolId`.
+	Tool *ToolCallBlockTool `json:"tool,omitempty" url:"tool,omitempty"`
+	// This is the unique identifier for the block.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the organization that this block belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the block was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the block was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of the block. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the id of the tool that the block will call. To use a transient tool, use `tool`.
+	ToolId *string `json:"toolId,omitempty" url:"toolId,omitempty"`
+	type_  string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *ToolCallBlock) GetMessages() []*ToolCallBlockMessagesItem {
+	if t == nil {
+		return nil
+	}
+	return t.Messages
+}
+
+func (t *ToolCallBlock) GetInputSchema() *JsonSchema {
+	if t == nil {
+		return nil
+	}
+	return t.InputSchema
+}
+
+func (t *ToolCallBlock) GetOutputSchema() *JsonSchema {
+	if t == nil {
+		return nil
+	}
+	return t.OutputSchema
+}
+
+func (t *ToolCallBlock) GetTool() *ToolCallBlockTool {
+	if t == nil {
+		return nil
+	}
+	return t.Tool
+}
+
+func (t *ToolCallBlock) GetId() string {
+	if t == nil {
+		return ""
+	}
+	return t.Id
+}
+
+func (t *ToolCallBlock) GetOrgId() string {
+	if t == nil {
+		return ""
+	}
+	return t.OrgId
+}
+
+func (t *ToolCallBlock) GetCreatedAt() time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+	return t.CreatedAt
+}
+
+func (t *ToolCallBlock) GetUpdatedAt() time.Time {
+	if t == nil {
+		return time.Time{}
+	}
+	return t.UpdatedAt
+}
+
+func (t *ToolCallBlock) GetName() *string {
+	if t == nil {
+		return nil
+	}
+	return t.Name
+}
+
+func (t *ToolCallBlock) GetToolId() *string {
+	if t == nil {
+		return nil
+	}
+	return t.ToolId
+}
+
+func (t *ToolCallBlock) Type() string {
+	return t.type_
+}
+
+func (t *ToolCallBlock) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *ToolCallBlock) UnmarshalJSON(data []byte) error {
+	type embed ToolCallBlock
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = ToolCallBlock(unmarshaler.embed)
+	t.CreatedAt = unmarshaler.CreatedAt.Time()
+	t.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Type != "tool-call" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "tool-call", unmarshaler.Type)
+	}
+	t.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *t, "type")
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *ToolCallBlock) MarshalJSON() ([]byte, error) {
+	type embed ToolCallBlock
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed:     embed(*t),
+		CreatedAt: internal.NewDateTime(t.CreatedAt),
+		UpdatedAt: internal.NewDateTime(t.UpdatedAt),
+		Type:      "tool-call",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *ToolCallBlock) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type ToolCallBlockMessagesItem struct {
+	BlockStartMessage    *BlockStartMessage
+	BlockCompleteMessage *BlockCompleteMessage
+
+	typ string
+}
+
+func (t *ToolCallBlockMessagesItem) GetBlockStartMessage() *BlockStartMessage {
+	if t == nil {
+		return nil
+	}
+	return t.BlockStartMessage
+}
+
+func (t *ToolCallBlockMessagesItem) GetBlockCompleteMessage() *BlockCompleteMessage {
+	if t == nil {
+		return nil
+	}
+	return t.BlockCompleteMessage
+}
+
+func (t *ToolCallBlockMessagesItem) UnmarshalJSON(data []byte) error {
+	valueBlockStartMessage := new(BlockStartMessage)
+	if err := json.Unmarshal(data, &valueBlockStartMessage); err == nil {
+		t.typ = "BlockStartMessage"
+		t.BlockStartMessage = valueBlockStartMessage
+		return nil
+	}
+	valueBlockCompleteMessage := new(BlockCompleteMessage)
+	if err := json.Unmarshal(data, &valueBlockCompleteMessage); err == nil {
+		t.typ = "BlockCompleteMessage"
+		t.BlockCompleteMessage = valueBlockCompleteMessage
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, t)
+}
+
+func (t ToolCallBlockMessagesItem) MarshalJSON() ([]byte, error) {
+	if t.typ == "BlockStartMessage" || t.BlockStartMessage != nil {
+		return json.Marshal(t.BlockStartMessage)
+	}
+	if t.typ == "BlockCompleteMessage" || t.BlockCompleteMessage != nil {
+		return json.Marshal(t.BlockCompleteMessage)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type ToolCallBlockMessagesItemVisitor interface {
+	VisitBlockStartMessage(*BlockStartMessage) error
+	VisitBlockCompleteMessage(*BlockCompleteMessage) error
+}
+
+func (t *ToolCallBlockMessagesItem) Accept(visitor ToolCallBlockMessagesItemVisitor) error {
+	if t.typ == "BlockStartMessage" || t.BlockStartMessage != nil {
+		return visitor.VisitBlockStartMessage(t.BlockStartMessage)
+	}
+	if t.typ == "BlockCompleteMessage" || t.BlockCompleteMessage != nil {
+		return visitor.VisitBlockCompleteMessage(t.BlockCompleteMessage)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+// This is the tool that the block will call. To use an existing tool, use `toolId`.
+type ToolCallBlockTool struct {
+	CreateDtmfToolDto         *CreateDtmfToolDto
+	CreateEndCallToolDto      *CreateEndCallToolDto
+	CreateVoicemailToolDto    *CreateVoicemailToolDto
+	CreateFunctionToolDto     *CreateFunctionToolDto
+	CreateGhlToolDto          *CreateGhlToolDto
+	CreateMakeToolDto         *CreateMakeToolDto
+	CreateTransferCallToolDto *CreateTransferCallToolDto
+
+	typ string
+}
+
+func (t *ToolCallBlockTool) GetCreateDtmfToolDto() *CreateDtmfToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateDtmfToolDto
+}
+
+func (t *ToolCallBlockTool) GetCreateEndCallToolDto() *CreateEndCallToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateEndCallToolDto
+}
+
+func (t *ToolCallBlockTool) GetCreateVoicemailToolDto() *CreateVoicemailToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateVoicemailToolDto
+}
+
+func (t *ToolCallBlockTool) GetCreateFunctionToolDto() *CreateFunctionToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateFunctionToolDto
+}
+
+func (t *ToolCallBlockTool) GetCreateGhlToolDto() *CreateGhlToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateGhlToolDto
+}
+
+func (t *ToolCallBlockTool) GetCreateMakeToolDto() *CreateMakeToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateMakeToolDto
+}
+
+func (t *ToolCallBlockTool) GetCreateTransferCallToolDto() *CreateTransferCallToolDto {
+	if t == nil {
+		return nil
+	}
+	return t.CreateTransferCallToolDto
+}
+
+func (t *ToolCallBlockTool) UnmarshalJSON(data []byte) error {
+	valueCreateDtmfToolDto := new(CreateDtmfToolDto)
+	if err := json.Unmarshal(data, &valueCreateDtmfToolDto); err == nil {
+		t.typ = "CreateDtmfToolDto"
+		t.CreateDtmfToolDto = valueCreateDtmfToolDto
+		return nil
+	}
+	valueCreateEndCallToolDto := new(CreateEndCallToolDto)
+	if err := json.Unmarshal(data, &valueCreateEndCallToolDto); err == nil {
+		t.typ = "CreateEndCallToolDto"
+		t.CreateEndCallToolDto = valueCreateEndCallToolDto
+		return nil
+	}
+	valueCreateVoicemailToolDto := new(CreateVoicemailToolDto)
+	if err := json.Unmarshal(data, &valueCreateVoicemailToolDto); err == nil {
+		t.typ = "CreateVoicemailToolDto"
+		t.CreateVoicemailToolDto = valueCreateVoicemailToolDto
+		return nil
+	}
+	valueCreateFunctionToolDto := new(CreateFunctionToolDto)
+	if err := json.Unmarshal(data, &valueCreateFunctionToolDto); err == nil {
+		t.typ = "CreateFunctionToolDto"
+		t.CreateFunctionToolDto = valueCreateFunctionToolDto
+		return nil
+	}
+	valueCreateGhlToolDto := new(CreateGhlToolDto)
+	if err := json.Unmarshal(data, &valueCreateGhlToolDto); err == nil {
+		t.typ = "CreateGhlToolDto"
+		t.CreateGhlToolDto = valueCreateGhlToolDto
+		return nil
+	}
+	valueCreateMakeToolDto := new(CreateMakeToolDto)
+	if err := json.Unmarshal(data, &valueCreateMakeToolDto); err == nil {
+		t.typ = "CreateMakeToolDto"
+		t.CreateMakeToolDto = valueCreateMakeToolDto
+		return nil
+	}
+	valueCreateTransferCallToolDto := new(CreateTransferCallToolDto)
+	if err := json.Unmarshal(data, &valueCreateTransferCallToolDto); err == nil {
+		t.typ = "CreateTransferCallToolDto"
+		t.CreateTransferCallToolDto = valueCreateTransferCallToolDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, t)
+}
+
+func (t ToolCallBlockTool) MarshalJSON() ([]byte, error) {
+	if t.typ == "CreateDtmfToolDto" || t.CreateDtmfToolDto != nil {
+		return json.Marshal(t.CreateDtmfToolDto)
+	}
+	if t.typ == "CreateEndCallToolDto" || t.CreateEndCallToolDto != nil {
+		return json.Marshal(t.CreateEndCallToolDto)
+	}
+	if t.typ == "CreateVoicemailToolDto" || t.CreateVoicemailToolDto != nil {
+		return json.Marshal(t.CreateVoicemailToolDto)
+	}
+	if t.typ == "CreateFunctionToolDto" || t.CreateFunctionToolDto != nil {
+		return json.Marshal(t.CreateFunctionToolDto)
+	}
+	if t.typ == "CreateGhlToolDto" || t.CreateGhlToolDto != nil {
+		return json.Marshal(t.CreateGhlToolDto)
+	}
+	if t.typ == "CreateMakeToolDto" || t.CreateMakeToolDto != nil {
+		return json.Marshal(t.CreateMakeToolDto)
+	}
+	if t.typ == "CreateTransferCallToolDto" || t.CreateTransferCallToolDto != nil {
+		return json.Marshal(t.CreateTransferCallToolDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type ToolCallBlockToolVisitor interface {
+	VisitCreateDtmfToolDto(*CreateDtmfToolDto) error
+	VisitCreateEndCallToolDto(*CreateEndCallToolDto) error
+	VisitCreateVoicemailToolDto(*CreateVoicemailToolDto) error
+	VisitCreateFunctionToolDto(*CreateFunctionToolDto) error
+	VisitCreateGhlToolDto(*CreateGhlToolDto) error
+	VisitCreateMakeToolDto(*CreateMakeToolDto) error
+	VisitCreateTransferCallToolDto(*CreateTransferCallToolDto) error
+}
+
+func (t *ToolCallBlockTool) Accept(visitor ToolCallBlockToolVisitor) error {
+	if t.typ == "CreateDtmfToolDto" || t.CreateDtmfToolDto != nil {
+		return visitor.VisitCreateDtmfToolDto(t.CreateDtmfToolDto)
+	}
+	if t.typ == "CreateEndCallToolDto" || t.CreateEndCallToolDto != nil {
+		return visitor.VisitCreateEndCallToolDto(t.CreateEndCallToolDto)
+	}
+	if t.typ == "CreateVoicemailToolDto" || t.CreateVoicemailToolDto != nil {
+		return visitor.VisitCreateVoicemailToolDto(t.CreateVoicemailToolDto)
+	}
+	if t.typ == "CreateFunctionToolDto" || t.CreateFunctionToolDto != nil {
+		return visitor.VisitCreateFunctionToolDto(t.CreateFunctionToolDto)
+	}
+	if t.typ == "CreateGhlToolDto" || t.CreateGhlToolDto != nil {
+		return visitor.VisitCreateGhlToolDto(t.CreateGhlToolDto)
+	}
+	if t.typ == "CreateMakeToolDto" || t.CreateMakeToolDto != nil {
+		return visitor.VisitCreateMakeToolDto(t.CreateMakeToolDto)
+	}
+	if t.typ == "CreateTransferCallToolDto" || t.CreateTransferCallToolDto != nil {
+		return visitor.VisitCreateTransferCallToolDto(t.CreateTransferCallToolDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type WorkflowBlock struct {
+	// These are the pre-configured messages that will be spoken to the user while the block is running.
+	Messages []*WorkflowBlockMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// This is the input schema for the block. This is the input the block needs to run. It's given to the block as `steps[0].input`
+	//
+	// These are accessible as variables:
+	// - ({{input.propertyName}}) in context of the block execution (step)
+	// - ({{stepName.input.propertyName}}) in context of the workflow
+	InputSchema *JsonSchema `json:"inputSchema,omitempty" url:"inputSchema,omitempty"`
+	// This is the output schema for the block. This is the output the block will return to the workflow (`{{stepName.output}}`).
+	//
+	// These are accessible as variables:
+	// - ({{output.propertyName}}) in context of the block execution (step)
+	// - ({{stepName.output.propertyName}}) in context of the workflow (read caveat #1)
+	// - ({{blockName.output.propertyName}}) in context of the workflow (read caveat #2)
+	//
+	// Caveats:
+	// 1. a workflow can execute a step multiple times. example, if a loop is used in the graph. {{stepName.output.propertyName}} will reference the latest usage of the step.
+	// 2. a workflow can execute a block multiple times. example, if a step is called multiple times or if a block is used in multiple steps. {{blockName.output.propertyName}} will reference the latest usage of the block. this liquid variable is just provided for convenience when creating blocks outside of a workflow with steps.
+	OutputSchema *JsonSchema `json:"outputSchema,omitempty" url:"outputSchema,omitempty"`
+	// These are the steps in the workflow.
+	Steps []*WorkflowBlockStepsItem `json:"steps,omitempty" url:"steps,omitempty"`
+	// This is the unique identifier for the block.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the organization that this block belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the block was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the block was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of the block. This is just for your reference.
+	Name  *string `json:"name,omitempty" url:"name,omitempty"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *WorkflowBlock) GetMessages() []*WorkflowBlockMessagesItem {
+	if w == nil {
+		return nil
+	}
+	return w.Messages
+}
+
+func (w *WorkflowBlock) GetInputSchema() *JsonSchema {
+	if w == nil {
+		return nil
+	}
+	return w.InputSchema
+}
+
+func (w *WorkflowBlock) GetOutputSchema() *JsonSchema {
+	if w == nil {
+		return nil
+	}
+	return w.OutputSchema
+}
+
+func (w *WorkflowBlock) GetSteps() []*WorkflowBlockStepsItem {
+	if w == nil {
+		return nil
+	}
+	return w.Steps
+}
+
+func (w *WorkflowBlock) GetId() string {
+	if w == nil {
+		return ""
+	}
+	return w.Id
+}
+
+func (w *WorkflowBlock) GetOrgId() string {
+	if w == nil {
+		return ""
+	}
+	return w.OrgId
+}
+
+func (w *WorkflowBlock) GetCreatedAt() time.Time {
+	if w == nil {
+		return time.Time{}
+	}
+	return w.CreatedAt
+}
+
+func (w *WorkflowBlock) GetUpdatedAt() time.Time {
+	if w == nil {
+		return time.Time{}
+	}
+	return w.UpdatedAt
+}
+
+func (w *WorkflowBlock) GetName() *string {
+	if w == nil {
+		return nil
+	}
+	return w.Name
+}
+
+func (w *WorkflowBlock) Type() string {
+	return w.type_
+}
+
+func (w *WorkflowBlock) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *WorkflowBlock) UnmarshalJSON(data []byte) error {
+	type embed WorkflowBlock
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed: embed(*w),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*w = WorkflowBlock(unmarshaler.embed)
+	w.CreatedAt = unmarshaler.CreatedAt.Time()
+	w.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Type != "workflow" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", w, "workflow", unmarshaler.Type)
+	}
+	w.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *w, "type")
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *WorkflowBlock) MarshalJSON() ([]byte, error) {
+	type embed WorkflowBlock
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed:     embed(*w),
+		CreatedAt: internal.NewDateTime(w.CreatedAt),
+		UpdatedAt: internal.NewDateTime(w.UpdatedAt),
+		Type:      "workflow",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (w *WorkflowBlock) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+type WorkflowBlockMessagesItem struct {
+	BlockStartMessage    *BlockStartMessage
+	BlockCompleteMessage *BlockCompleteMessage
+
+	typ string
+}
+
+func (w *WorkflowBlockMessagesItem) GetBlockStartMessage() *BlockStartMessage {
+	if w == nil {
+		return nil
+	}
+	return w.BlockStartMessage
+}
+
+func (w *WorkflowBlockMessagesItem) GetBlockCompleteMessage() *BlockCompleteMessage {
+	if w == nil {
+		return nil
+	}
+	return w.BlockCompleteMessage
+}
+
+func (w *WorkflowBlockMessagesItem) UnmarshalJSON(data []byte) error {
+	valueBlockStartMessage := new(BlockStartMessage)
+	if err := json.Unmarshal(data, &valueBlockStartMessage); err == nil {
+		w.typ = "BlockStartMessage"
+		w.BlockStartMessage = valueBlockStartMessage
+		return nil
+	}
+	valueBlockCompleteMessage := new(BlockCompleteMessage)
+	if err := json.Unmarshal(data, &valueBlockCompleteMessage); err == nil {
+		w.typ = "BlockCompleteMessage"
+		w.BlockCompleteMessage = valueBlockCompleteMessage
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, w)
+}
+
+func (w WorkflowBlockMessagesItem) MarshalJSON() ([]byte, error) {
+	if w.typ == "BlockStartMessage" || w.BlockStartMessage != nil {
+		return json.Marshal(w.BlockStartMessage)
+	}
+	if w.typ == "BlockCompleteMessage" || w.BlockCompleteMessage != nil {
+		return json.Marshal(w.BlockCompleteMessage)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", w)
+}
+
+type WorkflowBlockMessagesItemVisitor interface {
+	VisitBlockStartMessage(*BlockStartMessage) error
+	VisitBlockCompleteMessage(*BlockCompleteMessage) error
+}
+
+func (w *WorkflowBlockMessagesItem) Accept(visitor WorkflowBlockMessagesItemVisitor) error {
+	if w.typ == "BlockStartMessage" || w.BlockStartMessage != nil {
+		return visitor.VisitBlockStartMessage(w.BlockStartMessage)
+	}
+	if w.typ == "BlockCompleteMessage" || w.BlockCompleteMessage != nil {
+		return visitor.VisitBlockCompleteMessage(w.BlockCompleteMessage)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", w)
+}
+
+type WorkflowBlockStepsItem struct {
+	HandoffStep  *HandoffStep
+	CallbackStep *CallbackStep
+
+	typ string
+}
+
+func (w *WorkflowBlockStepsItem) GetHandoffStep() *HandoffStep {
+	if w == nil {
+		return nil
+	}
+	return w.HandoffStep
+}
+
+func (w *WorkflowBlockStepsItem) GetCallbackStep() *CallbackStep {
+	if w == nil {
+		return nil
+	}
+	return w.CallbackStep
+}
+
+func (w *WorkflowBlockStepsItem) UnmarshalJSON(data []byte) error {
+	valueHandoffStep := new(HandoffStep)
+	if err := json.Unmarshal(data, &valueHandoffStep); err == nil {
+		w.typ = "HandoffStep"
+		w.HandoffStep = valueHandoffStep
+		return nil
+	}
+	valueCallbackStep := new(CallbackStep)
+	if err := json.Unmarshal(data, &valueCallbackStep); err == nil {
+		w.typ = "CallbackStep"
+		w.CallbackStep = valueCallbackStep
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, w)
+}
+
+func (w WorkflowBlockStepsItem) MarshalJSON() ([]byte, error) {
+	if w.typ == "HandoffStep" || w.HandoffStep != nil {
+		return json.Marshal(w.HandoffStep)
+	}
+	if w.typ == "CallbackStep" || w.CallbackStep != nil {
+		return json.Marshal(w.CallbackStep)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", w)
+}
+
+type WorkflowBlockStepsItemVisitor interface {
+	VisitHandoffStep(*HandoffStep) error
+	VisitCallbackStep(*CallbackStep) error
+}
+
+func (w *WorkflowBlockStepsItem) Accept(visitor WorkflowBlockStepsItemVisitor) error {
+	if w.typ == "HandoffStep" || w.HandoffStep != nil {
+		return visitor.VisitHandoffStep(w.HandoffStep)
+	}
+	if w.typ == "CallbackStep" || w.CallbackStep != nil {
+		return visitor.VisitCallbackStep(w.CallbackStep)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", w)
+}
+
 type BlocksCreateRequest struct {
 	CreateConversationBlockDto *CreateConversationBlockDto
 	CreateToolCallBlockDto     *CreateToolCallBlockDto
 	CreateWorkflowBlockDto     *CreateWorkflowBlockDto
+
+	typ string
+}
+
+func (b *BlocksCreateRequest) GetCreateConversationBlockDto() *CreateConversationBlockDto {
+	if b == nil {
+		return nil
+	}
+	return b.CreateConversationBlockDto
+}
+
+func (b *BlocksCreateRequest) GetCreateToolCallBlockDto() *CreateToolCallBlockDto {
+	if b == nil {
+		return nil
+	}
+	return b.CreateToolCallBlockDto
+}
+
+func (b *BlocksCreateRequest) GetCreateWorkflowBlockDto() *CreateWorkflowBlockDto {
+	if b == nil {
+		return nil
+	}
+	return b.CreateWorkflowBlockDto
 }
 
 func (b *BlocksCreateRequest) UnmarshalJSON(data []byte) error {
 	valueCreateConversationBlockDto := new(CreateConversationBlockDto)
 	if err := json.Unmarshal(data, &valueCreateConversationBlockDto); err == nil {
+		b.typ = "CreateConversationBlockDto"
 		b.CreateConversationBlockDto = valueCreateConversationBlockDto
 		return nil
 	}
 	valueCreateToolCallBlockDto := new(CreateToolCallBlockDto)
 	if err := json.Unmarshal(data, &valueCreateToolCallBlockDto); err == nil {
+		b.typ = "CreateToolCallBlockDto"
 		b.CreateToolCallBlockDto = valueCreateToolCallBlockDto
 		return nil
 	}
 	valueCreateWorkflowBlockDto := new(CreateWorkflowBlockDto)
 	if err := json.Unmarshal(data, &valueCreateWorkflowBlockDto); err == nil {
+		b.typ = "CreateWorkflowBlockDto"
 		b.CreateWorkflowBlockDto = valueCreateWorkflowBlockDto
 		return nil
 	}
@@ -55,13 +1023,13 @@ func (b *BlocksCreateRequest) UnmarshalJSON(data []byte) error {
 }
 
 func (b BlocksCreateRequest) MarshalJSON() ([]byte, error) {
-	if b.CreateConversationBlockDto != nil {
+	if b.typ == "CreateConversationBlockDto" || b.CreateConversationBlockDto != nil {
 		return json.Marshal(b.CreateConversationBlockDto)
 	}
-	if b.CreateToolCallBlockDto != nil {
+	if b.typ == "CreateToolCallBlockDto" || b.CreateToolCallBlockDto != nil {
 		return json.Marshal(b.CreateToolCallBlockDto)
 	}
-	if b.CreateWorkflowBlockDto != nil {
+	if b.typ == "CreateWorkflowBlockDto" || b.CreateWorkflowBlockDto != nil {
 		return json.Marshal(b.CreateWorkflowBlockDto)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -74,13 +1042,13 @@ type BlocksCreateRequestVisitor interface {
 }
 
 func (b *BlocksCreateRequest) Accept(visitor BlocksCreateRequestVisitor) error {
-	if b.CreateConversationBlockDto != nil {
+	if b.typ == "CreateConversationBlockDto" || b.CreateConversationBlockDto != nil {
 		return visitor.VisitCreateConversationBlockDto(b.CreateConversationBlockDto)
 	}
-	if b.CreateToolCallBlockDto != nil {
+	if b.typ == "CreateToolCallBlockDto" || b.CreateToolCallBlockDto != nil {
 		return visitor.VisitCreateToolCallBlockDto(b.CreateToolCallBlockDto)
 	}
-	if b.CreateWorkflowBlockDto != nil {
+	if b.typ == "CreateWorkflowBlockDto" || b.CreateWorkflowBlockDto != nil {
 		return visitor.VisitCreateWorkflowBlockDto(b.CreateWorkflowBlockDto)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -90,21 +1058,47 @@ type BlocksCreateResponse struct {
 	ConversationBlock *ConversationBlock
 	ToolCallBlock     *ToolCallBlock
 	WorkflowBlock     *WorkflowBlock
+
+	typ string
+}
+
+func (b *BlocksCreateResponse) GetConversationBlock() *ConversationBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ConversationBlock
+}
+
+func (b *BlocksCreateResponse) GetToolCallBlock() *ToolCallBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ToolCallBlock
+}
+
+func (b *BlocksCreateResponse) GetWorkflowBlock() *WorkflowBlock {
+	if b == nil {
+		return nil
+	}
+	return b.WorkflowBlock
 }
 
 func (b *BlocksCreateResponse) UnmarshalJSON(data []byte) error {
 	valueConversationBlock := new(ConversationBlock)
 	if err := json.Unmarshal(data, &valueConversationBlock); err == nil {
+		b.typ = "ConversationBlock"
 		b.ConversationBlock = valueConversationBlock
 		return nil
 	}
 	valueToolCallBlock := new(ToolCallBlock)
 	if err := json.Unmarshal(data, &valueToolCallBlock); err == nil {
+		b.typ = "ToolCallBlock"
 		b.ToolCallBlock = valueToolCallBlock
 		return nil
 	}
 	valueWorkflowBlock := new(WorkflowBlock)
 	if err := json.Unmarshal(data, &valueWorkflowBlock); err == nil {
+		b.typ = "WorkflowBlock"
 		b.WorkflowBlock = valueWorkflowBlock
 		return nil
 	}
@@ -112,13 +1106,13 @@ func (b *BlocksCreateResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (b BlocksCreateResponse) MarshalJSON() ([]byte, error) {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return json.Marshal(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return json.Marshal(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return json.Marshal(b.WorkflowBlock)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -131,13 +1125,13 @@ type BlocksCreateResponseVisitor interface {
 }
 
 func (b *BlocksCreateResponse) Accept(visitor BlocksCreateResponseVisitor) error {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return visitor.VisitConversationBlock(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return visitor.VisitToolCallBlock(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return visitor.VisitWorkflowBlock(b.WorkflowBlock)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -147,21 +1141,47 @@ type BlocksDeleteResponse struct {
 	ConversationBlock *ConversationBlock
 	ToolCallBlock     *ToolCallBlock
 	WorkflowBlock     *WorkflowBlock
+
+	typ string
+}
+
+func (b *BlocksDeleteResponse) GetConversationBlock() *ConversationBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ConversationBlock
+}
+
+func (b *BlocksDeleteResponse) GetToolCallBlock() *ToolCallBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ToolCallBlock
+}
+
+func (b *BlocksDeleteResponse) GetWorkflowBlock() *WorkflowBlock {
+	if b == nil {
+		return nil
+	}
+	return b.WorkflowBlock
 }
 
 func (b *BlocksDeleteResponse) UnmarshalJSON(data []byte) error {
 	valueConversationBlock := new(ConversationBlock)
 	if err := json.Unmarshal(data, &valueConversationBlock); err == nil {
+		b.typ = "ConversationBlock"
 		b.ConversationBlock = valueConversationBlock
 		return nil
 	}
 	valueToolCallBlock := new(ToolCallBlock)
 	if err := json.Unmarshal(data, &valueToolCallBlock); err == nil {
+		b.typ = "ToolCallBlock"
 		b.ToolCallBlock = valueToolCallBlock
 		return nil
 	}
 	valueWorkflowBlock := new(WorkflowBlock)
 	if err := json.Unmarshal(data, &valueWorkflowBlock); err == nil {
+		b.typ = "WorkflowBlock"
 		b.WorkflowBlock = valueWorkflowBlock
 		return nil
 	}
@@ -169,13 +1189,13 @@ func (b *BlocksDeleteResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (b BlocksDeleteResponse) MarshalJSON() ([]byte, error) {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return json.Marshal(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return json.Marshal(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return json.Marshal(b.WorkflowBlock)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -188,13 +1208,13 @@ type BlocksDeleteResponseVisitor interface {
 }
 
 func (b *BlocksDeleteResponse) Accept(visitor BlocksDeleteResponseVisitor) error {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return visitor.VisitConversationBlock(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return visitor.VisitToolCallBlock(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return visitor.VisitWorkflowBlock(b.WorkflowBlock)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -204,21 +1224,47 @@ type BlocksGetResponse struct {
 	ConversationBlock *ConversationBlock
 	ToolCallBlock     *ToolCallBlock
 	WorkflowBlock     *WorkflowBlock
+
+	typ string
+}
+
+func (b *BlocksGetResponse) GetConversationBlock() *ConversationBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ConversationBlock
+}
+
+func (b *BlocksGetResponse) GetToolCallBlock() *ToolCallBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ToolCallBlock
+}
+
+func (b *BlocksGetResponse) GetWorkflowBlock() *WorkflowBlock {
+	if b == nil {
+		return nil
+	}
+	return b.WorkflowBlock
 }
 
 func (b *BlocksGetResponse) UnmarshalJSON(data []byte) error {
 	valueConversationBlock := new(ConversationBlock)
 	if err := json.Unmarshal(data, &valueConversationBlock); err == nil {
+		b.typ = "ConversationBlock"
 		b.ConversationBlock = valueConversationBlock
 		return nil
 	}
 	valueToolCallBlock := new(ToolCallBlock)
 	if err := json.Unmarshal(data, &valueToolCallBlock); err == nil {
+		b.typ = "ToolCallBlock"
 		b.ToolCallBlock = valueToolCallBlock
 		return nil
 	}
 	valueWorkflowBlock := new(WorkflowBlock)
 	if err := json.Unmarshal(data, &valueWorkflowBlock); err == nil {
+		b.typ = "WorkflowBlock"
 		b.WorkflowBlock = valueWorkflowBlock
 		return nil
 	}
@@ -226,13 +1272,13 @@ func (b *BlocksGetResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (b BlocksGetResponse) MarshalJSON() ([]byte, error) {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return json.Marshal(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return json.Marshal(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return json.Marshal(b.WorkflowBlock)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -245,13 +1291,13 @@ type BlocksGetResponseVisitor interface {
 }
 
 func (b *BlocksGetResponse) Accept(visitor BlocksGetResponseVisitor) error {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return visitor.VisitConversationBlock(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return visitor.VisitToolCallBlock(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return visitor.VisitWorkflowBlock(b.WorkflowBlock)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -261,21 +1307,47 @@ type BlocksListResponseItem struct {
 	ConversationBlock *ConversationBlock
 	ToolCallBlock     *ToolCallBlock
 	WorkflowBlock     *WorkflowBlock
+
+	typ string
+}
+
+func (b *BlocksListResponseItem) GetConversationBlock() *ConversationBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ConversationBlock
+}
+
+func (b *BlocksListResponseItem) GetToolCallBlock() *ToolCallBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ToolCallBlock
+}
+
+func (b *BlocksListResponseItem) GetWorkflowBlock() *WorkflowBlock {
+	if b == nil {
+		return nil
+	}
+	return b.WorkflowBlock
 }
 
 func (b *BlocksListResponseItem) UnmarshalJSON(data []byte) error {
 	valueConversationBlock := new(ConversationBlock)
 	if err := json.Unmarshal(data, &valueConversationBlock); err == nil {
+		b.typ = "ConversationBlock"
 		b.ConversationBlock = valueConversationBlock
 		return nil
 	}
 	valueToolCallBlock := new(ToolCallBlock)
 	if err := json.Unmarshal(data, &valueToolCallBlock); err == nil {
+		b.typ = "ToolCallBlock"
 		b.ToolCallBlock = valueToolCallBlock
 		return nil
 	}
 	valueWorkflowBlock := new(WorkflowBlock)
 	if err := json.Unmarshal(data, &valueWorkflowBlock); err == nil {
+		b.typ = "WorkflowBlock"
 		b.WorkflowBlock = valueWorkflowBlock
 		return nil
 	}
@@ -283,13 +1355,13 @@ func (b *BlocksListResponseItem) UnmarshalJSON(data []byte) error {
 }
 
 func (b BlocksListResponseItem) MarshalJSON() ([]byte, error) {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return json.Marshal(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return json.Marshal(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return json.Marshal(b.WorkflowBlock)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -302,13 +1374,13 @@ type BlocksListResponseItemVisitor interface {
 }
 
 func (b *BlocksListResponseItem) Accept(visitor BlocksListResponseItemVisitor) error {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return visitor.VisitConversationBlock(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return visitor.VisitToolCallBlock(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return visitor.VisitWorkflowBlock(b.WorkflowBlock)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -318,21 +1390,47 @@ type BlocksUpdateResponse struct {
 	ConversationBlock *ConversationBlock
 	ToolCallBlock     *ToolCallBlock
 	WorkflowBlock     *WorkflowBlock
+
+	typ string
+}
+
+func (b *BlocksUpdateResponse) GetConversationBlock() *ConversationBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ConversationBlock
+}
+
+func (b *BlocksUpdateResponse) GetToolCallBlock() *ToolCallBlock {
+	if b == nil {
+		return nil
+	}
+	return b.ToolCallBlock
+}
+
+func (b *BlocksUpdateResponse) GetWorkflowBlock() *WorkflowBlock {
+	if b == nil {
+		return nil
+	}
+	return b.WorkflowBlock
 }
 
 func (b *BlocksUpdateResponse) UnmarshalJSON(data []byte) error {
 	valueConversationBlock := new(ConversationBlock)
 	if err := json.Unmarshal(data, &valueConversationBlock); err == nil {
+		b.typ = "ConversationBlock"
 		b.ConversationBlock = valueConversationBlock
 		return nil
 	}
 	valueToolCallBlock := new(ToolCallBlock)
 	if err := json.Unmarshal(data, &valueToolCallBlock); err == nil {
+		b.typ = "ToolCallBlock"
 		b.ToolCallBlock = valueToolCallBlock
 		return nil
 	}
 	valueWorkflowBlock := new(WorkflowBlock)
 	if err := json.Unmarshal(data, &valueWorkflowBlock); err == nil {
+		b.typ = "WorkflowBlock"
 		b.WorkflowBlock = valueWorkflowBlock
 		return nil
 	}
@@ -340,13 +1438,13 @@ func (b *BlocksUpdateResponse) UnmarshalJSON(data []byte) error {
 }
 
 func (b BlocksUpdateResponse) MarshalJSON() ([]byte, error) {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return json.Marshal(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return json.Marshal(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return json.Marshal(b.WorkflowBlock)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -359,13 +1457,13 @@ type BlocksUpdateResponseVisitor interface {
 }
 
 func (b *BlocksUpdateResponse) Accept(visitor BlocksUpdateResponseVisitor) error {
-	if b.ConversationBlock != nil {
+	if b.typ == "ConversationBlock" || b.ConversationBlock != nil {
 		return visitor.VisitConversationBlock(b.ConversationBlock)
 	}
-	if b.ToolCallBlock != nil {
+	if b.typ == "ToolCallBlock" || b.ToolCallBlock != nil {
 		return visitor.VisitToolCallBlock(b.ToolCallBlock)
 	}
-	if b.WorkflowBlock != nil {
+	if b.typ == "WorkflowBlock" || b.WorkflowBlock != nil {
 		return visitor.VisitWorkflowBlock(b.WorkflowBlock)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", b)
@@ -374,16 +1472,34 @@ func (b *BlocksUpdateResponse) Accept(visitor BlocksUpdateResponseVisitor) error
 type UpdateBlockDtoMessagesItem struct {
 	BlockStartMessage    *BlockStartMessage
 	BlockCompleteMessage *BlockCompleteMessage
+
+	typ string
+}
+
+func (u *UpdateBlockDtoMessagesItem) GetBlockStartMessage() *BlockStartMessage {
+	if u == nil {
+		return nil
+	}
+	return u.BlockStartMessage
+}
+
+func (u *UpdateBlockDtoMessagesItem) GetBlockCompleteMessage() *BlockCompleteMessage {
+	if u == nil {
+		return nil
+	}
+	return u.BlockCompleteMessage
 }
 
 func (u *UpdateBlockDtoMessagesItem) UnmarshalJSON(data []byte) error {
 	valueBlockStartMessage := new(BlockStartMessage)
 	if err := json.Unmarshal(data, &valueBlockStartMessage); err == nil {
+		u.typ = "BlockStartMessage"
 		u.BlockStartMessage = valueBlockStartMessage
 		return nil
 	}
 	valueBlockCompleteMessage := new(BlockCompleteMessage)
 	if err := json.Unmarshal(data, &valueBlockCompleteMessage); err == nil {
+		u.typ = "BlockCompleteMessage"
 		u.BlockCompleteMessage = valueBlockCompleteMessage
 		return nil
 	}
@@ -391,10 +1507,10 @@ func (u *UpdateBlockDtoMessagesItem) UnmarshalJSON(data []byte) error {
 }
 
 func (u UpdateBlockDtoMessagesItem) MarshalJSON() ([]byte, error) {
-	if u.BlockStartMessage != nil {
+	if u.typ == "BlockStartMessage" || u.BlockStartMessage != nil {
 		return json.Marshal(u.BlockStartMessage)
 	}
-	if u.BlockCompleteMessage != nil {
+	if u.typ == "BlockCompleteMessage" || u.BlockCompleteMessage != nil {
 		return json.Marshal(u.BlockCompleteMessage)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
@@ -406,10 +1522,10 @@ type UpdateBlockDtoMessagesItemVisitor interface {
 }
 
 func (u *UpdateBlockDtoMessagesItem) Accept(visitor UpdateBlockDtoMessagesItemVisitor) error {
-	if u.BlockStartMessage != nil {
+	if u.typ == "BlockStartMessage" || u.BlockStartMessage != nil {
 		return visitor.VisitBlockStartMessage(u.BlockStartMessage)
 	}
-	if u.BlockCompleteMessage != nil {
+	if u.typ == "BlockCompleteMessage" || u.BlockCompleteMessage != nil {
 		return visitor.VisitBlockCompleteMessage(u.BlockCompleteMessage)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", u)
@@ -418,16 +1534,34 @@ func (u *UpdateBlockDtoMessagesItem) Accept(visitor UpdateBlockDtoMessagesItemVi
 type UpdateBlockDtoStepsItem struct {
 	HandoffStep  *HandoffStep
 	CallbackStep *CallbackStep
+
+	typ string
+}
+
+func (u *UpdateBlockDtoStepsItem) GetHandoffStep() *HandoffStep {
+	if u == nil {
+		return nil
+	}
+	return u.HandoffStep
+}
+
+func (u *UpdateBlockDtoStepsItem) GetCallbackStep() *CallbackStep {
+	if u == nil {
+		return nil
+	}
+	return u.CallbackStep
 }
 
 func (u *UpdateBlockDtoStepsItem) UnmarshalJSON(data []byte) error {
 	valueHandoffStep := new(HandoffStep)
 	if err := json.Unmarshal(data, &valueHandoffStep); err == nil {
+		u.typ = "HandoffStep"
 		u.HandoffStep = valueHandoffStep
 		return nil
 	}
 	valueCallbackStep := new(CallbackStep)
 	if err := json.Unmarshal(data, &valueCallbackStep); err == nil {
+		u.typ = "CallbackStep"
 		u.CallbackStep = valueCallbackStep
 		return nil
 	}
@@ -435,10 +1569,10 @@ func (u *UpdateBlockDtoStepsItem) UnmarshalJSON(data []byte) error {
 }
 
 func (u UpdateBlockDtoStepsItem) MarshalJSON() ([]byte, error) {
-	if u.HandoffStep != nil {
+	if u.typ == "HandoffStep" || u.HandoffStep != nil {
 		return json.Marshal(u.HandoffStep)
 	}
-	if u.CallbackStep != nil {
+	if u.typ == "CallbackStep" || u.CallbackStep != nil {
 		return json.Marshal(u.CallbackStep)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
@@ -450,10 +1584,10 @@ type UpdateBlockDtoStepsItemVisitor interface {
 }
 
 func (u *UpdateBlockDtoStepsItem) Accept(visitor UpdateBlockDtoStepsItemVisitor) error {
-	if u.HandoffStep != nil {
+	if u.typ == "HandoffStep" || u.HandoffStep != nil {
 		return visitor.VisitHandoffStep(u.HandoffStep)
 	}
-	if u.CallbackStep != nil {
+	if u.typ == "CallbackStep" || u.CallbackStep != nil {
 		return visitor.VisitCallbackStep(u.CallbackStep)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", u)
@@ -468,41 +1602,99 @@ type UpdateBlockDtoTool struct {
 	CreateGhlToolDto          *CreateGhlToolDto
 	CreateMakeToolDto         *CreateMakeToolDto
 	CreateTransferCallToolDto *CreateTransferCallToolDto
+
+	typ string
+}
+
+func (u *UpdateBlockDtoTool) GetCreateDtmfToolDto() *CreateDtmfToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateDtmfToolDto
+}
+
+func (u *UpdateBlockDtoTool) GetCreateEndCallToolDto() *CreateEndCallToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateEndCallToolDto
+}
+
+func (u *UpdateBlockDtoTool) GetCreateVoicemailToolDto() *CreateVoicemailToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateVoicemailToolDto
+}
+
+func (u *UpdateBlockDtoTool) GetCreateFunctionToolDto() *CreateFunctionToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateFunctionToolDto
+}
+
+func (u *UpdateBlockDtoTool) GetCreateGhlToolDto() *CreateGhlToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateGhlToolDto
+}
+
+func (u *UpdateBlockDtoTool) GetCreateMakeToolDto() *CreateMakeToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateMakeToolDto
+}
+
+func (u *UpdateBlockDtoTool) GetCreateTransferCallToolDto() *CreateTransferCallToolDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateTransferCallToolDto
 }
 
 func (u *UpdateBlockDtoTool) UnmarshalJSON(data []byte) error {
 	valueCreateDtmfToolDto := new(CreateDtmfToolDto)
 	if err := json.Unmarshal(data, &valueCreateDtmfToolDto); err == nil {
+		u.typ = "CreateDtmfToolDto"
 		u.CreateDtmfToolDto = valueCreateDtmfToolDto
 		return nil
 	}
 	valueCreateEndCallToolDto := new(CreateEndCallToolDto)
 	if err := json.Unmarshal(data, &valueCreateEndCallToolDto); err == nil {
+		u.typ = "CreateEndCallToolDto"
 		u.CreateEndCallToolDto = valueCreateEndCallToolDto
 		return nil
 	}
 	valueCreateVoicemailToolDto := new(CreateVoicemailToolDto)
 	if err := json.Unmarshal(data, &valueCreateVoicemailToolDto); err == nil {
+		u.typ = "CreateVoicemailToolDto"
 		u.CreateVoicemailToolDto = valueCreateVoicemailToolDto
 		return nil
 	}
 	valueCreateFunctionToolDto := new(CreateFunctionToolDto)
 	if err := json.Unmarshal(data, &valueCreateFunctionToolDto); err == nil {
+		u.typ = "CreateFunctionToolDto"
 		u.CreateFunctionToolDto = valueCreateFunctionToolDto
 		return nil
 	}
 	valueCreateGhlToolDto := new(CreateGhlToolDto)
 	if err := json.Unmarshal(data, &valueCreateGhlToolDto); err == nil {
+		u.typ = "CreateGhlToolDto"
 		u.CreateGhlToolDto = valueCreateGhlToolDto
 		return nil
 	}
 	valueCreateMakeToolDto := new(CreateMakeToolDto)
 	if err := json.Unmarshal(data, &valueCreateMakeToolDto); err == nil {
+		u.typ = "CreateMakeToolDto"
 		u.CreateMakeToolDto = valueCreateMakeToolDto
 		return nil
 	}
 	valueCreateTransferCallToolDto := new(CreateTransferCallToolDto)
 	if err := json.Unmarshal(data, &valueCreateTransferCallToolDto); err == nil {
+		u.typ = "CreateTransferCallToolDto"
 		u.CreateTransferCallToolDto = valueCreateTransferCallToolDto
 		return nil
 	}
@@ -510,25 +1702,25 @@ func (u *UpdateBlockDtoTool) UnmarshalJSON(data []byte) error {
 }
 
 func (u UpdateBlockDtoTool) MarshalJSON() ([]byte, error) {
-	if u.CreateDtmfToolDto != nil {
+	if u.typ == "CreateDtmfToolDto" || u.CreateDtmfToolDto != nil {
 		return json.Marshal(u.CreateDtmfToolDto)
 	}
-	if u.CreateEndCallToolDto != nil {
+	if u.typ == "CreateEndCallToolDto" || u.CreateEndCallToolDto != nil {
 		return json.Marshal(u.CreateEndCallToolDto)
 	}
-	if u.CreateVoicemailToolDto != nil {
+	if u.typ == "CreateVoicemailToolDto" || u.CreateVoicemailToolDto != nil {
 		return json.Marshal(u.CreateVoicemailToolDto)
 	}
-	if u.CreateFunctionToolDto != nil {
+	if u.typ == "CreateFunctionToolDto" || u.CreateFunctionToolDto != nil {
 		return json.Marshal(u.CreateFunctionToolDto)
 	}
-	if u.CreateGhlToolDto != nil {
+	if u.typ == "CreateGhlToolDto" || u.CreateGhlToolDto != nil {
 		return json.Marshal(u.CreateGhlToolDto)
 	}
-	if u.CreateMakeToolDto != nil {
+	if u.typ == "CreateMakeToolDto" || u.CreateMakeToolDto != nil {
 		return json.Marshal(u.CreateMakeToolDto)
 	}
-	if u.CreateTransferCallToolDto != nil {
+	if u.typ == "CreateTransferCallToolDto" || u.CreateTransferCallToolDto != nil {
 		return json.Marshal(u.CreateTransferCallToolDto)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
@@ -545,25 +1737,25 @@ type UpdateBlockDtoToolVisitor interface {
 }
 
 func (u *UpdateBlockDtoTool) Accept(visitor UpdateBlockDtoToolVisitor) error {
-	if u.CreateDtmfToolDto != nil {
+	if u.typ == "CreateDtmfToolDto" || u.CreateDtmfToolDto != nil {
 		return visitor.VisitCreateDtmfToolDto(u.CreateDtmfToolDto)
 	}
-	if u.CreateEndCallToolDto != nil {
+	if u.typ == "CreateEndCallToolDto" || u.CreateEndCallToolDto != nil {
 		return visitor.VisitCreateEndCallToolDto(u.CreateEndCallToolDto)
 	}
-	if u.CreateVoicemailToolDto != nil {
+	if u.typ == "CreateVoicemailToolDto" || u.CreateVoicemailToolDto != nil {
 		return visitor.VisitCreateVoicemailToolDto(u.CreateVoicemailToolDto)
 	}
-	if u.CreateFunctionToolDto != nil {
+	if u.typ == "CreateFunctionToolDto" || u.CreateFunctionToolDto != nil {
 		return visitor.VisitCreateFunctionToolDto(u.CreateFunctionToolDto)
 	}
-	if u.CreateGhlToolDto != nil {
+	if u.typ == "CreateGhlToolDto" || u.CreateGhlToolDto != nil {
 		return visitor.VisitCreateGhlToolDto(u.CreateGhlToolDto)
 	}
-	if u.CreateMakeToolDto != nil {
+	if u.typ == "CreateMakeToolDto" || u.CreateMakeToolDto != nil {
 		return visitor.VisitCreateMakeToolDto(u.CreateMakeToolDto)
 	}
-	if u.CreateTransferCallToolDto != nil {
+	if u.typ == "CreateTransferCallToolDto" || u.CreateTransferCallToolDto != nil {
 		return visitor.VisitCreateTransferCallToolDto(u.CreateTransferCallToolDto)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", u)

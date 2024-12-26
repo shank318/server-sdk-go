@@ -4,15 +4,15 @@ package analytics
 
 import (
 	context "context"
-	serversdkgo "github.com/VapiAI/server-sdk-go"
 	core "github.com/VapiAI/server-sdk-go/core"
+	internal "github.com/VapiAI/server-sdk-go/internal"
 	option "github.com/VapiAI/server-sdk-go/option"
 	http "net/http"
 )
 
 type Client struct {
 	baseURL string
-	caller  *core.Caller
+	caller  *internal.Caller
 	header  http.Header
 }
 
@@ -20,8 +20,8 @@ func NewClient(opts ...option.RequestOption) *Client {
 	options := core.NewRequestOptions(opts...)
 	return &Client{
 		baseURL: options.BaseURL,
-		caller: core.NewCaller(
-			&core.CallerParams{
+		caller: internal.NewCaller(
+			&internal.CallerParams{
 				Client:      options.HTTPClient,
 				MaxAttempts: options.MaxAttempts,
 			},
@@ -32,39 +32,33 @@ func NewClient(opts ...option.RequestOption) *Client {
 
 func (c *Client) Get(
 	ctx context.Context,
-	request *serversdkgo.AnalyticsQueryDto,
 	opts ...option.RequestOption,
-) ([]*serversdkgo.AnalyticsQueryResult, error) {
+) error {
 	options := core.NewRequestOptions(opts...)
-
-	baseURL := "https://api.vapi.ai"
-	if c.baseURL != "" {
-		baseURL = c.baseURL
-	}
-	if options.BaseURL != "" {
-		baseURL = options.BaseURL
-	}
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		c.baseURL,
+		"https://api.vapi.ai",
+	)
 	endpointURL := baseURL + "/analytics"
+	headers := internal.MergeHeaders(
+		c.header.Clone(),
+		options.ToHeader(),
+	)
 
-	headers := core.MergeHeaders(c.header.Clone(), options.ToHeader())
-	headers.Set("Content-Type", "application/json")
-
-	var response []*serversdkgo.AnalyticsQueryResult
 	if err := c.caller.Call(
 		ctx,
-		&core.CallParams{
+		&internal.CallParams{
 			URL:             endpointURL,
 			Method:          http.MethodPost,
-			MaxAttempts:     options.MaxAttempts,
 			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
-			Request:         request,
-			Response:        &response,
 		},
 	); err != nil {
-		return nil, err
+		return err
 	}
-	return response, nil
+	return nil
 }
