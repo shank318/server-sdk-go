@@ -193,7 +193,7 @@ func (c *Client) Delete(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
-	request *serversdkgo.UpdateBlockDto,
+	request *serversdkgo.BlocksUpdateRequest,
 	opts ...option.RequestOption,
 ) (*serversdkgo.BlocksUpdateResponse, error) {
 	options := core.NewRequestOptions(opts...)

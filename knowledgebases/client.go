@@ -193,6 +193,7 @@ func (c *Client) Delete(
 func (c *Client) Update(
 	ctx context.Context,
 	id string,
+	request *serversdkgo.KnowledgeBasesUpdateRequest,
 	opts ...option.RequestOption,
 ) (*serversdkgo.KnowledgeBasesUpdateResponse, error) {
 	options := core.NewRequestOptions(opts...)
@@ -209,6 +210,7 @@ func (c *Client) Update(
 		c.header.Clone(),
 		options.ToHeader(),
 	)
+	headers.Set("Content-Type", "application/json")
 
 	var response *serversdkgo.KnowledgeBasesUpdateResponse
 	if err := c.caller.Call(
@@ -221,6 +223,7 @@ func (c *Client) Update(
 			BodyProperties:  options.BodyProperties,
 			QueryParameters: options.QueryParameters,
 			Client:          options.HTTPClient,
+			Request:         request,
 			Response:        &response,
 		},
 	); err != nil {

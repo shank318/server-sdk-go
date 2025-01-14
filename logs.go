@@ -9,6 +9,21 @@ import (
 	time "time"
 )
 
+type LoggingControllerLogsDeleteQueryRequest struct {
+	// This is the unique identifier for the org that this log belongs to.
+	OrgId *string `json:"-" url:"orgId,omitempty"`
+	// This is the ID of the assistant.
+	AssistantId *string `json:"-" url:"assistantId,omitempty"`
+	// This is the ID of the phone number.
+	PhoneNumberId *string `json:"-" url:"phoneNumberId,omitempty"`
+	// This is the ID of the customer.
+	CustomerId *string `json:"-" url:"customerId,omitempty"`
+	// This is the ID of the squad.
+	SquadId *string `json:"-" url:"squadId,omitempty"`
+	// This is the ID of the call.
+	CallId *string `json:"-" url:"callId,omitempty"`
+}
+
 type LogsGetRequest struct {
 	// This is the unique identifier for the org that this log belongs to.
 	OrgId *string `json:"-" url:"orgId,omitempty"`

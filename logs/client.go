@@ -91,3 +91,44 @@ func (c *Client) Get(
 	)
 	return pager.GetPage(ctx, &next)
 }
+
+func (c *Client) LoggingControllerLogsDeleteQuery(
+	ctx context.Context,
+	request *serversdkgo.LoggingControllerLogsDeleteQueryRequest,
+	opts ...option.RequestOption,
+) error {
+	options := core.NewRequestOptions(opts...)
+	baseURL := internal.ResolveBaseURL(
+		options.BaseURL,
+		c.baseURL,
+		"https://api.vapi.ai",
+	)
+	endpointURL := baseURL + "/logs"
+	queryParams, err := internal.QueryValues(request)
+	if err != nil {
+		return err
+	}
+	if len(queryParams) > 0 {
+		endpointURL += "?" + queryParams.Encode()
+	}
+	headers := internal.MergeHeaders(
+		c.header.Clone(),
+		options.ToHeader(),
+	)
+
+	if err := c.caller.Call(
+		ctx,
+		&internal.CallParams{
+			URL:             endpointURL,
+			Method:          http.MethodDelete,
+			Headers:         headers,
+			MaxAttempts:     options.MaxAttempts,
+			BodyProperties:  options.BodyProperties,
+			QueryParameters: options.QueryParameters,
+			Client:          options.HTTPClient,
+		},
+	); err != nil {
+		return err
+	}
+	return nil
+}

@@ -2167,6 +2167,8 @@ type AssistantOverrides struct {
 	ModelOutputInMessagesEnabled *bool `json:"modelOutputInMessagesEnabled,omitempty" url:"modelOutputInMessagesEnabled,omitempty"`
 	// These are the configurations to be passed to the transport providers of assistant's calls, like Twilio. You can store multiple configurations for different transport providers. For a call, only the configuration matching the call transport provider is used.
 	TransportConfigurations []*TransportConfigurationTwilio `json:"transportConfigurations,omitempty" url:"transportConfigurations,omitempty"`
+	// These are dynamic credentials that will be used for the assistant calls. By default, all the credentials are available for use in the call but you can supplement an additional credentials using this. Dynamic credentials override existing credentials.
+	Credentials []*AssistantOverridesCredentialsItem `json:"credentials,omitempty" url:"credentials,omitempty"`
 	// These are values that will be used to replace the template variables in the assistant messages and other text-based fields.
 	// This uses LiquidJS syntax. https://liquidjs.com/tutorials/intro-to-liquid.html
 	//
@@ -2341,6 +2343,13 @@ func (a *AssistantOverrides) GetTransportConfigurations() []*TransportConfigurat
 		return nil
 	}
 	return a.TransportConfigurations
+}
+
+func (a *AssistantOverrides) GetCredentials() []*AssistantOverridesCredentialsItem {
+	if a == nil {
+		return nil
+	}
+	return a.Credentials
 }
 
 func (a *AssistantOverrides) GetVariableValues() map[string]interface{} {
@@ -2564,6 +2573,740 @@ func (a AssistantOverridesClientMessagesItem) Ptr() *AssistantOverridesClientMes
 	return &a
 }
 
+type AssistantOverridesCredentialsItem struct {
+	CreateAnthropicCredentialDto    *CreateAnthropicCredentialDto
+	CreateAnyscaleCredentialDto     *CreateAnyscaleCredentialDto
+	CreateAssemblyAiCredentialDto   *CreateAssemblyAiCredentialDto
+	CreateAzureOpenAiCredentialDto  *CreateAzureOpenAiCredentialDto
+	CreateAzureCredentialDto        *CreateAzureCredentialDto
+	CreateByoSipTrunkCredentialDto  *CreateByoSipTrunkCredentialDto
+	CreateCartesiaCredentialDto     *CreateCartesiaCredentialDto
+	CreateCloudflareCredentialDto   *CreateCloudflareCredentialDto
+	CreateCustomLlmCredentialDto    *CreateCustomLlmCredentialDto
+	CreateDeepgramCredentialDto     *CreateDeepgramCredentialDto
+	CreateDeepInfraCredentialDto    *CreateDeepInfraCredentialDto
+	CreateDeepSeekCredentialDto     *CreateDeepSeekCredentialDto
+	CreateElevenLabsCredentialDto   *CreateElevenLabsCredentialDto
+	CreateGcpCredentialDto          *CreateGcpCredentialDto
+	CreateGladiaCredentialDto       *CreateGladiaCredentialDto
+	CreateGoHighLevelCredentialDto  *CreateGoHighLevelCredentialDto
+	CreateGroqCredentialDto         *CreateGroqCredentialDto
+	CreateLangfuseCredentialDto     *CreateLangfuseCredentialDto
+	CreateLmntCredentialDto         *CreateLmntCredentialDto
+	CreateMakeCredentialDto         *CreateMakeCredentialDto
+	CreateOpenAiCredentialDto       *CreateOpenAiCredentialDto
+	CreateOpenRouterCredentialDto   *CreateOpenRouterCredentialDto
+	CreatePerplexityAiCredentialDto *CreatePerplexityAiCredentialDto
+	CreatePlayHtCredentialDto       *CreatePlayHtCredentialDto
+	CreateRimeAiCredentialDto       *CreateRimeAiCredentialDto
+	CreateRunpodCredentialDto       *CreateRunpodCredentialDto
+	CreateS3CredentialDto           *CreateS3CredentialDto
+	CreateSmallestAiCredentialDto   *CreateSmallestAiCredentialDto
+	CreateTavusCredentialDto        *CreateTavusCredentialDto
+	CreateTogetherAiCredentialDto   *CreateTogetherAiCredentialDto
+	CreateTwilioCredentialDto       *CreateTwilioCredentialDto
+	CreateVonageCredentialDto       *CreateVonageCredentialDto
+	CreateWebhookCredentialDto      *CreateWebhookCredentialDto
+	CreateXAiCredentialDto          *CreateXAiCredentialDto
+
+	typ string
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateAnthropicCredentialDto() *CreateAnthropicCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateAnthropicCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateAnyscaleCredentialDto() *CreateAnyscaleCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateAnyscaleCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateAssemblyAiCredentialDto() *CreateAssemblyAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateAssemblyAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateAzureOpenAiCredentialDto() *CreateAzureOpenAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateAzureOpenAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateAzureCredentialDto() *CreateAzureCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateAzureCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateByoSipTrunkCredentialDto() *CreateByoSipTrunkCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateByoSipTrunkCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateCartesiaCredentialDto() *CreateCartesiaCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateCartesiaCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateCloudflareCredentialDto() *CreateCloudflareCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateCloudflareCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateCustomLlmCredentialDto() *CreateCustomLlmCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateCustomLlmCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateDeepgramCredentialDto() *CreateDeepgramCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateDeepgramCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateDeepInfraCredentialDto() *CreateDeepInfraCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateDeepInfraCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateDeepSeekCredentialDto() *CreateDeepSeekCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateDeepSeekCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateElevenLabsCredentialDto() *CreateElevenLabsCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateElevenLabsCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateGcpCredentialDto() *CreateGcpCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateGcpCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateGladiaCredentialDto() *CreateGladiaCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateGladiaCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateGoHighLevelCredentialDto() *CreateGoHighLevelCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateGoHighLevelCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateGroqCredentialDto() *CreateGroqCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateGroqCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateLangfuseCredentialDto() *CreateLangfuseCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateLangfuseCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateLmntCredentialDto() *CreateLmntCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateLmntCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateMakeCredentialDto() *CreateMakeCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateMakeCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateOpenAiCredentialDto() *CreateOpenAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateOpenAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateOpenRouterCredentialDto() *CreateOpenRouterCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateOpenRouterCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreatePerplexityAiCredentialDto() *CreatePerplexityAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreatePerplexityAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreatePlayHtCredentialDto() *CreatePlayHtCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreatePlayHtCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateRimeAiCredentialDto() *CreateRimeAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateRimeAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateRunpodCredentialDto() *CreateRunpodCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateRunpodCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateS3CredentialDto() *CreateS3CredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateS3CredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateSmallestAiCredentialDto() *CreateSmallestAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateSmallestAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateTavusCredentialDto() *CreateTavusCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateTavusCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateTogetherAiCredentialDto() *CreateTogetherAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateTogetherAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateTwilioCredentialDto() *CreateTwilioCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateTwilioCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateVonageCredentialDto() *CreateVonageCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateVonageCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateWebhookCredentialDto() *CreateWebhookCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateWebhookCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) GetCreateXAiCredentialDto() *CreateXAiCredentialDto {
+	if a == nil {
+		return nil
+	}
+	return a.CreateXAiCredentialDto
+}
+
+func (a *AssistantOverridesCredentialsItem) UnmarshalJSON(data []byte) error {
+	valueCreateAnthropicCredentialDto := new(CreateAnthropicCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAnthropicCredentialDto); err == nil {
+		a.typ = "CreateAnthropicCredentialDto"
+		a.CreateAnthropicCredentialDto = valueCreateAnthropicCredentialDto
+		return nil
+	}
+	valueCreateAnyscaleCredentialDto := new(CreateAnyscaleCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAnyscaleCredentialDto); err == nil {
+		a.typ = "CreateAnyscaleCredentialDto"
+		a.CreateAnyscaleCredentialDto = valueCreateAnyscaleCredentialDto
+		return nil
+	}
+	valueCreateAssemblyAiCredentialDto := new(CreateAssemblyAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAssemblyAiCredentialDto); err == nil {
+		a.typ = "CreateAssemblyAiCredentialDto"
+		a.CreateAssemblyAiCredentialDto = valueCreateAssemblyAiCredentialDto
+		return nil
+	}
+	valueCreateAzureOpenAiCredentialDto := new(CreateAzureOpenAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAzureOpenAiCredentialDto); err == nil {
+		a.typ = "CreateAzureOpenAiCredentialDto"
+		a.CreateAzureOpenAiCredentialDto = valueCreateAzureOpenAiCredentialDto
+		return nil
+	}
+	valueCreateAzureCredentialDto := new(CreateAzureCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAzureCredentialDto); err == nil {
+		a.typ = "CreateAzureCredentialDto"
+		a.CreateAzureCredentialDto = valueCreateAzureCredentialDto
+		return nil
+	}
+	valueCreateByoSipTrunkCredentialDto := new(CreateByoSipTrunkCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateByoSipTrunkCredentialDto); err == nil {
+		a.typ = "CreateByoSipTrunkCredentialDto"
+		a.CreateByoSipTrunkCredentialDto = valueCreateByoSipTrunkCredentialDto
+		return nil
+	}
+	valueCreateCartesiaCredentialDto := new(CreateCartesiaCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateCartesiaCredentialDto); err == nil {
+		a.typ = "CreateCartesiaCredentialDto"
+		a.CreateCartesiaCredentialDto = valueCreateCartesiaCredentialDto
+		return nil
+	}
+	valueCreateCloudflareCredentialDto := new(CreateCloudflareCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateCloudflareCredentialDto); err == nil {
+		a.typ = "CreateCloudflareCredentialDto"
+		a.CreateCloudflareCredentialDto = valueCreateCloudflareCredentialDto
+		return nil
+	}
+	valueCreateCustomLlmCredentialDto := new(CreateCustomLlmCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateCustomLlmCredentialDto); err == nil {
+		a.typ = "CreateCustomLlmCredentialDto"
+		a.CreateCustomLlmCredentialDto = valueCreateCustomLlmCredentialDto
+		return nil
+	}
+	valueCreateDeepgramCredentialDto := new(CreateDeepgramCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateDeepgramCredentialDto); err == nil {
+		a.typ = "CreateDeepgramCredentialDto"
+		a.CreateDeepgramCredentialDto = valueCreateDeepgramCredentialDto
+		return nil
+	}
+	valueCreateDeepInfraCredentialDto := new(CreateDeepInfraCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateDeepInfraCredentialDto); err == nil {
+		a.typ = "CreateDeepInfraCredentialDto"
+		a.CreateDeepInfraCredentialDto = valueCreateDeepInfraCredentialDto
+		return nil
+	}
+	valueCreateDeepSeekCredentialDto := new(CreateDeepSeekCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateDeepSeekCredentialDto); err == nil {
+		a.typ = "CreateDeepSeekCredentialDto"
+		a.CreateDeepSeekCredentialDto = valueCreateDeepSeekCredentialDto
+		return nil
+	}
+	valueCreateElevenLabsCredentialDto := new(CreateElevenLabsCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateElevenLabsCredentialDto); err == nil {
+		a.typ = "CreateElevenLabsCredentialDto"
+		a.CreateElevenLabsCredentialDto = valueCreateElevenLabsCredentialDto
+		return nil
+	}
+	valueCreateGcpCredentialDto := new(CreateGcpCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGcpCredentialDto); err == nil {
+		a.typ = "CreateGcpCredentialDto"
+		a.CreateGcpCredentialDto = valueCreateGcpCredentialDto
+		return nil
+	}
+	valueCreateGladiaCredentialDto := new(CreateGladiaCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGladiaCredentialDto); err == nil {
+		a.typ = "CreateGladiaCredentialDto"
+		a.CreateGladiaCredentialDto = valueCreateGladiaCredentialDto
+		return nil
+	}
+	valueCreateGoHighLevelCredentialDto := new(CreateGoHighLevelCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGoHighLevelCredentialDto); err == nil {
+		a.typ = "CreateGoHighLevelCredentialDto"
+		a.CreateGoHighLevelCredentialDto = valueCreateGoHighLevelCredentialDto
+		return nil
+	}
+	valueCreateGroqCredentialDto := new(CreateGroqCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGroqCredentialDto); err == nil {
+		a.typ = "CreateGroqCredentialDto"
+		a.CreateGroqCredentialDto = valueCreateGroqCredentialDto
+		return nil
+	}
+	valueCreateLangfuseCredentialDto := new(CreateLangfuseCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateLangfuseCredentialDto); err == nil {
+		a.typ = "CreateLangfuseCredentialDto"
+		a.CreateLangfuseCredentialDto = valueCreateLangfuseCredentialDto
+		return nil
+	}
+	valueCreateLmntCredentialDto := new(CreateLmntCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateLmntCredentialDto); err == nil {
+		a.typ = "CreateLmntCredentialDto"
+		a.CreateLmntCredentialDto = valueCreateLmntCredentialDto
+		return nil
+	}
+	valueCreateMakeCredentialDto := new(CreateMakeCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateMakeCredentialDto); err == nil {
+		a.typ = "CreateMakeCredentialDto"
+		a.CreateMakeCredentialDto = valueCreateMakeCredentialDto
+		return nil
+	}
+	valueCreateOpenAiCredentialDto := new(CreateOpenAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateOpenAiCredentialDto); err == nil {
+		a.typ = "CreateOpenAiCredentialDto"
+		a.CreateOpenAiCredentialDto = valueCreateOpenAiCredentialDto
+		return nil
+	}
+	valueCreateOpenRouterCredentialDto := new(CreateOpenRouterCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateOpenRouterCredentialDto); err == nil {
+		a.typ = "CreateOpenRouterCredentialDto"
+		a.CreateOpenRouterCredentialDto = valueCreateOpenRouterCredentialDto
+		return nil
+	}
+	valueCreatePerplexityAiCredentialDto := new(CreatePerplexityAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreatePerplexityAiCredentialDto); err == nil {
+		a.typ = "CreatePerplexityAiCredentialDto"
+		a.CreatePerplexityAiCredentialDto = valueCreatePerplexityAiCredentialDto
+		return nil
+	}
+	valueCreatePlayHtCredentialDto := new(CreatePlayHtCredentialDto)
+	if err := json.Unmarshal(data, &valueCreatePlayHtCredentialDto); err == nil {
+		a.typ = "CreatePlayHtCredentialDto"
+		a.CreatePlayHtCredentialDto = valueCreatePlayHtCredentialDto
+		return nil
+	}
+	valueCreateRimeAiCredentialDto := new(CreateRimeAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateRimeAiCredentialDto); err == nil {
+		a.typ = "CreateRimeAiCredentialDto"
+		a.CreateRimeAiCredentialDto = valueCreateRimeAiCredentialDto
+		return nil
+	}
+	valueCreateRunpodCredentialDto := new(CreateRunpodCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateRunpodCredentialDto); err == nil {
+		a.typ = "CreateRunpodCredentialDto"
+		a.CreateRunpodCredentialDto = valueCreateRunpodCredentialDto
+		return nil
+	}
+	valueCreateS3CredentialDto := new(CreateS3CredentialDto)
+	if err := json.Unmarshal(data, &valueCreateS3CredentialDto); err == nil {
+		a.typ = "CreateS3CredentialDto"
+		a.CreateS3CredentialDto = valueCreateS3CredentialDto
+		return nil
+	}
+	valueCreateSmallestAiCredentialDto := new(CreateSmallestAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateSmallestAiCredentialDto); err == nil {
+		a.typ = "CreateSmallestAiCredentialDto"
+		a.CreateSmallestAiCredentialDto = valueCreateSmallestAiCredentialDto
+		return nil
+	}
+	valueCreateTavusCredentialDto := new(CreateTavusCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateTavusCredentialDto); err == nil {
+		a.typ = "CreateTavusCredentialDto"
+		a.CreateTavusCredentialDto = valueCreateTavusCredentialDto
+		return nil
+	}
+	valueCreateTogetherAiCredentialDto := new(CreateTogetherAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateTogetherAiCredentialDto); err == nil {
+		a.typ = "CreateTogetherAiCredentialDto"
+		a.CreateTogetherAiCredentialDto = valueCreateTogetherAiCredentialDto
+		return nil
+	}
+	valueCreateTwilioCredentialDto := new(CreateTwilioCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateTwilioCredentialDto); err == nil {
+		a.typ = "CreateTwilioCredentialDto"
+		a.CreateTwilioCredentialDto = valueCreateTwilioCredentialDto
+		return nil
+	}
+	valueCreateVonageCredentialDto := new(CreateVonageCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateVonageCredentialDto); err == nil {
+		a.typ = "CreateVonageCredentialDto"
+		a.CreateVonageCredentialDto = valueCreateVonageCredentialDto
+		return nil
+	}
+	valueCreateWebhookCredentialDto := new(CreateWebhookCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateWebhookCredentialDto); err == nil {
+		a.typ = "CreateWebhookCredentialDto"
+		a.CreateWebhookCredentialDto = valueCreateWebhookCredentialDto
+		return nil
+	}
+	valueCreateXAiCredentialDto := new(CreateXAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateXAiCredentialDto); err == nil {
+		a.typ = "CreateXAiCredentialDto"
+		a.CreateXAiCredentialDto = valueCreateXAiCredentialDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, a)
+}
+
+func (a AssistantOverridesCredentialsItem) MarshalJSON() ([]byte, error) {
+	if a.typ == "CreateAnthropicCredentialDto" || a.CreateAnthropicCredentialDto != nil {
+		return json.Marshal(a.CreateAnthropicCredentialDto)
+	}
+	if a.typ == "CreateAnyscaleCredentialDto" || a.CreateAnyscaleCredentialDto != nil {
+		return json.Marshal(a.CreateAnyscaleCredentialDto)
+	}
+	if a.typ == "CreateAssemblyAiCredentialDto" || a.CreateAssemblyAiCredentialDto != nil {
+		return json.Marshal(a.CreateAssemblyAiCredentialDto)
+	}
+	if a.typ == "CreateAzureOpenAiCredentialDto" || a.CreateAzureOpenAiCredentialDto != nil {
+		return json.Marshal(a.CreateAzureOpenAiCredentialDto)
+	}
+	if a.typ == "CreateAzureCredentialDto" || a.CreateAzureCredentialDto != nil {
+		return json.Marshal(a.CreateAzureCredentialDto)
+	}
+	if a.typ == "CreateByoSipTrunkCredentialDto" || a.CreateByoSipTrunkCredentialDto != nil {
+		return json.Marshal(a.CreateByoSipTrunkCredentialDto)
+	}
+	if a.typ == "CreateCartesiaCredentialDto" || a.CreateCartesiaCredentialDto != nil {
+		return json.Marshal(a.CreateCartesiaCredentialDto)
+	}
+	if a.typ == "CreateCloudflareCredentialDto" || a.CreateCloudflareCredentialDto != nil {
+		return json.Marshal(a.CreateCloudflareCredentialDto)
+	}
+	if a.typ == "CreateCustomLlmCredentialDto" || a.CreateCustomLlmCredentialDto != nil {
+		return json.Marshal(a.CreateCustomLlmCredentialDto)
+	}
+	if a.typ == "CreateDeepgramCredentialDto" || a.CreateDeepgramCredentialDto != nil {
+		return json.Marshal(a.CreateDeepgramCredentialDto)
+	}
+	if a.typ == "CreateDeepInfraCredentialDto" || a.CreateDeepInfraCredentialDto != nil {
+		return json.Marshal(a.CreateDeepInfraCredentialDto)
+	}
+	if a.typ == "CreateDeepSeekCredentialDto" || a.CreateDeepSeekCredentialDto != nil {
+		return json.Marshal(a.CreateDeepSeekCredentialDto)
+	}
+	if a.typ == "CreateElevenLabsCredentialDto" || a.CreateElevenLabsCredentialDto != nil {
+		return json.Marshal(a.CreateElevenLabsCredentialDto)
+	}
+	if a.typ == "CreateGcpCredentialDto" || a.CreateGcpCredentialDto != nil {
+		return json.Marshal(a.CreateGcpCredentialDto)
+	}
+	if a.typ == "CreateGladiaCredentialDto" || a.CreateGladiaCredentialDto != nil {
+		return json.Marshal(a.CreateGladiaCredentialDto)
+	}
+	if a.typ == "CreateGoHighLevelCredentialDto" || a.CreateGoHighLevelCredentialDto != nil {
+		return json.Marshal(a.CreateGoHighLevelCredentialDto)
+	}
+	if a.typ == "CreateGroqCredentialDto" || a.CreateGroqCredentialDto != nil {
+		return json.Marshal(a.CreateGroqCredentialDto)
+	}
+	if a.typ == "CreateLangfuseCredentialDto" || a.CreateLangfuseCredentialDto != nil {
+		return json.Marshal(a.CreateLangfuseCredentialDto)
+	}
+	if a.typ == "CreateLmntCredentialDto" || a.CreateLmntCredentialDto != nil {
+		return json.Marshal(a.CreateLmntCredentialDto)
+	}
+	if a.typ == "CreateMakeCredentialDto" || a.CreateMakeCredentialDto != nil {
+		return json.Marshal(a.CreateMakeCredentialDto)
+	}
+	if a.typ == "CreateOpenAiCredentialDto" || a.CreateOpenAiCredentialDto != nil {
+		return json.Marshal(a.CreateOpenAiCredentialDto)
+	}
+	if a.typ == "CreateOpenRouterCredentialDto" || a.CreateOpenRouterCredentialDto != nil {
+		return json.Marshal(a.CreateOpenRouterCredentialDto)
+	}
+	if a.typ == "CreatePerplexityAiCredentialDto" || a.CreatePerplexityAiCredentialDto != nil {
+		return json.Marshal(a.CreatePerplexityAiCredentialDto)
+	}
+	if a.typ == "CreatePlayHtCredentialDto" || a.CreatePlayHtCredentialDto != nil {
+		return json.Marshal(a.CreatePlayHtCredentialDto)
+	}
+	if a.typ == "CreateRimeAiCredentialDto" || a.CreateRimeAiCredentialDto != nil {
+		return json.Marshal(a.CreateRimeAiCredentialDto)
+	}
+	if a.typ == "CreateRunpodCredentialDto" || a.CreateRunpodCredentialDto != nil {
+		return json.Marshal(a.CreateRunpodCredentialDto)
+	}
+	if a.typ == "CreateS3CredentialDto" || a.CreateS3CredentialDto != nil {
+		return json.Marshal(a.CreateS3CredentialDto)
+	}
+	if a.typ == "CreateSmallestAiCredentialDto" || a.CreateSmallestAiCredentialDto != nil {
+		return json.Marshal(a.CreateSmallestAiCredentialDto)
+	}
+	if a.typ == "CreateTavusCredentialDto" || a.CreateTavusCredentialDto != nil {
+		return json.Marshal(a.CreateTavusCredentialDto)
+	}
+	if a.typ == "CreateTogetherAiCredentialDto" || a.CreateTogetherAiCredentialDto != nil {
+		return json.Marshal(a.CreateTogetherAiCredentialDto)
+	}
+	if a.typ == "CreateTwilioCredentialDto" || a.CreateTwilioCredentialDto != nil {
+		return json.Marshal(a.CreateTwilioCredentialDto)
+	}
+	if a.typ == "CreateVonageCredentialDto" || a.CreateVonageCredentialDto != nil {
+		return json.Marshal(a.CreateVonageCredentialDto)
+	}
+	if a.typ == "CreateWebhookCredentialDto" || a.CreateWebhookCredentialDto != nil {
+		return json.Marshal(a.CreateWebhookCredentialDto)
+	}
+	if a.typ == "CreateXAiCredentialDto" || a.CreateXAiCredentialDto != nil {
+		return json.Marshal(a.CreateXAiCredentialDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
+type AssistantOverridesCredentialsItemVisitor interface {
+	VisitCreateAnthropicCredentialDto(*CreateAnthropicCredentialDto) error
+	VisitCreateAnyscaleCredentialDto(*CreateAnyscaleCredentialDto) error
+	VisitCreateAssemblyAiCredentialDto(*CreateAssemblyAiCredentialDto) error
+	VisitCreateAzureOpenAiCredentialDto(*CreateAzureOpenAiCredentialDto) error
+	VisitCreateAzureCredentialDto(*CreateAzureCredentialDto) error
+	VisitCreateByoSipTrunkCredentialDto(*CreateByoSipTrunkCredentialDto) error
+	VisitCreateCartesiaCredentialDto(*CreateCartesiaCredentialDto) error
+	VisitCreateCloudflareCredentialDto(*CreateCloudflareCredentialDto) error
+	VisitCreateCustomLlmCredentialDto(*CreateCustomLlmCredentialDto) error
+	VisitCreateDeepgramCredentialDto(*CreateDeepgramCredentialDto) error
+	VisitCreateDeepInfraCredentialDto(*CreateDeepInfraCredentialDto) error
+	VisitCreateDeepSeekCredentialDto(*CreateDeepSeekCredentialDto) error
+	VisitCreateElevenLabsCredentialDto(*CreateElevenLabsCredentialDto) error
+	VisitCreateGcpCredentialDto(*CreateGcpCredentialDto) error
+	VisitCreateGladiaCredentialDto(*CreateGladiaCredentialDto) error
+	VisitCreateGoHighLevelCredentialDto(*CreateGoHighLevelCredentialDto) error
+	VisitCreateGroqCredentialDto(*CreateGroqCredentialDto) error
+	VisitCreateLangfuseCredentialDto(*CreateLangfuseCredentialDto) error
+	VisitCreateLmntCredentialDto(*CreateLmntCredentialDto) error
+	VisitCreateMakeCredentialDto(*CreateMakeCredentialDto) error
+	VisitCreateOpenAiCredentialDto(*CreateOpenAiCredentialDto) error
+	VisitCreateOpenRouterCredentialDto(*CreateOpenRouterCredentialDto) error
+	VisitCreatePerplexityAiCredentialDto(*CreatePerplexityAiCredentialDto) error
+	VisitCreatePlayHtCredentialDto(*CreatePlayHtCredentialDto) error
+	VisitCreateRimeAiCredentialDto(*CreateRimeAiCredentialDto) error
+	VisitCreateRunpodCredentialDto(*CreateRunpodCredentialDto) error
+	VisitCreateS3CredentialDto(*CreateS3CredentialDto) error
+	VisitCreateSmallestAiCredentialDto(*CreateSmallestAiCredentialDto) error
+	VisitCreateTavusCredentialDto(*CreateTavusCredentialDto) error
+	VisitCreateTogetherAiCredentialDto(*CreateTogetherAiCredentialDto) error
+	VisitCreateTwilioCredentialDto(*CreateTwilioCredentialDto) error
+	VisitCreateVonageCredentialDto(*CreateVonageCredentialDto) error
+	VisitCreateWebhookCredentialDto(*CreateWebhookCredentialDto) error
+	VisitCreateXAiCredentialDto(*CreateXAiCredentialDto) error
+}
+
+func (a *AssistantOverridesCredentialsItem) Accept(visitor AssistantOverridesCredentialsItemVisitor) error {
+	if a.typ == "CreateAnthropicCredentialDto" || a.CreateAnthropicCredentialDto != nil {
+		return visitor.VisitCreateAnthropicCredentialDto(a.CreateAnthropicCredentialDto)
+	}
+	if a.typ == "CreateAnyscaleCredentialDto" || a.CreateAnyscaleCredentialDto != nil {
+		return visitor.VisitCreateAnyscaleCredentialDto(a.CreateAnyscaleCredentialDto)
+	}
+	if a.typ == "CreateAssemblyAiCredentialDto" || a.CreateAssemblyAiCredentialDto != nil {
+		return visitor.VisitCreateAssemblyAiCredentialDto(a.CreateAssemblyAiCredentialDto)
+	}
+	if a.typ == "CreateAzureOpenAiCredentialDto" || a.CreateAzureOpenAiCredentialDto != nil {
+		return visitor.VisitCreateAzureOpenAiCredentialDto(a.CreateAzureOpenAiCredentialDto)
+	}
+	if a.typ == "CreateAzureCredentialDto" || a.CreateAzureCredentialDto != nil {
+		return visitor.VisitCreateAzureCredentialDto(a.CreateAzureCredentialDto)
+	}
+	if a.typ == "CreateByoSipTrunkCredentialDto" || a.CreateByoSipTrunkCredentialDto != nil {
+		return visitor.VisitCreateByoSipTrunkCredentialDto(a.CreateByoSipTrunkCredentialDto)
+	}
+	if a.typ == "CreateCartesiaCredentialDto" || a.CreateCartesiaCredentialDto != nil {
+		return visitor.VisitCreateCartesiaCredentialDto(a.CreateCartesiaCredentialDto)
+	}
+	if a.typ == "CreateCloudflareCredentialDto" || a.CreateCloudflareCredentialDto != nil {
+		return visitor.VisitCreateCloudflareCredentialDto(a.CreateCloudflareCredentialDto)
+	}
+	if a.typ == "CreateCustomLlmCredentialDto" || a.CreateCustomLlmCredentialDto != nil {
+		return visitor.VisitCreateCustomLlmCredentialDto(a.CreateCustomLlmCredentialDto)
+	}
+	if a.typ == "CreateDeepgramCredentialDto" || a.CreateDeepgramCredentialDto != nil {
+		return visitor.VisitCreateDeepgramCredentialDto(a.CreateDeepgramCredentialDto)
+	}
+	if a.typ == "CreateDeepInfraCredentialDto" || a.CreateDeepInfraCredentialDto != nil {
+		return visitor.VisitCreateDeepInfraCredentialDto(a.CreateDeepInfraCredentialDto)
+	}
+	if a.typ == "CreateDeepSeekCredentialDto" || a.CreateDeepSeekCredentialDto != nil {
+		return visitor.VisitCreateDeepSeekCredentialDto(a.CreateDeepSeekCredentialDto)
+	}
+	if a.typ == "CreateElevenLabsCredentialDto" || a.CreateElevenLabsCredentialDto != nil {
+		return visitor.VisitCreateElevenLabsCredentialDto(a.CreateElevenLabsCredentialDto)
+	}
+	if a.typ == "CreateGcpCredentialDto" || a.CreateGcpCredentialDto != nil {
+		return visitor.VisitCreateGcpCredentialDto(a.CreateGcpCredentialDto)
+	}
+	if a.typ == "CreateGladiaCredentialDto" || a.CreateGladiaCredentialDto != nil {
+		return visitor.VisitCreateGladiaCredentialDto(a.CreateGladiaCredentialDto)
+	}
+	if a.typ == "CreateGoHighLevelCredentialDto" || a.CreateGoHighLevelCredentialDto != nil {
+		return visitor.VisitCreateGoHighLevelCredentialDto(a.CreateGoHighLevelCredentialDto)
+	}
+	if a.typ == "CreateGroqCredentialDto" || a.CreateGroqCredentialDto != nil {
+		return visitor.VisitCreateGroqCredentialDto(a.CreateGroqCredentialDto)
+	}
+	if a.typ == "CreateLangfuseCredentialDto" || a.CreateLangfuseCredentialDto != nil {
+		return visitor.VisitCreateLangfuseCredentialDto(a.CreateLangfuseCredentialDto)
+	}
+	if a.typ == "CreateLmntCredentialDto" || a.CreateLmntCredentialDto != nil {
+		return visitor.VisitCreateLmntCredentialDto(a.CreateLmntCredentialDto)
+	}
+	if a.typ == "CreateMakeCredentialDto" || a.CreateMakeCredentialDto != nil {
+		return visitor.VisitCreateMakeCredentialDto(a.CreateMakeCredentialDto)
+	}
+	if a.typ == "CreateOpenAiCredentialDto" || a.CreateOpenAiCredentialDto != nil {
+		return visitor.VisitCreateOpenAiCredentialDto(a.CreateOpenAiCredentialDto)
+	}
+	if a.typ == "CreateOpenRouterCredentialDto" || a.CreateOpenRouterCredentialDto != nil {
+		return visitor.VisitCreateOpenRouterCredentialDto(a.CreateOpenRouterCredentialDto)
+	}
+	if a.typ == "CreatePerplexityAiCredentialDto" || a.CreatePerplexityAiCredentialDto != nil {
+		return visitor.VisitCreatePerplexityAiCredentialDto(a.CreatePerplexityAiCredentialDto)
+	}
+	if a.typ == "CreatePlayHtCredentialDto" || a.CreatePlayHtCredentialDto != nil {
+		return visitor.VisitCreatePlayHtCredentialDto(a.CreatePlayHtCredentialDto)
+	}
+	if a.typ == "CreateRimeAiCredentialDto" || a.CreateRimeAiCredentialDto != nil {
+		return visitor.VisitCreateRimeAiCredentialDto(a.CreateRimeAiCredentialDto)
+	}
+	if a.typ == "CreateRunpodCredentialDto" || a.CreateRunpodCredentialDto != nil {
+		return visitor.VisitCreateRunpodCredentialDto(a.CreateRunpodCredentialDto)
+	}
+	if a.typ == "CreateS3CredentialDto" || a.CreateS3CredentialDto != nil {
+		return visitor.VisitCreateS3CredentialDto(a.CreateS3CredentialDto)
+	}
+	if a.typ == "CreateSmallestAiCredentialDto" || a.CreateSmallestAiCredentialDto != nil {
+		return visitor.VisitCreateSmallestAiCredentialDto(a.CreateSmallestAiCredentialDto)
+	}
+	if a.typ == "CreateTavusCredentialDto" || a.CreateTavusCredentialDto != nil {
+		return visitor.VisitCreateTavusCredentialDto(a.CreateTavusCredentialDto)
+	}
+	if a.typ == "CreateTogetherAiCredentialDto" || a.CreateTogetherAiCredentialDto != nil {
+		return visitor.VisitCreateTogetherAiCredentialDto(a.CreateTogetherAiCredentialDto)
+	}
+	if a.typ == "CreateTwilioCredentialDto" || a.CreateTwilioCredentialDto != nil {
+		return visitor.VisitCreateTwilioCredentialDto(a.CreateTwilioCredentialDto)
+	}
+	if a.typ == "CreateVonageCredentialDto" || a.CreateVonageCredentialDto != nil {
+		return visitor.VisitCreateVonageCredentialDto(a.CreateVonageCredentialDto)
+	}
+	if a.typ == "CreateWebhookCredentialDto" || a.CreateWebhookCredentialDto != nil {
+		return visitor.VisitCreateWebhookCredentialDto(a.CreateWebhookCredentialDto)
+	}
+	if a.typ == "CreateXAiCredentialDto" || a.CreateXAiCredentialDto != nil {
+		return visitor.VisitCreateXAiCredentialDto(a.CreateXAiCredentialDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", a)
+}
+
 // This is the mode for the first message. Default is 'assistant-speaks-first'.
 //
 // Use:
@@ -2606,6 +3349,7 @@ type AssistantOverridesModel struct {
 	GoogleModel       *GoogleModel
 	GroqModel         *GroqModel
 	InflectionAiModel *InflectionAiModel
+	DeepSeekModel     *DeepSeekModel
 	OpenAiModel       *OpenAiModel
 	OpenRouterModel   *OpenRouterModel
 	PerplexityAiModel *PerplexityAiModel
@@ -2663,6 +3407,13 @@ func (a *AssistantOverridesModel) GetInflectionAiModel() *InflectionAiModel {
 		return nil
 	}
 	return a.InflectionAiModel
+}
+
+func (a *AssistantOverridesModel) GetDeepSeekModel() *DeepSeekModel {
+	if a == nil {
+		return nil
+	}
+	return a.DeepSeekModel
 }
 
 func (a *AssistantOverridesModel) GetOpenAiModel() *OpenAiModel {
@@ -2750,6 +3501,12 @@ func (a *AssistantOverridesModel) UnmarshalJSON(data []byte) error {
 		a.InflectionAiModel = valueInflectionAiModel
 		return nil
 	}
+	valueDeepSeekModel := new(DeepSeekModel)
+	if err := json.Unmarshal(data, &valueDeepSeekModel); err == nil {
+		a.typ = "DeepSeekModel"
+		a.DeepSeekModel = valueDeepSeekModel
+		return nil
+	}
 	valueOpenAiModel := new(OpenAiModel)
 	if err := json.Unmarshal(data, &valueOpenAiModel); err == nil {
 		a.typ = "OpenAiModel"
@@ -2811,6 +3568,9 @@ func (a AssistantOverridesModel) MarshalJSON() ([]byte, error) {
 	if a.typ == "InflectionAiModel" || a.InflectionAiModel != nil {
 		return json.Marshal(a.InflectionAiModel)
 	}
+	if a.typ == "DeepSeekModel" || a.DeepSeekModel != nil {
+		return json.Marshal(a.DeepSeekModel)
+	}
 	if a.typ == "OpenAiModel" || a.OpenAiModel != nil {
 		return json.Marshal(a.OpenAiModel)
 	}
@@ -2840,6 +3600,7 @@ type AssistantOverridesModelVisitor interface {
 	VisitGoogleModel(*GoogleModel) error
 	VisitGroqModel(*GroqModel) error
 	VisitInflectionAiModel(*InflectionAiModel) error
+	VisitDeepSeekModel(*DeepSeekModel) error
 	VisitOpenAiModel(*OpenAiModel) error
 	VisitOpenRouterModel(*OpenRouterModel) error
 	VisitPerplexityAiModel(*PerplexityAiModel) error
@@ -2869,6 +3630,9 @@ func (a *AssistantOverridesModel) Accept(visitor AssistantOverridesModelVisitor)
 	}
 	if a.typ == "InflectionAiModel" || a.InflectionAiModel != nil {
 		return visitor.VisitInflectionAiModel(a.InflectionAiModel)
+	}
+	if a.typ == "DeepSeekModel" || a.DeepSeekModel != nil {
+		return visitor.VisitDeepSeekModel(a.DeepSeekModel)
 	}
 	if a.typ == "OpenAiModel" || a.OpenAiModel != nil {
 		return visitor.VisitOpenAiModel(a.OpenAiModel)
@@ -2958,6 +3722,7 @@ func (a AssistantOverridesServerMessagesItem) Ptr() *AssistantOverridesServerMes
 // These are the options for the assistant's transcriber.
 type AssistantOverridesTranscriber struct {
 	AssemblyAiTranscriber  *AssemblyAiTranscriber
+	AzureSpeechTranscriber *AzureSpeechTranscriber
 	CustomTranscriber      *CustomTranscriber
 	DeepgramTranscriber    *DeepgramTranscriber
 	GladiaTranscriber      *GladiaTranscriber
@@ -2971,6 +3736,13 @@ func (a *AssistantOverridesTranscriber) GetAssemblyAiTranscriber() *AssemblyAiTr
 		return nil
 	}
 	return a.AssemblyAiTranscriber
+}
+
+func (a *AssistantOverridesTranscriber) GetAzureSpeechTranscriber() *AzureSpeechTranscriber {
+	if a == nil {
+		return nil
+	}
+	return a.AzureSpeechTranscriber
 }
 
 func (a *AssistantOverridesTranscriber) GetCustomTranscriber() *CustomTranscriber {
@@ -3008,6 +3780,12 @@ func (a *AssistantOverridesTranscriber) UnmarshalJSON(data []byte) error {
 		a.AssemblyAiTranscriber = valueAssemblyAiTranscriber
 		return nil
 	}
+	valueAzureSpeechTranscriber := new(AzureSpeechTranscriber)
+	if err := json.Unmarshal(data, &valueAzureSpeechTranscriber); err == nil {
+		a.typ = "AzureSpeechTranscriber"
+		a.AzureSpeechTranscriber = valueAzureSpeechTranscriber
+		return nil
+	}
 	valueCustomTranscriber := new(CustomTranscriber)
 	if err := json.Unmarshal(data, &valueCustomTranscriber); err == nil {
 		a.typ = "CustomTranscriber"
@@ -3039,6 +3817,9 @@ func (a AssistantOverridesTranscriber) MarshalJSON() ([]byte, error) {
 	if a.typ == "AssemblyAiTranscriber" || a.AssemblyAiTranscriber != nil {
 		return json.Marshal(a.AssemblyAiTranscriber)
 	}
+	if a.typ == "AzureSpeechTranscriber" || a.AzureSpeechTranscriber != nil {
+		return json.Marshal(a.AzureSpeechTranscriber)
+	}
 	if a.typ == "CustomTranscriber" || a.CustomTranscriber != nil {
 		return json.Marshal(a.CustomTranscriber)
 	}
@@ -3056,6 +3837,7 @@ func (a AssistantOverridesTranscriber) MarshalJSON() ([]byte, error) {
 
 type AssistantOverridesTranscriberVisitor interface {
 	VisitAssemblyAiTranscriber(*AssemblyAiTranscriber) error
+	VisitAzureSpeechTranscriber(*AzureSpeechTranscriber) error
 	VisitCustomTranscriber(*CustomTranscriber) error
 	VisitDeepgramTranscriber(*DeepgramTranscriber) error
 	VisitGladiaTranscriber(*GladiaTranscriber) error
@@ -3065,6 +3847,9 @@ type AssistantOverridesTranscriberVisitor interface {
 func (a *AssistantOverridesTranscriber) Accept(visitor AssistantOverridesTranscriberVisitor) error {
 	if a.typ == "AssemblyAiTranscriber" || a.AssemblyAiTranscriber != nil {
 		return visitor.VisitAssemblyAiTranscriber(a.AssemblyAiTranscriber)
+	}
+	if a.typ == "AzureSpeechTranscriber" || a.AzureSpeechTranscriber != nil {
+		return visitor.VisitAzureSpeechTranscriber(a.AzureSpeechTranscriber)
 	}
 	if a.typ == "CustomTranscriber" || a.CustomTranscriber != nil {
 		return visitor.VisitCustomTranscriber(a.CustomTranscriber)
@@ -3093,6 +3878,7 @@ type AssistantOverridesVoice struct {
 	OpenAiVoice     *OpenAiVoice
 	PlayHtVoice     *PlayHtVoice
 	RimeAiVoice     *RimeAiVoice
+	SmallestAiVoice *SmallestAiVoice
 	TavusVoice      *TavusVoice
 
 	typ string
@@ -3168,6 +3954,13 @@ func (a *AssistantOverridesVoice) GetRimeAiVoice() *RimeAiVoice {
 	return a.RimeAiVoice
 }
 
+func (a *AssistantOverridesVoice) GetSmallestAiVoice() *SmallestAiVoice {
+	if a == nil {
+		return nil
+	}
+	return a.SmallestAiVoice
+}
+
 func (a *AssistantOverridesVoice) GetTavusVoice() *TavusVoice {
 	if a == nil {
 		return nil
@@ -3236,6 +4029,12 @@ func (a *AssistantOverridesVoice) UnmarshalJSON(data []byte) error {
 		a.RimeAiVoice = valueRimeAiVoice
 		return nil
 	}
+	valueSmallestAiVoice := new(SmallestAiVoice)
+	if err := json.Unmarshal(data, &valueSmallestAiVoice); err == nil {
+		a.typ = "SmallestAiVoice"
+		a.SmallestAiVoice = valueSmallestAiVoice
+		return nil
+	}
 	valueTavusVoice := new(TavusVoice)
 	if err := json.Unmarshal(data, &valueTavusVoice); err == nil {
 		a.typ = "TavusVoice"
@@ -3276,6 +4075,9 @@ func (a AssistantOverridesVoice) MarshalJSON() ([]byte, error) {
 	if a.typ == "RimeAiVoice" || a.RimeAiVoice != nil {
 		return json.Marshal(a.RimeAiVoice)
 	}
+	if a.typ == "SmallestAiVoice" || a.SmallestAiVoice != nil {
+		return json.Marshal(a.SmallestAiVoice)
+	}
 	if a.typ == "TavusVoice" || a.TavusVoice != nil {
 		return json.Marshal(a.TavusVoice)
 	}
@@ -3293,6 +4095,7 @@ type AssistantOverridesVoiceVisitor interface {
 	VisitOpenAiVoice(*OpenAiVoice) error
 	VisitPlayHtVoice(*PlayHtVoice) error
 	VisitRimeAiVoice(*RimeAiVoice) error
+	VisitSmallestAiVoice(*SmallestAiVoice) error
 	VisitTavusVoice(*TavusVoice) error
 }
 
@@ -3326,6 +4129,9 @@ func (a *AssistantOverridesVoice) Accept(visitor AssistantOverridesVoiceVisitor)
 	}
 	if a.typ == "RimeAiVoice" || a.RimeAiVoice != nil {
 		return visitor.VisitRimeAiVoice(a.RimeAiVoice)
+	}
+	if a.typ == "SmallestAiVoice" || a.SmallestAiVoice != nil {
+		return visitor.VisitSmallestAiVoice(a.SmallestAiVoice)
 	}
 	if a.typ == "TavusVoice" || a.TavusVoice != nil {
 		return visitor.VisitTavusVoice(a.TavusVoice)
@@ -3389,33 +4195,56 @@ func (a *AutoReloadPlan) String() string {
 	return fmt.Sprintf("%#v", a)
 }
 
-type AutoReloadPlanDto struct {
-	// This is the auto reload plan to be configured for the subscription.
-	// It can be null if no auto reload plan is set.
-	AutoReloadPlan *AutoReloadPlan `json:"autoReloadPlan,omitempty" url:"autoReloadPlan,omitempty"`
+type AzureBlobStorageBucketPlan struct {
+	// This is the blob storage connection string for the Azure resource.
+	ConnectionString string `json:"connectionString" url:"connectionString"`
+	// This is the container name for the Azure blob storage.
+	ContainerName string `json:"containerName" url:"containerName"`
+	// This is the path where call artifacts will be stored.
+	//
+	// Usage:
+	// - To store call artifacts in a specific folder, set this to the full path. Eg. "/folder-name1/folder-name2".
+	// - To store call artifacts in the root of the bucket, leave this blank.
+	//
+	// @default "/"
+	Path *string `json:"path,omitempty" url:"path,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (a *AutoReloadPlanDto) GetAutoReloadPlan() *AutoReloadPlan {
+func (a *AzureBlobStorageBucketPlan) GetConnectionString() string {
+	if a == nil {
+		return ""
+	}
+	return a.ConnectionString
+}
+
+func (a *AzureBlobStorageBucketPlan) GetContainerName() string {
+	if a == nil {
+		return ""
+	}
+	return a.ContainerName
+}
+
+func (a *AzureBlobStorageBucketPlan) GetPath() *string {
 	if a == nil {
 		return nil
 	}
-	return a.AutoReloadPlan
+	return a.Path
 }
 
-func (a *AutoReloadPlanDto) GetExtraProperties() map[string]interface{} {
+func (a *AzureBlobStorageBucketPlan) GetExtraProperties() map[string]interface{} {
 	return a.extraProperties
 }
 
-func (a *AutoReloadPlanDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler AutoReloadPlanDto
+func (a *AzureBlobStorageBucketPlan) UnmarshalJSON(data []byte) error {
+	type unmarshaler AzureBlobStorageBucketPlan
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*a = AutoReloadPlanDto(value)
+	*a = AzureBlobStorageBucketPlan(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *a)
 	if err != nil {
 		return err
@@ -3425,7 +4254,7 @@ func (a *AutoReloadPlanDto) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func (a *AutoReloadPlanDto) String() string {
+func (a *AzureBlobStorageBucketPlan) String() string {
 	if len(a.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
 			return value
@@ -3439,6 +4268,7 @@ func (a *AutoReloadPlanDto) String() string {
 
 type AzureCredential struct {
 	// This is the service being used in Azure.
+	Service AzureCredentialService `json:"service" url:"service"`
 	// This is the region of the Azure resource.
 	Region *AzureCredentialRegion `json:"region,omitempty" url:"region,omitempty"`
 	// This is not returned in the API.
@@ -3452,12 +4282,20 @@ type AzureCredential struct {
 	// This is the ISO 8601 date-time string of when the assistant was last updated.
 	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
-	service  string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the bucket plan that can be provided to store call artifacts in Azure Blob Storage.
+	BucketPlan *AzureBlobStorageBucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
+	provider   string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (a *AzureCredential) GetService() AzureCredentialService {
+	if a == nil {
+		return ""
+	}
+	return a.Service
 }
 
 func (a *AzureCredential) GetRegion() *AzureCredentialRegion {
@@ -3509,12 +4347,15 @@ func (a *AzureCredential) GetName() *string {
 	return a.Name
 }
 
-func (a *AzureCredential) Provider() string {
-	return a.provider
+func (a *AzureCredential) GetBucketPlan() *AzureBlobStorageBucketPlan {
+	if a == nil {
+		return nil
+	}
+	return a.BucketPlan
 }
 
-func (a *AzureCredential) Service() string {
-	return a.service
+func (a *AzureCredential) Provider() string {
+	return a.provider
 }
 
 func (a *AzureCredential) GetExtraProperties() map[string]interface{} {
@@ -3528,7 +4369,6 @@ func (a *AzureCredential) UnmarshalJSON(data []byte) error {
 		CreatedAt *internal.DateTime `json:"createdAt"`
 		UpdatedAt *internal.DateTime `json:"updatedAt"`
 		Provider  string             `json:"provider"`
-		Service   string             `json:"service"`
 	}{
 		embed: embed(*a),
 	}
@@ -3542,11 +4382,7 @@ func (a *AzureCredential) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "azure", unmarshaler.Provider)
 	}
 	a.provider = unmarshaler.Provider
-	if unmarshaler.Service != "speech" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "speech", unmarshaler.Service)
-	}
-	a.service = unmarshaler.Service
-	extraProperties, err := internal.ExtractExtraProperties(data, *a, "provider", "service")
+	extraProperties, err := internal.ExtractExtraProperties(data, *a, "provider")
 	if err != nil {
 		return err
 	}
@@ -3562,13 +4398,11 @@ func (a *AzureCredential) MarshalJSON() ([]byte, error) {
 		CreatedAt *internal.DateTime `json:"createdAt"`
 		UpdatedAt *internal.DateTime `json:"updatedAt"`
 		Provider  string             `json:"provider"`
-		Service   string             `json:"service"`
 	}{
 		embed:     embed(*a),
 		CreatedAt: internal.NewDateTime(a.CreatedAt),
 		UpdatedAt: internal.NewDateTime(a.UpdatedAt),
 		Provider:  "azure",
-		Service:   "speech",
 	}
 	return json.Marshal(marshaler)
 }
@@ -3600,7 +4434,7 @@ const (
 	AzureCredentialRegionNorthcentralus AzureCredentialRegion = "northcentralus"
 	AzureCredentialRegionNorway         AzureCredentialRegion = "norway"
 	AzureCredentialRegionSouthcentralus AzureCredentialRegion = "southcentralus"
-	AzureCredentialRegionSweden         AzureCredentialRegion = "sweden"
+	AzureCredentialRegionSwedencentral  AzureCredentialRegion = "swedencentral"
 	AzureCredentialRegionSwitzerland    AzureCredentialRegion = "switzerland"
 	AzureCredentialRegionUk             AzureCredentialRegion = "uk"
 	AzureCredentialRegionWestus         AzureCredentialRegion = "westus"
@@ -3631,8 +4465,8 @@ func NewAzureCredentialRegionFromString(s string) (AzureCredentialRegion, error)
 		return AzureCredentialRegionNorway, nil
 	case "southcentralus":
 		return AzureCredentialRegionSouthcentralus, nil
-	case "sweden":
-		return AzureCredentialRegionSweden, nil
+	case "swedencentral":
+		return AzureCredentialRegionSwedencentral, nil
 	case "switzerland":
 		return AzureCredentialRegionSwitzerland, nil
 	case "uk":
@@ -3650,11 +4484,36 @@ func (a AzureCredentialRegion) Ptr() *AzureCredentialRegion {
 	return &a
 }
 
+// This is the service being used in Azure.
+type AzureCredentialService string
+
+const (
+	AzureCredentialServiceSpeech      AzureCredentialService = "speech"
+	AzureCredentialServiceBlobStorage AzureCredentialService = "blob_storage"
+)
+
+func NewAzureCredentialServiceFromString(s string) (AzureCredentialService, error) {
+	switch s {
+	case "speech":
+		return AzureCredentialServiceSpeech, nil
+	case "blob_storage":
+		return AzureCredentialServiceBlobStorage, nil
+	}
+	var t AzureCredentialService
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AzureCredentialService) Ptr() *AzureCredentialService {
+	return &a
+}
+
 type AzureOpenAiCredential struct {
 	Region AzureOpenAiCredentialRegion       `json:"region" url:"region"`
 	Models []AzureOpenAiCredentialModelsItem `json:"models,omitempty" url:"models,omitempty"`
 	// This is not returned in the API.
 	OpenAiKey string `json:"openAIKey" url:"openAIKey"`
+	// This is not returned in the API.
+	OcpApimSubscriptionKey *string `json:"ocpApimSubscriptionKey,omitempty" url:"ocpApimSubscriptionKey,omitempty"`
 	// This is the unique identifier for the credential.
 	Id string `json:"id" url:"id"`
 	// This is the unique identifier for the org that this credential belongs to.
@@ -3691,6 +4550,13 @@ func (a *AzureOpenAiCredential) GetOpenAiKey() string {
 		return ""
 	}
 	return a.OpenAiKey
+}
+
+func (a *AzureOpenAiCredential) GetOcpApimSubscriptionKey() *string {
+	if a == nil {
+		return nil
+	}
+	return a.OcpApimSubscriptionKey
 }
 
 func (a *AzureOpenAiCredential) GetId() string {
@@ -3857,7 +4723,7 @@ const (
 	AzureOpenAiCredentialRegionNorthcentralus AzureOpenAiCredentialRegion = "northcentralus"
 	AzureOpenAiCredentialRegionNorway         AzureOpenAiCredentialRegion = "norway"
 	AzureOpenAiCredentialRegionSouthcentralus AzureOpenAiCredentialRegion = "southcentralus"
-	AzureOpenAiCredentialRegionSweden         AzureOpenAiCredentialRegion = "sweden"
+	AzureOpenAiCredentialRegionSwedencentral  AzureOpenAiCredentialRegion = "swedencentral"
 	AzureOpenAiCredentialRegionSwitzerland    AzureOpenAiCredentialRegion = "switzerland"
 	AzureOpenAiCredentialRegionUk             AzureOpenAiCredentialRegion = "uk"
 	AzureOpenAiCredentialRegionWestus         AzureOpenAiCredentialRegion = "westus"
@@ -3888,8 +4754,8 @@ func NewAzureOpenAiCredentialRegionFromString(s string) (AzureOpenAiCredentialRe
 		return AzureOpenAiCredentialRegionNorway, nil
 	case "southcentralus":
 		return AzureOpenAiCredentialRegionSouthcentralus, nil
-	case "sweden":
-		return AzureOpenAiCredentialRegionSweden, nil
+	case "swedencentral":
+		return AzureOpenAiCredentialRegionSwedencentral, nil
 	case "switzerland":
 		return AzureOpenAiCredentialRegionSwitzerland, nil
 	case "uk":
@@ -3904,6 +4770,526 @@ func NewAzureOpenAiCredentialRegionFromString(s string) (AzureOpenAiCredentialRe
 }
 
 func (a AzureOpenAiCredentialRegion) Ptr() *AzureOpenAiCredentialRegion {
+	return &a
+}
+
+type AzureSpeechTranscriber struct {
+	// This is the transcription provider that will be used.
+	// This is the language that will be set for the transcription. The list of languages Azure supports can be found here: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt
+	Language *AzureSpeechTranscriberLanguage `json:"language,omitempty" url:"language,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (a *AzureSpeechTranscriber) GetLanguage() *AzureSpeechTranscriberLanguage {
+	if a == nil {
+		return nil
+	}
+	return a.Language
+}
+
+func (a *AzureSpeechTranscriber) Provider() string {
+	return a.provider
+}
+
+func (a *AzureSpeechTranscriber) GetExtraProperties() map[string]interface{} {
+	return a.extraProperties
+}
+
+func (a *AzureSpeechTranscriber) UnmarshalJSON(data []byte) error {
+	type embed AzureSpeechTranscriber
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*a),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*a = AzureSpeechTranscriber(unmarshaler.embed)
+	if unmarshaler.Provider != "azure" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", a, "azure", unmarshaler.Provider)
+	}
+	a.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *a, "provider")
+	if err != nil {
+		return err
+	}
+	a.extraProperties = extraProperties
+	a.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (a *AzureSpeechTranscriber) MarshalJSON() ([]byte, error) {
+	type embed AzureSpeechTranscriber
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*a),
+		Provider: "azure",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (a *AzureSpeechTranscriber) String() string {
+	if len(a.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(a.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(a); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", a)
+}
+
+// This is the language that will be set for the transcription. The list of languages Azure supports can be found here: https://learn.microsoft.com/en-us/azure/ai-services/speech-service/language-support?tabs=stt
+type AzureSpeechTranscriberLanguage string
+
+const (
+	AzureSpeechTranscriberLanguageAfZa         AzureSpeechTranscriberLanguage = "af-ZA"
+	AzureSpeechTranscriberLanguageAmEt         AzureSpeechTranscriberLanguage = "am-ET"
+	AzureSpeechTranscriberLanguageArAe         AzureSpeechTranscriberLanguage = "ar-AE"
+	AzureSpeechTranscriberLanguageArBh         AzureSpeechTranscriberLanguage = "ar-BH"
+	AzureSpeechTranscriberLanguageArDz         AzureSpeechTranscriberLanguage = "ar-DZ"
+	AzureSpeechTranscriberLanguageArEg         AzureSpeechTranscriberLanguage = "ar-EG"
+	AzureSpeechTranscriberLanguageArIl         AzureSpeechTranscriberLanguage = "ar-IL"
+	AzureSpeechTranscriberLanguageArIq         AzureSpeechTranscriberLanguage = "ar-IQ"
+	AzureSpeechTranscriberLanguageArJo         AzureSpeechTranscriberLanguage = "ar-JO"
+	AzureSpeechTranscriberLanguageArKw         AzureSpeechTranscriberLanguage = "ar-KW"
+	AzureSpeechTranscriberLanguageArLb         AzureSpeechTranscriberLanguage = "ar-LB"
+	AzureSpeechTranscriberLanguageArLy         AzureSpeechTranscriberLanguage = "ar-LY"
+	AzureSpeechTranscriberLanguageArMa         AzureSpeechTranscriberLanguage = "ar-MA"
+	AzureSpeechTranscriberLanguageArOm         AzureSpeechTranscriberLanguage = "ar-OM"
+	AzureSpeechTranscriberLanguageArPs         AzureSpeechTranscriberLanguage = "ar-PS"
+	AzureSpeechTranscriberLanguageArQa         AzureSpeechTranscriberLanguage = "ar-QA"
+	AzureSpeechTranscriberLanguageArSa         AzureSpeechTranscriberLanguage = "ar-SA"
+	AzureSpeechTranscriberLanguageArSy         AzureSpeechTranscriberLanguage = "ar-SY"
+	AzureSpeechTranscriberLanguageArTn         AzureSpeechTranscriberLanguage = "ar-TN"
+	AzureSpeechTranscriberLanguageArYe         AzureSpeechTranscriberLanguage = "ar-YE"
+	AzureSpeechTranscriberLanguageAzAz         AzureSpeechTranscriberLanguage = "az-AZ"
+	AzureSpeechTranscriberLanguageBgBg         AzureSpeechTranscriberLanguage = "bg-BG"
+	AzureSpeechTranscriberLanguageBnIn         AzureSpeechTranscriberLanguage = "bn-IN"
+	AzureSpeechTranscriberLanguageBsBa         AzureSpeechTranscriberLanguage = "bs-BA"
+	AzureSpeechTranscriberLanguageCaEs         AzureSpeechTranscriberLanguage = "ca-ES"
+	AzureSpeechTranscriberLanguageCsCz         AzureSpeechTranscriberLanguage = "cs-CZ"
+	AzureSpeechTranscriberLanguageCyGb         AzureSpeechTranscriberLanguage = "cy-GB"
+	AzureSpeechTranscriberLanguageDaDk         AzureSpeechTranscriberLanguage = "da-DK"
+	AzureSpeechTranscriberLanguageDeAt         AzureSpeechTranscriberLanguage = "de-AT"
+	AzureSpeechTranscriberLanguageDeCh         AzureSpeechTranscriberLanguage = "de-CH"
+	AzureSpeechTranscriberLanguageDeDe         AzureSpeechTranscriberLanguage = "de-DE"
+	AzureSpeechTranscriberLanguageElGr         AzureSpeechTranscriberLanguage = "el-GR"
+	AzureSpeechTranscriberLanguageEnAu         AzureSpeechTranscriberLanguage = "en-AU"
+	AzureSpeechTranscriberLanguageEnCa         AzureSpeechTranscriberLanguage = "en-CA"
+	AzureSpeechTranscriberLanguageEnGb         AzureSpeechTranscriberLanguage = "en-GB"
+	AzureSpeechTranscriberLanguageEnGh         AzureSpeechTranscriberLanguage = "en-GH"
+	AzureSpeechTranscriberLanguageEnHk         AzureSpeechTranscriberLanguage = "en-HK"
+	AzureSpeechTranscriberLanguageEnIe         AzureSpeechTranscriberLanguage = "en-IE"
+	AzureSpeechTranscriberLanguageEnIn         AzureSpeechTranscriberLanguage = "en-IN"
+	AzureSpeechTranscriberLanguageEnKe         AzureSpeechTranscriberLanguage = "en-KE"
+	AzureSpeechTranscriberLanguageEnNg         AzureSpeechTranscriberLanguage = "en-NG"
+	AzureSpeechTranscriberLanguageEnNz         AzureSpeechTranscriberLanguage = "en-NZ"
+	AzureSpeechTranscriberLanguageEnPh         AzureSpeechTranscriberLanguage = "en-PH"
+	AzureSpeechTranscriberLanguageEnSg         AzureSpeechTranscriberLanguage = "en-SG"
+	AzureSpeechTranscriberLanguageEnTz         AzureSpeechTranscriberLanguage = "en-TZ"
+	AzureSpeechTranscriberLanguageEnUs         AzureSpeechTranscriberLanguage = "en-US"
+	AzureSpeechTranscriberLanguageEnZa         AzureSpeechTranscriberLanguage = "en-ZA"
+	AzureSpeechTranscriberLanguageEsAr         AzureSpeechTranscriberLanguage = "es-AR"
+	AzureSpeechTranscriberLanguageEsBo         AzureSpeechTranscriberLanguage = "es-BO"
+	AzureSpeechTranscriberLanguageEsCl         AzureSpeechTranscriberLanguage = "es-CL"
+	AzureSpeechTranscriberLanguageEsCo         AzureSpeechTranscriberLanguage = "es-CO"
+	AzureSpeechTranscriberLanguageEsCr         AzureSpeechTranscriberLanguage = "es-CR"
+	AzureSpeechTranscriberLanguageEsCu         AzureSpeechTranscriberLanguage = "es-CU"
+	AzureSpeechTranscriberLanguageEsDo         AzureSpeechTranscriberLanguage = "es-DO"
+	AzureSpeechTranscriberLanguageEsEc         AzureSpeechTranscriberLanguage = "es-EC"
+	AzureSpeechTranscriberLanguageEsEs         AzureSpeechTranscriberLanguage = "es-ES"
+	AzureSpeechTranscriberLanguageEsGq         AzureSpeechTranscriberLanguage = "es-GQ"
+	AzureSpeechTranscriberLanguageEsGt         AzureSpeechTranscriberLanguage = "es-GT"
+	AzureSpeechTranscriberLanguageEsHn         AzureSpeechTranscriberLanguage = "es-HN"
+	AzureSpeechTranscriberLanguageEsMx         AzureSpeechTranscriberLanguage = "es-MX"
+	AzureSpeechTranscriberLanguageEsNi         AzureSpeechTranscriberLanguage = "es-NI"
+	AzureSpeechTranscriberLanguageEsPa         AzureSpeechTranscriberLanguage = "es-PA"
+	AzureSpeechTranscriberLanguageEsPe         AzureSpeechTranscriberLanguage = "es-PE"
+	AzureSpeechTranscriberLanguageEsPr         AzureSpeechTranscriberLanguage = "es-PR"
+	AzureSpeechTranscriberLanguageEsPy         AzureSpeechTranscriberLanguage = "es-PY"
+	AzureSpeechTranscriberLanguageEsSv         AzureSpeechTranscriberLanguage = "es-SV"
+	AzureSpeechTranscriberLanguageEsUs         AzureSpeechTranscriberLanguage = "es-US"
+	AzureSpeechTranscriberLanguageEsUy         AzureSpeechTranscriberLanguage = "es-UY"
+	AzureSpeechTranscriberLanguageEsVe         AzureSpeechTranscriberLanguage = "es-VE"
+	AzureSpeechTranscriberLanguageEtEe         AzureSpeechTranscriberLanguage = "et-EE"
+	AzureSpeechTranscriberLanguageEuEs         AzureSpeechTranscriberLanguage = "eu-ES"
+	AzureSpeechTranscriberLanguageFaIr         AzureSpeechTranscriberLanguage = "fa-IR"
+	AzureSpeechTranscriberLanguageFiFi         AzureSpeechTranscriberLanguage = "fi-FI"
+	AzureSpeechTranscriberLanguageFilPh        AzureSpeechTranscriberLanguage = "fil-PH"
+	AzureSpeechTranscriberLanguageFrBe         AzureSpeechTranscriberLanguage = "fr-BE"
+	AzureSpeechTranscriberLanguageFrCa         AzureSpeechTranscriberLanguage = "fr-CA"
+	AzureSpeechTranscriberLanguageFrCh         AzureSpeechTranscriberLanguage = "fr-CH"
+	AzureSpeechTranscriberLanguageFrFr         AzureSpeechTranscriberLanguage = "fr-FR"
+	AzureSpeechTranscriberLanguageGaIe         AzureSpeechTranscriberLanguage = "ga-IE"
+	AzureSpeechTranscriberLanguageGlEs         AzureSpeechTranscriberLanguage = "gl-ES"
+	AzureSpeechTranscriberLanguageGuIn         AzureSpeechTranscriberLanguage = "gu-IN"
+	AzureSpeechTranscriberLanguageHeIl         AzureSpeechTranscriberLanguage = "he-IL"
+	AzureSpeechTranscriberLanguageHiIn         AzureSpeechTranscriberLanguage = "hi-IN"
+	AzureSpeechTranscriberLanguageHrHr         AzureSpeechTranscriberLanguage = "hr-HR"
+	AzureSpeechTranscriberLanguageHuHu         AzureSpeechTranscriberLanguage = "hu-HU"
+	AzureSpeechTranscriberLanguageHyAm         AzureSpeechTranscriberLanguage = "hy-AM"
+	AzureSpeechTranscriberLanguageIdId         AzureSpeechTranscriberLanguage = "id-ID"
+	AzureSpeechTranscriberLanguageIsIs         AzureSpeechTranscriberLanguage = "is-IS"
+	AzureSpeechTranscriberLanguageItCh         AzureSpeechTranscriberLanguage = "it-CH"
+	AzureSpeechTranscriberLanguageItIt         AzureSpeechTranscriberLanguage = "it-IT"
+	AzureSpeechTranscriberLanguageJaJp         AzureSpeechTranscriberLanguage = "ja-JP"
+	AzureSpeechTranscriberLanguageJvId         AzureSpeechTranscriberLanguage = "jv-ID"
+	AzureSpeechTranscriberLanguageKaGe         AzureSpeechTranscriberLanguage = "ka-GE"
+	AzureSpeechTranscriberLanguageKkKz         AzureSpeechTranscriberLanguage = "kk-KZ"
+	AzureSpeechTranscriberLanguageKmKh         AzureSpeechTranscriberLanguage = "km-KH"
+	AzureSpeechTranscriberLanguageKnIn         AzureSpeechTranscriberLanguage = "kn-IN"
+	AzureSpeechTranscriberLanguageKoKr         AzureSpeechTranscriberLanguage = "ko-KR"
+	AzureSpeechTranscriberLanguageLoLa         AzureSpeechTranscriberLanguage = "lo-LA"
+	AzureSpeechTranscriberLanguageLtLt         AzureSpeechTranscriberLanguage = "lt-LT"
+	AzureSpeechTranscriberLanguageLvLv         AzureSpeechTranscriberLanguage = "lv-LV"
+	AzureSpeechTranscriberLanguageMkMk         AzureSpeechTranscriberLanguage = "mk-MK"
+	AzureSpeechTranscriberLanguageMlIn         AzureSpeechTranscriberLanguage = "ml-IN"
+	AzureSpeechTranscriberLanguageMnMn         AzureSpeechTranscriberLanguage = "mn-MN"
+	AzureSpeechTranscriberLanguageMrIn         AzureSpeechTranscriberLanguage = "mr-IN"
+	AzureSpeechTranscriberLanguageMsMy         AzureSpeechTranscriberLanguage = "ms-MY"
+	AzureSpeechTranscriberLanguageMtMt         AzureSpeechTranscriberLanguage = "mt-MT"
+	AzureSpeechTranscriberLanguageMyMm         AzureSpeechTranscriberLanguage = "my-MM"
+	AzureSpeechTranscriberLanguageNbNo         AzureSpeechTranscriberLanguage = "nb-NO"
+	AzureSpeechTranscriberLanguageNeNp         AzureSpeechTranscriberLanguage = "ne-NP"
+	AzureSpeechTranscriberLanguageNlBe         AzureSpeechTranscriberLanguage = "nl-BE"
+	AzureSpeechTranscriberLanguageNlNl         AzureSpeechTranscriberLanguage = "nl-NL"
+	AzureSpeechTranscriberLanguagePaIn         AzureSpeechTranscriberLanguage = "pa-IN"
+	AzureSpeechTranscriberLanguagePlPl         AzureSpeechTranscriberLanguage = "pl-PL"
+	AzureSpeechTranscriberLanguagePsAf         AzureSpeechTranscriberLanguage = "ps-AF"
+	AzureSpeechTranscriberLanguagePtBr         AzureSpeechTranscriberLanguage = "pt-BR"
+	AzureSpeechTranscriberLanguagePtPt         AzureSpeechTranscriberLanguage = "pt-PT"
+	AzureSpeechTranscriberLanguageRoRo         AzureSpeechTranscriberLanguage = "ro-RO"
+	AzureSpeechTranscriberLanguageRuRu         AzureSpeechTranscriberLanguage = "ru-RU"
+	AzureSpeechTranscriberLanguageSiLk         AzureSpeechTranscriberLanguage = "si-LK"
+	AzureSpeechTranscriberLanguageSkSk         AzureSpeechTranscriberLanguage = "sk-SK"
+	AzureSpeechTranscriberLanguageSlSi         AzureSpeechTranscriberLanguage = "sl-SI"
+	AzureSpeechTranscriberLanguageSoSo         AzureSpeechTranscriberLanguage = "so-SO"
+	AzureSpeechTranscriberLanguageSqAl         AzureSpeechTranscriberLanguage = "sq-AL"
+	AzureSpeechTranscriberLanguageSrRs         AzureSpeechTranscriberLanguage = "sr-RS"
+	AzureSpeechTranscriberLanguageSvSe         AzureSpeechTranscriberLanguage = "sv-SE"
+	AzureSpeechTranscriberLanguageSwKe         AzureSpeechTranscriberLanguage = "sw-KE"
+	AzureSpeechTranscriberLanguageSwTz         AzureSpeechTranscriberLanguage = "sw-TZ"
+	AzureSpeechTranscriberLanguageTaIn         AzureSpeechTranscriberLanguage = "ta-IN"
+	AzureSpeechTranscriberLanguageTeIn         AzureSpeechTranscriberLanguage = "te-IN"
+	AzureSpeechTranscriberLanguageThTh         AzureSpeechTranscriberLanguage = "th-TH"
+	AzureSpeechTranscriberLanguageTrTr         AzureSpeechTranscriberLanguage = "tr-TR"
+	AzureSpeechTranscriberLanguageUkUa         AzureSpeechTranscriberLanguage = "uk-UA"
+	AzureSpeechTranscriberLanguageUrIn         AzureSpeechTranscriberLanguage = "ur-IN"
+	AzureSpeechTranscriberLanguageUzUz         AzureSpeechTranscriberLanguage = "uz-UZ"
+	AzureSpeechTranscriberLanguageViVn         AzureSpeechTranscriberLanguage = "vi-VN"
+	AzureSpeechTranscriberLanguageWuuCn        AzureSpeechTranscriberLanguage = "wuu-CN"
+	AzureSpeechTranscriberLanguageYueCn        AzureSpeechTranscriberLanguage = "yue-CN"
+	AzureSpeechTranscriberLanguageZhCn         AzureSpeechTranscriberLanguage = "zh-CN"
+	AzureSpeechTranscriberLanguageZhCnShandong AzureSpeechTranscriberLanguage = "zh-CN-shandong"
+	AzureSpeechTranscriberLanguageZhCnSichuan  AzureSpeechTranscriberLanguage = "zh-CN-sichuan"
+	AzureSpeechTranscriberLanguageZhHk         AzureSpeechTranscriberLanguage = "zh-HK"
+	AzureSpeechTranscriberLanguageZhTw         AzureSpeechTranscriberLanguage = "zh-TW"
+	AzureSpeechTranscriberLanguageZuZa         AzureSpeechTranscriberLanguage = "zu-ZA"
+)
+
+func NewAzureSpeechTranscriberLanguageFromString(s string) (AzureSpeechTranscriberLanguage, error) {
+	switch s {
+	case "af-ZA":
+		return AzureSpeechTranscriberLanguageAfZa, nil
+	case "am-ET":
+		return AzureSpeechTranscriberLanguageAmEt, nil
+	case "ar-AE":
+		return AzureSpeechTranscriberLanguageArAe, nil
+	case "ar-BH":
+		return AzureSpeechTranscriberLanguageArBh, nil
+	case "ar-DZ":
+		return AzureSpeechTranscriberLanguageArDz, nil
+	case "ar-EG":
+		return AzureSpeechTranscriberLanguageArEg, nil
+	case "ar-IL":
+		return AzureSpeechTranscriberLanguageArIl, nil
+	case "ar-IQ":
+		return AzureSpeechTranscriberLanguageArIq, nil
+	case "ar-JO":
+		return AzureSpeechTranscriberLanguageArJo, nil
+	case "ar-KW":
+		return AzureSpeechTranscriberLanguageArKw, nil
+	case "ar-LB":
+		return AzureSpeechTranscriberLanguageArLb, nil
+	case "ar-LY":
+		return AzureSpeechTranscriberLanguageArLy, nil
+	case "ar-MA":
+		return AzureSpeechTranscriberLanguageArMa, nil
+	case "ar-OM":
+		return AzureSpeechTranscriberLanguageArOm, nil
+	case "ar-PS":
+		return AzureSpeechTranscriberLanguageArPs, nil
+	case "ar-QA":
+		return AzureSpeechTranscriberLanguageArQa, nil
+	case "ar-SA":
+		return AzureSpeechTranscriberLanguageArSa, nil
+	case "ar-SY":
+		return AzureSpeechTranscriberLanguageArSy, nil
+	case "ar-TN":
+		return AzureSpeechTranscriberLanguageArTn, nil
+	case "ar-YE":
+		return AzureSpeechTranscriberLanguageArYe, nil
+	case "az-AZ":
+		return AzureSpeechTranscriberLanguageAzAz, nil
+	case "bg-BG":
+		return AzureSpeechTranscriberLanguageBgBg, nil
+	case "bn-IN":
+		return AzureSpeechTranscriberLanguageBnIn, nil
+	case "bs-BA":
+		return AzureSpeechTranscriberLanguageBsBa, nil
+	case "ca-ES":
+		return AzureSpeechTranscriberLanguageCaEs, nil
+	case "cs-CZ":
+		return AzureSpeechTranscriberLanguageCsCz, nil
+	case "cy-GB":
+		return AzureSpeechTranscriberLanguageCyGb, nil
+	case "da-DK":
+		return AzureSpeechTranscriberLanguageDaDk, nil
+	case "de-AT":
+		return AzureSpeechTranscriberLanguageDeAt, nil
+	case "de-CH":
+		return AzureSpeechTranscriberLanguageDeCh, nil
+	case "de-DE":
+		return AzureSpeechTranscriberLanguageDeDe, nil
+	case "el-GR":
+		return AzureSpeechTranscriberLanguageElGr, nil
+	case "en-AU":
+		return AzureSpeechTranscriberLanguageEnAu, nil
+	case "en-CA":
+		return AzureSpeechTranscriberLanguageEnCa, nil
+	case "en-GB":
+		return AzureSpeechTranscriberLanguageEnGb, nil
+	case "en-GH":
+		return AzureSpeechTranscriberLanguageEnGh, nil
+	case "en-HK":
+		return AzureSpeechTranscriberLanguageEnHk, nil
+	case "en-IE":
+		return AzureSpeechTranscriberLanguageEnIe, nil
+	case "en-IN":
+		return AzureSpeechTranscriberLanguageEnIn, nil
+	case "en-KE":
+		return AzureSpeechTranscriberLanguageEnKe, nil
+	case "en-NG":
+		return AzureSpeechTranscriberLanguageEnNg, nil
+	case "en-NZ":
+		return AzureSpeechTranscriberLanguageEnNz, nil
+	case "en-PH":
+		return AzureSpeechTranscriberLanguageEnPh, nil
+	case "en-SG":
+		return AzureSpeechTranscriberLanguageEnSg, nil
+	case "en-TZ":
+		return AzureSpeechTranscriberLanguageEnTz, nil
+	case "en-US":
+		return AzureSpeechTranscriberLanguageEnUs, nil
+	case "en-ZA":
+		return AzureSpeechTranscriberLanguageEnZa, nil
+	case "es-AR":
+		return AzureSpeechTranscriberLanguageEsAr, nil
+	case "es-BO":
+		return AzureSpeechTranscriberLanguageEsBo, nil
+	case "es-CL":
+		return AzureSpeechTranscriberLanguageEsCl, nil
+	case "es-CO":
+		return AzureSpeechTranscriberLanguageEsCo, nil
+	case "es-CR":
+		return AzureSpeechTranscriberLanguageEsCr, nil
+	case "es-CU":
+		return AzureSpeechTranscriberLanguageEsCu, nil
+	case "es-DO":
+		return AzureSpeechTranscriberLanguageEsDo, nil
+	case "es-EC":
+		return AzureSpeechTranscriberLanguageEsEc, nil
+	case "es-ES":
+		return AzureSpeechTranscriberLanguageEsEs, nil
+	case "es-GQ":
+		return AzureSpeechTranscriberLanguageEsGq, nil
+	case "es-GT":
+		return AzureSpeechTranscriberLanguageEsGt, nil
+	case "es-HN":
+		return AzureSpeechTranscriberLanguageEsHn, nil
+	case "es-MX":
+		return AzureSpeechTranscriberLanguageEsMx, nil
+	case "es-NI":
+		return AzureSpeechTranscriberLanguageEsNi, nil
+	case "es-PA":
+		return AzureSpeechTranscriberLanguageEsPa, nil
+	case "es-PE":
+		return AzureSpeechTranscriberLanguageEsPe, nil
+	case "es-PR":
+		return AzureSpeechTranscriberLanguageEsPr, nil
+	case "es-PY":
+		return AzureSpeechTranscriberLanguageEsPy, nil
+	case "es-SV":
+		return AzureSpeechTranscriberLanguageEsSv, nil
+	case "es-US":
+		return AzureSpeechTranscriberLanguageEsUs, nil
+	case "es-UY":
+		return AzureSpeechTranscriberLanguageEsUy, nil
+	case "es-VE":
+		return AzureSpeechTranscriberLanguageEsVe, nil
+	case "et-EE":
+		return AzureSpeechTranscriberLanguageEtEe, nil
+	case "eu-ES":
+		return AzureSpeechTranscriberLanguageEuEs, nil
+	case "fa-IR":
+		return AzureSpeechTranscriberLanguageFaIr, nil
+	case "fi-FI":
+		return AzureSpeechTranscriberLanguageFiFi, nil
+	case "fil-PH":
+		return AzureSpeechTranscriberLanguageFilPh, nil
+	case "fr-BE":
+		return AzureSpeechTranscriberLanguageFrBe, nil
+	case "fr-CA":
+		return AzureSpeechTranscriberLanguageFrCa, nil
+	case "fr-CH":
+		return AzureSpeechTranscriberLanguageFrCh, nil
+	case "fr-FR":
+		return AzureSpeechTranscriberLanguageFrFr, nil
+	case "ga-IE":
+		return AzureSpeechTranscriberLanguageGaIe, nil
+	case "gl-ES":
+		return AzureSpeechTranscriberLanguageGlEs, nil
+	case "gu-IN":
+		return AzureSpeechTranscriberLanguageGuIn, nil
+	case "he-IL":
+		return AzureSpeechTranscriberLanguageHeIl, nil
+	case "hi-IN":
+		return AzureSpeechTranscriberLanguageHiIn, nil
+	case "hr-HR":
+		return AzureSpeechTranscriberLanguageHrHr, nil
+	case "hu-HU":
+		return AzureSpeechTranscriberLanguageHuHu, nil
+	case "hy-AM":
+		return AzureSpeechTranscriberLanguageHyAm, nil
+	case "id-ID":
+		return AzureSpeechTranscriberLanguageIdId, nil
+	case "is-IS":
+		return AzureSpeechTranscriberLanguageIsIs, nil
+	case "it-CH":
+		return AzureSpeechTranscriberLanguageItCh, nil
+	case "it-IT":
+		return AzureSpeechTranscriberLanguageItIt, nil
+	case "ja-JP":
+		return AzureSpeechTranscriberLanguageJaJp, nil
+	case "jv-ID":
+		return AzureSpeechTranscriberLanguageJvId, nil
+	case "ka-GE":
+		return AzureSpeechTranscriberLanguageKaGe, nil
+	case "kk-KZ":
+		return AzureSpeechTranscriberLanguageKkKz, nil
+	case "km-KH":
+		return AzureSpeechTranscriberLanguageKmKh, nil
+	case "kn-IN":
+		return AzureSpeechTranscriberLanguageKnIn, nil
+	case "ko-KR":
+		return AzureSpeechTranscriberLanguageKoKr, nil
+	case "lo-LA":
+		return AzureSpeechTranscriberLanguageLoLa, nil
+	case "lt-LT":
+		return AzureSpeechTranscriberLanguageLtLt, nil
+	case "lv-LV":
+		return AzureSpeechTranscriberLanguageLvLv, nil
+	case "mk-MK":
+		return AzureSpeechTranscriberLanguageMkMk, nil
+	case "ml-IN":
+		return AzureSpeechTranscriberLanguageMlIn, nil
+	case "mn-MN":
+		return AzureSpeechTranscriberLanguageMnMn, nil
+	case "mr-IN":
+		return AzureSpeechTranscriberLanguageMrIn, nil
+	case "ms-MY":
+		return AzureSpeechTranscriberLanguageMsMy, nil
+	case "mt-MT":
+		return AzureSpeechTranscriberLanguageMtMt, nil
+	case "my-MM":
+		return AzureSpeechTranscriberLanguageMyMm, nil
+	case "nb-NO":
+		return AzureSpeechTranscriberLanguageNbNo, nil
+	case "ne-NP":
+		return AzureSpeechTranscriberLanguageNeNp, nil
+	case "nl-BE":
+		return AzureSpeechTranscriberLanguageNlBe, nil
+	case "nl-NL":
+		return AzureSpeechTranscriberLanguageNlNl, nil
+	case "pa-IN":
+		return AzureSpeechTranscriberLanguagePaIn, nil
+	case "pl-PL":
+		return AzureSpeechTranscriberLanguagePlPl, nil
+	case "ps-AF":
+		return AzureSpeechTranscriberLanguagePsAf, nil
+	case "pt-BR":
+		return AzureSpeechTranscriberLanguagePtBr, nil
+	case "pt-PT":
+		return AzureSpeechTranscriberLanguagePtPt, nil
+	case "ro-RO":
+		return AzureSpeechTranscriberLanguageRoRo, nil
+	case "ru-RU":
+		return AzureSpeechTranscriberLanguageRuRu, nil
+	case "si-LK":
+		return AzureSpeechTranscriberLanguageSiLk, nil
+	case "sk-SK":
+		return AzureSpeechTranscriberLanguageSkSk, nil
+	case "sl-SI":
+		return AzureSpeechTranscriberLanguageSlSi, nil
+	case "so-SO":
+		return AzureSpeechTranscriberLanguageSoSo, nil
+	case "sq-AL":
+		return AzureSpeechTranscriberLanguageSqAl, nil
+	case "sr-RS":
+		return AzureSpeechTranscriberLanguageSrRs, nil
+	case "sv-SE":
+		return AzureSpeechTranscriberLanguageSvSe, nil
+	case "sw-KE":
+		return AzureSpeechTranscriberLanguageSwKe, nil
+	case "sw-TZ":
+		return AzureSpeechTranscriberLanguageSwTz, nil
+	case "ta-IN":
+		return AzureSpeechTranscriberLanguageTaIn, nil
+	case "te-IN":
+		return AzureSpeechTranscriberLanguageTeIn, nil
+	case "th-TH":
+		return AzureSpeechTranscriberLanguageThTh, nil
+	case "tr-TR":
+		return AzureSpeechTranscriberLanguageTrTr, nil
+	case "uk-UA":
+		return AzureSpeechTranscriberLanguageUkUa, nil
+	case "ur-IN":
+		return AzureSpeechTranscriberLanguageUrIn, nil
+	case "uz-UZ":
+		return AzureSpeechTranscriberLanguageUzUz, nil
+	case "vi-VN":
+		return AzureSpeechTranscriberLanguageViVn, nil
+	case "wuu-CN":
+		return AzureSpeechTranscriberLanguageWuuCn, nil
+	case "yue-CN":
+		return AzureSpeechTranscriberLanguageYueCn, nil
+	case "zh-CN":
+		return AzureSpeechTranscriberLanguageZhCn, nil
+	case "zh-CN-shandong":
+		return AzureSpeechTranscriberLanguageZhCnShandong, nil
+	case "zh-CN-sichuan":
+		return AzureSpeechTranscriberLanguageZhCnSichuan, nil
+	case "zh-HK":
+		return AzureSpeechTranscriberLanguageZhHk, nil
+	case "zh-TW":
+		return AzureSpeechTranscriberLanguageZhTw, nil
+	case "zu-ZA":
+		return AzureSpeechTranscriberLanguageZuZa, nil
+	}
+	var t AzureSpeechTranscriberLanguage
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (a AzureSpeechTranscriberLanguage) Ptr() *AzureSpeechTranscriberLanguage {
 	return &a
 }
 
@@ -4669,16 +6055,14 @@ type BuyPhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -4719,18 +6103,11 @@ func (b *BuyPhoneNumberDto) GetSquadId() *string {
 	return b.SquadId
 }
 
-func (b *BuyPhoneNumberDto) GetServerUrl() *string {
+func (b *BuyPhoneNumberDto) GetServer() *Server {
 	if b == nil {
 		return nil
 	}
-	return b.ServerUrl
-}
-
-func (b *BuyPhoneNumberDto) GetServerUrlSecret() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ServerUrlSecret
+	return b.Server
 }
 
 func (b *BuyPhoneNumberDto) GetExtraProperties() map[string]interface{} {
@@ -5793,6 +7170,8 @@ type CartesiaVoiceModel string
 const (
 	CartesiaVoiceModelSonicEnglish      CartesiaVoiceModel = "sonic-english"
 	CartesiaVoiceModelSonicMultilingual CartesiaVoiceModel = "sonic-multilingual"
+	CartesiaVoiceModelSonicPreview      CartesiaVoiceModel = "sonic-preview"
+	CartesiaVoiceModelSonic             CartesiaVoiceModel = "sonic"
 )
 
 func NewCartesiaVoiceModelFromString(s string) (CartesiaVoiceModel, error) {
@@ -5801,6 +7180,10 @@ func NewCartesiaVoiceModelFromString(s string) (CartesiaVoiceModel, error) {
 		return CartesiaVoiceModelSonicEnglish, nil
 	case "sonic-multilingual":
 		return CartesiaVoiceModelSonicMultilingual, nil
+	case "sonic-preview":
+		return CartesiaVoiceModelSonicPreview, nil
+	case "sonic":
+		return CartesiaVoiceModelSonic, nil
 	}
 	var t CartesiaVoiceModel
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -5808,6 +7191,239 @@ func NewCartesiaVoiceModelFromString(s string) (CartesiaVoiceModel, error) {
 
 func (c CartesiaVoiceModel) Ptr() *CartesiaVoiceModel {
 	return &c
+}
+
+type CerebrasCredential struct {
+	// This is not returned in the API.
+	ApiKey string `json:"apiKey" url:"apiKey"`
+	// This is the unique identifier for the credential.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the org that this credential belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the credential was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the assistant was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CerebrasCredential) GetApiKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.ApiKey
+}
+
+func (c *CerebrasCredential) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *CerebrasCredential) GetOrgId() string {
+	if c == nil {
+		return ""
+	}
+	return c.OrgId
+}
+
+func (c *CerebrasCredential) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *CerebrasCredential) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *CerebrasCredential) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CerebrasCredential) Provider() string {
+	return c.provider
+}
+
+func (c *CerebrasCredential) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CerebrasCredential) UnmarshalJSON(data []byte) error {
+	type embed CerebrasCredential
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CerebrasCredential(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Provider != "cerebras" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "cerebras", unmarshaler.Provider)
+	}
+	c.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CerebrasCredential) MarshalJSON() ([]byte, error) {
+	type embed CerebrasCredential
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
+		Provider:  "cerebras",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CerebrasCredential) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ChatDto struct {
+	Messages           []*OpenAiMessage    `json:"messages,omitempty" url:"messages,omitempty"`
+	AssistantId        *string             `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	Assistant          *CreateAssistantDto `json:"assistant,omitempty" url:"assistant,omitempty"`
+	AssistantOverrides *AssistantOverrides `json:"assistantOverrides,omitempty" url:"assistantOverrides,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ChatDto) GetMessages() []*OpenAiMessage {
+	if c == nil {
+		return nil
+	}
+	return c.Messages
+}
+
+func (c *ChatDto) GetAssistantId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AssistantId
+}
+
+func (c *ChatDto) GetAssistant() *CreateAssistantDto {
+	if c == nil {
+		return nil
+	}
+	return c.Assistant
+}
+
+func (c *ChatDto) GetAssistantOverrides() *AssistantOverrides {
+	if c == nil {
+		return nil
+	}
+	return c.AssistantOverrides
+}
+
+func (c *ChatDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ChatDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler ChatDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ChatDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChatDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ChatServiceResponse struct {
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ChatServiceResponse) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ChatServiceResponse) UnmarshalJSON(data []byte) error {
+	type unmarshaler ChatServiceResponse
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = ChatServiceResponse(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ChatServiceResponse) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
 }
 
 type ChunkPlan struct {
@@ -8235,6 +9851,249 @@ func (c *CloneVoiceDto) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+type CloudflareCredential struct {
+	// Credential provider. Only allowed value is cloudflare
+	// Cloudflare Account Id.
+	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// Cloudflare API Key / Token.
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// Cloudflare Account Email.
+	AccountEmail *string `json:"accountEmail,omitempty" url:"accountEmail,omitempty"`
+	// This is the unique identifier for the credential.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the org that this credential belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the credential was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the assistant was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the bucket plan that can be provided to store call artifacts in R2
+	BucketPlan *CloudflareR2BucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
+	provider   string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CloudflareCredential) GetAccountId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AccountId
+}
+
+func (c *CloudflareCredential) GetApiKey() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ApiKey
+}
+
+func (c *CloudflareCredential) GetAccountEmail() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AccountEmail
+}
+
+func (c *CloudflareCredential) GetId() string {
+	if c == nil {
+		return ""
+	}
+	return c.Id
+}
+
+func (c *CloudflareCredential) GetOrgId() string {
+	if c == nil {
+		return ""
+	}
+	return c.OrgId
+}
+
+func (c *CloudflareCredential) GetCreatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.CreatedAt
+}
+
+func (c *CloudflareCredential) GetUpdatedAt() time.Time {
+	if c == nil {
+		return time.Time{}
+	}
+	return c.UpdatedAt
+}
+
+func (c *CloudflareCredential) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CloudflareCredential) GetBucketPlan() *CloudflareR2BucketPlan {
+	if c == nil {
+		return nil
+	}
+	return c.BucketPlan
+}
+
+func (c *CloudflareCredential) Provider() string {
+	return c.provider
+}
+
+func (c *CloudflareCredential) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CloudflareCredential) UnmarshalJSON(data []byte) error {
+	type embed CloudflareCredential
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CloudflareCredential(unmarshaler.embed)
+	c.CreatedAt = unmarshaler.CreatedAt.Time()
+	c.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Provider != "cloudflare" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "cloudflare", unmarshaler.Provider)
+	}
+	c.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CloudflareCredential) MarshalJSON() ([]byte, error) {
+	type embed CloudflareCredential
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed:     embed(*c),
+		CreatedAt: internal.NewDateTime(c.CreatedAt),
+		UpdatedAt: internal.NewDateTime(c.UpdatedAt),
+		Provider:  "cloudflare",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CloudflareCredential) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CloudflareR2BucketPlan struct {
+	// Cloudflare R2 Access key ID.
+	AccessKeyId *string `json:"accessKeyId,omitempty" url:"accessKeyId,omitempty"`
+	// Cloudflare R2 access key secret. This is not returned in the API.
+	SecretAccessKey *string `json:"secretAccessKey,omitempty" url:"secretAccessKey,omitempty"`
+	// Cloudflare R2 base url.
+	Url *string `json:"url,omitempty" url:"url,omitempty"`
+	// This is the name of the bucket.
+	Name string `json:"name" url:"name"`
+	// This is the path where call artifacts will be stored.
+	//
+	// Usage:
+	// - To store call artifacts in a specific folder, set this to the full path. Eg. "/folder-name1/folder-name2".
+	// - To store call artifacts in the root of the bucket, leave this blank.
+	//
+	// @default "/"
+	Path *string `json:"path,omitempty" url:"path,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CloudflareR2BucketPlan) GetAccessKeyId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AccessKeyId
+}
+
+func (c *CloudflareR2BucketPlan) GetSecretAccessKey() *string {
+	if c == nil {
+		return nil
+	}
+	return c.SecretAccessKey
+}
+
+func (c *CloudflareR2BucketPlan) GetUrl() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Url
+}
+
+func (c *CloudflareR2BucketPlan) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+func (c *CloudflareR2BucketPlan) GetPath() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Path
+}
+
+func (c *CloudflareR2BucketPlan) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CloudflareR2BucketPlan) UnmarshalJSON(data []byte) error {
+	type unmarshaler CloudflareR2BucketPlan
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*c = CloudflareR2BucketPlan(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *c)
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CloudflareR2BucketPlan) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 type Condition struct {
 	// This is the operator you want to use to compare the parameter and value.
 	Operator ConditionOperator `json:"operator" url:"operator"`
@@ -8631,6 +10490,8 @@ type CreateAssistantDto struct {
 	ModelOutputInMessagesEnabled *bool `json:"modelOutputInMessagesEnabled,omitempty" url:"modelOutputInMessagesEnabled,omitempty"`
 	// These are the configurations to be passed to the transport providers of assistant's calls, like Twilio. You can store multiple configurations for different transport providers. For a call, only the configuration matching the call transport provider is used.
 	TransportConfigurations []*TransportConfigurationTwilio `json:"transportConfigurations,omitempty" url:"transportConfigurations,omitempty"`
+	// These are dynamic credentials that will be used for the assistant calls. By default, all the credentials are available for use in the call but you can supplement an additional credentials using this. Dynamic credentials override existing credentials.
+	Credentials []*CreateAssistantDtoCredentialsItem `json:"credentials,omitempty" url:"credentials,omitempty"`
 	// This is the name of the assistant.
 	//
 	// This is required when you want to transfer between assistants in a call.
@@ -8796,6 +10657,13 @@ func (c *CreateAssistantDto) GetTransportConfigurations() []*TransportConfigurat
 		return nil
 	}
 	return c.TransportConfigurations
+}
+
+func (c *CreateAssistantDto) GetCredentials() []*CreateAssistantDtoCredentialsItem {
+	if c == nil {
+		return nil
+	}
+	return c.Credentials
 }
 
 func (c *CreateAssistantDto) GetName() *string {
@@ -9012,6 +10880,740 @@ func (c CreateAssistantDtoClientMessagesItem) Ptr() *CreateAssistantDtoClientMes
 	return &c
 }
 
+type CreateAssistantDtoCredentialsItem struct {
+	CreateAnthropicCredentialDto    *CreateAnthropicCredentialDto
+	CreateAnyscaleCredentialDto     *CreateAnyscaleCredentialDto
+	CreateAssemblyAiCredentialDto   *CreateAssemblyAiCredentialDto
+	CreateAzureOpenAiCredentialDto  *CreateAzureOpenAiCredentialDto
+	CreateAzureCredentialDto        *CreateAzureCredentialDto
+	CreateByoSipTrunkCredentialDto  *CreateByoSipTrunkCredentialDto
+	CreateCartesiaCredentialDto     *CreateCartesiaCredentialDto
+	CreateCloudflareCredentialDto   *CreateCloudflareCredentialDto
+	CreateCustomLlmCredentialDto    *CreateCustomLlmCredentialDto
+	CreateDeepgramCredentialDto     *CreateDeepgramCredentialDto
+	CreateDeepInfraCredentialDto    *CreateDeepInfraCredentialDto
+	CreateDeepSeekCredentialDto     *CreateDeepSeekCredentialDto
+	CreateElevenLabsCredentialDto   *CreateElevenLabsCredentialDto
+	CreateGcpCredentialDto          *CreateGcpCredentialDto
+	CreateGladiaCredentialDto       *CreateGladiaCredentialDto
+	CreateGoHighLevelCredentialDto  *CreateGoHighLevelCredentialDto
+	CreateGroqCredentialDto         *CreateGroqCredentialDto
+	CreateLangfuseCredentialDto     *CreateLangfuseCredentialDto
+	CreateLmntCredentialDto         *CreateLmntCredentialDto
+	CreateMakeCredentialDto         *CreateMakeCredentialDto
+	CreateOpenAiCredentialDto       *CreateOpenAiCredentialDto
+	CreateOpenRouterCredentialDto   *CreateOpenRouterCredentialDto
+	CreatePerplexityAiCredentialDto *CreatePerplexityAiCredentialDto
+	CreatePlayHtCredentialDto       *CreatePlayHtCredentialDto
+	CreateRimeAiCredentialDto       *CreateRimeAiCredentialDto
+	CreateRunpodCredentialDto       *CreateRunpodCredentialDto
+	CreateS3CredentialDto           *CreateS3CredentialDto
+	CreateSmallestAiCredentialDto   *CreateSmallestAiCredentialDto
+	CreateTavusCredentialDto        *CreateTavusCredentialDto
+	CreateTogetherAiCredentialDto   *CreateTogetherAiCredentialDto
+	CreateTwilioCredentialDto       *CreateTwilioCredentialDto
+	CreateVonageCredentialDto       *CreateVonageCredentialDto
+	CreateWebhookCredentialDto      *CreateWebhookCredentialDto
+	CreateXAiCredentialDto          *CreateXAiCredentialDto
+
+	typ string
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateAnthropicCredentialDto() *CreateAnthropicCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateAnthropicCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateAnyscaleCredentialDto() *CreateAnyscaleCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateAnyscaleCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateAssemblyAiCredentialDto() *CreateAssemblyAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateAssemblyAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateAzureOpenAiCredentialDto() *CreateAzureOpenAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateAzureOpenAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateAzureCredentialDto() *CreateAzureCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateAzureCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateByoSipTrunkCredentialDto() *CreateByoSipTrunkCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateByoSipTrunkCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateCartesiaCredentialDto() *CreateCartesiaCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateCartesiaCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateCloudflareCredentialDto() *CreateCloudflareCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateCloudflareCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateCustomLlmCredentialDto() *CreateCustomLlmCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateCustomLlmCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateDeepgramCredentialDto() *CreateDeepgramCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateDeepgramCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateDeepInfraCredentialDto() *CreateDeepInfraCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateDeepInfraCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateDeepSeekCredentialDto() *CreateDeepSeekCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateDeepSeekCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateElevenLabsCredentialDto() *CreateElevenLabsCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateElevenLabsCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateGcpCredentialDto() *CreateGcpCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateGcpCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateGladiaCredentialDto() *CreateGladiaCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateGladiaCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateGoHighLevelCredentialDto() *CreateGoHighLevelCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateGoHighLevelCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateGroqCredentialDto() *CreateGroqCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateGroqCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateLangfuseCredentialDto() *CreateLangfuseCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateLangfuseCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateLmntCredentialDto() *CreateLmntCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateLmntCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateMakeCredentialDto() *CreateMakeCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateMakeCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateOpenAiCredentialDto() *CreateOpenAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateOpenAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateOpenRouterCredentialDto() *CreateOpenRouterCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateOpenRouterCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreatePerplexityAiCredentialDto() *CreatePerplexityAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreatePerplexityAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreatePlayHtCredentialDto() *CreatePlayHtCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreatePlayHtCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateRimeAiCredentialDto() *CreateRimeAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateRimeAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateRunpodCredentialDto() *CreateRunpodCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateRunpodCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateS3CredentialDto() *CreateS3CredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateS3CredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateSmallestAiCredentialDto() *CreateSmallestAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateSmallestAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateTavusCredentialDto() *CreateTavusCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateTavusCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateTogetherAiCredentialDto() *CreateTogetherAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateTogetherAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateTwilioCredentialDto() *CreateTwilioCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateTwilioCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateVonageCredentialDto() *CreateVonageCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateVonageCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateWebhookCredentialDto() *CreateWebhookCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateWebhookCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) GetCreateXAiCredentialDto() *CreateXAiCredentialDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateXAiCredentialDto
+}
+
+func (c *CreateAssistantDtoCredentialsItem) UnmarshalJSON(data []byte) error {
+	valueCreateAnthropicCredentialDto := new(CreateAnthropicCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAnthropicCredentialDto); err == nil {
+		c.typ = "CreateAnthropicCredentialDto"
+		c.CreateAnthropicCredentialDto = valueCreateAnthropicCredentialDto
+		return nil
+	}
+	valueCreateAnyscaleCredentialDto := new(CreateAnyscaleCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAnyscaleCredentialDto); err == nil {
+		c.typ = "CreateAnyscaleCredentialDto"
+		c.CreateAnyscaleCredentialDto = valueCreateAnyscaleCredentialDto
+		return nil
+	}
+	valueCreateAssemblyAiCredentialDto := new(CreateAssemblyAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAssemblyAiCredentialDto); err == nil {
+		c.typ = "CreateAssemblyAiCredentialDto"
+		c.CreateAssemblyAiCredentialDto = valueCreateAssemblyAiCredentialDto
+		return nil
+	}
+	valueCreateAzureOpenAiCredentialDto := new(CreateAzureOpenAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAzureOpenAiCredentialDto); err == nil {
+		c.typ = "CreateAzureOpenAiCredentialDto"
+		c.CreateAzureOpenAiCredentialDto = valueCreateAzureOpenAiCredentialDto
+		return nil
+	}
+	valueCreateAzureCredentialDto := new(CreateAzureCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateAzureCredentialDto); err == nil {
+		c.typ = "CreateAzureCredentialDto"
+		c.CreateAzureCredentialDto = valueCreateAzureCredentialDto
+		return nil
+	}
+	valueCreateByoSipTrunkCredentialDto := new(CreateByoSipTrunkCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateByoSipTrunkCredentialDto); err == nil {
+		c.typ = "CreateByoSipTrunkCredentialDto"
+		c.CreateByoSipTrunkCredentialDto = valueCreateByoSipTrunkCredentialDto
+		return nil
+	}
+	valueCreateCartesiaCredentialDto := new(CreateCartesiaCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateCartesiaCredentialDto); err == nil {
+		c.typ = "CreateCartesiaCredentialDto"
+		c.CreateCartesiaCredentialDto = valueCreateCartesiaCredentialDto
+		return nil
+	}
+	valueCreateCloudflareCredentialDto := new(CreateCloudflareCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateCloudflareCredentialDto); err == nil {
+		c.typ = "CreateCloudflareCredentialDto"
+		c.CreateCloudflareCredentialDto = valueCreateCloudflareCredentialDto
+		return nil
+	}
+	valueCreateCustomLlmCredentialDto := new(CreateCustomLlmCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateCustomLlmCredentialDto); err == nil {
+		c.typ = "CreateCustomLlmCredentialDto"
+		c.CreateCustomLlmCredentialDto = valueCreateCustomLlmCredentialDto
+		return nil
+	}
+	valueCreateDeepgramCredentialDto := new(CreateDeepgramCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateDeepgramCredentialDto); err == nil {
+		c.typ = "CreateDeepgramCredentialDto"
+		c.CreateDeepgramCredentialDto = valueCreateDeepgramCredentialDto
+		return nil
+	}
+	valueCreateDeepInfraCredentialDto := new(CreateDeepInfraCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateDeepInfraCredentialDto); err == nil {
+		c.typ = "CreateDeepInfraCredentialDto"
+		c.CreateDeepInfraCredentialDto = valueCreateDeepInfraCredentialDto
+		return nil
+	}
+	valueCreateDeepSeekCredentialDto := new(CreateDeepSeekCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateDeepSeekCredentialDto); err == nil {
+		c.typ = "CreateDeepSeekCredentialDto"
+		c.CreateDeepSeekCredentialDto = valueCreateDeepSeekCredentialDto
+		return nil
+	}
+	valueCreateElevenLabsCredentialDto := new(CreateElevenLabsCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateElevenLabsCredentialDto); err == nil {
+		c.typ = "CreateElevenLabsCredentialDto"
+		c.CreateElevenLabsCredentialDto = valueCreateElevenLabsCredentialDto
+		return nil
+	}
+	valueCreateGcpCredentialDto := new(CreateGcpCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGcpCredentialDto); err == nil {
+		c.typ = "CreateGcpCredentialDto"
+		c.CreateGcpCredentialDto = valueCreateGcpCredentialDto
+		return nil
+	}
+	valueCreateGladiaCredentialDto := new(CreateGladiaCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGladiaCredentialDto); err == nil {
+		c.typ = "CreateGladiaCredentialDto"
+		c.CreateGladiaCredentialDto = valueCreateGladiaCredentialDto
+		return nil
+	}
+	valueCreateGoHighLevelCredentialDto := new(CreateGoHighLevelCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGoHighLevelCredentialDto); err == nil {
+		c.typ = "CreateGoHighLevelCredentialDto"
+		c.CreateGoHighLevelCredentialDto = valueCreateGoHighLevelCredentialDto
+		return nil
+	}
+	valueCreateGroqCredentialDto := new(CreateGroqCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateGroqCredentialDto); err == nil {
+		c.typ = "CreateGroqCredentialDto"
+		c.CreateGroqCredentialDto = valueCreateGroqCredentialDto
+		return nil
+	}
+	valueCreateLangfuseCredentialDto := new(CreateLangfuseCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateLangfuseCredentialDto); err == nil {
+		c.typ = "CreateLangfuseCredentialDto"
+		c.CreateLangfuseCredentialDto = valueCreateLangfuseCredentialDto
+		return nil
+	}
+	valueCreateLmntCredentialDto := new(CreateLmntCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateLmntCredentialDto); err == nil {
+		c.typ = "CreateLmntCredentialDto"
+		c.CreateLmntCredentialDto = valueCreateLmntCredentialDto
+		return nil
+	}
+	valueCreateMakeCredentialDto := new(CreateMakeCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateMakeCredentialDto); err == nil {
+		c.typ = "CreateMakeCredentialDto"
+		c.CreateMakeCredentialDto = valueCreateMakeCredentialDto
+		return nil
+	}
+	valueCreateOpenAiCredentialDto := new(CreateOpenAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateOpenAiCredentialDto); err == nil {
+		c.typ = "CreateOpenAiCredentialDto"
+		c.CreateOpenAiCredentialDto = valueCreateOpenAiCredentialDto
+		return nil
+	}
+	valueCreateOpenRouterCredentialDto := new(CreateOpenRouterCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateOpenRouterCredentialDto); err == nil {
+		c.typ = "CreateOpenRouterCredentialDto"
+		c.CreateOpenRouterCredentialDto = valueCreateOpenRouterCredentialDto
+		return nil
+	}
+	valueCreatePerplexityAiCredentialDto := new(CreatePerplexityAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreatePerplexityAiCredentialDto); err == nil {
+		c.typ = "CreatePerplexityAiCredentialDto"
+		c.CreatePerplexityAiCredentialDto = valueCreatePerplexityAiCredentialDto
+		return nil
+	}
+	valueCreatePlayHtCredentialDto := new(CreatePlayHtCredentialDto)
+	if err := json.Unmarshal(data, &valueCreatePlayHtCredentialDto); err == nil {
+		c.typ = "CreatePlayHtCredentialDto"
+		c.CreatePlayHtCredentialDto = valueCreatePlayHtCredentialDto
+		return nil
+	}
+	valueCreateRimeAiCredentialDto := new(CreateRimeAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateRimeAiCredentialDto); err == nil {
+		c.typ = "CreateRimeAiCredentialDto"
+		c.CreateRimeAiCredentialDto = valueCreateRimeAiCredentialDto
+		return nil
+	}
+	valueCreateRunpodCredentialDto := new(CreateRunpodCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateRunpodCredentialDto); err == nil {
+		c.typ = "CreateRunpodCredentialDto"
+		c.CreateRunpodCredentialDto = valueCreateRunpodCredentialDto
+		return nil
+	}
+	valueCreateS3CredentialDto := new(CreateS3CredentialDto)
+	if err := json.Unmarshal(data, &valueCreateS3CredentialDto); err == nil {
+		c.typ = "CreateS3CredentialDto"
+		c.CreateS3CredentialDto = valueCreateS3CredentialDto
+		return nil
+	}
+	valueCreateSmallestAiCredentialDto := new(CreateSmallestAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateSmallestAiCredentialDto); err == nil {
+		c.typ = "CreateSmallestAiCredentialDto"
+		c.CreateSmallestAiCredentialDto = valueCreateSmallestAiCredentialDto
+		return nil
+	}
+	valueCreateTavusCredentialDto := new(CreateTavusCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateTavusCredentialDto); err == nil {
+		c.typ = "CreateTavusCredentialDto"
+		c.CreateTavusCredentialDto = valueCreateTavusCredentialDto
+		return nil
+	}
+	valueCreateTogetherAiCredentialDto := new(CreateTogetherAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateTogetherAiCredentialDto); err == nil {
+		c.typ = "CreateTogetherAiCredentialDto"
+		c.CreateTogetherAiCredentialDto = valueCreateTogetherAiCredentialDto
+		return nil
+	}
+	valueCreateTwilioCredentialDto := new(CreateTwilioCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateTwilioCredentialDto); err == nil {
+		c.typ = "CreateTwilioCredentialDto"
+		c.CreateTwilioCredentialDto = valueCreateTwilioCredentialDto
+		return nil
+	}
+	valueCreateVonageCredentialDto := new(CreateVonageCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateVonageCredentialDto); err == nil {
+		c.typ = "CreateVonageCredentialDto"
+		c.CreateVonageCredentialDto = valueCreateVonageCredentialDto
+		return nil
+	}
+	valueCreateWebhookCredentialDto := new(CreateWebhookCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateWebhookCredentialDto); err == nil {
+		c.typ = "CreateWebhookCredentialDto"
+		c.CreateWebhookCredentialDto = valueCreateWebhookCredentialDto
+		return nil
+	}
+	valueCreateXAiCredentialDto := new(CreateXAiCredentialDto)
+	if err := json.Unmarshal(data, &valueCreateXAiCredentialDto); err == nil {
+		c.typ = "CreateXAiCredentialDto"
+		c.CreateXAiCredentialDto = valueCreateXAiCredentialDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CreateAssistantDtoCredentialsItem) MarshalJSON() ([]byte, error) {
+	if c.typ == "CreateAnthropicCredentialDto" || c.CreateAnthropicCredentialDto != nil {
+		return json.Marshal(c.CreateAnthropicCredentialDto)
+	}
+	if c.typ == "CreateAnyscaleCredentialDto" || c.CreateAnyscaleCredentialDto != nil {
+		return json.Marshal(c.CreateAnyscaleCredentialDto)
+	}
+	if c.typ == "CreateAssemblyAiCredentialDto" || c.CreateAssemblyAiCredentialDto != nil {
+		return json.Marshal(c.CreateAssemblyAiCredentialDto)
+	}
+	if c.typ == "CreateAzureOpenAiCredentialDto" || c.CreateAzureOpenAiCredentialDto != nil {
+		return json.Marshal(c.CreateAzureOpenAiCredentialDto)
+	}
+	if c.typ == "CreateAzureCredentialDto" || c.CreateAzureCredentialDto != nil {
+		return json.Marshal(c.CreateAzureCredentialDto)
+	}
+	if c.typ == "CreateByoSipTrunkCredentialDto" || c.CreateByoSipTrunkCredentialDto != nil {
+		return json.Marshal(c.CreateByoSipTrunkCredentialDto)
+	}
+	if c.typ == "CreateCartesiaCredentialDto" || c.CreateCartesiaCredentialDto != nil {
+		return json.Marshal(c.CreateCartesiaCredentialDto)
+	}
+	if c.typ == "CreateCloudflareCredentialDto" || c.CreateCloudflareCredentialDto != nil {
+		return json.Marshal(c.CreateCloudflareCredentialDto)
+	}
+	if c.typ == "CreateCustomLlmCredentialDto" || c.CreateCustomLlmCredentialDto != nil {
+		return json.Marshal(c.CreateCustomLlmCredentialDto)
+	}
+	if c.typ == "CreateDeepgramCredentialDto" || c.CreateDeepgramCredentialDto != nil {
+		return json.Marshal(c.CreateDeepgramCredentialDto)
+	}
+	if c.typ == "CreateDeepInfraCredentialDto" || c.CreateDeepInfraCredentialDto != nil {
+		return json.Marshal(c.CreateDeepInfraCredentialDto)
+	}
+	if c.typ == "CreateDeepSeekCredentialDto" || c.CreateDeepSeekCredentialDto != nil {
+		return json.Marshal(c.CreateDeepSeekCredentialDto)
+	}
+	if c.typ == "CreateElevenLabsCredentialDto" || c.CreateElevenLabsCredentialDto != nil {
+		return json.Marshal(c.CreateElevenLabsCredentialDto)
+	}
+	if c.typ == "CreateGcpCredentialDto" || c.CreateGcpCredentialDto != nil {
+		return json.Marshal(c.CreateGcpCredentialDto)
+	}
+	if c.typ == "CreateGladiaCredentialDto" || c.CreateGladiaCredentialDto != nil {
+		return json.Marshal(c.CreateGladiaCredentialDto)
+	}
+	if c.typ == "CreateGoHighLevelCredentialDto" || c.CreateGoHighLevelCredentialDto != nil {
+		return json.Marshal(c.CreateGoHighLevelCredentialDto)
+	}
+	if c.typ == "CreateGroqCredentialDto" || c.CreateGroqCredentialDto != nil {
+		return json.Marshal(c.CreateGroqCredentialDto)
+	}
+	if c.typ == "CreateLangfuseCredentialDto" || c.CreateLangfuseCredentialDto != nil {
+		return json.Marshal(c.CreateLangfuseCredentialDto)
+	}
+	if c.typ == "CreateLmntCredentialDto" || c.CreateLmntCredentialDto != nil {
+		return json.Marshal(c.CreateLmntCredentialDto)
+	}
+	if c.typ == "CreateMakeCredentialDto" || c.CreateMakeCredentialDto != nil {
+		return json.Marshal(c.CreateMakeCredentialDto)
+	}
+	if c.typ == "CreateOpenAiCredentialDto" || c.CreateOpenAiCredentialDto != nil {
+		return json.Marshal(c.CreateOpenAiCredentialDto)
+	}
+	if c.typ == "CreateOpenRouterCredentialDto" || c.CreateOpenRouterCredentialDto != nil {
+		return json.Marshal(c.CreateOpenRouterCredentialDto)
+	}
+	if c.typ == "CreatePerplexityAiCredentialDto" || c.CreatePerplexityAiCredentialDto != nil {
+		return json.Marshal(c.CreatePerplexityAiCredentialDto)
+	}
+	if c.typ == "CreatePlayHtCredentialDto" || c.CreatePlayHtCredentialDto != nil {
+		return json.Marshal(c.CreatePlayHtCredentialDto)
+	}
+	if c.typ == "CreateRimeAiCredentialDto" || c.CreateRimeAiCredentialDto != nil {
+		return json.Marshal(c.CreateRimeAiCredentialDto)
+	}
+	if c.typ == "CreateRunpodCredentialDto" || c.CreateRunpodCredentialDto != nil {
+		return json.Marshal(c.CreateRunpodCredentialDto)
+	}
+	if c.typ == "CreateS3CredentialDto" || c.CreateS3CredentialDto != nil {
+		return json.Marshal(c.CreateS3CredentialDto)
+	}
+	if c.typ == "CreateSmallestAiCredentialDto" || c.CreateSmallestAiCredentialDto != nil {
+		return json.Marshal(c.CreateSmallestAiCredentialDto)
+	}
+	if c.typ == "CreateTavusCredentialDto" || c.CreateTavusCredentialDto != nil {
+		return json.Marshal(c.CreateTavusCredentialDto)
+	}
+	if c.typ == "CreateTogetherAiCredentialDto" || c.CreateTogetherAiCredentialDto != nil {
+		return json.Marshal(c.CreateTogetherAiCredentialDto)
+	}
+	if c.typ == "CreateTwilioCredentialDto" || c.CreateTwilioCredentialDto != nil {
+		return json.Marshal(c.CreateTwilioCredentialDto)
+	}
+	if c.typ == "CreateVonageCredentialDto" || c.CreateVonageCredentialDto != nil {
+		return json.Marshal(c.CreateVonageCredentialDto)
+	}
+	if c.typ == "CreateWebhookCredentialDto" || c.CreateWebhookCredentialDto != nil {
+		return json.Marshal(c.CreateWebhookCredentialDto)
+	}
+	if c.typ == "CreateXAiCredentialDto" || c.CreateXAiCredentialDto != nil {
+		return json.Marshal(c.CreateXAiCredentialDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CreateAssistantDtoCredentialsItemVisitor interface {
+	VisitCreateAnthropicCredentialDto(*CreateAnthropicCredentialDto) error
+	VisitCreateAnyscaleCredentialDto(*CreateAnyscaleCredentialDto) error
+	VisitCreateAssemblyAiCredentialDto(*CreateAssemblyAiCredentialDto) error
+	VisitCreateAzureOpenAiCredentialDto(*CreateAzureOpenAiCredentialDto) error
+	VisitCreateAzureCredentialDto(*CreateAzureCredentialDto) error
+	VisitCreateByoSipTrunkCredentialDto(*CreateByoSipTrunkCredentialDto) error
+	VisitCreateCartesiaCredentialDto(*CreateCartesiaCredentialDto) error
+	VisitCreateCloudflareCredentialDto(*CreateCloudflareCredentialDto) error
+	VisitCreateCustomLlmCredentialDto(*CreateCustomLlmCredentialDto) error
+	VisitCreateDeepgramCredentialDto(*CreateDeepgramCredentialDto) error
+	VisitCreateDeepInfraCredentialDto(*CreateDeepInfraCredentialDto) error
+	VisitCreateDeepSeekCredentialDto(*CreateDeepSeekCredentialDto) error
+	VisitCreateElevenLabsCredentialDto(*CreateElevenLabsCredentialDto) error
+	VisitCreateGcpCredentialDto(*CreateGcpCredentialDto) error
+	VisitCreateGladiaCredentialDto(*CreateGladiaCredentialDto) error
+	VisitCreateGoHighLevelCredentialDto(*CreateGoHighLevelCredentialDto) error
+	VisitCreateGroqCredentialDto(*CreateGroqCredentialDto) error
+	VisitCreateLangfuseCredentialDto(*CreateLangfuseCredentialDto) error
+	VisitCreateLmntCredentialDto(*CreateLmntCredentialDto) error
+	VisitCreateMakeCredentialDto(*CreateMakeCredentialDto) error
+	VisitCreateOpenAiCredentialDto(*CreateOpenAiCredentialDto) error
+	VisitCreateOpenRouterCredentialDto(*CreateOpenRouterCredentialDto) error
+	VisitCreatePerplexityAiCredentialDto(*CreatePerplexityAiCredentialDto) error
+	VisitCreatePlayHtCredentialDto(*CreatePlayHtCredentialDto) error
+	VisitCreateRimeAiCredentialDto(*CreateRimeAiCredentialDto) error
+	VisitCreateRunpodCredentialDto(*CreateRunpodCredentialDto) error
+	VisitCreateS3CredentialDto(*CreateS3CredentialDto) error
+	VisitCreateSmallestAiCredentialDto(*CreateSmallestAiCredentialDto) error
+	VisitCreateTavusCredentialDto(*CreateTavusCredentialDto) error
+	VisitCreateTogetherAiCredentialDto(*CreateTogetherAiCredentialDto) error
+	VisitCreateTwilioCredentialDto(*CreateTwilioCredentialDto) error
+	VisitCreateVonageCredentialDto(*CreateVonageCredentialDto) error
+	VisitCreateWebhookCredentialDto(*CreateWebhookCredentialDto) error
+	VisitCreateXAiCredentialDto(*CreateXAiCredentialDto) error
+}
+
+func (c *CreateAssistantDtoCredentialsItem) Accept(visitor CreateAssistantDtoCredentialsItemVisitor) error {
+	if c.typ == "CreateAnthropicCredentialDto" || c.CreateAnthropicCredentialDto != nil {
+		return visitor.VisitCreateAnthropicCredentialDto(c.CreateAnthropicCredentialDto)
+	}
+	if c.typ == "CreateAnyscaleCredentialDto" || c.CreateAnyscaleCredentialDto != nil {
+		return visitor.VisitCreateAnyscaleCredentialDto(c.CreateAnyscaleCredentialDto)
+	}
+	if c.typ == "CreateAssemblyAiCredentialDto" || c.CreateAssemblyAiCredentialDto != nil {
+		return visitor.VisitCreateAssemblyAiCredentialDto(c.CreateAssemblyAiCredentialDto)
+	}
+	if c.typ == "CreateAzureOpenAiCredentialDto" || c.CreateAzureOpenAiCredentialDto != nil {
+		return visitor.VisitCreateAzureOpenAiCredentialDto(c.CreateAzureOpenAiCredentialDto)
+	}
+	if c.typ == "CreateAzureCredentialDto" || c.CreateAzureCredentialDto != nil {
+		return visitor.VisitCreateAzureCredentialDto(c.CreateAzureCredentialDto)
+	}
+	if c.typ == "CreateByoSipTrunkCredentialDto" || c.CreateByoSipTrunkCredentialDto != nil {
+		return visitor.VisitCreateByoSipTrunkCredentialDto(c.CreateByoSipTrunkCredentialDto)
+	}
+	if c.typ == "CreateCartesiaCredentialDto" || c.CreateCartesiaCredentialDto != nil {
+		return visitor.VisitCreateCartesiaCredentialDto(c.CreateCartesiaCredentialDto)
+	}
+	if c.typ == "CreateCloudflareCredentialDto" || c.CreateCloudflareCredentialDto != nil {
+		return visitor.VisitCreateCloudflareCredentialDto(c.CreateCloudflareCredentialDto)
+	}
+	if c.typ == "CreateCustomLlmCredentialDto" || c.CreateCustomLlmCredentialDto != nil {
+		return visitor.VisitCreateCustomLlmCredentialDto(c.CreateCustomLlmCredentialDto)
+	}
+	if c.typ == "CreateDeepgramCredentialDto" || c.CreateDeepgramCredentialDto != nil {
+		return visitor.VisitCreateDeepgramCredentialDto(c.CreateDeepgramCredentialDto)
+	}
+	if c.typ == "CreateDeepInfraCredentialDto" || c.CreateDeepInfraCredentialDto != nil {
+		return visitor.VisitCreateDeepInfraCredentialDto(c.CreateDeepInfraCredentialDto)
+	}
+	if c.typ == "CreateDeepSeekCredentialDto" || c.CreateDeepSeekCredentialDto != nil {
+		return visitor.VisitCreateDeepSeekCredentialDto(c.CreateDeepSeekCredentialDto)
+	}
+	if c.typ == "CreateElevenLabsCredentialDto" || c.CreateElevenLabsCredentialDto != nil {
+		return visitor.VisitCreateElevenLabsCredentialDto(c.CreateElevenLabsCredentialDto)
+	}
+	if c.typ == "CreateGcpCredentialDto" || c.CreateGcpCredentialDto != nil {
+		return visitor.VisitCreateGcpCredentialDto(c.CreateGcpCredentialDto)
+	}
+	if c.typ == "CreateGladiaCredentialDto" || c.CreateGladiaCredentialDto != nil {
+		return visitor.VisitCreateGladiaCredentialDto(c.CreateGladiaCredentialDto)
+	}
+	if c.typ == "CreateGoHighLevelCredentialDto" || c.CreateGoHighLevelCredentialDto != nil {
+		return visitor.VisitCreateGoHighLevelCredentialDto(c.CreateGoHighLevelCredentialDto)
+	}
+	if c.typ == "CreateGroqCredentialDto" || c.CreateGroqCredentialDto != nil {
+		return visitor.VisitCreateGroqCredentialDto(c.CreateGroqCredentialDto)
+	}
+	if c.typ == "CreateLangfuseCredentialDto" || c.CreateLangfuseCredentialDto != nil {
+		return visitor.VisitCreateLangfuseCredentialDto(c.CreateLangfuseCredentialDto)
+	}
+	if c.typ == "CreateLmntCredentialDto" || c.CreateLmntCredentialDto != nil {
+		return visitor.VisitCreateLmntCredentialDto(c.CreateLmntCredentialDto)
+	}
+	if c.typ == "CreateMakeCredentialDto" || c.CreateMakeCredentialDto != nil {
+		return visitor.VisitCreateMakeCredentialDto(c.CreateMakeCredentialDto)
+	}
+	if c.typ == "CreateOpenAiCredentialDto" || c.CreateOpenAiCredentialDto != nil {
+		return visitor.VisitCreateOpenAiCredentialDto(c.CreateOpenAiCredentialDto)
+	}
+	if c.typ == "CreateOpenRouterCredentialDto" || c.CreateOpenRouterCredentialDto != nil {
+		return visitor.VisitCreateOpenRouterCredentialDto(c.CreateOpenRouterCredentialDto)
+	}
+	if c.typ == "CreatePerplexityAiCredentialDto" || c.CreatePerplexityAiCredentialDto != nil {
+		return visitor.VisitCreatePerplexityAiCredentialDto(c.CreatePerplexityAiCredentialDto)
+	}
+	if c.typ == "CreatePlayHtCredentialDto" || c.CreatePlayHtCredentialDto != nil {
+		return visitor.VisitCreatePlayHtCredentialDto(c.CreatePlayHtCredentialDto)
+	}
+	if c.typ == "CreateRimeAiCredentialDto" || c.CreateRimeAiCredentialDto != nil {
+		return visitor.VisitCreateRimeAiCredentialDto(c.CreateRimeAiCredentialDto)
+	}
+	if c.typ == "CreateRunpodCredentialDto" || c.CreateRunpodCredentialDto != nil {
+		return visitor.VisitCreateRunpodCredentialDto(c.CreateRunpodCredentialDto)
+	}
+	if c.typ == "CreateS3CredentialDto" || c.CreateS3CredentialDto != nil {
+		return visitor.VisitCreateS3CredentialDto(c.CreateS3CredentialDto)
+	}
+	if c.typ == "CreateSmallestAiCredentialDto" || c.CreateSmallestAiCredentialDto != nil {
+		return visitor.VisitCreateSmallestAiCredentialDto(c.CreateSmallestAiCredentialDto)
+	}
+	if c.typ == "CreateTavusCredentialDto" || c.CreateTavusCredentialDto != nil {
+		return visitor.VisitCreateTavusCredentialDto(c.CreateTavusCredentialDto)
+	}
+	if c.typ == "CreateTogetherAiCredentialDto" || c.CreateTogetherAiCredentialDto != nil {
+		return visitor.VisitCreateTogetherAiCredentialDto(c.CreateTogetherAiCredentialDto)
+	}
+	if c.typ == "CreateTwilioCredentialDto" || c.CreateTwilioCredentialDto != nil {
+		return visitor.VisitCreateTwilioCredentialDto(c.CreateTwilioCredentialDto)
+	}
+	if c.typ == "CreateVonageCredentialDto" || c.CreateVonageCredentialDto != nil {
+		return visitor.VisitCreateVonageCredentialDto(c.CreateVonageCredentialDto)
+	}
+	if c.typ == "CreateWebhookCredentialDto" || c.CreateWebhookCredentialDto != nil {
+		return visitor.VisitCreateWebhookCredentialDto(c.CreateWebhookCredentialDto)
+	}
+	if c.typ == "CreateXAiCredentialDto" || c.CreateXAiCredentialDto != nil {
+		return visitor.VisitCreateXAiCredentialDto(c.CreateXAiCredentialDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
 // This is the mode for the first message. Default is 'assistant-speaks-first'.
 //
 // Use:
@@ -9054,6 +11656,7 @@ type CreateAssistantDtoModel struct {
 	GoogleModel       *GoogleModel
 	GroqModel         *GroqModel
 	InflectionAiModel *InflectionAiModel
+	DeepSeekModel     *DeepSeekModel
 	OpenAiModel       *OpenAiModel
 	OpenRouterModel   *OpenRouterModel
 	PerplexityAiModel *PerplexityAiModel
@@ -9111,6 +11714,13 @@ func (c *CreateAssistantDtoModel) GetInflectionAiModel() *InflectionAiModel {
 		return nil
 	}
 	return c.InflectionAiModel
+}
+
+func (c *CreateAssistantDtoModel) GetDeepSeekModel() *DeepSeekModel {
+	if c == nil {
+		return nil
+	}
+	return c.DeepSeekModel
 }
 
 func (c *CreateAssistantDtoModel) GetOpenAiModel() *OpenAiModel {
@@ -9198,6 +11808,12 @@ func (c *CreateAssistantDtoModel) UnmarshalJSON(data []byte) error {
 		c.InflectionAiModel = valueInflectionAiModel
 		return nil
 	}
+	valueDeepSeekModel := new(DeepSeekModel)
+	if err := json.Unmarshal(data, &valueDeepSeekModel); err == nil {
+		c.typ = "DeepSeekModel"
+		c.DeepSeekModel = valueDeepSeekModel
+		return nil
+	}
 	valueOpenAiModel := new(OpenAiModel)
 	if err := json.Unmarshal(data, &valueOpenAiModel); err == nil {
 		c.typ = "OpenAiModel"
@@ -9259,6 +11875,9 @@ func (c CreateAssistantDtoModel) MarshalJSON() ([]byte, error) {
 	if c.typ == "InflectionAiModel" || c.InflectionAiModel != nil {
 		return json.Marshal(c.InflectionAiModel)
 	}
+	if c.typ == "DeepSeekModel" || c.DeepSeekModel != nil {
+		return json.Marshal(c.DeepSeekModel)
+	}
 	if c.typ == "OpenAiModel" || c.OpenAiModel != nil {
 		return json.Marshal(c.OpenAiModel)
 	}
@@ -9288,6 +11907,7 @@ type CreateAssistantDtoModelVisitor interface {
 	VisitGoogleModel(*GoogleModel) error
 	VisitGroqModel(*GroqModel) error
 	VisitInflectionAiModel(*InflectionAiModel) error
+	VisitDeepSeekModel(*DeepSeekModel) error
 	VisitOpenAiModel(*OpenAiModel) error
 	VisitOpenRouterModel(*OpenRouterModel) error
 	VisitPerplexityAiModel(*PerplexityAiModel) error
@@ -9317,6 +11937,9 @@ func (c *CreateAssistantDtoModel) Accept(visitor CreateAssistantDtoModelVisitor)
 	}
 	if c.typ == "InflectionAiModel" || c.InflectionAiModel != nil {
 		return visitor.VisitInflectionAiModel(c.InflectionAiModel)
+	}
+	if c.typ == "DeepSeekModel" || c.DeepSeekModel != nil {
+		return visitor.VisitDeepSeekModel(c.DeepSeekModel)
 	}
 	if c.typ == "OpenAiModel" || c.OpenAiModel != nil {
 		return visitor.VisitOpenAiModel(c.OpenAiModel)
@@ -9406,6 +12029,7 @@ func (c CreateAssistantDtoServerMessagesItem) Ptr() *CreateAssistantDtoServerMes
 // These are the options for the assistant's transcriber.
 type CreateAssistantDtoTranscriber struct {
 	AssemblyAiTranscriber  *AssemblyAiTranscriber
+	AzureSpeechTranscriber *AzureSpeechTranscriber
 	CustomTranscriber      *CustomTranscriber
 	DeepgramTranscriber    *DeepgramTranscriber
 	GladiaTranscriber      *GladiaTranscriber
@@ -9419,6 +12043,13 @@ func (c *CreateAssistantDtoTranscriber) GetAssemblyAiTranscriber() *AssemblyAiTr
 		return nil
 	}
 	return c.AssemblyAiTranscriber
+}
+
+func (c *CreateAssistantDtoTranscriber) GetAzureSpeechTranscriber() *AzureSpeechTranscriber {
+	if c == nil {
+		return nil
+	}
+	return c.AzureSpeechTranscriber
 }
 
 func (c *CreateAssistantDtoTranscriber) GetCustomTranscriber() *CustomTranscriber {
@@ -9456,6 +12087,12 @@ func (c *CreateAssistantDtoTranscriber) UnmarshalJSON(data []byte) error {
 		c.AssemblyAiTranscriber = valueAssemblyAiTranscriber
 		return nil
 	}
+	valueAzureSpeechTranscriber := new(AzureSpeechTranscriber)
+	if err := json.Unmarshal(data, &valueAzureSpeechTranscriber); err == nil {
+		c.typ = "AzureSpeechTranscriber"
+		c.AzureSpeechTranscriber = valueAzureSpeechTranscriber
+		return nil
+	}
 	valueCustomTranscriber := new(CustomTranscriber)
 	if err := json.Unmarshal(data, &valueCustomTranscriber); err == nil {
 		c.typ = "CustomTranscriber"
@@ -9487,6 +12124,9 @@ func (c CreateAssistantDtoTranscriber) MarshalJSON() ([]byte, error) {
 	if c.typ == "AssemblyAiTranscriber" || c.AssemblyAiTranscriber != nil {
 		return json.Marshal(c.AssemblyAiTranscriber)
 	}
+	if c.typ == "AzureSpeechTranscriber" || c.AzureSpeechTranscriber != nil {
+		return json.Marshal(c.AzureSpeechTranscriber)
+	}
 	if c.typ == "CustomTranscriber" || c.CustomTranscriber != nil {
 		return json.Marshal(c.CustomTranscriber)
 	}
@@ -9504,6 +12144,7 @@ func (c CreateAssistantDtoTranscriber) MarshalJSON() ([]byte, error) {
 
 type CreateAssistantDtoTranscriberVisitor interface {
 	VisitAssemblyAiTranscriber(*AssemblyAiTranscriber) error
+	VisitAzureSpeechTranscriber(*AzureSpeechTranscriber) error
 	VisitCustomTranscriber(*CustomTranscriber) error
 	VisitDeepgramTranscriber(*DeepgramTranscriber) error
 	VisitGladiaTranscriber(*GladiaTranscriber) error
@@ -9513,6 +12154,9 @@ type CreateAssistantDtoTranscriberVisitor interface {
 func (c *CreateAssistantDtoTranscriber) Accept(visitor CreateAssistantDtoTranscriberVisitor) error {
 	if c.typ == "AssemblyAiTranscriber" || c.AssemblyAiTranscriber != nil {
 		return visitor.VisitAssemblyAiTranscriber(c.AssemblyAiTranscriber)
+	}
+	if c.typ == "AzureSpeechTranscriber" || c.AzureSpeechTranscriber != nil {
+		return visitor.VisitAzureSpeechTranscriber(c.AzureSpeechTranscriber)
 	}
 	if c.typ == "CustomTranscriber" || c.CustomTranscriber != nil {
 		return visitor.VisitCustomTranscriber(c.CustomTranscriber)
@@ -9541,6 +12185,7 @@ type CreateAssistantDtoVoice struct {
 	OpenAiVoice     *OpenAiVoice
 	PlayHtVoice     *PlayHtVoice
 	RimeAiVoice     *RimeAiVoice
+	SmallestAiVoice *SmallestAiVoice
 	TavusVoice      *TavusVoice
 
 	typ string
@@ -9616,6 +12261,13 @@ func (c *CreateAssistantDtoVoice) GetRimeAiVoice() *RimeAiVoice {
 	return c.RimeAiVoice
 }
 
+func (c *CreateAssistantDtoVoice) GetSmallestAiVoice() *SmallestAiVoice {
+	if c == nil {
+		return nil
+	}
+	return c.SmallestAiVoice
+}
+
 func (c *CreateAssistantDtoVoice) GetTavusVoice() *TavusVoice {
 	if c == nil {
 		return nil
@@ -9684,6 +12336,12 @@ func (c *CreateAssistantDtoVoice) UnmarshalJSON(data []byte) error {
 		c.RimeAiVoice = valueRimeAiVoice
 		return nil
 	}
+	valueSmallestAiVoice := new(SmallestAiVoice)
+	if err := json.Unmarshal(data, &valueSmallestAiVoice); err == nil {
+		c.typ = "SmallestAiVoice"
+		c.SmallestAiVoice = valueSmallestAiVoice
+		return nil
+	}
 	valueTavusVoice := new(TavusVoice)
 	if err := json.Unmarshal(data, &valueTavusVoice); err == nil {
 		c.typ = "TavusVoice"
@@ -9724,6 +12382,9 @@ func (c CreateAssistantDtoVoice) MarshalJSON() ([]byte, error) {
 	if c.typ == "RimeAiVoice" || c.RimeAiVoice != nil {
 		return json.Marshal(c.RimeAiVoice)
 	}
+	if c.typ == "SmallestAiVoice" || c.SmallestAiVoice != nil {
+		return json.Marshal(c.SmallestAiVoice)
+	}
 	if c.typ == "TavusVoice" || c.TavusVoice != nil {
 		return json.Marshal(c.TavusVoice)
 	}
@@ -9741,6 +12402,7 @@ type CreateAssistantDtoVoiceVisitor interface {
 	VisitOpenAiVoice(*OpenAiVoice) error
 	VisitPlayHtVoice(*PlayHtVoice) error
 	VisitRimeAiVoice(*RimeAiVoice) error
+	VisitSmallestAiVoice(*SmallestAiVoice) error
 	VisitTavusVoice(*TavusVoice) error
 }
 
@@ -9775,6 +12437,9 @@ func (c *CreateAssistantDtoVoice) Accept(visitor CreateAssistantDtoVoiceVisitor)
 	if c.typ == "RimeAiVoice" || c.RimeAiVoice != nil {
 		return visitor.VisitRimeAiVoice(c.RimeAiVoice)
 	}
+	if c.typ == "SmallestAiVoice" || c.SmallestAiVoice != nil {
+		return visitor.VisitSmallestAiVoice(c.SmallestAiVoice)
+	}
 	if c.typ == "TavusVoice" || c.TavusVoice != nil {
 		return visitor.VisitTavusVoice(c.TavusVoice)
 	}
@@ -9783,17 +12448,26 @@ func (c *CreateAssistantDtoVoice) Accept(visitor CreateAssistantDtoVoiceVisitor)
 
 type CreateAzureCredentialDto struct {
 	// This is the service being used in Azure.
+	Service CreateAzureCredentialDtoService `json:"service" url:"service"`
 	// This is the region of the Azure resource.
 	Region *CreateAzureCredentialDtoRegion `json:"region,omitempty" url:"region,omitempty"`
 	// This is not returned in the API.
 	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// This is the bucket plan that can be provided to store call artifacts in Azure Blob Storage.
+	BucketPlan *AzureBlobStorageBucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
 	// This is the name of credential. This is just for your reference.
 	Name     *string `json:"name,omitempty" url:"name,omitempty"`
 	provider string
-	service  string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (c *CreateAzureCredentialDto) GetService() CreateAzureCredentialDtoService {
+	if c == nil {
+		return ""
+	}
+	return c.Service
 }
 
 func (c *CreateAzureCredentialDto) GetRegion() *CreateAzureCredentialDtoRegion {
@@ -9810,6 +12484,13 @@ func (c *CreateAzureCredentialDto) GetApiKey() *string {
 	return c.ApiKey
 }
 
+func (c *CreateAzureCredentialDto) GetBucketPlan() *AzureBlobStorageBucketPlan {
+	if c == nil {
+		return nil
+	}
+	return c.BucketPlan
+}
+
 func (c *CreateAzureCredentialDto) GetName() *string {
 	if c == nil {
 		return nil
@@ -9821,10 +12502,6 @@ func (c *CreateAzureCredentialDto) Provider() string {
 	return c.provider
 }
 
-func (c *CreateAzureCredentialDto) Service() string {
-	return c.service
-}
-
 func (c *CreateAzureCredentialDto) GetExtraProperties() map[string]interface{} {
 	return c.extraProperties
 }
@@ -9834,7 +12511,6 @@ func (c *CreateAzureCredentialDto) UnmarshalJSON(data []byte) error {
 	var unmarshaler = struct {
 		embed
 		Provider string `json:"provider"`
-		Service  string `json:"service"`
 	}{
 		embed: embed(*c),
 	}
@@ -9846,11 +12522,7 @@ func (c *CreateAzureCredentialDto) UnmarshalJSON(data []byte) error {
 		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "azure", unmarshaler.Provider)
 	}
 	c.provider = unmarshaler.Provider
-	if unmarshaler.Service != "speech" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "speech", unmarshaler.Service)
-	}
-	c.service = unmarshaler.Service
-	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider", "service")
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
 	if err != nil {
 		return err
 	}
@@ -9864,11 +12536,9 @@ func (c *CreateAzureCredentialDto) MarshalJSON() ([]byte, error) {
 	var marshaler = struct {
 		embed
 		Provider string `json:"provider"`
-		Service  string `json:"service"`
 	}{
 		embed:    embed(*c),
 		Provider: "azure",
-		Service:  "speech",
 	}
 	return json.Marshal(marshaler)
 }
@@ -9900,7 +12570,7 @@ const (
 	CreateAzureCredentialDtoRegionNorthcentralus CreateAzureCredentialDtoRegion = "northcentralus"
 	CreateAzureCredentialDtoRegionNorway         CreateAzureCredentialDtoRegion = "norway"
 	CreateAzureCredentialDtoRegionSouthcentralus CreateAzureCredentialDtoRegion = "southcentralus"
-	CreateAzureCredentialDtoRegionSweden         CreateAzureCredentialDtoRegion = "sweden"
+	CreateAzureCredentialDtoRegionSwedencentral  CreateAzureCredentialDtoRegion = "swedencentral"
 	CreateAzureCredentialDtoRegionSwitzerland    CreateAzureCredentialDtoRegion = "switzerland"
 	CreateAzureCredentialDtoRegionUk             CreateAzureCredentialDtoRegion = "uk"
 	CreateAzureCredentialDtoRegionWestus         CreateAzureCredentialDtoRegion = "westus"
@@ -9931,8 +12601,8 @@ func NewCreateAzureCredentialDtoRegionFromString(s string) (CreateAzureCredentia
 		return CreateAzureCredentialDtoRegionNorway, nil
 	case "southcentralus":
 		return CreateAzureCredentialDtoRegionSouthcentralus, nil
-	case "sweden":
-		return CreateAzureCredentialDtoRegionSweden, nil
+	case "swedencentral":
+		return CreateAzureCredentialDtoRegionSwedencentral, nil
 	case "switzerland":
 		return CreateAzureCredentialDtoRegionSwitzerland, nil
 	case "uk":
@@ -9950,12 +12620,37 @@ func (c CreateAzureCredentialDtoRegion) Ptr() *CreateAzureCredentialDtoRegion {
 	return &c
 }
 
+// This is the service being used in Azure.
+type CreateAzureCredentialDtoService string
+
+const (
+	CreateAzureCredentialDtoServiceSpeech      CreateAzureCredentialDtoService = "speech"
+	CreateAzureCredentialDtoServiceBlobStorage CreateAzureCredentialDtoService = "blob_storage"
+)
+
+func NewCreateAzureCredentialDtoServiceFromString(s string) (CreateAzureCredentialDtoService, error) {
+	switch s {
+	case "speech":
+		return CreateAzureCredentialDtoServiceSpeech, nil
+	case "blob_storage":
+		return CreateAzureCredentialDtoServiceBlobStorage, nil
+	}
+	var t CreateAzureCredentialDtoService
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (c CreateAzureCredentialDtoService) Ptr() *CreateAzureCredentialDtoService {
+	return &c
+}
+
 type CreateAzureOpenAiCredentialDto struct {
 	Region CreateAzureOpenAiCredentialDtoRegion       `json:"region" url:"region"`
 	Models []CreateAzureOpenAiCredentialDtoModelsItem `json:"models,omitempty" url:"models,omitempty"`
 	// This is not returned in the API.
-	OpenAiKey      string `json:"openAIKey" url:"openAIKey"`
-	OpenAiEndpoint string `json:"openAIEndpoint" url:"openAIEndpoint"`
+	OpenAiKey string `json:"openAIKey" url:"openAIKey"`
+	// This is not returned in the API.
+	OcpApimSubscriptionKey *string `json:"ocpApimSubscriptionKey,omitempty" url:"ocpApimSubscriptionKey,omitempty"`
+	OpenAiEndpoint         string  `json:"openAIEndpoint" url:"openAIEndpoint"`
 	// This is the name of credential. This is just for your reference.
 	Name     *string `json:"name,omitempty" url:"name,omitempty"`
 	provider string
@@ -9983,6 +12678,13 @@ func (c *CreateAzureOpenAiCredentialDto) GetOpenAiKey() string {
 		return ""
 	}
 	return c.OpenAiKey
+}
+
+func (c *CreateAzureOpenAiCredentialDto) GetOcpApimSubscriptionKey() *string {
+	if c == nil {
+		return nil
+	}
+	return c.OcpApimSubscriptionKey
 }
 
 func (c *CreateAzureOpenAiCredentialDto) GetOpenAiEndpoint() string {
@@ -10113,7 +12815,7 @@ const (
 	CreateAzureOpenAiCredentialDtoRegionNorthcentralus CreateAzureOpenAiCredentialDtoRegion = "northcentralus"
 	CreateAzureOpenAiCredentialDtoRegionNorway         CreateAzureOpenAiCredentialDtoRegion = "norway"
 	CreateAzureOpenAiCredentialDtoRegionSouthcentralus CreateAzureOpenAiCredentialDtoRegion = "southcentralus"
-	CreateAzureOpenAiCredentialDtoRegionSweden         CreateAzureOpenAiCredentialDtoRegion = "sweden"
+	CreateAzureOpenAiCredentialDtoRegionSwedencentral  CreateAzureOpenAiCredentialDtoRegion = "swedencentral"
 	CreateAzureOpenAiCredentialDtoRegionSwitzerland    CreateAzureOpenAiCredentialDtoRegion = "switzerland"
 	CreateAzureOpenAiCredentialDtoRegionUk             CreateAzureOpenAiCredentialDtoRegion = "uk"
 	CreateAzureOpenAiCredentialDtoRegionWestus         CreateAzureOpenAiCredentialDtoRegion = "westus"
@@ -10144,8 +12846,8 @@ func NewCreateAzureOpenAiCredentialDtoRegionFromString(s string) (CreateAzureOpe
 		return CreateAzureOpenAiCredentialDtoRegionNorway, nil
 	case "southcentralus":
 		return CreateAzureOpenAiCredentialDtoRegionSouthcentralus, nil
-	case "sweden":
-		return CreateAzureOpenAiCredentialDtoRegionSweden, nil
+	case "swedencentral":
+		return CreateAzureOpenAiCredentialDtoRegionSwedencentral, nil
 	case "switzerland":
 		return CreateAzureOpenAiCredentialDtoRegionSwitzerland, nil
 	case "uk":
@@ -10342,6 +13044,198 @@ func (c *CreateCartesiaCredentialDto) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateCartesiaCredentialDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateCerebrasCredentialDto struct {
+	// This is not returned in the API.
+	ApiKey string `json:"apiKey" url:"apiKey"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateCerebrasCredentialDto) GetApiKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.ApiKey
+}
+
+func (c *CreateCerebrasCredentialDto) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CreateCerebrasCredentialDto) Provider() string {
+	return c.provider
+}
+
+func (c *CreateCerebrasCredentialDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateCerebrasCredentialDto) UnmarshalJSON(data []byte) error {
+	type embed CreateCerebrasCredentialDto
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreateCerebrasCredentialDto(unmarshaler.embed)
+	if unmarshaler.Provider != "cerebras" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "cerebras", unmarshaler.Provider)
+	}
+	c.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateCerebrasCredentialDto) MarshalJSON() ([]byte, error) {
+	type embed CreateCerebrasCredentialDto
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*c),
+		Provider: "cerebras",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CreateCerebrasCredentialDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateCloudflareCredentialDto struct {
+	// Credential provider. Only allowed value is cloudflare
+	// Cloudflare Account Id.
+	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// Cloudflare API Key / Token.
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// Cloudflare Account Email.
+	AccountEmail *string `json:"accountEmail,omitempty" url:"accountEmail,omitempty"`
+	// This is the bucket plan that can be provided to store call artifacts in R2
+	BucketPlan *CloudflareR2BucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateCloudflareCredentialDto) GetAccountId() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AccountId
+}
+
+func (c *CreateCloudflareCredentialDto) GetApiKey() *string {
+	if c == nil {
+		return nil
+	}
+	return c.ApiKey
+}
+
+func (c *CreateCloudflareCredentialDto) GetAccountEmail() *string {
+	if c == nil {
+		return nil
+	}
+	return c.AccountEmail
+}
+
+func (c *CreateCloudflareCredentialDto) GetBucketPlan() *CloudflareR2BucketPlan {
+	if c == nil {
+		return nil
+	}
+	return c.BucketPlan
+}
+
+func (c *CreateCloudflareCredentialDto) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CreateCloudflareCredentialDto) Provider() string {
+	return c.provider
+}
+
+func (c *CreateCloudflareCredentialDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateCloudflareCredentialDto) UnmarshalJSON(data []byte) error {
+	type embed CreateCloudflareCredentialDto
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreateCloudflareCredentialDto(unmarshaler.embed)
+	if unmarshaler.Provider != "cloudflare" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "cloudflare", unmarshaler.Provider)
+	}
+	c.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateCloudflareCredentialDto) MarshalJSON() ([]byte, error) {
+	type embed CreateCloudflareCredentialDto
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*c),
+		Provider: "cloudflare",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CreateCloudflareCredentialDto) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -10831,6 +13725,88 @@ func (c *CreateDeepInfraCredentialDto) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateDeepInfraCredentialDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateDeepSeekCredentialDto struct {
+	// This is not returned in the API.
+	ApiKey string `json:"apiKey" url:"apiKey"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateDeepSeekCredentialDto) GetApiKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.ApiKey
+}
+
+func (c *CreateDeepSeekCredentialDto) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CreateDeepSeekCredentialDto) Provider() string {
+	return c.provider
+}
+
+func (c *CreateDeepSeekCredentialDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateDeepSeekCredentialDto) UnmarshalJSON(data []byte) error {
+	type embed CreateDeepSeekCredentialDto
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreateDeepSeekCredentialDto(unmarshaler.embed)
+	if unmarshaler.Provider != "deep-seek" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "deep-seek", unmarshaler.Provider)
+	}
+	c.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateDeepSeekCredentialDto) MarshalJSON() ([]byte, error) {
+	type embed CreateDeepSeekCredentialDto
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*c),
+		Provider: "deep-seek",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CreateDeepSeekCredentialDto) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -13095,12 +16071,14 @@ type CreateOrgDto struct {
 	Channel *CreateOrgDtoChannel `json:"channel,omitempty" url:"channel,omitempty"`
 	// This is the monthly billing limit for the org. To go beyond $1000/mo, please contact us at support@vapi.ai.
 	BillingLimit *float64 `json:"billingLimit,omitempty" url:"billingLimit,omitempty"`
-	// This is the URL Vapi will communicate with via HTTP GET and POST Requests. This is used for retrieving context, function calling, and end-of-call reports.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// All requests will be sent with the call object among other things relevant to that message. You can find more details in the Server URL documentation.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret you can set that Vapi will send with every request to your server. Will be sent as a header called x-vapi-secret.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// This is the concurrency limit for the org. This is the maximum number of calls that can be active at any given time. To go beyond 10, please contact us at support@vapi.ai.
 	ConcurrencyLimit *float64 `json:"concurrencyLimit,omitempty" url:"concurrencyLimit,omitempty"`
 
@@ -13143,18 +16121,11 @@ func (c *CreateOrgDto) GetBillingLimit() *float64 {
 	return c.BillingLimit
 }
 
-func (c *CreateOrgDto) GetServerUrl() *string {
+func (c *CreateOrgDto) GetServer() *Server {
 	if c == nil {
 		return nil
 	}
-	return c.ServerUrl
-}
-
-func (c *CreateOrgDto) GetServerUrlSecret() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ServerUrlSecret
+	return c.Server
 }
 
 func (c *CreateOrgDto) GetConcurrencyLimit() *float64 {
@@ -13799,6 +16770,88 @@ func (c *CreateS3CredentialDto) MarshalJSON() ([]byte, error) {
 }
 
 func (c *CreateS3CredentialDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateSmallestAiCredentialDto struct {
+	// This is not returned in the API.
+	ApiKey string `json:"apiKey" url:"apiKey"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateSmallestAiCredentialDto) GetApiKey() string {
+	if c == nil {
+		return ""
+	}
+	return c.ApiKey
+}
+
+func (c *CreateSmallestAiCredentialDto) GetName() *string {
+	if c == nil {
+		return nil
+	}
+	return c.Name
+}
+
+func (c *CreateSmallestAiCredentialDto) Provider() string {
+	return c.provider
+}
+
+func (c *CreateSmallestAiCredentialDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateSmallestAiCredentialDto) UnmarshalJSON(data []byte) error {
+	type embed CreateSmallestAiCredentialDto
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreateSmallestAiCredentialDto(unmarshaler.embed)
+	if unmarshaler.Provider != "smallest-ai" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "smallest-ai", unmarshaler.Provider)
+	}
+	c.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "provider")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateSmallestAiCredentialDto) MarshalJSON() ([]byte, error) {
+	type embed CreateSmallestAiCredentialDto
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*c),
+		Provider: "smallest-ai",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CreateSmallestAiCredentialDto) String() string {
 	if len(c.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
 			return value
@@ -16130,53 +19183,6 @@ func (c *CreateXAiCredentialDto) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
-type CreditsBuyDto struct {
-	// This is the number of credits to add to the subscription.
-	Credits float64 `json:"credits" url:"credits"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (c *CreditsBuyDto) GetCredits() float64 {
-	if c == nil {
-		return 0
-	}
-	return c.Credits
-}
-
-func (c *CreditsBuyDto) GetExtraProperties() map[string]interface{} {
-	return c.extraProperties
-}
-
-func (c *CreditsBuyDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler CreditsBuyDto
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*c = CreditsBuyDto(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *c)
-	if err != nil {
-		return err
-	}
-	c.extraProperties = extraProperties
-	c.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (c *CreditsBuyDto) String() string {
-	if len(c.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(c); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", c)
-}
-
 type CustomLlmCredential struct {
 	// This is not returned in the API.
 	ApiKey string `json:"apiKey" url:"apiKey"`
@@ -17606,6 +20612,469 @@ func (d *DeepInfraModelToolsItem) Accept(visitor DeepInfraModelToolsItemVisitor)
 	return fmt.Errorf("type %T does not include a non-empty union type", d)
 }
 
+type DeepSeekCredential struct {
+	// This is not returned in the API.
+	ApiKey string `json:"apiKey" url:"apiKey"`
+	// This is the unique identifier for the credential.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the org that this credential belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the credential was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the assistant was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeepSeekCredential) GetApiKey() string {
+	if d == nil {
+		return ""
+	}
+	return d.ApiKey
+}
+
+func (d *DeepSeekCredential) GetId() string {
+	if d == nil {
+		return ""
+	}
+	return d.Id
+}
+
+func (d *DeepSeekCredential) GetOrgId() string {
+	if d == nil {
+		return ""
+	}
+	return d.OrgId
+}
+
+func (d *DeepSeekCredential) GetCreatedAt() time.Time {
+	if d == nil {
+		return time.Time{}
+	}
+	return d.CreatedAt
+}
+
+func (d *DeepSeekCredential) GetUpdatedAt() time.Time {
+	if d == nil {
+		return time.Time{}
+	}
+	return d.UpdatedAt
+}
+
+func (d *DeepSeekCredential) GetName() *string {
+	if d == nil {
+		return nil
+	}
+	return d.Name
+}
+
+func (d *DeepSeekCredential) Provider() string {
+	return d.provider
+}
+
+func (d *DeepSeekCredential) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DeepSeekCredential) UnmarshalJSON(data []byte) error {
+	type embed DeepSeekCredential
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed: embed(*d),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*d = DeepSeekCredential(unmarshaler.embed)
+	d.CreatedAt = unmarshaler.CreatedAt.Time()
+	d.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Provider != "deep-seek" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "deep-seek", unmarshaler.Provider)
+	}
+	d.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *d, "provider")
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeepSeekCredential) MarshalJSON() ([]byte, error) {
+	type embed DeepSeekCredential
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed:     embed(*d),
+		CreatedAt: internal.NewDateTime(d.CreatedAt),
+		UpdatedAt: internal.NewDateTime(d.UpdatedAt),
+		Provider:  "deep-seek",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (d *DeepSeekCredential) String() string {
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DeepSeekModel struct {
+	// This is the starting state for the conversation.
+	Messages []*OpenAiMessage `json:"messages,omitempty" url:"messages,omitempty"`
+	// These are the tools that the assistant can use during the call. To use existing tools, use `toolIds`.
+	//
+	// Both `tools` and `toolIds` can be used together.
+	Tools []*DeepSeekModelToolsItem `json:"tools,omitempty" url:"tools,omitempty"`
+	// These are the tools that the assistant can use during the call. To use transient tools, use `tools`.
+	//
+	// Both `tools` and `toolIds` can be used together.
+	ToolIds []string `json:"toolIds,omitempty" url:"toolIds,omitempty"`
+	// These are the options for the knowledge base.
+	KnowledgeBase *CreateCustomKnowledgeBaseDto `json:"knowledgeBase,omitempty" url:"knowledgeBase,omitempty"`
+	// This is the ID of the knowledge base the model will use.
+	KnowledgeBaseId *string `json:"knowledgeBaseId,omitempty" url:"knowledgeBaseId,omitempty"`
+	// This is the name of the model. Ex. cognitivecomputations/dolphin-mixtral-8x7b
+	// This is the temperature that will be used for calls. Default is 0 to leverage caching for lower latency.
+	Temperature *float64 `json:"temperature,omitempty" url:"temperature,omitempty"`
+	// This is the max number of tokens that the assistant will be allowed to generate in each turn of the conversation. Default is 250.
+	MaxTokens *float64 `json:"maxTokens,omitempty" url:"maxTokens,omitempty"`
+	// This determines whether we detect user's emotion while they speak and send it as an additional info to model.
+	//
+	// Default `false` because the model is usually are good at understanding the user's emotion from text.
+	//
+	// @default false
+	EmotionRecognitionEnabled *bool `json:"emotionRecognitionEnabled,omitempty" url:"emotionRecognitionEnabled,omitempty"`
+	// This sets how many turns at the start of the conversation to use a smaller, faster model from the same provider before switching to the primary model. Example, gpt-3.5-turbo if provider is openai.
+	//
+	// Default is 0.
+	//
+	// @default 0
+	NumFastTurns *float64 `json:"numFastTurns,omitempty" url:"numFastTurns,omitempty"`
+	model        string
+	provider     string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (d *DeepSeekModel) GetMessages() []*OpenAiMessage {
+	if d == nil {
+		return nil
+	}
+	return d.Messages
+}
+
+func (d *DeepSeekModel) GetTools() []*DeepSeekModelToolsItem {
+	if d == nil {
+		return nil
+	}
+	return d.Tools
+}
+
+func (d *DeepSeekModel) GetToolIds() []string {
+	if d == nil {
+		return nil
+	}
+	return d.ToolIds
+}
+
+func (d *DeepSeekModel) GetKnowledgeBase() *CreateCustomKnowledgeBaseDto {
+	if d == nil {
+		return nil
+	}
+	return d.KnowledgeBase
+}
+
+func (d *DeepSeekModel) GetKnowledgeBaseId() *string {
+	if d == nil {
+		return nil
+	}
+	return d.KnowledgeBaseId
+}
+
+func (d *DeepSeekModel) GetTemperature() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.Temperature
+}
+
+func (d *DeepSeekModel) GetMaxTokens() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.MaxTokens
+}
+
+func (d *DeepSeekModel) GetEmotionRecognitionEnabled() *bool {
+	if d == nil {
+		return nil
+	}
+	return d.EmotionRecognitionEnabled
+}
+
+func (d *DeepSeekModel) GetNumFastTurns() *float64 {
+	if d == nil {
+		return nil
+	}
+	return d.NumFastTurns
+}
+
+func (d *DeepSeekModel) Model() string {
+	return d.model
+}
+
+func (d *DeepSeekModel) Provider() string {
+	return d.provider
+}
+
+func (d *DeepSeekModel) GetExtraProperties() map[string]interface{} {
+	return d.extraProperties
+}
+
+func (d *DeepSeekModel) UnmarshalJSON(data []byte) error {
+	type embed DeepSeekModel
+	var unmarshaler = struct {
+		embed
+		Model    string `json:"model"`
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*d),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*d = DeepSeekModel(unmarshaler.embed)
+	if unmarshaler.Model != "deepseek-chat" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "deepseek-chat", unmarshaler.Model)
+	}
+	d.model = unmarshaler.Model
+	if unmarshaler.Provider != "deep-seek" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", d, "deep-seek", unmarshaler.Provider)
+	}
+	d.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *d, "model", "provider")
+	if err != nil {
+		return err
+	}
+	d.extraProperties = extraProperties
+	d.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (d *DeepSeekModel) MarshalJSON() ([]byte, error) {
+	type embed DeepSeekModel
+	var marshaler = struct {
+		embed
+		Model    string `json:"model"`
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*d),
+		Model:    "deepseek-chat",
+		Provider: "deep-seek",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (d *DeepSeekModel) String() string {
+	if len(d.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(d.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(d); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", d)
+}
+
+type DeepSeekModelToolsItem struct {
+	CreateDtmfToolDto         *CreateDtmfToolDto
+	CreateEndCallToolDto      *CreateEndCallToolDto
+	CreateVoicemailToolDto    *CreateVoicemailToolDto
+	CreateFunctionToolDto     *CreateFunctionToolDto
+	CreateGhlToolDto          *CreateGhlToolDto
+	CreateMakeToolDto         *CreateMakeToolDto
+	CreateTransferCallToolDto *CreateTransferCallToolDto
+
+	typ string
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateDtmfToolDto() *CreateDtmfToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateDtmfToolDto
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateEndCallToolDto() *CreateEndCallToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateEndCallToolDto
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateVoicemailToolDto() *CreateVoicemailToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateVoicemailToolDto
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateFunctionToolDto() *CreateFunctionToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateFunctionToolDto
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateGhlToolDto() *CreateGhlToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateGhlToolDto
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateMakeToolDto() *CreateMakeToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateMakeToolDto
+}
+
+func (d *DeepSeekModelToolsItem) GetCreateTransferCallToolDto() *CreateTransferCallToolDto {
+	if d == nil {
+		return nil
+	}
+	return d.CreateTransferCallToolDto
+}
+
+func (d *DeepSeekModelToolsItem) UnmarshalJSON(data []byte) error {
+	valueCreateDtmfToolDto := new(CreateDtmfToolDto)
+	if err := json.Unmarshal(data, &valueCreateDtmfToolDto); err == nil {
+		d.typ = "CreateDtmfToolDto"
+		d.CreateDtmfToolDto = valueCreateDtmfToolDto
+		return nil
+	}
+	valueCreateEndCallToolDto := new(CreateEndCallToolDto)
+	if err := json.Unmarshal(data, &valueCreateEndCallToolDto); err == nil {
+		d.typ = "CreateEndCallToolDto"
+		d.CreateEndCallToolDto = valueCreateEndCallToolDto
+		return nil
+	}
+	valueCreateVoicemailToolDto := new(CreateVoicemailToolDto)
+	if err := json.Unmarshal(data, &valueCreateVoicemailToolDto); err == nil {
+		d.typ = "CreateVoicemailToolDto"
+		d.CreateVoicemailToolDto = valueCreateVoicemailToolDto
+		return nil
+	}
+	valueCreateFunctionToolDto := new(CreateFunctionToolDto)
+	if err := json.Unmarshal(data, &valueCreateFunctionToolDto); err == nil {
+		d.typ = "CreateFunctionToolDto"
+		d.CreateFunctionToolDto = valueCreateFunctionToolDto
+		return nil
+	}
+	valueCreateGhlToolDto := new(CreateGhlToolDto)
+	if err := json.Unmarshal(data, &valueCreateGhlToolDto); err == nil {
+		d.typ = "CreateGhlToolDto"
+		d.CreateGhlToolDto = valueCreateGhlToolDto
+		return nil
+	}
+	valueCreateMakeToolDto := new(CreateMakeToolDto)
+	if err := json.Unmarshal(data, &valueCreateMakeToolDto); err == nil {
+		d.typ = "CreateMakeToolDto"
+		d.CreateMakeToolDto = valueCreateMakeToolDto
+		return nil
+	}
+	valueCreateTransferCallToolDto := new(CreateTransferCallToolDto)
+	if err := json.Unmarshal(data, &valueCreateTransferCallToolDto); err == nil {
+		d.typ = "CreateTransferCallToolDto"
+		d.CreateTransferCallToolDto = valueCreateTransferCallToolDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, d)
+}
+
+func (d DeepSeekModelToolsItem) MarshalJSON() ([]byte, error) {
+	if d.typ == "CreateDtmfToolDto" || d.CreateDtmfToolDto != nil {
+		return json.Marshal(d.CreateDtmfToolDto)
+	}
+	if d.typ == "CreateEndCallToolDto" || d.CreateEndCallToolDto != nil {
+		return json.Marshal(d.CreateEndCallToolDto)
+	}
+	if d.typ == "CreateVoicemailToolDto" || d.CreateVoicemailToolDto != nil {
+		return json.Marshal(d.CreateVoicemailToolDto)
+	}
+	if d.typ == "CreateFunctionToolDto" || d.CreateFunctionToolDto != nil {
+		return json.Marshal(d.CreateFunctionToolDto)
+	}
+	if d.typ == "CreateGhlToolDto" || d.CreateGhlToolDto != nil {
+		return json.Marshal(d.CreateGhlToolDto)
+	}
+	if d.typ == "CreateMakeToolDto" || d.CreateMakeToolDto != nil {
+		return json.Marshal(d.CreateMakeToolDto)
+	}
+	if d.typ == "CreateTransferCallToolDto" || d.CreateTransferCallToolDto != nil {
+		return json.Marshal(d.CreateTransferCallToolDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
+type DeepSeekModelToolsItemVisitor interface {
+	VisitCreateDtmfToolDto(*CreateDtmfToolDto) error
+	VisitCreateEndCallToolDto(*CreateEndCallToolDto) error
+	VisitCreateVoicemailToolDto(*CreateVoicemailToolDto) error
+	VisitCreateFunctionToolDto(*CreateFunctionToolDto) error
+	VisitCreateGhlToolDto(*CreateGhlToolDto) error
+	VisitCreateMakeToolDto(*CreateMakeToolDto) error
+	VisitCreateTransferCallToolDto(*CreateTransferCallToolDto) error
+}
+
+func (d *DeepSeekModelToolsItem) Accept(visitor DeepSeekModelToolsItemVisitor) error {
+	if d.typ == "CreateDtmfToolDto" || d.CreateDtmfToolDto != nil {
+		return visitor.VisitCreateDtmfToolDto(d.CreateDtmfToolDto)
+	}
+	if d.typ == "CreateEndCallToolDto" || d.CreateEndCallToolDto != nil {
+		return visitor.VisitCreateEndCallToolDto(d.CreateEndCallToolDto)
+	}
+	if d.typ == "CreateVoicemailToolDto" || d.CreateVoicemailToolDto != nil {
+		return visitor.VisitCreateVoicemailToolDto(d.CreateVoicemailToolDto)
+	}
+	if d.typ == "CreateFunctionToolDto" || d.CreateFunctionToolDto != nil {
+		return visitor.VisitCreateFunctionToolDto(d.CreateFunctionToolDto)
+	}
+	if d.typ == "CreateGhlToolDto" || d.CreateGhlToolDto != nil {
+		return visitor.VisitCreateGhlToolDto(d.CreateGhlToolDto)
+	}
+	if d.typ == "CreateMakeToolDto" || d.CreateMakeToolDto != nil {
+		return visitor.VisitCreateMakeToolDto(d.CreateMakeToolDto)
+	}
+	if d.typ == "CreateTransferCallToolDto" || d.CreateTransferCallToolDto != nil {
+		return visitor.VisitCreateTransferCallToolDto(d.CreateTransferCallToolDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", d)
+}
+
 type DeepgramCredential struct {
 	// This is not returned in the API.
 	ApiKey string `json:"apiKey" url:"apiKey"`
@@ -18812,6 +22281,8 @@ const (
 	ElevenLabsVoiceModelElevenMultilingualV2 ElevenLabsVoiceModel = "eleven_multilingual_v2"
 	ElevenLabsVoiceModelElevenTurboV2        ElevenLabsVoiceModel = "eleven_turbo_v2"
 	ElevenLabsVoiceModelElevenTurboV25       ElevenLabsVoiceModel = "eleven_turbo_v2_5"
+	ElevenLabsVoiceModelElevenFlashV2        ElevenLabsVoiceModel = "eleven_flash_v2"
+	ElevenLabsVoiceModelElevenFlashV25       ElevenLabsVoiceModel = "eleven_flash_v2_5"
 	ElevenLabsVoiceModelElevenMonolingualV1  ElevenLabsVoiceModel = "eleven_monolingual_v1"
 )
 
@@ -18823,6 +22294,10 @@ func NewElevenLabsVoiceModelFromString(s string) (ElevenLabsVoiceModel, error) {
 		return ElevenLabsVoiceModelElevenTurboV2, nil
 	case "eleven_turbo_v2_5":
 		return ElevenLabsVoiceModelElevenTurboV25, nil
+	case "eleven_flash_v2":
+		return ElevenLabsVoiceModelElevenFlashV2, nil
+	case "eleven_flash_v2_5":
+		return ElevenLabsVoiceModelElevenFlashV25, nil
 	case "eleven_monolingual_v1":
 		return ElevenLabsVoiceModelElevenMonolingualV1, nil
 	}
@@ -19281,6 +22756,8 @@ type FallbackCartesiaVoiceModel string
 const (
 	FallbackCartesiaVoiceModelSonicEnglish      FallbackCartesiaVoiceModel = "sonic-english"
 	FallbackCartesiaVoiceModelSonicMultilingual FallbackCartesiaVoiceModel = "sonic-multilingual"
+	FallbackCartesiaVoiceModelSonicPreview      FallbackCartesiaVoiceModel = "sonic-preview"
+	FallbackCartesiaVoiceModelSonic             FallbackCartesiaVoiceModel = "sonic"
 )
 
 func NewFallbackCartesiaVoiceModelFromString(s string) (FallbackCartesiaVoiceModel, error) {
@@ -19289,6 +22766,10 @@ func NewFallbackCartesiaVoiceModelFromString(s string) (FallbackCartesiaVoiceMod
 		return FallbackCartesiaVoiceModelSonicEnglish, nil
 	case "sonic-multilingual":
 		return FallbackCartesiaVoiceModelSonicMultilingual, nil
+	case "sonic-preview":
+		return FallbackCartesiaVoiceModelSonicPreview, nil
+	case "sonic":
+		return FallbackCartesiaVoiceModelSonic, nil
 	}
 	var t FallbackCartesiaVoiceModel
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
@@ -19890,6 +23371,8 @@ const (
 	FallbackElevenLabsVoiceModelElevenMultilingualV2 FallbackElevenLabsVoiceModel = "eleven_multilingual_v2"
 	FallbackElevenLabsVoiceModelElevenTurboV2        FallbackElevenLabsVoiceModel = "eleven_turbo_v2"
 	FallbackElevenLabsVoiceModelElevenTurboV25       FallbackElevenLabsVoiceModel = "eleven_turbo_v2_5"
+	FallbackElevenLabsVoiceModelElevenFlashV2        FallbackElevenLabsVoiceModel = "eleven_flash_v2"
+	FallbackElevenLabsVoiceModelElevenFlashV25       FallbackElevenLabsVoiceModel = "eleven_flash_v2_5"
 	FallbackElevenLabsVoiceModelElevenMonolingualV1  FallbackElevenLabsVoiceModel = "eleven_monolingual_v1"
 )
 
@@ -19901,6 +23384,10 @@ func NewFallbackElevenLabsVoiceModelFromString(s string) (FallbackElevenLabsVoic
 		return FallbackElevenLabsVoiceModelElevenTurboV2, nil
 	case "eleven_turbo_v2_5":
 		return FallbackElevenLabsVoiceModelElevenTurboV25, nil
+	case "eleven_flash_v2":
+		return FallbackElevenLabsVoiceModelElevenFlashV2, nil
+	case "eleven_flash_v2_5":
+		return FallbackElevenLabsVoiceModelElevenFlashV25, nil
 	case "eleven_monolingual_v1":
 		return FallbackElevenLabsVoiceModelElevenMonolingualV1, nil
 	}
@@ -20255,7 +23742,7 @@ func (f FallbackNeetsVoiceIdEnum) Ptr() *FallbackNeetsVoiceIdEnum {
 }
 
 // This is the provider-specific ID that will be used.
-// Please note that ash, ballad, coral, sage, and verse may only be used with the `gpt-4o-realtime-preview-2024-10-01` model.
+// Please note that ash, ballad, coral, sage, and verse may only be used with realtime models.
 type FallbackOpenAiVoiceId string
 
 const (
@@ -20308,7 +23795,7 @@ func (f FallbackOpenAiVoiceId) Ptr() *FallbackOpenAiVoiceId {
 type FallbackOpenAiVoice struct {
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	// Please note that ash, ballad, coral, sage, and verse may only be used with the `gpt-4o-realtime-preview-2024-10-01` model.
+	// Please note that ash, ballad, coral, sage, and verse may only be used with realtime models.
 	VoiceId FallbackOpenAiVoiceId `json:"voiceId" url:"voiceId"`
 	// This is the speed multiplier that will be used.
 	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
@@ -20456,6 +23943,7 @@ type FallbackPlanVoicesItem struct {
 	FallbackOpenAiVoice     *FallbackOpenAiVoice
 	FallbackPlayHtVoice     *FallbackPlayHtVoice
 	FallbackRimeAiVoice     *FallbackRimeAiVoice
+	FallbackSmallestAiVoice *FallbackSmallestAiVoice
 	FallbackTavusVoice      *FallbackTavusVoice
 
 	typ string
@@ -20531,6 +24019,13 @@ func (f *FallbackPlanVoicesItem) GetFallbackRimeAiVoice() *FallbackRimeAiVoice {
 	return f.FallbackRimeAiVoice
 }
 
+func (f *FallbackPlanVoicesItem) GetFallbackSmallestAiVoice() *FallbackSmallestAiVoice {
+	if f == nil {
+		return nil
+	}
+	return f.FallbackSmallestAiVoice
+}
+
 func (f *FallbackPlanVoicesItem) GetFallbackTavusVoice() *FallbackTavusVoice {
 	if f == nil {
 		return nil
@@ -20599,6 +24094,12 @@ func (f *FallbackPlanVoicesItem) UnmarshalJSON(data []byte) error {
 		f.FallbackRimeAiVoice = valueFallbackRimeAiVoice
 		return nil
 	}
+	valueFallbackSmallestAiVoice := new(FallbackSmallestAiVoice)
+	if err := json.Unmarshal(data, &valueFallbackSmallestAiVoice); err == nil {
+		f.typ = "FallbackSmallestAiVoice"
+		f.FallbackSmallestAiVoice = valueFallbackSmallestAiVoice
+		return nil
+	}
 	valueFallbackTavusVoice := new(FallbackTavusVoice)
 	if err := json.Unmarshal(data, &valueFallbackTavusVoice); err == nil {
 		f.typ = "FallbackTavusVoice"
@@ -20639,6 +24140,9 @@ func (f FallbackPlanVoicesItem) MarshalJSON() ([]byte, error) {
 	if f.typ == "FallbackRimeAiVoice" || f.FallbackRimeAiVoice != nil {
 		return json.Marshal(f.FallbackRimeAiVoice)
 	}
+	if f.typ == "FallbackSmallestAiVoice" || f.FallbackSmallestAiVoice != nil {
+		return json.Marshal(f.FallbackSmallestAiVoice)
+	}
 	if f.typ == "FallbackTavusVoice" || f.FallbackTavusVoice != nil {
 		return json.Marshal(f.FallbackTavusVoice)
 	}
@@ -20656,6 +24160,7 @@ type FallbackPlanVoicesItemVisitor interface {
 	VisitFallbackOpenAiVoice(*FallbackOpenAiVoice) error
 	VisitFallbackPlayHtVoice(*FallbackPlayHtVoice) error
 	VisitFallbackRimeAiVoice(*FallbackRimeAiVoice) error
+	VisitFallbackSmallestAiVoice(*FallbackSmallestAiVoice) error
 	VisitFallbackTavusVoice(*FallbackTavusVoice) error
 }
 
@@ -20689,6 +24194,9 @@ func (f *FallbackPlanVoicesItem) Accept(visitor FallbackPlanVoicesItemVisitor) e
 	}
 	if f.typ == "FallbackRimeAiVoice" || f.FallbackRimeAiVoice != nil {
 		return visitor.VisitFallbackRimeAiVoice(f.FallbackRimeAiVoice)
+	}
+	if f.typ == "FallbackSmallestAiVoice" || f.FallbackSmallestAiVoice != nil {
+		return visitor.VisitFallbackSmallestAiVoice(f.FallbackSmallestAiVoice)
 	}
 	if f.typ == "FallbackTavusVoice" || f.FallbackTavusVoice != nil {
 		return visitor.VisitFallbackTavusVoice(f.FallbackTavusVoice)
@@ -21611,6 +25119,254 @@ func NewFallbackRimeAiVoiceModelFromString(s string) (FallbackRimeAiVoiceModel, 
 
 func (f FallbackRimeAiVoiceModel) Ptr() *FallbackRimeAiVoiceModel {
 	return &f
+}
+
+// This is the provider-specific ID that will be used.
+type FallbackSmallestAiVoiceId struct {
+	FallbackSmallestAiVoiceIdEnum FallbackSmallestAiVoiceIdEnum
+	String                        string
+
+	typ string
+}
+
+func (f *FallbackSmallestAiVoiceId) GetFallbackSmallestAiVoiceIdEnum() FallbackSmallestAiVoiceIdEnum {
+	if f == nil {
+		return ""
+	}
+	return f.FallbackSmallestAiVoiceIdEnum
+}
+
+func (f *FallbackSmallestAiVoiceId) GetString() string {
+	if f == nil {
+		return ""
+	}
+	return f.String
+}
+
+func (f *FallbackSmallestAiVoiceId) UnmarshalJSON(data []byte) error {
+	var valueFallbackSmallestAiVoiceIdEnum FallbackSmallestAiVoiceIdEnum
+	if err := json.Unmarshal(data, &valueFallbackSmallestAiVoiceIdEnum); err == nil {
+		f.typ = "FallbackSmallestAiVoiceIdEnum"
+		f.FallbackSmallestAiVoiceIdEnum = valueFallbackSmallestAiVoiceIdEnum
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		f.typ = "String"
+		f.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, f)
+}
+
+func (f FallbackSmallestAiVoiceId) MarshalJSON() ([]byte, error) {
+	if f.typ == "FallbackSmallestAiVoiceIdEnum" || f.FallbackSmallestAiVoiceIdEnum != "" {
+		return json.Marshal(f.FallbackSmallestAiVoiceIdEnum)
+	}
+	if f.typ == "String" || f.String != "" {
+		return json.Marshal(f.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", f)
+}
+
+type FallbackSmallestAiVoiceIdVisitor interface {
+	VisitFallbackSmallestAiVoiceIdEnum(FallbackSmallestAiVoiceIdEnum) error
+	VisitString(string) error
+}
+
+func (f *FallbackSmallestAiVoiceId) Accept(visitor FallbackSmallestAiVoiceIdVisitor) error {
+	if f.typ == "FallbackSmallestAiVoiceIdEnum" || f.FallbackSmallestAiVoiceIdEnum != "" {
+		return visitor.VisitFallbackSmallestAiVoiceIdEnum(f.FallbackSmallestAiVoiceIdEnum)
+	}
+	if f.typ == "String" || f.String != "" {
+		return visitor.VisitString(f.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", f)
+}
+
+type FallbackSmallestAiVoiceIdEnum string
+
+const (
+	FallbackSmallestAiVoiceIdEnumEmily    FallbackSmallestAiVoiceIdEnum = "emily"
+	FallbackSmallestAiVoiceIdEnumJasmine  FallbackSmallestAiVoiceIdEnum = "jasmine"
+	FallbackSmallestAiVoiceIdEnumArman    FallbackSmallestAiVoiceIdEnum = "arman"
+	FallbackSmallestAiVoiceIdEnumJames    FallbackSmallestAiVoiceIdEnum = "james"
+	FallbackSmallestAiVoiceIdEnumMithali  FallbackSmallestAiVoiceIdEnum = "mithali"
+	FallbackSmallestAiVoiceIdEnumAravind  FallbackSmallestAiVoiceIdEnum = "aravind"
+	FallbackSmallestAiVoiceIdEnumRaj      FallbackSmallestAiVoiceIdEnum = "raj"
+	FallbackSmallestAiVoiceIdEnumDiya     FallbackSmallestAiVoiceIdEnum = "diya"
+	FallbackSmallestAiVoiceIdEnumRaman    FallbackSmallestAiVoiceIdEnum = "raman"
+	FallbackSmallestAiVoiceIdEnumAnanya   FallbackSmallestAiVoiceIdEnum = "ananya"
+	FallbackSmallestAiVoiceIdEnumIsha     FallbackSmallestAiVoiceIdEnum = "isha"
+	FallbackSmallestAiVoiceIdEnumWilliam  FallbackSmallestAiVoiceIdEnum = "william"
+	FallbackSmallestAiVoiceIdEnumAarav    FallbackSmallestAiVoiceIdEnum = "aarav"
+	FallbackSmallestAiVoiceIdEnumMonika   FallbackSmallestAiVoiceIdEnum = "monika"
+	FallbackSmallestAiVoiceIdEnumNiharika FallbackSmallestAiVoiceIdEnum = "niharika"
+	FallbackSmallestAiVoiceIdEnumDeepika  FallbackSmallestAiVoiceIdEnum = "deepika"
+	FallbackSmallestAiVoiceIdEnumRaghav   FallbackSmallestAiVoiceIdEnum = "raghav"
+	FallbackSmallestAiVoiceIdEnumKajal    FallbackSmallestAiVoiceIdEnum = "kajal"
+	FallbackSmallestAiVoiceIdEnumRadhika  FallbackSmallestAiVoiceIdEnum = "radhika"
+	FallbackSmallestAiVoiceIdEnumMansi    FallbackSmallestAiVoiceIdEnum = "mansi"
+	FallbackSmallestAiVoiceIdEnumNisha    FallbackSmallestAiVoiceIdEnum = "nisha"
+	FallbackSmallestAiVoiceIdEnumSaurabh  FallbackSmallestAiVoiceIdEnum = "saurabh"
+	FallbackSmallestAiVoiceIdEnumPooja    FallbackSmallestAiVoiceIdEnum = "pooja"
+	FallbackSmallestAiVoiceIdEnumSaina    FallbackSmallestAiVoiceIdEnum = "saina"
+	FallbackSmallestAiVoiceIdEnumSanya    FallbackSmallestAiVoiceIdEnum = "sanya"
+)
+
+func NewFallbackSmallestAiVoiceIdEnumFromString(s string) (FallbackSmallestAiVoiceIdEnum, error) {
+	switch s {
+	case "emily":
+		return FallbackSmallestAiVoiceIdEnumEmily, nil
+	case "jasmine":
+		return FallbackSmallestAiVoiceIdEnumJasmine, nil
+	case "arman":
+		return FallbackSmallestAiVoiceIdEnumArman, nil
+	case "james":
+		return FallbackSmallestAiVoiceIdEnumJames, nil
+	case "mithali":
+		return FallbackSmallestAiVoiceIdEnumMithali, nil
+	case "aravind":
+		return FallbackSmallestAiVoiceIdEnumAravind, nil
+	case "raj":
+		return FallbackSmallestAiVoiceIdEnumRaj, nil
+	case "diya":
+		return FallbackSmallestAiVoiceIdEnumDiya, nil
+	case "raman":
+		return FallbackSmallestAiVoiceIdEnumRaman, nil
+	case "ananya":
+		return FallbackSmallestAiVoiceIdEnumAnanya, nil
+	case "isha":
+		return FallbackSmallestAiVoiceIdEnumIsha, nil
+	case "william":
+		return FallbackSmallestAiVoiceIdEnumWilliam, nil
+	case "aarav":
+		return FallbackSmallestAiVoiceIdEnumAarav, nil
+	case "monika":
+		return FallbackSmallestAiVoiceIdEnumMonika, nil
+	case "niharika":
+		return FallbackSmallestAiVoiceIdEnumNiharika, nil
+	case "deepika":
+		return FallbackSmallestAiVoiceIdEnumDeepika, nil
+	case "raghav":
+		return FallbackSmallestAiVoiceIdEnumRaghav, nil
+	case "kajal":
+		return FallbackSmallestAiVoiceIdEnumKajal, nil
+	case "radhika":
+		return FallbackSmallestAiVoiceIdEnumRadhika, nil
+	case "mansi":
+		return FallbackSmallestAiVoiceIdEnumMansi, nil
+	case "nisha":
+		return FallbackSmallestAiVoiceIdEnumNisha, nil
+	case "saurabh":
+		return FallbackSmallestAiVoiceIdEnumSaurabh, nil
+	case "pooja":
+		return FallbackSmallestAiVoiceIdEnumPooja, nil
+	case "saina":
+		return FallbackSmallestAiVoiceIdEnumSaina, nil
+	case "sanya":
+		return FallbackSmallestAiVoiceIdEnumSanya, nil
+	}
+	var t FallbackSmallestAiVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (f FallbackSmallestAiVoiceIdEnum) Ptr() *FallbackSmallestAiVoiceIdEnum {
+	return &f
+}
+
+type FallbackSmallestAiVoice struct {
+	// This is the voice provider that will be used.
+	// This is the provider-specific ID that will be used.
+	VoiceId *FallbackSmallestAiVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	// Smallest AI voice model to use. Defaults to 'lightning' when not specified.
+	Model *string `json:"model,omitempty" url:"model,omitempty"`
+	// This is the speed multiplier that will be used.
+	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
+	// This is the plan for chunking the model output before it is sent to the voice provider.
+	ChunkPlan *ChunkPlan `json:"chunkPlan,omitempty" url:"chunkPlan,omitempty"`
+	provider  string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (f *FallbackSmallestAiVoice) GetVoiceId() *FallbackSmallestAiVoiceId {
+	if f == nil {
+		return nil
+	}
+	return f.VoiceId
+}
+
+func (f *FallbackSmallestAiVoice) GetSpeed() *float64 {
+	if f == nil {
+		return nil
+	}
+	return f.Speed
+}
+
+func (f *FallbackSmallestAiVoice) GetChunkPlan() *ChunkPlan {
+	if f == nil {
+		return nil
+	}
+	return f.ChunkPlan
+}
+
+func (f *FallbackSmallestAiVoice) Provider() string {
+	return f.provider
+}
+
+func (f *FallbackSmallestAiVoice) GetExtraProperties() map[string]interface{} {
+	return f.extraProperties
+}
+
+func (f *FallbackSmallestAiVoice) UnmarshalJSON(data []byte) error {
+	type embed FallbackSmallestAiVoice
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*f),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*f = FallbackSmallestAiVoice(unmarshaler.embed)
+	if unmarshaler.Provider != "smallest-ai" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", f, "smallest-ai", unmarshaler.Provider)
+	}
+	f.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *f, "provider")
+	if err != nil {
+		return err
+	}
+	f.extraProperties = extraProperties
+	f.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (f *FallbackSmallestAiVoice) MarshalJSON() ([]byte, error) {
+	type embed FallbackSmallestAiVoice
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*f),
+		Provider: "smallest-ai",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (f *FallbackSmallestAiVoice) String() string {
+	if len(f.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(f.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(f); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", f)
 }
 
 type FallbackTavusVoice struct {
@@ -22542,6 +26298,175 @@ func (g *GcpKey) UnmarshalJSON(data []byte) error {
 }
 
 func (g *GcpKey) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GeminiMultimodalLivePrebuiltVoiceConfig struct {
+	VoiceName GeminiMultimodalLivePrebuiltVoiceConfigVoiceName `json:"voiceName" url:"voiceName"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GeminiMultimodalLivePrebuiltVoiceConfig) GetVoiceName() GeminiMultimodalLivePrebuiltVoiceConfigVoiceName {
+	if g == nil {
+		return ""
+	}
+	return g.VoiceName
+}
+
+func (g *GeminiMultimodalLivePrebuiltVoiceConfig) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GeminiMultimodalLivePrebuiltVoiceConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler GeminiMultimodalLivePrebuiltVoiceConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GeminiMultimodalLivePrebuiltVoiceConfig(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GeminiMultimodalLivePrebuiltVoiceConfig) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GeminiMultimodalLivePrebuiltVoiceConfigVoiceName string
+
+const (
+	GeminiMultimodalLivePrebuiltVoiceConfigVoiceNamePuck   GeminiMultimodalLivePrebuiltVoiceConfigVoiceName = "Puck"
+	GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameCharon GeminiMultimodalLivePrebuiltVoiceConfigVoiceName = "Charon"
+	GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameKore   GeminiMultimodalLivePrebuiltVoiceConfigVoiceName = "Kore"
+	GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameFenrir GeminiMultimodalLivePrebuiltVoiceConfigVoiceName = "Fenrir"
+	GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameAoede  GeminiMultimodalLivePrebuiltVoiceConfigVoiceName = "Aoede"
+)
+
+func NewGeminiMultimodalLivePrebuiltVoiceConfigVoiceNameFromString(s string) (GeminiMultimodalLivePrebuiltVoiceConfigVoiceName, error) {
+	switch s {
+	case "Puck":
+		return GeminiMultimodalLivePrebuiltVoiceConfigVoiceNamePuck, nil
+	case "Charon":
+		return GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameCharon, nil
+	case "Kore":
+		return GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameKore, nil
+	case "Fenrir":
+		return GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameFenrir, nil
+	case "Aoede":
+		return GeminiMultimodalLivePrebuiltVoiceConfigVoiceNameAoede, nil
+	}
+	var t GeminiMultimodalLivePrebuiltVoiceConfigVoiceName
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (g GeminiMultimodalLivePrebuiltVoiceConfigVoiceName) Ptr() *GeminiMultimodalLivePrebuiltVoiceConfigVoiceName {
+	return &g
+}
+
+type GeminiMultimodalLiveSpeechConfig struct {
+	VoiceConfig *GeminiMultimodalLiveVoiceConfig `json:"voiceConfig,omitempty" url:"voiceConfig,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GeminiMultimodalLiveSpeechConfig) GetVoiceConfig() *GeminiMultimodalLiveVoiceConfig {
+	if g == nil {
+		return nil
+	}
+	return g.VoiceConfig
+}
+
+func (g *GeminiMultimodalLiveSpeechConfig) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GeminiMultimodalLiveSpeechConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler GeminiMultimodalLiveSpeechConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GeminiMultimodalLiveSpeechConfig(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GeminiMultimodalLiveSpeechConfig) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
+}
+
+type GeminiMultimodalLiveVoiceConfig struct {
+	PrebuiltVoiceConfig *GeminiMultimodalLivePrebuiltVoiceConfig `json:"prebuiltVoiceConfig,omitempty" url:"prebuiltVoiceConfig,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GeminiMultimodalLiveVoiceConfig) GetPrebuiltVoiceConfig() *GeminiMultimodalLivePrebuiltVoiceConfig {
+	if g == nil {
+		return nil
+	}
+	return g.PrebuiltVoiceConfig
+}
+
+func (g *GeminiMultimodalLiveVoiceConfig) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GeminiMultimodalLiveVoiceConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler GeminiMultimodalLiveVoiceConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GeminiMultimodalLiveVoiceConfig(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GeminiMultimodalLiveVoiceConfig) String() string {
 	if len(g.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
 			return value
@@ -23844,6 +27769,9 @@ type GoogleModel struct {
 	KnowledgeBaseId *string `json:"knowledgeBaseId,omitempty" url:"knowledgeBaseId,omitempty"`
 	// This is the Google model that will be used.
 	Model GoogleModelModel `json:"model" url:"model"`
+	// This is the session configuration for the Gemini Flash 2.0 Multimodal Live API.
+	// Only applicable if the model `gemini-2.0-flash-realtime-exp` is selected.
+	RealtimeConfig *GoogleRealtimeConfig `json:"realtimeConfig,omitempty" url:"realtimeConfig,omitempty"`
 	// This is the temperature that will be used for calls. Default is 0 to leverage caching for lower latency.
 	Temperature *float64 `json:"temperature,omitempty" url:"temperature,omitempty"`
 	// This is the max number of tokens that the assistant will be allowed to generate in each turn of the conversation. Default is 250.
@@ -23906,6 +27834,13 @@ func (g *GoogleModel) GetModel() GoogleModelModel {
 		return ""
 	}
 	return g.Model
+}
+
+func (g *GoogleModel) GetRealtimeConfig() *GoogleRealtimeConfig {
+	if g == nil {
+		return nil
+	}
+	return g.RealtimeConfig
 }
 
 func (g *GoogleModel) GetTemperature() *float64 {
@@ -23997,15 +27932,21 @@ func (g *GoogleModel) String() string {
 type GoogleModelModel string
 
 const (
-	GoogleModelModelGemini15Flash    GoogleModelModel = "gemini-1.5-flash"
-	GoogleModelModelGemini15Flash002 GoogleModelModel = "gemini-1.5-flash-002"
-	GoogleModelModelGemini15Pro      GoogleModelModel = "gemini-1.5-pro"
-	GoogleModelModelGemini15Pro002   GoogleModelModel = "gemini-1.5-pro-002"
-	GoogleModelModelGemini10Pro      GoogleModelModel = "gemini-1.0-pro"
+	GoogleModelModelGemini20FlashExp         GoogleModelModel = "gemini-2.0-flash-exp"
+	GoogleModelModelGemini20FlashRealtimeExp GoogleModelModel = "gemini-2.0-flash-realtime-exp"
+	GoogleModelModelGemini15Flash            GoogleModelModel = "gemini-1.5-flash"
+	GoogleModelModelGemini15Flash002         GoogleModelModel = "gemini-1.5-flash-002"
+	GoogleModelModelGemini15Pro              GoogleModelModel = "gemini-1.5-pro"
+	GoogleModelModelGemini15Pro002           GoogleModelModel = "gemini-1.5-pro-002"
+	GoogleModelModelGemini10Pro              GoogleModelModel = "gemini-1.0-pro"
 )
 
 func NewGoogleModelModelFromString(s string) (GoogleModelModel, error) {
 	switch s {
+	case "gemini-2.0-flash-exp":
+		return GoogleModelModelGemini20FlashExp, nil
+	case "gemini-2.0-flash-realtime-exp":
+		return GoogleModelModelGemini20FlashRealtimeExp, nil
 	case "gemini-1.5-flash":
 		return GoogleModelModelGemini15Flash, nil
 	case "gemini-1.5-flash-002":
@@ -24190,6 +28131,94 @@ func (g *GoogleModelToolsItem) Accept(visitor GoogleModelToolsItemVisitor) error
 		return visitor.VisitCreateTransferCallToolDto(g.CreateTransferCallToolDto)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", g)
+}
+
+type GoogleRealtimeConfig struct {
+	// This is the nucleus sampling parameter that controls the cumulative probability of tokens considered during text generation.
+	// Only applicable with the Gemini Flash 2.0 Multimodal Live API.
+	TopP *float64 `json:"topP,omitempty" url:"topP,omitempty"`
+	// This is the top-k sampling parameter that limits the number of highest probability tokens considered during text generation.
+	// Only applicable with the Gemini Flash 2.0 Multimodal Live API.
+	TopK *float64 `json:"topK,omitempty" url:"topK,omitempty"`
+	// This is the presence penalty parameter that influences the model's likelihood to repeat information by penalizing tokens based on their presence in the text.
+	// Only applicable with the Gemini Flash 2.0 Multimodal Live API.
+	PresencePenalty *float64 `json:"presencePenalty,omitempty" url:"presencePenalty,omitempty"`
+	// This is the frequency penalty parameter that influences the model's likelihood to repeat tokens by penalizing them based on their frequency in the text.
+	// Only applicable with the Gemini Flash 2.0 Multimodal Live API.
+	FrequencyPenalty *float64 `json:"frequencyPenalty,omitempty" url:"frequencyPenalty,omitempty"`
+	// This is the speech configuration object that defines the voice settings to be used for the model's speech output.
+	// Only applicable with the Gemini Flash 2.0 Multimodal Live API.
+	SpeechConfig *GeminiMultimodalLiveSpeechConfig `json:"speechConfig,omitempty" url:"speechConfig,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *GoogleRealtimeConfig) GetTopP() *float64 {
+	if g == nil {
+		return nil
+	}
+	return g.TopP
+}
+
+func (g *GoogleRealtimeConfig) GetTopK() *float64 {
+	if g == nil {
+		return nil
+	}
+	return g.TopK
+}
+
+func (g *GoogleRealtimeConfig) GetPresencePenalty() *float64 {
+	if g == nil {
+		return nil
+	}
+	return g.PresencePenalty
+}
+
+func (g *GoogleRealtimeConfig) GetFrequencyPenalty() *float64 {
+	if g == nil {
+		return nil
+	}
+	return g.FrequencyPenalty
+}
+
+func (g *GoogleRealtimeConfig) GetSpeechConfig() *GeminiMultimodalLiveSpeechConfig {
+	if g == nil {
+		return nil
+	}
+	return g.SpeechConfig
+}
+
+func (g *GoogleRealtimeConfig) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *GoogleRealtimeConfig) UnmarshalJSON(data []byte) error {
+	type unmarshaler GoogleRealtimeConfig
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*g = GoogleRealtimeConfig(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *g)
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *GoogleRealtimeConfig) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 type GroqCredential struct {
@@ -24488,20 +28517,20 @@ func (g *GroqModel) String() string {
 type GroqModelModel string
 
 const (
-	GroqModelModelLlama31405BReasoning            GroqModelModel = "llama-3.1-405b-reasoning"
-	GroqModelModelLlama3170BVersatile             GroqModelModel = "llama-3.1-70b-versatile"
-	GroqModelModelLlama318BInstant                GroqModelModel = "llama-3.1-8b-instant"
-	GroqModelModelMixtral8X7B32768                GroqModelModel = "mixtral-8x7b-32768"
-	GroqModelModelLlama38B8192                    GroqModelModel = "llama3-8b-8192"
-	GroqModelModelLlama370B8192                   GroqModelModel = "llama3-70b-8192"
-	GroqModelModelLlama3Groq8B8192ToolUsePreview  GroqModelModel = "llama3-groq-8b-8192-tool-use-preview"
-	GroqModelModelLlama3Groq70B8192ToolUsePreview GroqModelModel = "llama3-groq-70b-8192-tool-use-preview"
-	GroqModelModelGemma7BIt                       GroqModelModel = "gemma-7b-it"
-	GroqModelModelGemma29BIt                      GroqModelModel = "gemma2-9b-it"
+	GroqModelModelLlama3370BVersatile  GroqModelModel = "llama-3.3-70b-versatile"
+	GroqModelModelLlama31405BReasoning GroqModelModel = "llama-3.1-405b-reasoning"
+	GroqModelModelLlama3170BVersatile  GroqModelModel = "llama-3.1-70b-versatile"
+	GroqModelModelLlama318BInstant     GroqModelModel = "llama-3.1-8b-instant"
+	GroqModelModelMixtral8X7B32768     GroqModelModel = "mixtral-8x7b-32768"
+	GroqModelModelLlama38B8192         GroqModelModel = "llama3-8b-8192"
+	GroqModelModelLlama370B8192        GroqModelModel = "llama3-70b-8192"
+	GroqModelModelGemma29BIt           GroqModelModel = "gemma2-9b-it"
 )
 
 func NewGroqModelModelFromString(s string) (GroqModelModel, error) {
 	switch s {
+	case "llama-3.3-70b-versatile":
+		return GroqModelModelLlama3370BVersatile, nil
 	case "llama-3.1-405b-reasoning":
 		return GroqModelModelLlama31405BReasoning, nil
 	case "llama-3.1-70b-versatile":
@@ -24514,12 +28543,6 @@ func NewGroqModelModelFromString(s string) (GroqModelModel, error) {
 		return GroqModelModelLlama38B8192, nil
 	case "llama3-70b-8192":
 		return GroqModelModelLlama370B8192, nil
-	case "llama3-groq-8b-8192-tool-use-preview":
-		return GroqModelModelLlama3Groq8B8192ToolUsePreview, nil
-	case "llama3-groq-70b-8192-tool-use-preview":
-		return GroqModelModelLlama3Groq70B8192ToolUsePreview, nil
-	case "gemma-7b-it":
-		return GroqModelModelGemma7BIt, nil
 	case "gemma2-9b-it":
 		return GroqModelModelGemma29BIt, nil
 	}
@@ -24947,62 +28970,6 @@ func (h *HandoffStepBlock) Accept(visitor HandoffStepBlockVisitor) error {
 	return fmt.Errorf("type %T does not include a non-empty union type", h)
 }
 
-type HipaaBuyDto struct {
-	// This is the name of the recipient.
-	RecipientName string `json:"recipientName" url:"recipientName"`
-	// This is the name of the recipient organization.
-	RecipientOrganization string `json:"recipientOrganization" url:"recipientOrganization"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (h *HipaaBuyDto) GetRecipientName() string {
-	if h == nil {
-		return ""
-	}
-	return h.RecipientName
-}
-
-func (h *HipaaBuyDto) GetRecipientOrganization() string {
-	if h == nil {
-		return ""
-	}
-	return h.RecipientOrganization
-}
-
-func (h *HipaaBuyDto) GetExtraProperties() map[string]interface{} {
-	return h.extraProperties
-}
-
-func (h *HipaaBuyDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler HipaaBuyDto
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*h = HipaaBuyDto(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *h)
-	if err != nil {
-		return err
-	}
-	h.extraProperties = extraProperties
-	h.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (h *HipaaBuyDto) String() string {
-	if len(h.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(h.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(h); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", h)
-}
-
 type ImportVonagePhoneNumberDto struct {
 	// This is the fallback destination an inbound call will be transferred to if:
 	// 1. `assistantId` is not set
@@ -25027,16 +28994,14 @@ type ImportVonagePhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -25084,18 +29049,11 @@ func (i *ImportVonagePhoneNumberDto) GetSquadId() *string {
 	return i.SquadId
 }
 
-func (i *ImportVonagePhoneNumberDto) GetServerUrl() *string {
+func (i *ImportVonagePhoneNumberDto) GetServer() *Server {
 	if i == nil {
 		return nil
 	}
-	return i.ServerUrl
-}
-
-func (i *ImportVonagePhoneNumberDto) GetServerUrlSecret() *string {
-	if i == nil {
-		return nil
-	}
-	return i.ServerUrlSecret
+	return i.Server
 }
 
 func (i *ImportVonagePhoneNumberDto) GetExtraProperties() map[string]interface{} {
@@ -27679,7 +31637,7 @@ func (o *Oauth2AuthenticationSession) String() string {
 }
 
 // This is the provider-specific ID that will be used.
-// Please note that ash, ballad, coral, sage, and verse may only be used with the `gpt-4o-realtime-preview-2024-10-01` model.
+// Please note that ash, ballad, coral, sage, and verse may only be used with realtime models.
 type OpenAiVoiceId string
 
 const (
@@ -28294,31 +32252,49 @@ func (o *OpenAiModel) String() string {
 type OpenAiModelFallbackModelsItem string
 
 const (
-	OpenAiModelFallbackModelsItemGpt4ORealtimePreview20241001 OpenAiModelFallbackModelsItem = "gpt-4o-realtime-preview-2024-10-01"
-	OpenAiModelFallbackModelsItemGpt4OMini                    OpenAiModelFallbackModelsItem = "gpt-4o-mini"
-	OpenAiModelFallbackModelsItemGpt4OMini20240718            OpenAiModelFallbackModelsItem = "gpt-4o-mini-2024-07-18"
-	OpenAiModelFallbackModelsItemGpt4O                        OpenAiModelFallbackModelsItem = "gpt-4o"
-	OpenAiModelFallbackModelsItemGpt4O20240513                OpenAiModelFallbackModelsItem = "gpt-4o-2024-05-13"
-	OpenAiModelFallbackModelsItemGpt4O20240806                OpenAiModelFallbackModelsItem = "gpt-4o-2024-08-06"
-	OpenAiModelFallbackModelsItemGpt4O20241120                OpenAiModelFallbackModelsItem = "gpt-4o-2024-11-20"
-	OpenAiModelFallbackModelsItemGpt4Turbo                    OpenAiModelFallbackModelsItem = "gpt-4-turbo"
-	OpenAiModelFallbackModelsItemGpt4Turbo20240409            OpenAiModelFallbackModelsItem = "gpt-4-turbo-2024-04-09"
-	OpenAiModelFallbackModelsItemGpt4TurboPreview             OpenAiModelFallbackModelsItem = "gpt-4-turbo-preview"
-	OpenAiModelFallbackModelsItemGpt40125Preview              OpenAiModelFallbackModelsItem = "gpt-4-0125-preview"
-	OpenAiModelFallbackModelsItemGpt41106Preview              OpenAiModelFallbackModelsItem = "gpt-4-1106-preview"
-	OpenAiModelFallbackModelsItemGpt4                         OpenAiModelFallbackModelsItem = "gpt-4"
-	OpenAiModelFallbackModelsItemGpt40613                     OpenAiModelFallbackModelsItem = "gpt-4-0613"
-	OpenAiModelFallbackModelsItemGpt35Turbo                   OpenAiModelFallbackModelsItem = "gpt-3.5-turbo"
-	OpenAiModelFallbackModelsItemGpt35Turbo0125               OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-0125"
-	OpenAiModelFallbackModelsItemGpt35Turbo1106               OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-1106"
-	OpenAiModelFallbackModelsItemGpt35Turbo16K                OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-16k"
-	OpenAiModelFallbackModelsItemGpt35Turbo0613               OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-0613"
+	OpenAiModelFallbackModelsItemO1Preview                        OpenAiModelFallbackModelsItem = "o1-preview"
+	OpenAiModelFallbackModelsItemO1Preview20240912                OpenAiModelFallbackModelsItem = "o1-preview-2024-09-12"
+	OpenAiModelFallbackModelsItemO1Mini                           OpenAiModelFallbackModelsItem = "o1-mini"
+	OpenAiModelFallbackModelsItemO1Mini20240912                   OpenAiModelFallbackModelsItem = "o1-mini-2024-09-12"
+	OpenAiModelFallbackModelsItemGpt4ORealtimePreview20241001     OpenAiModelFallbackModelsItem = "gpt-4o-realtime-preview-2024-10-01"
+	OpenAiModelFallbackModelsItemGpt4ORealtimePreview20241217     OpenAiModelFallbackModelsItem = "gpt-4o-realtime-preview-2024-12-17"
+	OpenAiModelFallbackModelsItemGpt4OMiniRealtimePreview20241217 OpenAiModelFallbackModelsItem = "gpt-4o-mini-realtime-preview-2024-12-17"
+	OpenAiModelFallbackModelsItemGpt4OMini                        OpenAiModelFallbackModelsItem = "gpt-4o-mini"
+	OpenAiModelFallbackModelsItemGpt4OMini20240718                OpenAiModelFallbackModelsItem = "gpt-4o-mini-2024-07-18"
+	OpenAiModelFallbackModelsItemGpt4O                            OpenAiModelFallbackModelsItem = "gpt-4o"
+	OpenAiModelFallbackModelsItemGpt4O20240513                    OpenAiModelFallbackModelsItem = "gpt-4o-2024-05-13"
+	OpenAiModelFallbackModelsItemGpt4O20240806                    OpenAiModelFallbackModelsItem = "gpt-4o-2024-08-06"
+	OpenAiModelFallbackModelsItemGpt4O20241120                    OpenAiModelFallbackModelsItem = "gpt-4o-2024-11-20"
+	OpenAiModelFallbackModelsItemGpt4Turbo                        OpenAiModelFallbackModelsItem = "gpt-4-turbo"
+	OpenAiModelFallbackModelsItemGpt4Turbo20240409                OpenAiModelFallbackModelsItem = "gpt-4-turbo-2024-04-09"
+	OpenAiModelFallbackModelsItemGpt4TurboPreview                 OpenAiModelFallbackModelsItem = "gpt-4-turbo-preview"
+	OpenAiModelFallbackModelsItemGpt40125Preview                  OpenAiModelFallbackModelsItem = "gpt-4-0125-preview"
+	OpenAiModelFallbackModelsItemGpt41106Preview                  OpenAiModelFallbackModelsItem = "gpt-4-1106-preview"
+	OpenAiModelFallbackModelsItemGpt4                             OpenAiModelFallbackModelsItem = "gpt-4"
+	OpenAiModelFallbackModelsItemGpt40613                         OpenAiModelFallbackModelsItem = "gpt-4-0613"
+	OpenAiModelFallbackModelsItemGpt35Turbo                       OpenAiModelFallbackModelsItem = "gpt-3.5-turbo"
+	OpenAiModelFallbackModelsItemGpt35Turbo0125                   OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-0125"
+	OpenAiModelFallbackModelsItemGpt35Turbo1106                   OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-1106"
+	OpenAiModelFallbackModelsItemGpt35Turbo16K                    OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-16k"
+	OpenAiModelFallbackModelsItemGpt35Turbo0613                   OpenAiModelFallbackModelsItem = "gpt-3.5-turbo-0613"
 )
 
 func NewOpenAiModelFallbackModelsItemFromString(s string) (OpenAiModelFallbackModelsItem, error) {
 	switch s {
+	case "o1-preview":
+		return OpenAiModelFallbackModelsItemO1Preview, nil
+	case "o1-preview-2024-09-12":
+		return OpenAiModelFallbackModelsItemO1Preview20240912, nil
+	case "o1-mini":
+		return OpenAiModelFallbackModelsItemO1Mini, nil
+	case "o1-mini-2024-09-12":
+		return OpenAiModelFallbackModelsItemO1Mini20240912, nil
 	case "gpt-4o-realtime-preview-2024-10-01":
 		return OpenAiModelFallbackModelsItemGpt4ORealtimePreview20241001, nil
+	case "gpt-4o-realtime-preview-2024-12-17":
+		return OpenAiModelFallbackModelsItemGpt4ORealtimePreview20241217, nil
+	case "gpt-4o-mini-realtime-preview-2024-12-17":
+		return OpenAiModelFallbackModelsItemGpt4OMiniRealtimePreview20241217, nil
 	case "gpt-4o-mini":
 		return OpenAiModelFallbackModelsItemGpt4OMini, nil
 	case "gpt-4o-mini-2024-07-18":
@@ -28368,31 +32344,49 @@ func (o OpenAiModelFallbackModelsItem) Ptr() *OpenAiModelFallbackModelsItem {
 type OpenAiModelModel string
 
 const (
-	OpenAiModelModelGpt4ORealtimePreview20241001 OpenAiModelModel = "gpt-4o-realtime-preview-2024-10-01"
-	OpenAiModelModelGpt4OMini                    OpenAiModelModel = "gpt-4o-mini"
-	OpenAiModelModelGpt4OMini20240718            OpenAiModelModel = "gpt-4o-mini-2024-07-18"
-	OpenAiModelModelGpt4O                        OpenAiModelModel = "gpt-4o"
-	OpenAiModelModelGpt4O20240513                OpenAiModelModel = "gpt-4o-2024-05-13"
-	OpenAiModelModelGpt4O20240806                OpenAiModelModel = "gpt-4o-2024-08-06"
-	OpenAiModelModelGpt4O20241120                OpenAiModelModel = "gpt-4o-2024-11-20"
-	OpenAiModelModelGpt4Turbo                    OpenAiModelModel = "gpt-4-turbo"
-	OpenAiModelModelGpt4Turbo20240409            OpenAiModelModel = "gpt-4-turbo-2024-04-09"
-	OpenAiModelModelGpt4TurboPreview             OpenAiModelModel = "gpt-4-turbo-preview"
-	OpenAiModelModelGpt40125Preview              OpenAiModelModel = "gpt-4-0125-preview"
-	OpenAiModelModelGpt41106Preview              OpenAiModelModel = "gpt-4-1106-preview"
-	OpenAiModelModelGpt4                         OpenAiModelModel = "gpt-4"
-	OpenAiModelModelGpt40613                     OpenAiModelModel = "gpt-4-0613"
-	OpenAiModelModelGpt35Turbo                   OpenAiModelModel = "gpt-3.5-turbo"
-	OpenAiModelModelGpt35Turbo0125               OpenAiModelModel = "gpt-3.5-turbo-0125"
-	OpenAiModelModelGpt35Turbo1106               OpenAiModelModel = "gpt-3.5-turbo-1106"
-	OpenAiModelModelGpt35Turbo16K                OpenAiModelModel = "gpt-3.5-turbo-16k"
-	OpenAiModelModelGpt35Turbo0613               OpenAiModelModel = "gpt-3.5-turbo-0613"
+	OpenAiModelModelO1Preview                        OpenAiModelModel = "o1-preview"
+	OpenAiModelModelO1Preview20240912                OpenAiModelModel = "o1-preview-2024-09-12"
+	OpenAiModelModelO1Mini                           OpenAiModelModel = "o1-mini"
+	OpenAiModelModelO1Mini20240912                   OpenAiModelModel = "o1-mini-2024-09-12"
+	OpenAiModelModelGpt4ORealtimePreview20241001     OpenAiModelModel = "gpt-4o-realtime-preview-2024-10-01"
+	OpenAiModelModelGpt4ORealtimePreview20241217     OpenAiModelModel = "gpt-4o-realtime-preview-2024-12-17"
+	OpenAiModelModelGpt4OMiniRealtimePreview20241217 OpenAiModelModel = "gpt-4o-mini-realtime-preview-2024-12-17"
+	OpenAiModelModelGpt4OMini                        OpenAiModelModel = "gpt-4o-mini"
+	OpenAiModelModelGpt4OMini20240718                OpenAiModelModel = "gpt-4o-mini-2024-07-18"
+	OpenAiModelModelGpt4O                            OpenAiModelModel = "gpt-4o"
+	OpenAiModelModelGpt4O20240513                    OpenAiModelModel = "gpt-4o-2024-05-13"
+	OpenAiModelModelGpt4O20240806                    OpenAiModelModel = "gpt-4o-2024-08-06"
+	OpenAiModelModelGpt4O20241120                    OpenAiModelModel = "gpt-4o-2024-11-20"
+	OpenAiModelModelGpt4Turbo                        OpenAiModelModel = "gpt-4-turbo"
+	OpenAiModelModelGpt4Turbo20240409                OpenAiModelModel = "gpt-4-turbo-2024-04-09"
+	OpenAiModelModelGpt4TurboPreview                 OpenAiModelModel = "gpt-4-turbo-preview"
+	OpenAiModelModelGpt40125Preview                  OpenAiModelModel = "gpt-4-0125-preview"
+	OpenAiModelModelGpt41106Preview                  OpenAiModelModel = "gpt-4-1106-preview"
+	OpenAiModelModelGpt4                             OpenAiModelModel = "gpt-4"
+	OpenAiModelModelGpt40613                         OpenAiModelModel = "gpt-4-0613"
+	OpenAiModelModelGpt35Turbo                       OpenAiModelModel = "gpt-3.5-turbo"
+	OpenAiModelModelGpt35Turbo0125                   OpenAiModelModel = "gpt-3.5-turbo-0125"
+	OpenAiModelModelGpt35Turbo1106                   OpenAiModelModel = "gpt-3.5-turbo-1106"
+	OpenAiModelModelGpt35Turbo16K                    OpenAiModelModel = "gpt-3.5-turbo-16k"
+	OpenAiModelModelGpt35Turbo0613                   OpenAiModelModel = "gpt-3.5-turbo-0613"
 )
 
 func NewOpenAiModelModelFromString(s string) (OpenAiModelModel, error) {
 	switch s {
+	case "o1-preview":
+		return OpenAiModelModelO1Preview, nil
+	case "o1-preview-2024-09-12":
+		return OpenAiModelModelO1Preview20240912, nil
+	case "o1-mini":
+		return OpenAiModelModelO1Mini, nil
+	case "o1-mini-2024-09-12":
+		return OpenAiModelModelO1Mini20240912, nil
 	case "gpt-4o-realtime-preview-2024-10-01":
 		return OpenAiModelModelGpt4ORealtimePreview20241001, nil
+	case "gpt-4o-realtime-preview-2024-12-17":
+		return OpenAiModelModelGpt4ORealtimePreview20241217, nil
+	case "gpt-4o-mini-realtime-preview-2024-12-17":
+		return OpenAiModelModelGpt4OMiniRealtimePreview20241217, nil
 	case "gpt-4o-mini":
 		return OpenAiModelModelGpt4OMini, nil
 	case "gpt-4o-mini-2024-07-18":
@@ -28608,7 +32602,7 @@ func (o *OpenAiModelToolsItem) Accept(visitor OpenAiModelToolsItemVisitor) error
 type OpenAiVoice struct {
 	// This is the voice provider that will be used.
 	// This is the provider-specific ID that will be used.
-	// Please note that ash, ballad, coral, sage, and verse may only be used with the `gpt-4o-realtime-preview-2024-10-01` model.
+	// Please note that ash, ballad, coral, sage, and verse may only be used with realtime models.
 	VoiceId OpenAiVoiceId `json:"voiceId" url:"voiceId"`
 	// This is the speed multiplier that will be used.
 	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
@@ -29198,12 +33192,14 @@ type Org struct {
 	Channel *OrgChannel `json:"channel,omitempty" url:"channel,omitempty"`
 	// This is the monthly billing limit for the org. To go beyond $1000/mo, please contact us at support@vapi.ai.
 	BillingLimit *float64 `json:"billingLimit,omitempty" url:"billingLimit,omitempty"`
-	// This is the URL Vapi will communicate with via HTTP GET and POST Requests. This is used for retrieving context, function calling, and end-of-call reports.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// All requests will be sent with the call object among other things relevant to that message. You can find more details in the Server URL documentation.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret you can set that Vapi will send with every request to your server. Will be sent as a header called x-vapi-secret.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// This is the concurrency limit for the org. This is the maximum number of calls that can be active at any given time. To go beyond 10, please contact us at support@vapi.ai.
 	ConcurrencyLimit *float64 `json:"concurrencyLimit,omitempty" url:"concurrencyLimit,omitempty"`
 
@@ -29316,18 +33312,11 @@ func (o *Org) GetBillingLimit() *float64 {
 	return o.BillingLimit
 }
 
-func (o *Org) GetServerUrl() *string {
+func (o *Org) GetServer() *Server {
 	if o == nil {
 		return nil
 	}
-	return o.ServerUrl
-}
-
-func (o *Org) GetServerUrlSecret() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ServerUrlSecret
+	return o.Server
 }
 
 func (o *Org) GetConcurrencyLimit() *float64 {
@@ -29512,12 +33501,14 @@ type OrgWithOrgUser struct {
 	Channel *OrgWithOrgUserChannel `json:"channel,omitempty" url:"channel,omitempty"`
 	// This is the monthly billing limit for the org. To go beyond $1000/mo, please contact us at support@vapi.ai.
 	BillingLimit *float64 `json:"billingLimit,omitempty" url:"billingLimit,omitempty"`
-	// This is the URL Vapi will communicate with via HTTP GET and POST Requests. This is used for retrieving context, function calling, and end-of-call reports.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// All requests will be sent with the call object among other things relevant to that message. You can find more details in the Server URL documentation.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret you can set that Vapi will send with every request to your server. Will be sent as a header called x-vapi-secret.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// This is the concurrency limit for the org. This is the maximum number of calls that can be active at any given time. To go beyond 10, please contact us at support@vapi.ai.
 	ConcurrencyLimit *float64            `json:"concurrencyLimit,omitempty" url:"concurrencyLimit,omitempty"`
 	InvitedByUserId  *string             `json:"invitedByUserId,omitempty" url:"invitedByUserId,omitempty"`
@@ -29632,18 +33623,11 @@ func (o *OrgWithOrgUser) GetBillingLimit() *float64 {
 	return o.BillingLimit
 }
 
-func (o *OrgWithOrgUser) GetServerUrl() *string {
+func (o *OrgWithOrgUser) GetServer() *Server {
 	if o == nil {
 		return nil
 	}
-	return o.ServerUrl
-}
-
-func (o *OrgWithOrgUser) GetServerUrlSecret() *string {
-	if o == nil {
-		return nil
-	}
-	return o.ServerUrlSecret
+	return o.Server
 }
 
 func (o *OrgWithOrgUser) GetConcurrencyLimit() *float64 {
@@ -29771,315 +33755,6 @@ func NewOrgWithOrgUserRoleFromString(s string) (OrgWithOrgUserRole, error) {
 
 func (o OrgWithOrgUserRole) Ptr() *OrgWithOrgUserRole {
 	return &o
-}
-
-type Payment struct {
-	// This is the id of the payment
-	Id string `json:"id" url:"id"`
-	// This is the id of the org
-	OrgId *string `json:"orgId,omitempty" url:"orgId,omitempty"`
-	// This is the total cost of the payment, which is the sum of all the costs in the costs object.
-	//
-	// Note: this is a string to avoid floating point precision issues.
-	Cost string `json:"cost" url:"cost"`
-	// This is the itemized breakdown of payment amounts
-	Costs []map[string]interface{} `json:"costs,omitempty" url:"costs,omitempty"`
-	// This is the status of the payment
-	Status PaymentStatus `json:"status" url:"status"`
-	// This is the timestamp when the payment was created
-	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
-	// This is the timestamp when the payment was last updated
-	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
-	// This indicates if this payment was automatically generated by the auto-reload feature
-	IsAutoReload bool `json:"isAutoReload" url:"isAutoReload"`
-	// This is the id of the subscription the payment belongs to
-	SubscriptionId string `json:"subscriptionId" url:"subscriptionId"`
-	// This is the id of the call
-	CallId *string `json:"callId,omitempty" url:"callId,omitempty"`
-	// This is the id of the purchased phone number
-	PhoneNumberId *string `json:"phoneNumberId,omitempty" url:"phoneNumberId,omitempty"`
-	// This is the id of the associated stripe payment intent
-	StripePaymentIntentId *string `json:"stripePaymentIntentId,omitempty" url:"stripePaymentIntentId,omitempty"`
-	// This is the id of the associated stripe invoice
-	StripeInvoiceId *string `json:"stripeInvoiceId,omitempty" url:"stripeInvoiceId,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *Payment) GetId() string {
-	if p == nil {
-		return ""
-	}
-	return p.Id
-}
-
-func (p *Payment) GetOrgId() *string {
-	if p == nil {
-		return nil
-	}
-	return p.OrgId
-}
-
-func (p *Payment) GetCost() string {
-	if p == nil {
-		return ""
-	}
-	return p.Cost
-}
-
-func (p *Payment) GetCosts() []map[string]interface{} {
-	if p == nil {
-		return nil
-	}
-	return p.Costs
-}
-
-func (p *Payment) GetStatus() PaymentStatus {
-	if p == nil {
-		return ""
-	}
-	return p.Status
-}
-
-func (p *Payment) GetCreatedAt() time.Time {
-	if p == nil {
-		return time.Time{}
-	}
-	return p.CreatedAt
-}
-
-func (p *Payment) GetUpdatedAt() time.Time {
-	if p == nil {
-		return time.Time{}
-	}
-	return p.UpdatedAt
-}
-
-func (p *Payment) GetIsAutoReload() bool {
-	if p == nil {
-		return false
-	}
-	return p.IsAutoReload
-}
-
-func (p *Payment) GetSubscriptionId() string {
-	if p == nil {
-		return ""
-	}
-	return p.SubscriptionId
-}
-
-func (p *Payment) GetCallId() *string {
-	if p == nil {
-		return nil
-	}
-	return p.CallId
-}
-
-func (p *Payment) GetPhoneNumberId() *string {
-	if p == nil {
-		return nil
-	}
-	return p.PhoneNumberId
-}
-
-func (p *Payment) GetStripePaymentIntentId() *string {
-	if p == nil {
-		return nil
-	}
-	return p.StripePaymentIntentId
-}
-
-func (p *Payment) GetStripeInvoiceId() *string {
-	if p == nil {
-		return nil
-	}
-	return p.StripeInvoiceId
-}
-
-func (p *Payment) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *Payment) UnmarshalJSON(data []byte) error {
-	type embed Payment
-	var unmarshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"createdAt"`
-		UpdatedAt *internal.DateTime `json:"updatedAt"`
-	}{
-		embed: embed(*p),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
-		return err
-	}
-	*p = Payment(unmarshaler.embed)
-	p.CreatedAt = unmarshaler.CreatedAt.Time()
-	p.UpdatedAt = unmarshaler.UpdatedAt.Time()
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *Payment) MarshalJSON() ([]byte, error) {
-	type embed Payment
-	var marshaler = struct {
-		embed
-		CreatedAt *internal.DateTime `json:"createdAt"`
-		UpdatedAt *internal.DateTime `json:"updatedAt"`
-	}{
-		embed:     embed(*p),
-		CreatedAt: internal.NewDateTime(p.CreatedAt),
-		UpdatedAt: internal.NewDateTime(p.UpdatedAt),
-	}
-	return json.Marshal(marshaler)
-}
-
-func (p *Payment) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-type PaymentRetryDto struct {
-	// This is the payment ID to retry.
-	PaymentId string `json:"paymentId" url:"paymentId"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PaymentRetryDto) GetPaymentId() string {
-	if p == nil {
-		return ""
-	}
-	return p.PaymentId
-}
-
-func (p *PaymentRetryDto) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PaymentRetryDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler PaymentRetryDto
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PaymentRetryDto(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PaymentRetryDto) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
-}
-
-// This is the status of the payment
-type PaymentStatus string
-
-const (
-	PaymentStatusPastDue   PaymentStatus = "past-due"
-	PaymentStatusPending   PaymentStatus = "pending"
-	PaymentStatusFinalized PaymentStatus = "finalized"
-	PaymentStatusRefunded  PaymentStatus = "refunded"
-)
-
-func NewPaymentStatusFromString(s string) (PaymentStatus, error) {
-	switch s {
-	case "past-due":
-		return PaymentStatusPastDue, nil
-	case "pending":
-		return PaymentStatusPending, nil
-	case "finalized":
-		return PaymentStatusFinalized, nil
-	case "refunded":
-		return PaymentStatusRefunded, nil
-	}
-	var t PaymentStatus
-	return "", fmt.Errorf("%s is not a valid %T", s, t)
-}
-
-func (p PaymentStatus) Ptr() *PaymentStatus {
-	return &p
-}
-
-type PaymentsPaginatedResponse struct {
-	Results  []*Payment      `json:"results,omitempty" url:"results,omitempty"`
-	Metadata *PaginationMeta `json:"metadata,omitempty" url:"metadata,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (p *PaymentsPaginatedResponse) GetResults() []*Payment {
-	if p == nil {
-		return nil
-	}
-	return p.Results
-}
-
-func (p *PaymentsPaginatedResponse) GetMetadata() *PaginationMeta {
-	if p == nil {
-		return nil
-	}
-	return p.Metadata
-}
-
-func (p *PaymentsPaginatedResponse) GetExtraProperties() map[string]interface{} {
-	return p.extraProperties
-}
-
-func (p *PaymentsPaginatedResponse) UnmarshalJSON(data []byte) error {
-	type unmarshaler PaymentsPaginatedResponse
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*p = PaymentsPaginatedResponse(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *p)
-	if err != nil {
-		return err
-	}
-	p.extraProperties = extraProperties
-	p.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (p *PaymentsPaginatedResponse) String() string {
-	if len(p.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(p); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", p)
 }
 
 type PerplexityAiCredential struct {
@@ -33800,46 +37475,6 @@ func (s *ServerMessageEndOfCallReportCostsItem) Accept(visitor ServerMessageEndO
 type ServerMessageEndOfCallReportEndedReason string
 
 const (
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiVoiceFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorCartesiaVoiceFailed                                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-cartesia-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramVoiceFailed                                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-eleven-labs-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayhtVoiceFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-playht-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorLmntVoiceFailed                                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-lmnt-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureVoiceFailed                                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorRimeAiVoiceFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-rime-ai-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorNeetsVoiceFailed                                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-neets-voice-failed"
-	ServerMessageEndOfCallReportEndedReasonDbError                                                                                    ServerMessageEndOfCallReportEndedReason = "db-error"
-	ServerMessageEndOfCallReportEndedReasonAssistantNotFound                                                                          ServerMessageEndOfCallReportEndedReason = "assistant-not-found"
-	ServerMessageEndOfCallReportEndedReasonLicenseCheckFailed                                                                         ServerMessageEndOfCallReportEndedReason = "license-check-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapiLlmFailed                                                                 ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-llm-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi401Unauthorized                                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-401-unauthorized"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-403-model-access-denied"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi429ExceededQuota                                                          ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-429-exceeded-quota"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi500ServerError                                                            ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-500-server-error"
-	ServerMessageEndOfCallReportEndedReasonPipelineNoAvailableModel                                                                   ServerMessageEndOfCallReportEndedReason = "pipeline-no-available-model"
-	ServerMessageEndOfCallReportEndedReasonWorkerShutdown                                                                             ServerMessageEndOfCallReportEndedReason = "worker-shutdown"
-	ServerMessageEndOfCallReportEndedReasonUnknownError                                                                               ServerMessageEndOfCallReportEndedReason = "unknown-error"
-	ServerMessageEndOfCallReportEndedReasonVonageDisconnected                                                                         ServerMessageEndOfCallReportEndedReason = "vonage-disconnected"
-	ServerMessageEndOfCallReportEndedReasonVonageFailedToConnectCall                                                                  ServerMessageEndOfCallReportEndedReason = "vonage-failed-to-connect-call"
-	ServerMessageEndOfCallReportEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            ServerMessageEndOfCallReportEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
-	ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   ServerMessageEndOfCallReportEndedReason = "vapifault-phone-call-worker-setup-socket-error"
-	ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           ServerMessageEndOfCallReportEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
-	ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   ServerMessageEndOfCallReportEndedReason = "vapifault-phone-call-worker-could-not-find-call"
-	ServerMessageEndOfCallReportEndedReasonVapifaultTransportNeverConnected                                                           ServerMessageEndOfCallReportEndedReason = "vapifault-transport-never-connected"
-	ServerMessageEndOfCallReportEndedReasonVapifaultWebCallWorkerSetupFailed                                                          ServerMessageEndOfCallReportEndedReason = "vapifault-web-call-worker-setup-failed"
-	ServerMessageEndOfCallReportEndedReasonVapifaultTransportConnectedButCallNotActive                                                ServerMessageEndOfCallReportEndedReason = "vapifault-transport-connected-but-call-not-active"
-	ServerMessageEndOfCallReportEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        ServerMessageEndOfCallReportEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-transcriber-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorGladiaTranscriberFailed                                                       ServerMessageEndOfCallReportEndedReason = "pipeline-error-gladia-transcriber-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   ServerMessageEndOfCallReportEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiLlmFailed                                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-llm-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-openai-llm-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorGroqLlmFailed                                                                 ServerMessageEndOfCallReportEndedReason = "pipeline-error-groq-llm-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorGoogleLlmFailed                                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-google-llm-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorXaiLlmFailed                                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-xai-llm-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAiLlmFailed                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-inflection-ai-llm-failed"
 	ServerMessageEndOfCallReportEndedReasonAssistantNotInvalid                                                                        ServerMessageEndOfCallReportEndedReason = "assistant-not-invalid"
 	ServerMessageEndOfCallReportEndedReasonAssistantNotProvided                                                                       ServerMessageEndOfCallReportEndedReason = "assistant-not-provided"
 	ServerMessageEndOfCallReportEndedReasonCallStartErrorNeitherAssistantNorServerSet                                                 ServerMessageEndOfCallReportEndedReason = "call-start-error-neither-assistant-nor-server-set"
@@ -33861,6 +37496,51 @@ const (
 	ServerMessageEndOfCallReportEndedReasonExceededMaxDuration                                                                        ServerMessageEndOfCallReportEndedReason = "exceeded-max-duration"
 	ServerMessageEndOfCallReportEndedReasonManuallyCanceled                                                                           ServerMessageEndOfCallReportEndedReason = "manually-canceled"
 	ServerMessageEndOfCallReportEndedReasonPhoneCallProviderClosedWebsocket                                                           ServerMessageEndOfCallReportEndedReason = "phone-call-provider-closed-websocket"
+	ServerMessageEndOfCallReportEndedReasonDbError                                                                                    ServerMessageEndOfCallReportEndedReason = "db-error"
+	ServerMessageEndOfCallReportEndedReasonAssistantNotFound                                                                          ServerMessageEndOfCallReportEndedReason = "assistant-not-found"
+	ServerMessageEndOfCallReportEndedReasonLicenseCheckFailed                                                                         ServerMessageEndOfCallReportEndedReason = "license-check-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiVoiceFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCartesiaVoiceFailed                                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-cartesia-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramVoiceFailed                                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-eleven-labs-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayhtVoiceFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-playht-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorLmntVoiceFailed                                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-lmnt-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureVoiceFailed                                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorRimeAiVoiceFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-rime-ai-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorNeetsVoiceFailed                                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-neets-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorSmallestAiVoiceFailed                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-smallest-ai-voice-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-transcriber-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorGladiaTranscriberFailed                                                       ServerMessageEndOfCallReportEndedReason = "pipeline-error-gladia-transcriber-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   ServerMessageEndOfCallReportEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorTalkscriberTranscriberFailed                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-talkscriber-transcriber-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureSpeechTranscriberFailed                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-speech-transcriber-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapiLlmFailed                                                                 ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi401Unauthorized                                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-401-unauthorized"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-403-model-access-denied"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi429ExceededQuota                                                          ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-429-exceeded-quota"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi500ServerError                                                            ServerMessageEndOfCallReportEndedReason = "pipeline-error-vapi-500-server-error"
+	ServerMessageEndOfCallReportEndedReasonPipelineNoAvailableModel                                                                   ServerMessageEndOfCallReportEndedReason = "pipeline-no-available-model"
+	ServerMessageEndOfCallReportEndedReasonWorkerShutdown                                                                             ServerMessageEndOfCallReportEndedReason = "worker-shutdown"
+	ServerMessageEndOfCallReportEndedReasonUnknownError                                                                               ServerMessageEndOfCallReportEndedReason = "unknown-error"
+	ServerMessageEndOfCallReportEndedReasonVonageDisconnected                                                                         ServerMessageEndOfCallReportEndedReason = "vonage-disconnected"
+	ServerMessageEndOfCallReportEndedReasonVonageFailedToConnectCall                                                                  ServerMessageEndOfCallReportEndedReason = "vonage-failed-to-connect-call"
+	ServerMessageEndOfCallReportEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            ServerMessageEndOfCallReportEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
+	ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   ServerMessageEndOfCallReportEndedReason = "vapifault-phone-call-worker-setup-socket-error"
+	ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           ServerMessageEndOfCallReportEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
+	ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   ServerMessageEndOfCallReportEndedReason = "vapifault-phone-call-worker-could-not-find-call"
+	ServerMessageEndOfCallReportEndedReasonVapifaultTransportNeverConnected                                                           ServerMessageEndOfCallReportEndedReason = "vapifault-transport-never-connected"
+	ServerMessageEndOfCallReportEndedReasonVapifaultWebCallWorkerSetupFailed                                                          ServerMessageEndOfCallReportEndedReason = "vapifault-web-call-worker-setup-failed"
+	ServerMessageEndOfCallReportEndedReasonVapifaultTransportConnectedButCallNotActive                                                ServerMessageEndOfCallReportEndedReason = "vapifault-transport-connected-but-call-not-active"
+	ServerMessageEndOfCallReportEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        ServerMessageEndOfCallReportEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiLlmFailed                                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-openai-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorGroqLlmFailed                                                                 ServerMessageEndOfCallReportEndedReason = "pipeline-error-groq-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorGoogleLlmFailed                                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-google-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorXaiLlmFailed                                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-xai-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAiLlmFailed                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-inflection-ai-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebrasLlmFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-cerebras-llm-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeekLlmFailed                                                             ServerMessageEndOfCallReportEndedReason = "pipeline-error-deep-seek-llm-failed"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenai400BadRequestValidationFailed                                           ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-400-bad-request-validation-failed"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenai401Unauthorized                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-401-unauthorized"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenai403ModelAccessDenied                                                    ServerMessageEndOfCallReportEndedReason = "pipeline-error-openai-403-model-access-denied"
@@ -33881,6 +37561,11 @@ const (
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAi403ModelAccessDenied                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-inflection-ai-403-model-access-denied"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAi429ExceededQuota                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-inflection-ai-429-exceeded-quota"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAi500ServerError                                                    ServerMessageEndOfCallReportEndedReason = "pipeline-error-inflection-ai-500-server-error"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek400BadRequestValidationFailed                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-deep-seek-400-bad-request-validation-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek401Unauthorized                                                       ServerMessageEndOfCallReportEndedReason = "pipeline-error-deep-seek-401-unauthorized"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek403ModelAccessDenied                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-deep-seek-403-model-access-denied"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek429ExceededQuota                                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-deep-seek-429-exceeded-quota"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek500ServerError                                                        ServerMessageEndOfCallReportEndedReason = "pipeline-error-deep-seek-500-server-error"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-openai-400-bad-request-validation-failed"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenai401Unauthorized                                                    ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-openai-401-unauthorized"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenai403ModelAccessDenied                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-azure-openai-403-model-access-denied"
@@ -33891,6 +37576,11 @@ const (
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorGroq403ModelAccessDenied                                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-groq-403-model-access-denied"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorGroq429ExceededQuota                                                          ServerMessageEndOfCallReportEndedReason = "pipeline-error-groq-429-exceeded-quota"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorGroq500ServerError                                                            ServerMessageEndOfCallReportEndedReason = "pipeline-error-groq-500-server-error"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras400BadRequestValidationFailed                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-cerebras-400-bad-request-validation-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras401Unauthorized                                                       ServerMessageEndOfCallReportEndedReason = "pipeline-error-cerebras-401-unauthorized"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras403ModelAccessDenied                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-cerebras-403-model-access-denied"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras429ExceededQuota                                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-cerebras-429-exceeded-quota"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras500ServerError                                                        ServerMessageEndOfCallReportEndedReason = "pipeline-error-cerebras-500-server-error"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed                                        ServerMessageEndOfCallReportEndedReason = "pipeline-error-anthropic-400-bad-request-validation-failed"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorAnthropic401Unauthorized                                                      ServerMessageEndOfCallReportEndedReason = "pipeline-error-anthropic-401-unauthorized"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorAnthropic403ModelAccessDenied                                                 ServerMessageEndOfCallReportEndedReason = "pipeline-error-anthropic-403-model-access-denied"
@@ -33978,6 +37668,8 @@ const (
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayht429ExceededQuota                                                        ServerMessageEndOfCallReportEndedReason = "pipeline-error-playht-429-exceeded-quota"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayht502GatewayError                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-playht-502-gateway-error"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayht504GatewayError                                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-playht-504-gateway-error"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorTavusVideoFailed                                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-tavus-video-failed"
+	ServerMessageEndOfCallReportEndedReasonPipelineErrorCustomTranscriberFailed                                                       ServerMessageEndOfCallReportEndedReason = "pipeline-error-custom-transcriber-failed"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied                                         ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-returning-403-model-access-denied"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning401InvalidCredentials                                        ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-returning-401-invalid-credentials"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning404NotFound                                                  ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-returning-404-not-found"
@@ -33985,8 +37677,6 @@ const (
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning500InvalidJson                                               ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-returning-500-invalid-json"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning502NetworkError                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-returning-502-network-error"
 	ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach                                    ServerMessageEndOfCallReportEndedReason = "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorTavusVideoFailed                                                              ServerMessageEndOfCallReportEndedReason = "pipeline-error-tavus-video-failed"
-	ServerMessageEndOfCallReportEndedReasonPipelineErrorCustomTranscriberFailed                                                       ServerMessageEndOfCallReportEndedReason = "pipeline-error-custom-transcriber-failed"
 	ServerMessageEndOfCallReportEndedReasonSilenceTimedOut                                                                            ServerMessageEndOfCallReportEndedReason = "silence-timed-out"
 	ServerMessageEndOfCallReportEndedReasonSipGatewayFailedToConnectCall                                                              ServerMessageEndOfCallReportEndedReason = "sip-gateway-failed-to-connect-call"
 	ServerMessageEndOfCallReportEndedReasonTwilioFailedToConnectCall                                                                  ServerMessageEndOfCallReportEndedReason = "twilio-failed-to-connect-call"
@@ -33997,86 +37687,6 @@ const (
 
 func NewServerMessageEndOfCallReportEndedReasonFromString(s string) (ServerMessageEndOfCallReportEndedReason, error) {
 	switch s {
-	case "pipeline-error-openai-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiVoiceFailed, nil
-	case "pipeline-error-cartesia-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCartesiaVoiceFailed, nil
-	case "pipeline-error-deepgram-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramVoiceFailed, nil
-	case "pipeline-error-eleven-labs-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
-	case "pipeline-error-playht-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayhtVoiceFailed, nil
-	case "pipeline-error-lmnt-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorLmntVoiceFailed, nil
-	case "pipeline-error-azure-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureVoiceFailed, nil
-	case "pipeline-error-rime-ai-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorRimeAiVoiceFailed, nil
-	case "pipeline-error-neets-voice-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorNeetsVoiceFailed, nil
-	case "db-error":
-		return ServerMessageEndOfCallReportEndedReasonDbError, nil
-	case "assistant-not-found":
-		return ServerMessageEndOfCallReportEndedReasonAssistantNotFound, nil
-	case "license-check-failed":
-		return ServerMessageEndOfCallReportEndedReasonLicenseCheckFailed, nil
-	case "pipeline-error-vapi-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapiLlmFailed, nil
-	case "pipeline-error-vapi-400-bad-request-validation-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
-	case "pipeline-error-vapi-401-unauthorized":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi401Unauthorized, nil
-	case "pipeline-error-vapi-403-model-access-denied":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
-	case "pipeline-error-vapi-429-exceeded-quota":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi429ExceededQuota, nil
-	case "pipeline-error-vapi-500-server-error":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi500ServerError, nil
-	case "pipeline-no-available-model":
-		return ServerMessageEndOfCallReportEndedReasonPipelineNoAvailableModel, nil
-	case "worker-shutdown":
-		return ServerMessageEndOfCallReportEndedReasonWorkerShutdown, nil
-	case "unknown-error":
-		return ServerMessageEndOfCallReportEndedReasonUnknownError, nil
-	case "vonage-disconnected":
-		return ServerMessageEndOfCallReportEndedReasonVonageDisconnected, nil
-	case "vonage-failed-to-connect-call":
-		return ServerMessageEndOfCallReportEndedReasonVonageFailedToConnectCall, nil
-	case "phone-call-provider-bypass-enabled-but-no-call-received":
-		return ServerMessageEndOfCallReportEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
-	case "vapifault-phone-call-worker-setup-socket-error":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
-	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
-	case "vapifault-phone-call-worker-could-not-find-call":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
-	case "vapifault-transport-never-connected":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultTransportNeverConnected, nil
-	case "vapifault-web-call-worker-setup-failed":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultWebCallWorkerSetupFailed, nil
-	case "vapifault-transport-connected-but-call-not-active":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultTransportConnectedButCallNotActive, nil
-	case "vapifault-call-started-but-connection-to-transport-missing":
-		return ServerMessageEndOfCallReportEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
-	case "pipeline-error-deepgram-transcriber-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
-	case "pipeline-error-gladia-transcriber-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGladiaTranscriberFailed, nil
-	case "pipeline-error-assembly-ai-transcriber-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
-	case "pipeline-error-openai-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiLlmFailed, nil
-	case "pipeline-error-azure-openai-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
-	case "pipeline-error-groq-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGroqLlmFailed, nil
-	case "pipeline-error-google-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGoogleLlmFailed, nil
-	case "pipeline-error-xai-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorXaiLlmFailed, nil
-	case "pipeline-error-inflection-ai-llm-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAiLlmFailed, nil
 	case "assistant-not-invalid":
 		return ServerMessageEndOfCallReportEndedReasonAssistantNotInvalid, nil
 	case "assistant-not-provided":
@@ -34119,6 +37729,96 @@ func NewServerMessageEndOfCallReportEndedReasonFromString(s string) (ServerMessa
 		return ServerMessageEndOfCallReportEndedReasonManuallyCanceled, nil
 	case "phone-call-provider-closed-websocket":
 		return ServerMessageEndOfCallReportEndedReasonPhoneCallProviderClosedWebsocket, nil
+	case "db-error":
+		return ServerMessageEndOfCallReportEndedReasonDbError, nil
+	case "assistant-not-found":
+		return ServerMessageEndOfCallReportEndedReasonAssistantNotFound, nil
+	case "license-check-failed":
+		return ServerMessageEndOfCallReportEndedReasonLicenseCheckFailed, nil
+	case "pipeline-error-openai-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiVoiceFailed, nil
+	case "pipeline-error-cartesia-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCartesiaVoiceFailed, nil
+	case "pipeline-error-deepgram-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramVoiceFailed, nil
+	case "pipeline-error-eleven-labs-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
+	case "pipeline-error-playht-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayhtVoiceFailed, nil
+	case "pipeline-error-lmnt-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorLmntVoiceFailed, nil
+	case "pipeline-error-azure-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureVoiceFailed, nil
+	case "pipeline-error-rime-ai-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorRimeAiVoiceFailed, nil
+	case "pipeline-error-neets-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorNeetsVoiceFailed, nil
+	case "pipeline-error-smallest-ai-voice-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorSmallestAiVoiceFailed, nil
+	case "pipeline-error-deepgram-transcriber-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
+	case "pipeline-error-gladia-transcriber-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGladiaTranscriberFailed, nil
+	case "pipeline-error-assembly-ai-transcriber-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
+	case "pipeline-error-talkscriber-transcriber-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorTalkscriberTranscriberFailed, nil
+	case "pipeline-error-azure-speech-transcriber-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureSpeechTranscriberFailed, nil
+	case "pipeline-error-vapi-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapiLlmFailed, nil
+	case "pipeline-error-vapi-400-bad-request-validation-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
+	case "pipeline-error-vapi-401-unauthorized":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi401Unauthorized, nil
+	case "pipeline-error-vapi-403-model-access-denied":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
+	case "pipeline-error-vapi-429-exceeded-quota":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi429ExceededQuota, nil
+	case "pipeline-error-vapi-500-server-error":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorVapi500ServerError, nil
+	case "pipeline-no-available-model":
+		return ServerMessageEndOfCallReportEndedReasonPipelineNoAvailableModel, nil
+	case "worker-shutdown":
+		return ServerMessageEndOfCallReportEndedReasonWorkerShutdown, nil
+	case "unknown-error":
+		return ServerMessageEndOfCallReportEndedReasonUnknownError, nil
+	case "vonage-disconnected":
+		return ServerMessageEndOfCallReportEndedReasonVonageDisconnected, nil
+	case "vonage-failed-to-connect-call":
+		return ServerMessageEndOfCallReportEndedReasonVonageFailedToConnectCall, nil
+	case "phone-call-provider-bypass-enabled-but-no-call-received":
+		return ServerMessageEndOfCallReportEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
+	case "vapifault-phone-call-worker-setup-socket-error":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
+	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
+	case "vapifault-phone-call-worker-could-not-find-call":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
+	case "vapifault-transport-never-connected":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultTransportNeverConnected, nil
+	case "vapifault-web-call-worker-setup-failed":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultWebCallWorkerSetupFailed, nil
+	case "vapifault-transport-connected-but-call-not-active":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultTransportConnectedButCallNotActive, nil
+	case "vapifault-call-started-but-connection-to-transport-missing":
+		return ServerMessageEndOfCallReportEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
+	case "pipeline-error-openai-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenaiLlmFailed, nil
+	case "pipeline-error-azure-openai-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
+	case "pipeline-error-groq-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGroqLlmFailed, nil
+	case "pipeline-error-google-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGoogleLlmFailed, nil
+	case "pipeline-error-xai-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorXaiLlmFailed, nil
+	case "pipeline-error-inflection-ai-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAiLlmFailed, nil
+	case "pipeline-error-cerebras-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebrasLlmFailed, nil
+	case "pipeline-error-deep-seek-llm-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeekLlmFailed, nil
 	case "pipeline-error-openai-400-bad-request-validation-failed":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorOpenai400BadRequestValidationFailed, nil
 	case "pipeline-error-openai-401-unauthorized":
@@ -34159,6 +37859,16 @@ func NewServerMessageEndOfCallReportEndedReasonFromString(s string) (ServerMessa
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAi429ExceededQuota, nil
 	case "pipeline-error-inflection-ai-500-server-error":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorInflectionAi500ServerError, nil
+	case "pipeline-error-deep-seek-400-bad-request-validation-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek400BadRequestValidationFailed, nil
+	case "pipeline-error-deep-seek-401-unauthorized":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek401Unauthorized, nil
+	case "pipeline-error-deep-seek-403-model-access-denied":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek403ModelAccessDenied, nil
+	case "pipeline-error-deep-seek-429-exceeded-quota":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek429ExceededQuota, nil
+	case "pipeline-error-deep-seek-500-server-error":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepSeek500ServerError, nil
 	case "pipeline-error-azure-openai-400-bad-request-validation-failed":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed, nil
 	case "pipeline-error-azure-openai-401-unauthorized":
@@ -34179,6 +37889,16 @@ func NewServerMessageEndOfCallReportEndedReasonFromString(s string) (ServerMessa
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGroq429ExceededQuota, nil
 	case "pipeline-error-groq-500-server-error":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorGroq500ServerError, nil
+	case "pipeline-error-cerebras-400-bad-request-validation-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras400BadRequestValidationFailed, nil
+	case "pipeline-error-cerebras-401-unauthorized":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras401Unauthorized, nil
+	case "pipeline-error-cerebras-403-model-access-denied":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras403ModelAccessDenied, nil
+	case "pipeline-error-cerebras-429-exceeded-quota":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras429ExceededQuota, nil
+	case "pipeline-error-cerebras-500-server-error":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCerebras500ServerError, nil
 	case "pipeline-error-anthropic-400-bad-request-validation-failed":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed, nil
 	case "pipeline-error-anthropic-401-unauthorized":
@@ -34353,6 +38073,10 @@ func NewServerMessageEndOfCallReportEndedReasonFromString(s string) (ServerMessa
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayht502GatewayError, nil
 	case "pipeline-error-playht-504-gateway-error":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorPlayht504GatewayError, nil
+	case "pipeline-error-tavus-video-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorTavusVideoFailed, nil
+	case "pipeline-error-custom-transcriber-failed":
+		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCustomTranscriberFailed, nil
 	case "pipeline-error-deepgram-returning-403-model-access-denied":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied, nil
 	case "pipeline-error-deepgram-returning-401-invalid-credentials":
@@ -34367,10 +38091,6 @@ func NewServerMessageEndOfCallReportEndedReasonFromString(s string) (ServerMessa
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning502NetworkError, nil
 	case "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach":
 		return ServerMessageEndOfCallReportEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach, nil
-	case "pipeline-error-tavus-video-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorTavusVideoFailed, nil
-	case "pipeline-error-custom-transcriber-failed":
-		return ServerMessageEndOfCallReportEndedReasonPipelineErrorCustomTranscriberFailed, nil
 	case "silence-timed-out":
 		return ServerMessageEndOfCallReportEndedReasonSilenceTimedOut, nil
 	case "sip-gateway-failed-to-connect-call":
@@ -37461,6 +41181,8 @@ type ServerMessageStatusUpdate struct {
 	Call *Call `json:"call,omitempty" url:"call,omitempty"`
 	// This is the transcript of the call. This is only sent if the status is "forwarding".
 	Transcript *string `json:"transcript,omitempty" url:"transcript,omitempty"`
+	// This is the summary of the call. This is only sent if the status is "forwarding".
+	Summary *string `json:"summary,omitempty" url:"summary,omitempty"`
 	// This is the inbound phone call debugging artifacts. This is only sent if the status is "ended" and there was an error accepting the inbound phone call.
 	//
 	// This will include any errors related to the "assistant-request" if one was made.
@@ -37553,6 +41275,13 @@ func (s *ServerMessageStatusUpdate) GetTranscript() *string {
 		return nil
 	}
 	return s.Transcript
+}
+
+func (s *ServerMessageStatusUpdate) GetSummary() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Summary
 }
 
 func (s *ServerMessageStatusUpdate) GetInboundPhoneCallDebuggingArtifacts() map[string]interface{} {
@@ -37686,46 +41415,6 @@ func (s *ServerMessageStatusUpdateDestination) Accept(visitor ServerMessageStatu
 type ServerMessageStatusUpdateEndedReason string
 
 const (
-	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiVoiceFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorCartesiaVoiceFailed                                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-cartesia-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramVoiceFailed                                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-eleven-labs-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorPlayhtVoiceFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-playht-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorLmntVoiceFailed                                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-lmnt-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureVoiceFailed                                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorRimeAiVoiceFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-rime-ai-voice-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorNeetsVoiceFailed                                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-neets-voice-failed"
-	ServerMessageStatusUpdateEndedReasonDbError                                                                                    ServerMessageStatusUpdateEndedReason = "db-error"
-	ServerMessageStatusUpdateEndedReasonAssistantNotFound                                                                          ServerMessageStatusUpdateEndedReason = "assistant-not-found"
-	ServerMessageStatusUpdateEndedReasonLicenseCheckFailed                                                                         ServerMessageStatusUpdateEndedReason = "license-check-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorVapiLlmFailed                                                                 ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-llm-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi401Unauthorized                                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-401-unauthorized"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-403-model-access-denied"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi429ExceededQuota                                                          ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-429-exceeded-quota"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi500ServerError                                                            ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-500-server-error"
-	ServerMessageStatusUpdateEndedReasonPipelineNoAvailableModel                                                                   ServerMessageStatusUpdateEndedReason = "pipeline-no-available-model"
-	ServerMessageStatusUpdateEndedReasonWorkerShutdown                                                                             ServerMessageStatusUpdateEndedReason = "worker-shutdown"
-	ServerMessageStatusUpdateEndedReasonUnknownError                                                                               ServerMessageStatusUpdateEndedReason = "unknown-error"
-	ServerMessageStatusUpdateEndedReasonVonageDisconnected                                                                         ServerMessageStatusUpdateEndedReason = "vonage-disconnected"
-	ServerMessageStatusUpdateEndedReasonVonageFailedToConnectCall                                                                  ServerMessageStatusUpdateEndedReason = "vonage-failed-to-connect-call"
-	ServerMessageStatusUpdateEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            ServerMessageStatusUpdateEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
-	ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   ServerMessageStatusUpdateEndedReason = "vapifault-phone-call-worker-setup-socket-error"
-	ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           ServerMessageStatusUpdateEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
-	ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   ServerMessageStatusUpdateEndedReason = "vapifault-phone-call-worker-could-not-find-call"
-	ServerMessageStatusUpdateEndedReasonVapifaultTransportNeverConnected                                                           ServerMessageStatusUpdateEndedReason = "vapifault-transport-never-connected"
-	ServerMessageStatusUpdateEndedReasonVapifaultWebCallWorkerSetupFailed                                                          ServerMessageStatusUpdateEndedReason = "vapifault-web-call-worker-setup-failed"
-	ServerMessageStatusUpdateEndedReasonVapifaultTransportConnectedButCallNotActive                                                ServerMessageStatusUpdateEndedReason = "vapifault-transport-connected-but-call-not-active"
-	ServerMessageStatusUpdateEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        ServerMessageStatusUpdateEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-transcriber-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorGladiaTranscriberFailed                                                       ServerMessageStatusUpdateEndedReason = "pipeline-error-gladia-transcriber-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   ServerMessageStatusUpdateEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiLlmFailed                                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-llm-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-openai-llm-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorGroqLlmFailed                                                                 ServerMessageStatusUpdateEndedReason = "pipeline-error-groq-llm-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorGoogleLlmFailed                                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-google-llm-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorXaiLlmFailed                                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-xai-llm-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAiLlmFailed                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-inflection-ai-llm-failed"
 	ServerMessageStatusUpdateEndedReasonAssistantNotInvalid                                                                        ServerMessageStatusUpdateEndedReason = "assistant-not-invalid"
 	ServerMessageStatusUpdateEndedReasonAssistantNotProvided                                                                       ServerMessageStatusUpdateEndedReason = "assistant-not-provided"
 	ServerMessageStatusUpdateEndedReasonCallStartErrorNeitherAssistantNorServerSet                                                 ServerMessageStatusUpdateEndedReason = "call-start-error-neither-assistant-nor-server-set"
@@ -37747,6 +41436,51 @@ const (
 	ServerMessageStatusUpdateEndedReasonExceededMaxDuration                                                                        ServerMessageStatusUpdateEndedReason = "exceeded-max-duration"
 	ServerMessageStatusUpdateEndedReasonManuallyCanceled                                                                           ServerMessageStatusUpdateEndedReason = "manually-canceled"
 	ServerMessageStatusUpdateEndedReasonPhoneCallProviderClosedWebsocket                                                           ServerMessageStatusUpdateEndedReason = "phone-call-provider-closed-websocket"
+	ServerMessageStatusUpdateEndedReasonDbError                                                                                    ServerMessageStatusUpdateEndedReason = "db-error"
+	ServerMessageStatusUpdateEndedReasonAssistantNotFound                                                                          ServerMessageStatusUpdateEndedReason = "assistant-not-found"
+	ServerMessageStatusUpdateEndedReasonLicenseCheckFailed                                                                         ServerMessageStatusUpdateEndedReason = "license-check-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiVoiceFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCartesiaVoiceFailed                                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-cartesia-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramVoiceFailed                                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-eleven-labs-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorPlayhtVoiceFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-playht-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorLmntVoiceFailed                                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-lmnt-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureVoiceFailed                                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorRimeAiVoiceFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-rime-ai-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorNeetsVoiceFailed                                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-neets-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorSmallestAiVoiceFailed                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-smallest-ai-voice-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-transcriber-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorGladiaTranscriberFailed                                                       ServerMessageStatusUpdateEndedReason = "pipeline-error-gladia-transcriber-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   ServerMessageStatusUpdateEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorTalkscriberTranscriberFailed                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-talkscriber-transcriber-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureSpeechTranscriberFailed                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-speech-transcriber-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorVapiLlmFailed                                                                 ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi401Unauthorized                                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-401-unauthorized"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-403-model-access-denied"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi429ExceededQuota                                                          ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-429-exceeded-quota"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorVapi500ServerError                                                            ServerMessageStatusUpdateEndedReason = "pipeline-error-vapi-500-server-error"
+	ServerMessageStatusUpdateEndedReasonPipelineNoAvailableModel                                                                   ServerMessageStatusUpdateEndedReason = "pipeline-no-available-model"
+	ServerMessageStatusUpdateEndedReasonWorkerShutdown                                                                             ServerMessageStatusUpdateEndedReason = "worker-shutdown"
+	ServerMessageStatusUpdateEndedReasonUnknownError                                                                               ServerMessageStatusUpdateEndedReason = "unknown-error"
+	ServerMessageStatusUpdateEndedReasonVonageDisconnected                                                                         ServerMessageStatusUpdateEndedReason = "vonage-disconnected"
+	ServerMessageStatusUpdateEndedReasonVonageFailedToConnectCall                                                                  ServerMessageStatusUpdateEndedReason = "vonage-failed-to-connect-call"
+	ServerMessageStatusUpdateEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            ServerMessageStatusUpdateEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
+	ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   ServerMessageStatusUpdateEndedReason = "vapifault-phone-call-worker-setup-socket-error"
+	ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           ServerMessageStatusUpdateEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
+	ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   ServerMessageStatusUpdateEndedReason = "vapifault-phone-call-worker-could-not-find-call"
+	ServerMessageStatusUpdateEndedReasonVapifaultTransportNeverConnected                                                           ServerMessageStatusUpdateEndedReason = "vapifault-transport-never-connected"
+	ServerMessageStatusUpdateEndedReasonVapifaultWebCallWorkerSetupFailed                                                          ServerMessageStatusUpdateEndedReason = "vapifault-web-call-worker-setup-failed"
+	ServerMessageStatusUpdateEndedReasonVapifaultTransportConnectedButCallNotActive                                                ServerMessageStatusUpdateEndedReason = "vapifault-transport-connected-but-call-not-active"
+	ServerMessageStatusUpdateEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        ServerMessageStatusUpdateEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiLlmFailed                                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-openai-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorGroqLlmFailed                                                                 ServerMessageStatusUpdateEndedReason = "pipeline-error-groq-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorGoogleLlmFailed                                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-google-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorXaiLlmFailed                                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-xai-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAiLlmFailed                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-inflection-ai-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCerebrasLlmFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-cerebras-llm-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeekLlmFailed                                                             ServerMessageStatusUpdateEndedReason = "pipeline-error-deep-seek-llm-failed"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenai400BadRequestValidationFailed                                           ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-400-bad-request-validation-failed"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenai401Unauthorized                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-401-unauthorized"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorOpenai403ModelAccessDenied                                                    ServerMessageStatusUpdateEndedReason = "pipeline-error-openai-403-model-access-denied"
@@ -37767,6 +41501,11 @@ const (
 	ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAi403ModelAccessDenied                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-inflection-ai-403-model-access-denied"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAi429ExceededQuota                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-inflection-ai-429-exceeded-quota"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAi500ServerError                                                    ServerMessageStatusUpdateEndedReason = "pipeline-error-inflection-ai-500-server-error"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek400BadRequestValidationFailed                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-deep-seek-400-bad-request-validation-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek401Unauthorized                                                       ServerMessageStatusUpdateEndedReason = "pipeline-error-deep-seek-401-unauthorized"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek403ModelAccessDenied                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-deep-seek-403-model-access-denied"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek429ExceededQuota                                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-deep-seek-429-exceeded-quota"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek500ServerError                                                        ServerMessageStatusUpdateEndedReason = "pipeline-error-deep-seek-500-server-error"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-openai-400-bad-request-validation-failed"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenai401Unauthorized                                                    ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-openai-401-unauthorized"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenai403ModelAccessDenied                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-azure-openai-403-model-access-denied"
@@ -37777,6 +41516,11 @@ const (
 	ServerMessageStatusUpdateEndedReasonPipelineErrorGroq403ModelAccessDenied                                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-groq-403-model-access-denied"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorGroq429ExceededQuota                                                          ServerMessageStatusUpdateEndedReason = "pipeline-error-groq-429-exceeded-quota"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorGroq500ServerError                                                            ServerMessageStatusUpdateEndedReason = "pipeline-error-groq-500-server-error"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras400BadRequestValidationFailed                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-cerebras-400-bad-request-validation-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras401Unauthorized                                                       ServerMessageStatusUpdateEndedReason = "pipeline-error-cerebras-401-unauthorized"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras403ModelAccessDenied                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-cerebras-403-model-access-denied"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras429ExceededQuota                                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-cerebras-429-exceeded-quota"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras500ServerError                                                        ServerMessageStatusUpdateEndedReason = "pipeline-error-cerebras-500-server-error"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed                                        ServerMessageStatusUpdateEndedReason = "pipeline-error-anthropic-400-bad-request-validation-failed"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorAnthropic401Unauthorized                                                      ServerMessageStatusUpdateEndedReason = "pipeline-error-anthropic-401-unauthorized"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorAnthropic403ModelAccessDenied                                                 ServerMessageStatusUpdateEndedReason = "pipeline-error-anthropic-403-model-access-denied"
@@ -37864,6 +41608,8 @@ const (
 	ServerMessageStatusUpdateEndedReasonPipelineErrorPlayht429ExceededQuota                                                        ServerMessageStatusUpdateEndedReason = "pipeline-error-playht-429-exceeded-quota"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorPlayht502GatewayError                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-playht-502-gateway-error"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorPlayht504GatewayError                                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-playht-504-gateway-error"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorTavusVideoFailed                                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-tavus-video-failed"
+	ServerMessageStatusUpdateEndedReasonPipelineErrorCustomTranscriberFailed                                                       ServerMessageStatusUpdateEndedReason = "pipeline-error-custom-transcriber-failed"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied                                         ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-returning-403-model-access-denied"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning401InvalidCredentials                                        ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-returning-401-invalid-credentials"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning404NotFound                                                  ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-returning-404-not-found"
@@ -37871,8 +41617,6 @@ const (
 	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning500InvalidJson                                               ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-returning-500-invalid-json"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning502NetworkError                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-returning-502-network-error"
 	ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach                                    ServerMessageStatusUpdateEndedReason = "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorTavusVideoFailed                                                              ServerMessageStatusUpdateEndedReason = "pipeline-error-tavus-video-failed"
-	ServerMessageStatusUpdateEndedReasonPipelineErrorCustomTranscriberFailed                                                       ServerMessageStatusUpdateEndedReason = "pipeline-error-custom-transcriber-failed"
 	ServerMessageStatusUpdateEndedReasonSilenceTimedOut                                                                            ServerMessageStatusUpdateEndedReason = "silence-timed-out"
 	ServerMessageStatusUpdateEndedReasonSipGatewayFailedToConnectCall                                                              ServerMessageStatusUpdateEndedReason = "sip-gateway-failed-to-connect-call"
 	ServerMessageStatusUpdateEndedReasonTwilioFailedToConnectCall                                                                  ServerMessageStatusUpdateEndedReason = "twilio-failed-to-connect-call"
@@ -37883,86 +41627,6 @@ const (
 
 func NewServerMessageStatusUpdateEndedReasonFromString(s string) (ServerMessageStatusUpdateEndedReason, error) {
 	switch s {
-	case "pipeline-error-openai-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiVoiceFailed, nil
-	case "pipeline-error-cartesia-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorCartesiaVoiceFailed, nil
-	case "pipeline-error-deepgram-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramVoiceFailed, nil
-	case "pipeline-error-eleven-labs-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
-	case "pipeline-error-playht-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorPlayhtVoiceFailed, nil
-	case "pipeline-error-lmnt-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorLmntVoiceFailed, nil
-	case "pipeline-error-azure-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorAzureVoiceFailed, nil
-	case "pipeline-error-rime-ai-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorRimeAiVoiceFailed, nil
-	case "pipeline-error-neets-voice-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorNeetsVoiceFailed, nil
-	case "db-error":
-		return ServerMessageStatusUpdateEndedReasonDbError, nil
-	case "assistant-not-found":
-		return ServerMessageStatusUpdateEndedReasonAssistantNotFound, nil
-	case "license-check-failed":
-		return ServerMessageStatusUpdateEndedReasonLicenseCheckFailed, nil
-	case "pipeline-error-vapi-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapiLlmFailed, nil
-	case "pipeline-error-vapi-400-bad-request-validation-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
-	case "pipeline-error-vapi-401-unauthorized":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi401Unauthorized, nil
-	case "pipeline-error-vapi-403-model-access-denied":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
-	case "pipeline-error-vapi-429-exceeded-quota":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi429ExceededQuota, nil
-	case "pipeline-error-vapi-500-server-error":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi500ServerError, nil
-	case "pipeline-no-available-model":
-		return ServerMessageStatusUpdateEndedReasonPipelineNoAvailableModel, nil
-	case "worker-shutdown":
-		return ServerMessageStatusUpdateEndedReasonWorkerShutdown, nil
-	case "unknown-error":
-		return ServerMessageStatusUpdateEndedReasonUnknownError, nil
-	case "vonage-disconnected":
-		return ServerMessageStatusUpdateEndedReasonVonageDisconnected, nil
-	case "vonage-failed-to-connect-call":
-		return ServerMessageStatusUpdateEndedReasonVonageFailedToConnectCall, nil
-	case "phone-call-provider-bypass-enabled-but-no-call-received":
-		return ServerMessageStatusUpdateEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
-	case "vapifault-phone-call-worker-setup-socket-error":
-		return ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
-	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
-		return ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
-	case "vapifault-phone-call-worker-could-not-find-call":
-		return ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
-	case "vapifault-transport-never-connected":
-		return ServerMessageStatusUpdateEndedReasonVapifaultTransportNeverConnected, nil
-	case "vapifault-web-call-worker-setup-failed":
-		return ServerMessageStatusUpdateEndedReasonVapifaultWebCallWorkerSetupFailed, nil
-	case "vapifault-transport-connected-but-call-not-active":
-		return ServerMessageStatusUpdateEndedReasonVapifaultTransportConnectedButCallNotActive, nil
-	case "vapifault-call-started-but-connection-to-transport-missing":
-		return ServerMessageStatusUpdateEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
-	case "pipeline-error-deepgram-transcriber-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
-	case "pipeline-error-gladia-transcriber-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorGladiaTranscriberFailed, nil
-	case "pipeline-error-assembly-ai-transcriber-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
-	case "pipeline-error-openai-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiLlmFailed, nil
-	case "pipeline-error-azure-openai-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
-	case "pipeline-error-groq-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorGroqLlmFailed, nil
-	case "pipeline-error-google-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorGoogleLlmFailed, nil
-	case "pipeline-error-xai-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorXaiLlmFailed, nil
-	case "pipeline-error-inflection-ai-llm-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAiLlmFailed, nil
 	case "assistant-not-invalid":
 		return ServerMessageStatusUpdateEndedReasonAssistantNotInvalid, nil
 	case "assistant-not-provided":
@@ -38005,6 +41669,96 @@ func NewServerMessageStatusUpdateEndedReasonFromString(s string) (ServerMessageS
 		return ServerMessageStatusUpdateEndedReasonManuallyCanceled, nil
 	case "phone-call-provider-closed-websocket":
 		return ServerMessageStatusUpdateEndedReasonPhoneCallProviderClosedWebsocket, nil
+	case "db-error":
+		return ServerMessageStatusUpdateEndedReasonDbError, nil
+	case "assistant-not-found":
+		return ServerMessageStatusUpdateEndedReasonAssistantNotFound, nil
+	case "license-check-failed":
+		return ServerMessageStatusUpdateEndedReasonLicenseCheckFailed, nil
+	case "pipeline-error-openai-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiVoiceFailed, nil
+	case "pipeline-error-cartesia-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCartesiaVoiceFailed, nil
+	case "pipeline-error-deepgram-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramVoiceFailed, nil
+	case "pipeline-error-eleven-labs-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
+	case "pipeline-error-playht-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorPlayhtVoiceFailed, nil
+	case "pipeline-error-lmnt-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorLmntVoiceFailed, nil
+	case "pipeline-error-azure-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorAzureVoiceFailed, nil
+	case "pipeline-error-rime-ai-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorRimeAiVoiceFailed, nil
+	case "pipeline-error-neets-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorNeetsVoiceFailed, nil
+	case "pipeline-error-smallest-ai-voice-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorSmallestAiVoiceFailed, nil
+	case "pipeline-error-deepgram-transcriber-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
+	case "pipeline-error-gladia-transcriber-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorGladiaTranscriberFailed, nil
+	case "pipeline-error-assembly-ai-transcriber-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
+	case "pipeline-error-talkscriber-transcriber-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorTalkscriberTranscriberFailed, nil
+	case "pipeline-error-azure-speech-transcriber-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorAzureSpeechTranscriberFailed, nil
+	case "pipeline-error-vapi-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapiLlmFailed, nil
+	case "pipeline-error-vapi-400-bad-request-validation-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
+	case "pipeline-error-vapi-401-unauthorized":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi401Unauthorized, nil
+	case "pipeline-error-vapi-403-model-access-denied":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
+	case "pipeline-error-vapi-429-exceeded-quota":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi429ExceededQuota, nil
+	case "pipeline-error-vapi-500-server-error":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorVapi500ServerError, nil
+	case "pipeline-no-available-model":
+		return ServerMessageStatusUpdateEndedReasonPipelineNoAvailableModel, nil
+	case "worker-shutdown":
+		return ServerMessageStatusUpdateEndedReasonWorkerShutdown, nil
+	case "unknown-error":
+		return ServerMessageStatusUpdateEndedReasonUnknownError, nil
+	case "vonage-disconnected":
+		return ServerMessageStatusUpdateEndedReasonVonageDisconnected, nil
+	case "vonage-failed-to-connect-call":
+		return ServerMessageStatusUpdateEndedReasonVonageFailedToConnectCall, nil
+	case "phone-call-provider-bypass-enabled-but-no-call-received":
+		return ServerMessageStatusUpdateEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
+	case "vapifault-phone-call-worker-setup-socket-error":
+		return ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
+	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
+		return ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
+	case "vapifault-phone-call-worker-could-not-find-call":
+		return ServerMessageStatusUpdateEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
+	case "vapifault-transport-never-connected":
+		return ServerMessageStatusUpdateEndedReasonVapifaultTransportNeverConnected, nil
+	case "vapifault-web-call-worker-setup-failed":
+		return ServerMessageStatusUpdateEndedReasonVapifaultWebCallWorkerSetupFailed, nil
+	case "vapifault-transport-connected-but-call-not-active":
+		return ServerMessageStatusUpdateEndedReasonVapifaultTransportConnectedButCallNotActive, nil
+	case "vapifault-call-started-but-connection-to-transport-missing":
+		return ServerMessageStatusUpdateEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
+	case "pipeline-error-openai-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorOpenaiLlmFailed, nil
+	case "pipeline-error-azure-openai-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
+	case "pipeline-error-groq-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorGroqLlmFailed, nil
+	case "pipeline-error-google-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorGoogleLlmFailed, nil
+	case "pipeline-error-xai-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorXaiLlmFailed, nil
+	case "pipeline-error-inflection-ai-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAiLlmFailed, nil
+	case "pipeline-error-cerebras-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCerebrasLlmFailed, nil
+	case "pipeline-error-deep-seek-llm-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeekLlmFailed, nil
 	case "pipeline-error-openai-400-bad-request-validation-failed":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorOpenai400BadRequestValidationFailed, nil
 	case "pipeline-error-openai-401-unauthorized":
@@ -38045,6 +41799,16 @@ func NewServerMessageStatusUpdateEndedReasonFromString(s string) (ServerMessageS
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAi429ExceededQuota, nil
 	case "pipeline-error-inflection-ai-500-server-error":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorInflectionAi500ServerError, nil
+	case "pipeline-error-deep-seek-400-bad-request-validation-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek400BadRequestValidationFailed, nil
+	case "pipeline-error-deep-seek-401-unauthorized":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek401Unauthorized, nil
+	case "pipeline-error-deep-seek-403-model-access-denied":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek403ModelAccessDenied, nil
+	case "pipeline-error-deep-seek-429-exceeded-quota":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek429ExceededQuota, nil
+	case "pipeline-error-deep-seek-500-server-error":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepSeek500ServerError, nil
 	case "pipeline-error-azure-openai-400-bad-request-validation-failed":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed, nil
 	case "pipeline-error-azure-openai-401-unauthorized":
@@ -38065,6 +41829,16 @@ func NewServerMessageStatusUpdateEndedReasonFromString(s string) (ServerMessageS
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorGroq429ExceededQuota, nil
 	case "pipeline-error-groq-500-server-error":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorGroq500ServerError, nil
+	case "pipeline-error-cerebras-400-bad-request-validation-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras400BadRequestValidationFailed, nil
+	case "pipeline-error-cerebras-401-unauthorized":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras401Unauthorized, nil
+	case "pipeline-error-cerebras-403-model-access-denied":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras403ModelAccessDenied, nil
+	case "pipeline-error-cerebras-429-exceeded-quota":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras429ExceededQuota, nil
+	case "pipeline-error-cerebras-500-server-error":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCerebras500ServerError, nil
 	case "pipeline-error-anthropic-400-bad-request-validation-failed":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed, nil
 	case "pipeline-error-anthropic-401-unauthorized":
@@ -38239,6 +42013,10 @@ func NewServerMessageStatusUpdateEndedReasonFromString(s string) (ServerMessageS
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorPlayht502GatewayError, nil
 	case "pipeline-error-playht-504-gateway-error":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorPlayht504GatewayError, nil
+	case "pipeline-error-tavus-video-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorTavusVideoFailed, nil
+	case "pipeline-error-custom-transcriber-failed":
+		return ServerMessageStatusUpdateEndedReasonPipelineErrorCustomTranscriberFailed, nil
 	case "pipeline-error-deepgram-returning-403-model-access-denied":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied, nil
 	case "pipeline-error-deepgram-returning-401-invalid-credentials":
@@ -38253,10 +42031,6 @@ func NewServerMessageStatusUpdateEndedReasonFromString(s string) (ServerMessageS
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning502NetworkError, nil
 	case "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach":
 		return ServerMessageStatusUpdateEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach, nil
-	case "pipeline-error-tavus-video-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorTavusVideoFailed, nil
-	case "pipeline-error-custom-transcriber-failed":
-		return ServerMessageStatusUpdateEndedReasonPipelineErrorCustomTranscriberFailed, nil
 	case "silence-timed-out":
 		return ServerMessageStatusUpdateEndedReasonSilenceTimedOut, nil
 	case "sip-gateway-failed-to-connect-call":
@@ -40980,6 +44754,389 @@ func (s *SipTrunkOutboundSipRegisterPlan) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+// This is the provider-specific ID that will be used.
+type SmallestAiVoiceId struct {
+	SmallestAiVoiceIdEnum SmallestAiVoiceIdEnum
+	String                string
+
+	typ string
+}
+
+func (s *SmallestAiVoiceId) GetSmallestAiVoiceIdEnum() SmallestAiVoiceIdEnum {
+	if s == nil {
+		return ""
+	}
+	return s.SmallestAiVoiceIdEnum
+}
+
+func (s *SmallestAiVoiceId) GetString() string {
+	if s == nil {
+		return ""
+	}
+	return s.String
+}
+
+func (s *SmallestAiVoiceId) UnmarshalJSON(data []byte) error {
+	var valueSmallestAiVoiceIdEnum SmallestAiVoiceIdEnum
+	if err := json.Unmarshal(data, &valueSmallestAiVoiceIdEnum); err == nil {
+		s.typ = "SmallestAiVoiceIdEnum"
+		s.SmallestAiVoiceIdEnum = valueSmallestAiVoiceIdEnum
+		return nil
+	}
+	var valueString string
+	if err := json.Unmarshal(data, &valueString); err == nil {
+		s.typ = "String"
+		s.String = valueString
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
+}
+
+func (s SmallestAiVoiceId) MarshalJSON() ([]byte, error) {
+	if s.typ == "SmallestAiVoiceIdEnum" || s.SmallestAiVoiceIdEnum != "" {
+		return json.Marshal(s.SmallestAiVoiceIdEnum)
+	}
+	if s.typ == "String" || s.String != "" {
+		return json.Marshal(s.String)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SmallestAiVoiceIdVisitor interface {
+	VisitSmallestAiVoiceIdEnum(SmallestAiVoiceIdEnum) error
+	VisitString(string) error
+}
+
+func (s *SmallestAiVoiceId) Accept(visitor SmallestAiVoiceIdVisitor) error {
+	if s.typ == "SmallestAiVoiceIdEnum" || s.SmallestAiVoiceIdEnum != "" {
+		return visitor.VisitSmallestAiVoiceIdEnum(s.SmallestAiVoiceIdEnum)
+	}
+	if s.typ == "String" || s.String != "" {
+		return visitor.VisitString(s.String)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", s)
+}
+
+type SmallestAiVoiceIdEnum string
+
+const (
+	SmallestAiVoiceIdEnumEmily    SmallestAiVoiceIdEnum = "emily"
+	SmallestAiVoiceIdEnumJasmine  SmallestAiVoiceIdEnum = "jasmine"
+	SmallestAiVoiceIdEnumArman    SmallestAiVoiceIdEnum = "arman"
+	SmallestAiVoiceIdEnumJames    SmallestAiVoiceIdEnum = "james"
+	SmallestAiVoiceIdEnumMithali  SmallestAiVoiceIdEnum = "mithali"
+	SmallestAiVoiceIdEnumAravind  SmallestAiVoiceIdEnum = "aravind"
+	SmallestAiVoiceIdEnumRaj      SmallestAiVoiceIdEnum = "raj"
+	SmallestAiVoiceIdEnumDiya     SmallestAiVoiceIdEnum = "diya"
+	SmallestAiVoiceIdEnumRaman    SmallestAiVoiceIdEnum = "raman"
+	SmallestAiVoiceIdEnumAnanya   SmallestAiVoiceIdEnum = "ananya"
+	SmallestAiVoiceIdEnumIsha     SmallestAiVoiceIdEnum = "isha"
+	SmallestAiVoiceIdEnumWilliam  SmallestAiVoiceIdEnum = "william"
+	SmallestAiVoiceIdEnumAarav    SmallestAiVoiceIdEnum = "aarav"
+	SmallestAiVoiceIdEnumMonika   SmallestAiVoiceIdEnum = "monika"
+	SmallestAiVoiceIdEnumNiharika SmallestAiVoiceIdEnum = "niharika"
+	SmallestAiVoiceIdEnumDeepika  SmallestAiVoiceIdEnum = "deepika"
+	SmallestAiVoiceIdEnumRaghav   SmallestAiVoiceIdEnum = "raghav"
+	SmallestAiVoiceIdEnumKajal    SmallestAiVoiceIdEnum = "kajal"
+	SmallestAiVoiceIdEnumRadhika  SmallestAiVoiceIdEnum = "radhika"
+	SmallestAiVoiceIdEnumMansi    SmallestAiVoiceIdEnum = "mansi"
+	SmallestAiVoiceIdEnumNisha    SmallestAiVoiceIdEnum = "nisha"
+	SmallestAiVoiceIdEnumSaurabh  SmallestAiVoiceIdEnum = "saurabh"
+	SmallestAiVoiceIdEnumPooja    SmallestAiVoiceIdEnum = "pooja"
+	SmallestAiVoiceIdEnumSaina    SmallestAiVoiceIdEnum = "saina"
+	SmallestAiVoiceIdEnumSanya    SmallestAiVoiceIdEnum = "sanya"
+)
+
+func NewSmallestAiVoiceIdEnumFromString(s string) (SmallestAiVoiceIdEnum, error) {
+	switch s {
+	case "emily":
+		return SmallestAiVoiceIdEnumEmily, nil
+	case "jasmine":
+		return SmallestAiVoiceIdEnumJasmine, nil
+	case "arman":
+		return SmallestAiVoiceIdEnumArman, nil
+	case "james":
+		return SmallestAiVoiceIdEnumJames, nil
+	case "mithali":
+		return SmallestAiVoiceIdEnumMithali, nil
+	case "aravind":
+		return SmallestAiVoiceIdEnumAravind, nil
+	case "raj":
+		return SmallestAiVoiceIdEnumRaj, nil
+	case "diya":
+		return SmallestAiVoiceIdEnumDiya, nil
+	case "raman":
+		return SmallestAiVoiceIdEnumRaman, nil
+	case "ananya":
+		return SmallestAiVoiceIdEnumAnanya, nil
+	case "isha":
+		return SmallestAiVoiceIdEnumIsha, nil
+	case "william":
+		return SmallestAiVoiceIdEnumWilliam, nil
+	case "aarav":
+		return SmallestAiVoiceIdEnumAarav, nil
+	case "monika":
+		return SmallestAiVoiceIdEnumMonika, nil
+	case "niharika":
+		return SmallestAiVoiceIdEnumNiharika, nil
+	case "deepika":
+		return SmallestAiVoiceIdEnumDeepika, nil
+	case "raghav":
+		return SmallestAiVoiceIdEnumRaghav, nil
+	case "kajal":
+		return SmallestAiVoiceIdEnumKajal, nil
+	case "radhika":
+		return SmallestAiVoiceIdEnumRadhika, nil
+	case "mansi":
+		return SmallestAiVoiceIdEnumMansi, nil
+	case "nisha":
+		return SmallestAiVoiceIdEnumNisha, nil
+	case "saurabh":
+		return SmallestAiVoiceIdEnumSaurabh, nil
+	case "pooja":
+		return SmallestAiVoiceIdEnumPooja, nil
+	case "saina":
+		return SmallestAiVoiceIdEnumSaina, nil
+	case "sanya":
+		return SmallestAiVoiceIdEnumSanya, nil
+	}
+	var t SmallestAiVoiceIdEnum
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (s SmallestAiVoiceIdEnum) Ptr() *SmallestAiVoiceIdEnum {
+	return &s
+}
+
+type SmallestAiCredential struct {
+	// This is not returned in the API.
+	ApiKey string `json:"apiKey" url:"apiKey"`
+	// This is the unique identifier for the credential.
+	Id string `json:"id" url:"id"`
+	// This is the unique identifier for the org that this credential belongs to.
+	OrgId string `json:"orgId" url:"orgId"`
+	// This is the ISO 8601 date-time string of when the credential was created.
+	CreatedAt time.Time `json:"createdAt" url:"createdAt"`
+	// This is the ISO 8601 date-time string of when the assistant was last updated.
+	UpdatedAt time.Time `json:"updatedAt" url:"updatedAt"`
+	// This is the name of credential. This is just for your reference.
+	Name     *string `json:"name,omitempty" url:"name,omitempty"`
+	provider string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SmallestAiCredential) GetApiKey() string {
+	if s == nil {
+		return ""
+	}
+	return s.ApiKey
+}
+
+func (s *SmallestAiCredential) GetId() string {
+	if s == nil {
+		return ""
+	}
+	return s.Id
+}
+
+func (s *SmallestAiCredential) GetOrgId() string {
+	if s == nil {
+		return ""
+	}
+	return s.OrgId
+}
+
+func (s *SmallestAiCredential) GetCreatedAt() time.Time {
+	if s == nil {
+		return time.Time{}
+	}
+	return s.CreatedAt
+}
+
+func (s *SmallestAiCredential) GetUpdatedAt() time.Time {
+	if s == nil {
+		return time.Time{}
+	}
+	return s.UpdatedAt
+}
+
+func (s *SmallestAiCredential) GetName() *string {
+	if s == nil {
+		return nil
+	}
+	return s.Name
+}
+
+func (s *SmallestAiCredential) Provider() string {
+	return s.provider
+}
+
+func (s *SmallestAiCredential) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SmallestAiCredential) UnmarshalJSON(data []byte) error {
+	type embed SmallestAiCredential
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SmallestAiCredential(unmarshaler.embed)
+	s.CreatedAt = unmarshaler.CreatedAt.Time()
+	s.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Provider != "smallest-ai" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", s, "smallest-ai", unmarshaler.Provider)
+	}
+	s.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *s, "provider")
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SmallestAiCredential) MarshalJSON() ([]byte, error) {
+	type embed SmallestAiCredential
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Provider  string             `json:"provider"`
+	}{
+		embed:     embed(*s),
+		CreatedAt: internal.NewDateTime(s.CreatedAt),
+		UpdatedAt: internal.NewDateTime(s.UpdatedAt),
+		Provider:  "smallest-ai",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SmallestAiCredential) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SmallestAiVoice struct {
+	// This is the voice provider that will be used.
+	// This is the provider-specific ID that will be used.
+	VoiceId *SmallestAiVoiceId `json:"voiceId,omitempty" url:"voiceId,omitempty"`
+	// Smallest AI voice model to use. Defaults to 'lightning' when not specified.
+	Model *string `json:"model,omitempty" url:"model,omitempty"`
+	// This is the speed multiplier that will be used.
+	Speed *float64 `json:"speed,omitempty" url:"speed,omitempty"`
+	// This is the plan for chunking the model output before it is sent to the voice provider.
+	ChunkPlan *ChunkPlan `json:"chunkPlan,omitempty" url:"chunkPlan,omitempty"`
+	// This is the plan for voice provider fallbacks in the event that the primary voice provider fails.
+	FallbackPlan *FallbackPlan `json:"fallbackPlan,omitempty" url:"fallbackPlan,omitempty"`
+	provider     string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SmallestAiVoice) GetVoiceId() *SmallestAiVoiceId {
+	if s == nil {
+		return nil
+	}
+	return s.VoiceId
+}
+
+func (s *SmallestAiVoice) GetSpeed() *float64 {
+	if s == nil {
+		return nil
+	}
+	return s.Speed
+}
+
+func (s *SmallestAiVoice) GetChunkPlan() *ChunkPlan {
+	if s == nil {
+		return nil
+	}
+	return s.ChunkPlan
+}
+
+func (s *SmallestAiVoice) GetFallbackPlan() *FallbackPlan {
+	if s == nil {
+		return nil
+	}
+	return s.FallbackPlan
+}
+
+func (s *SmallestAiVoice) Provider() string {
+	return s.provider
+}
+
+func (s *SmallestAiVoice) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SmallestAiVoice) UnmarshalJSON(data []byte) error {
+	type embed SmallestAiVoice
+	var unmarshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SmallestAiVoice(unmarshaler.embed)
+	if unmarshaler.Provider != "smallest-ai" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", s, "smallest-ai", unmarshaler.Provider)
+	}
+	s.provider = unmarshaler.Provider
+	extraProperties, err := internal.ExtractExtraProperties(data, *s, "provider")
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SmallestAiVoice) MarshalJSON() ([]byte, error) {
+	type embed SmallestAiVoice
+	var marshaler = struct {
+		embed
+		Provider string `json:"provider"`
+	}{
+		embed:    embed(*s),
+		Provider: "smallest-ai",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SmallestAiVoice) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SquadMemberDto struct {
 	// This is the assistant that will be used for the call. To use a transient assistant, use `assistant` instead.
 	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
@@ -41626,7 +45783,7 @@ type Subscription struct {
 	// This is the Stripe fingerprint of the payment method (card). It allows us
 	// to detect users who try to abuse our system through multiple sign-ups.
 	StripePaymentMethodFingerprint *string `json:"stripePaymentMethodFingerprint,omitempty" url:"stripePaymentMethodFingerprint,omitempty"`
-	// This is the stripe customer's email.
+	// This is the customer's email on Stripe.
 	StripeCustomerEmail *string `json:"stripeCustomerEmail,omitempty" url:"stripeCustomerEmail,omitempty"`
 	// This is the email of the referrer for the subscription.
 	ReferredByEmail *string `json:"referredByEmail,omitempty" url:"referredByEmail,omitempty"`
@@ -41912,212 +46069,6 @@ func (s *Subscription) MarshalJSON() ([]byte, error) {
 }
 
 func (s *Subscription) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SubscriptionConcurrencyLineBuyDto struct {
-	// This is the number of concurrency lines to purchase.
-	Quantity float64 `json:"quantity" url:"quantity"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SubscriptionConcurrencyLineBuyDto) GetQuantity() float64 {
-	if s == nil {
-		return 0
-	}
-	return s.Quantity
-}
-
-func (s *SubscriptionConcurrencyLineBuyDto) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
-}
-
-func (s *SubscriptionConcurrencyLineBuyDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler SubscriptionConcurrencyLineBuyDto
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SubscriptionConcurrencyLineBuyDto(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SubscriptionConcurrencyLineBuyDto) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SubscriptionConcurrencyLineRemoveDto struct {
-	// This is the number of concurrency lines to remove.
-	Quantity float64 `json:"quantity" url:"quantity"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SubscriptionConcurrencyLineRemoveDto) GetQuantity() float64 {
-	if s == nil {
-		return 0
-	}
-	return s.Quantity
-}
-
-func (s *SubscriptionConcurrencyLineRemoveDto) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
-}
-
-func (s *SubscriptionConcurrencyLineRemoveDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler SubscriptionConcurrencyLineRemoveDto
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SubscriptionConcurrencyLineRemoveDto(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SubscriptionConcurrencyLineRemoveDto) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SubscriptionCouponAddDto struct {
-	// This is the ID of the org within the subscription which the coupon will take effect on.
-	OrgId string `json:"orgId" url:"orgId"`
-	// This is the code of the coupon to apply to the subscription.
-	CouponCode string `json:"couponCode" url:"couponCode"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SubscriptionCouponAddDto) GetOrgId() string {
-	if s == nil {
-		return ""
-	}
-	return s.OrgId
-}
-
-func (s *SubscriptionCouponAddDto) GetCouponCode() string {
-	if s == nil {
-		return ""
-	}
-	return s.CouponCode
-}
-
-func (s *SubscriptionCouponAddDto) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
-}
-
-func (s *SubscriptionCouponAddDto) UnmarshalJSON(data []byte) error {
-	type unmarshaler SubscriptionCouponAddDto
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SubscriptionCouponAddDto(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SubscriptionCouponAddDto) String() string {
-	if len(s.rawJSON) > 0 {
-		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
-			return value
-		}
-	}
-	if value, err := internal.StringifyJSON(s); err == nil {
-		return value
-	}
-	return fmt.Sprintf("%#v", s)
-}
-
-type SubscriptionMonthlyCharge struct {
-	// This is the monthly charge for the subscription.
-	MonthlyCharge float64 `json:"monthlyCharge" url:"monthlyCharge"`
-	// These are the different costs that make up the monthly charge.
-	Costs []map[string]interface{} `json:"costs,omitempty" url:"costs,omitempty"`
-
-	extraProperties map[string]interface{}
-	rawJSON         json.RawMessage
-}
-
-func (s *SubscriptionMonthlyCharge) GetMonthlyCharge() float64 {
-	if s == nil {
-		return 0
-	}
-	return s.MonthlyCharge
-}
-
-func (s *SubscriptionMonthlyCharge) GetCosts() []map[string]interface{} {
-	if s == nil {
-		return nil
-	}
-	return s.Costs
-}
-
-func (s *SubscriptionMonthlyCharge) GetExtraProperties() map[string]interface{} {
-	return s.extraProperties
-}
-
-func (s *SubscriptionMonthlyCharge) UnmarshalJSON(data []byte) error {
-	type unmarshaler SubscriptionMonthlyCharge
-	var value unmarshaler
-	if err := json.Unmarshal(data, &value); err != nil {
-		return err
-	}
-	*s = SubscriptionMonthlyCharge(value)
-	extraProperties, err := internal.ExtractExtraProperties(data, *s)
-	if err != nil {
-		return err
-	}
-	s.extraProperties = extraProperties
-	s.rawJSON = json.RawMessage(data)
-	return nil
-}
-
-func (s *SubscriptionMonthlyCharge) String() string {
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -42505,6 +46456,7 @@ const (
 	SyncVoiceLibraryDtoProvidersItemOpenai      SyncVoiceLibraryDtoProvidersItem = "openai"
 	SyncVoiceLibraryDtoProvidersItemPlayht      SyncVoiceLibraryDtoProvidersItem = "playht"
 	SyncVoiceLibraryDtoProvidersItemRimeAi      SyncVoiceLibraryDtoProvidersItem = "rime-ai"
+	SyncVoiceLibraryDtoProvidersItemSmallestAi  SyncVoiceLibraryDtoProvidersItem = "smallest-ai"
 	SyncVoiceLibraryDtoProvidersItemTavus       SyncVoiceLibraryDtoProvidersItem = "tavus"
 )
 
@@ -42530,6 +46482,8 @@ func NewSyncVoiceLibraryDtoProvidersItemFromString(s string) (SyncVoiceLibraryDt
 		return SyncVoiceLibraryDtoProvidersItemPlayht, nil
 	case "rime-ai":
 		return SyncVoiceLibraryDtoProvidersItemRimeAi, nil
+	case "smallest-ai":
+		return SyncVoiceLibraryDtoProvidersItemSmallestAi, nil
 	case "tavus":
 		return SyncVoiceLibraryDtoProvidersItemTavus, nil
 	}
@@ -47324,12 +51278,16 @@ type TransferPlan struct {
 	// This is the message the assistant will deliver to the destination party before connecting the customer.
 	//
 	// Usage:
-	// - Used only when `mode` is `warm-transfer-say-message` or `warm-transfer-wait-for-operator-to-speak-first-and-then-say-message`.
+	// - Used only when `mode` is `blind-transfer-add-summary-to-sip-header`, `warm-transfer-say-message` or `warm-transfer-wait-for-operator-to-speak-first-and-then-say-message`.
 	Message *TransferPlanMessage `json:"message,omitempty" url:"message,omitempty"`
+	// This specifies the SIP verb to use while transferring the call.
+	// - 'refer': Uses SIP REFER to transfer the call (default)
+	// - 'bye': Ends current call with SIP BYE
+	SipVerb map[string]interface{} `json:"sipVerb,omitempty" url:"sipVerb,omitempty"`
 	// This is the plan for generating a summary of the call to present to the destination party.
 	//
 	// Usage:
-	// - Used only when `mode` is `warm-transfer-say-summary` or `warm-transfer-wait-for-operator-to-speak-first-and-then-say-summary`.
+	// - Used only when `mode` is `blind-transfer-add-summary-to-sip-header` or `warm-transfer-say-summary` or `warm-transfer-wait-for-operator-to-speak-first-and-then-say-summary`.
 	SummaryPlan *SummaryPlan `json:"summaryPlan,omitempty" url:"summaryPlan,omitempty"`
 
 	extraProperties map[string]interface{}
@@ -47348,6 +51306,13 @@ func (t *TransferPlan) GetMessage() *TransferPlanMessage {
 		return nil
 	}
 	return t.Message
+}
+
+func (t *TransferPlan) GetSipVerb() map[string]interface{} {
+	if t == nil {
+		return nil
+	}
+	return t.SipVerb
 }
 
 func (t *TransferPlan) GetSummaryPlan() *SummaryPlan {
@@ -47392,7 +51357,7 @@ func (t *TransferPlan) String() string {
 // This is the message the assistant will deliver to the destination party before connecting the customer.
 //
 // Usage:
-// - Used only when `mode` is `warm-transfer-say-message` or `warm-transfer-wait-for-operator-to-speak-first-and-then-say-message`.
+// - Used only when `mode` is `blind-transfer-add-summary-to-sip-header`, `warm-transfer-say-message` or `warm-transfer-wait-for-operator-to-speak-first-and-then-say-message`.
 type TransferPlanMessage struct {
 	String        string
 	CustomMessage *CustomMessage
@@ -47968,18 +51933,17 @@ func (t TwilioVoicemailDetectionVoicemailDetectionTypesItem) Ptr() *TwilioVoicem
 
 type UpdateAnthropicCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateAnthropicCredentialDto) GetApiKey() string {
+func (u *UpdateAnthropicCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -47991,49 +51955,24 @@ func (u *UpdateAnthropicCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateAnthropicCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateAnthropicCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateAnthropicCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateAnthropicCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateAnthropicCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateAnthropicCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "anthropic" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "anthropic", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateAnthropicCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateAnthropicCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateAnthropicCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "anthropic",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateAnthropicCredentialDto) String() string {
@@ -48050,18 +51989,17 @@ func (u *UpdateAnthropicCredentialDto) String() string {
 
 type UpdateAnyscaleCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateAnyscaleCredentialDto) GetApiKey() string {
+func (u *UpdateAnyscaleCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -48073,49 +52011,24 @@ func (u *UpdateAnyscaleCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateAnyscaleCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateAnyscaleCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateAnyscaleCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateAnyscaleCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateAnyscaleCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateAnyscaleCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "anyscale" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "anyscale", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateAnyscaleCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateAnyscaleCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateAnyscaleCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "anyscale",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateAnyscaleCredentialDto) String() string {
@@ -48132,18 +52045,17 @@ func (u *UpdateAnyscaleCredentialDto) String() string {
 
 type UpdateAssemblyAiCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateAssemblyAiCredentialDto) GetApiKey() string {
+func (u *UpdateAssemblyAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -48155,49 +52067,24 @@ func (u *UpdateAssemblyAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateAssemblyAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateAssemblyAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateAssemblyAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateAssemblyAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateAssemblyAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateAssemblyAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "assembly-ai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "assembly-ai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateAssemblyAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateAssemblyAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateAssemblyAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "assembly-ai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateAssemblyAiCredentialDto) String() string {
@@ -48214,17 +52101,25 @@ func (u *UpdateAssemblyAiCredentialDto) String() string {
 
 type UpdateAzureCredentialDto struct {
 	// This is the service being used in Azure.
+	Service *UpdateAzureCredentialDtoService `json:"service,omitempty" url:"service,omitempty"`
 	// This is the region of the Azure resource.
 	Region *UpdateAzureCredentialDtoRegion `json:"region,omitempty" url:"region,omitempty"`
 	// This is not returned in the API.
 	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
-	service  string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the bucket plan that can be provided to store call artifacts in Azure Blob Storage.
+	BucketPlan *AzureBlobStorageBucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (u *UpdateAzureCredentialDto) GetService() *UpdateAzureCredentialDtoService {
+	if u == nil {
+		return nil
+	}
+	return u.Service
 }
 
 func (u *UpdateAzureCredentialDto) GetRegion() *UpdateAzureCredentialDtoRegion {
@@ -48248,12 +52143,11 @@ func (u *UpdateAzureCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateAzureCredentialDto) Provider() string {
-	return u.provider
-}
-
-func (u *UpdateAzureCredentialDto) Service() string {
-	return u.service
+func (u *UpdateAzureCredentialDto) GetBucketPlan() *AzureBlobStorageBucketPlan {
+	if u == nil {
+		return nil
+	}
+	return u.BucketPlan
 }
 
 func (u *UpdateAzureCredentialDto) GetExtraProperties() map[string]interface{} {
@@ -48261,47 +52155,19 @@ func (u *UpdateAzureCredentialDto) GetExtraProperties() map[string]interface{} {
 }
 
 func (u *UpdateAzureCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateAzureCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-		Service  string `json:"service"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateAzureCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateAzureCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "azure" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "azure", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	if unmarshaler.Service != "speech" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "speech", unmarshaler.Service)
-	}
-	u.service = unmarshaler.Service
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider", "service")
+	*u = UpdateAzureCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateAzureCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateAzureCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-		Service  string `json:"service"`
-	}{
-		embed:    embed(*u),
-		Provider: "azure",
-		Service:  "speech",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateAzureCredentialDto) String() string {
@@ -48331,7 +52197,7 @@ const (
 	UpdateAzureCredentialDtoRegionNorthcentralus UpdateAzureCredentialDtoRegion = "northcentralus"
 	UpdateAzureCredentialDtoRegionNorway         UpdateAzureCredentialDtoRegion = "norway"
 	UpdateAzureCredentialDtoRegionSouthcentralus UpdateAzureCredentialDtoRegion = "southcentralus"
-	UpdateAzureCredentialDtoRegionSweden         UpdateAzureCredentialDtoRegion = "sweden"
+	UpdateAzureCredentialDtoRegionSwedencentral  UpdateAzureCredentialDtoRegion = "swedencentral"
 	UpdateAzureCredentialDtoRegionSwitzerland    UpdateAzureCredentialDtoRegion = "switzerland"
 	UpdateAzureCredentialDtoRegionUk             UpdateAzureCredentialDtoRegion = "uk"
 	UpdateAzureCredentialDtoRegionWestus         UpdateAzureCredentialDtoRegion = "westus"
@@ -48362,8 +52228,8 @@ func NewUpdateAzureCredentialDtoRegionFromString(s string) (UpdateAzureCredentia
 		return UpdateAzureCredentialDtoRegionNorway, nil
 	case "southcentralus":
 		return UpdateAzureCredentialDtoRegionSouthcentralus, nil
-	case "sweden":
-		return UpdateAzureCredentialDtoRegionSweden, nil
+	case "swedencentral":
+		return UpdateAzureCredentialDtoRegionSwedencentral, nil
 	case "switzerland":
 		return UpdateAzureCredentialDtoRegionSwitzerland, nil
 	case "uk":
@@ -48381,23 +52247,47 @@ func (u UpdateAzureCredentialDtoRegion) Ptr() *UpdateAzureCredentialDtoRegion {
 	return &u
 }
 
+// This is the service being used in Azure.
+type UpdateAzureCredentialDtoService string
+
+const (
+	UpdateAzureCredentialDtoServiceSpeech      UpdateAzureCredentialDtoService = "speech"
+	UpdateAzureCredentialDtoServiceBlobStorage UpdateAzureCredentialDtoService = "blob_storage"
+)
+
+func NewUpdateAzureCredentialDtoServiceFromString(s string) (UpdateAzureCredentialDtoService, error) {
+	switch s {
+	case "speech":
+		return UpdateAzureCredentialDtoServiceSpeech, nil
+	case "blob_storage":
+		return UpdateAzureCredentialDtoServiceBlobStorage, nil
+	}
+	var t UpdateAzureCredentialDtoService
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateAzureCredentialDtoService) Ptr() *UpdateAzureCredentialDtoService {
+	return &u
+}
+
 type UpdateAzureOpenAiCredentialDto struct {
-	Region UpdateAzureOpenAiCredentialDtoRegion       `json:"region" url:"region"`
+	Region *UpdateAzureOpenAiCredentialDtoRegion      `json:"region,omitempty" url:"region,omitempty"`
 	Models []UpdateAzureOpenAiCredentialDtoModelsItem `json:"models,omitempty" url:"models,omitempty"`
 	// This is not returned in the API.
-	OpenAiKey      string `json:"openAIKey" url:"openAIKey"`
-	OpenAiEndpoint string `json:"openAIEndpoint" url:"openAIEndpoint"`
+	OpenAiKey *string `json:"openAIKey,omitempty" url:"openAIKey,omitempty"`
+	// This is not returned in the API.
+	OcpApimSubscriptionKey *string `json:"ocpApimSubscriptionKey,omitempty" url:"ocpApimSubscriptionKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name           *string `json:"name,omitempty" url:"name,omitempty"`
+	OpenAiEndpoint *string `json:"openAIEndpoint,omitempty" url:"openAIEndpoint,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateAzureOpenAiCredentialDto) GetRegion() UpdateAzureOpenAiCredentialDtoRegion {
+func (u *UpdateAzureOpenAiCredentialDto) GetRegion() *UpdateAzureOpenAiCredentialDtoRegion {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Region
 }
@@ -48409,18 +52299,18 @@ func (u *UpdateAzureOpenAiCredentialDto) GetModels() []UpdateAzureOpenAiCredenti
 	return u.Models
 }
 
-func (u *UpdateAzureOpenAiCredentialDto) GetOpenAiKey() string {
+func (u *UpdateAzureOpenAiCredentialDto) GetOpenAiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.OpenAiKey
 }
 
-func (u *UpdateAzureOpenAiCredentialDto) GetOpenAiEndpoint() string {
+func (u *UpdateAzureOpenAiCredentialDto) GetOcpApimSubscriptionKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
-	return u.OpenAiEndpoint
+	return u.OcpApimSubscriptionKey
 }
 
 func (u *UpdateAzureOpenAiCredentialDto) GetName() *string {
@@ -48430,8 +52320,11 @@ func (u *UpdateAzureOpenAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateAzureOpenAiCredentialDto) Provider() string {
-	return u.provider
+func (u *UpdateAzureOpenAiCredentialDto) GetOpenAiEndpoint() *string {
+	if u == nil {
+		return nil
+	}
+	return u.OpenAiEndpoint
 }
 
 func (u *UpdateAzureOpenAiCredentialDto) GetExtraProperties() map[string]interface{} {
@@ -48439,40 +52332,19 @@ func (u *UpdateAzureOpenAiCredentialDto) GetExtraProperties() map[string]interfa
 }
 
 func (u *UpdateAzureOpenAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateAzureOpenAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateAzureOpenAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateAzureOpenAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "azure-openai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "azure-openai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateAzureOpenAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateAzureOpenAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateAzureOpenAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "azure-openai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateAzureOpenAiCredentialDto) String() string {
@@ -48544,7 +52416,7 @@ const (
 	UpdateAzureOpenAiCredentialDtoRegionNorthcentralus UpdateAzureOpenAiCredentialDtoRegion = "northcentralus"
 	UpdateAzureOpenAiCredentialDtoRegionNorway         UpdateAzureOpenAiCredentialDtoRegion = "norway"
 	UpdateAzureOpenAiCredentialDtoRegionSouthcentralus UpdateAzureOpenAiCredentialDtoRegion = "southcentralus"
-	UpdateAzureOpenAiCredentialDtoRegionSweden         UpdateAzureOpenAiCredentialDtoRegion = "sweden"
+	UpdateAzureOpenAiCredentialDtoRegionSwedencentral  UpdateAzureOpenAiCredentialDtoRegion = "swedencentral"
 	UpdateAzureOpenAiCredentialDtoRegionSwitzerland    UpdateAzureOpenAiCredentialDtoRegion = "switzerland"
 	UpdateAzureOpenAiCredentialDtoRegionUk             UpdateAzureOpenAiCredentialDtoRegion = "uk"
 	UpdateAzureOpenAiCredentialDtoRegionWestus         UpdateAzureOpenAiCredentialDtoRegion = "westus"
@@ -48575,8 +52447,8 @@ func NewUpdateAzureOpenAiCredentialDtoRegionFromString(s string) (UpdateAzureOpe
 		return UpdateAzureOpenAiCredentialDtoRegionNorway, nil
 	case "southcentralus":
 		return UpdateAzureOpenAiCredentialDtoRegionSouthcentralus, nil
-	case "sweden":
-		return UpdateAzureOpenAiCredentialDtoRegionSweden, nil
+	case "swedencentral":
+		return UpdateAzureOpenAiCredentialDtoRegionSwedencentral, nil
 	case "switzerland":
 		return UpdateAzureOpenAiCredentialDtoRegionSwitzerland, nil
 	case "uk":
@@ -48595,8 +52467,8 @@ func (u UpdateAzureOpenAiCredentialDtoRegion) Ptr() *UpdateAzureOpenAiCredential
 }
 
 type UpdateByoSipTrunkCredentialDto struct {
-	// This can be used to bring your own SIP trunks or to connect to a Carrier.
-	Provider *string `json:"provider,omitempty" url:"provider,omitempty"`
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// This is the list of SIP trunk's gateways.
 	Gateways []*SipTrunkGateway `json:"gateways,omitempty" url:"gateways,omitempty"`
 	// This can be used to configure the outbound authentication if required by the SIP trunk.
@@ -48614,11 +52486,16 @@ type UpdateByoSipTrunkCredentialDto struct {
 	SipDiversionHeader *string `json:"sipDiversionHeader,omitempty" url:"sipDiversionHeader,omitempty"`
 	// This is an advanced configuration for enterprise deployments. This uses the onprem SBC to trunk into the SIP trunk's `gateways`, rather than the managed SBC provided by Vapi.
 	SbcConfiguration *SbcConfiguration `json:"sbcConfiguration,omitempty" url:"sbcConfiguration,omitempty"`
-	// This is the name of credential. This is just for your reference.
-	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (u *UpdateByoSipTrunkCredentialDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
 }
 
 func (u *UpdateByoSipTrunkCredentialDto) GetGateways() []*SipTrunkGateway {
@@ -48663,13 +52540,6 @@ func (u *UpdateByoSipTrunkCredentialDto) GetSbcConfiguration() *SbcConfiguration
 	return u.SbcConfiguration
 }
 
-func (u *UpdateByoSipTrunkCredentialDto) GetName() *string {
-	if u == nil {
-		return nil
-	}
-	return u.Name
-}
-
 func (u *UpdateByoSipTrunkCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
@@ -48704,18 +52574,17 @@ func (u *UpdateByoSipTrunkCredentialDto) String() string {
 
 type UpdateCartesiaCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateCartesiaCredentialDto) GetApiKey() string {
+func (u *UpdateCartesiaCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -48727,49 +52596,24 @@ func (u *UpdateCartesiaCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateCartesiaCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateCartesiaCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateCartesiaCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateCartesiaCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateCartesiaCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateCartesiaCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "cartesia" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "cartesia", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateCartesiaCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateCartesiaCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateCartesiaCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "cartesia",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateCartesiaCredentialDto) String() string {
@@ -48784,22 +52628,160 @@ func (u *UpdateCartesiaCredentialDto) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
-type UpdateCustomLlmCredentialDto struct {
+type UpdateCerebrasCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
-	// This is the authentication plan. Currently supports OAuth2 RFC 6749. To use Bearer authentication, use apiKey
-	AuthenticationPlan *OAuth2AuthenticationPlan `json:"authenticationPlan,omitempty" url:"authenticationPlan,omitempty"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateCustomLlmCredentialDto) GetApiKey() string {
+func (u *UpdateCerebrasCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
+	}
+	return u.ApiKey
+}
+
+func (u *UpdateCerebrasCredentialDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateCerebrasCredentialDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateCerebrasCredentialDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateCerebrasCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateCerebrasCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateCerebrasCredentialDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateCloudflareCredentialDto struct {
+	// Cloudflare Account Id.
+	AccountId *string `json:"accountId,omitempty" url:"accountId,omitempty"`
+	// Cloudflare API Key / Token.
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// Cloudflare Account Email.
+	AccountEmail *string `json:"accountEmail,omitempty" url:"accountEmail,omitempty"`
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the bucket plan that can be provided to store call artifacts in R2
+	BucketPlan *CloudflareR2BucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateCloudflareCredentialDto) GetAccountId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AccountId
+}
+
+func (u *UpdateCloudflareCredentialDto) GetApiKey() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ApiKey
+}
+
+func (u *UpdateCloudflareCredentialDto) GetAccountEmail() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AccountEmail
+}
+
+func (u *UpdateCloudflareCredentialDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateCloudflareCredentialDto) GetBucketPlan() *CloudflareR2BucketPlan {
+	if u == nil {
+		return nil
+	}
+	return u.BucketPlan
+}
+
+func (u *UpdateCloudflareCredentialDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateCloudflareCredentialDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateCloudflareCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateCloudflareCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateCloudflareCredentialDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateCustomLlmCredentialDto struct {
+	// This is not returned in the API.
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// This is the authentication plan. Currently supports OAuth2 RFC 6749. To use Bearer authentication, use apiKey
+	AuthenticationPlan *OAuth2AuthenticationPlan `json:"authenticationPlan,omitempty" url:"authenticationPlan,omitempty"`
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateCustomLlmCredentialDto) GetApiKey() *string {
+	if u == nil {
+		return nil
 	}
 	return u.ApiKey
 }
@@ -48818,49 +52800,24 @@ func (u *UpdateCustomLlmCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateCustomLlmCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateCustomLlmCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateCustomLlmCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateCustomLlmCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateCustomLlmCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateCustomLlmCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "custom-llm" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "custom-llm", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateCustomLlmCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateCustomLlmCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateCustomLlmCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "custom-llm",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateCustomLlmCredentialDto) String() string {
@@ -48877,18 +52834,17 @@ func (u *UpdateCustomLlmCredentialDto) String() string {
 
 type UpdateDeepInfraCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateDeepInfraCredentialDto) GetApiKey() string {
+func (u *UpdateDeepInfraCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -48900,49 +52856,24 @@ func (u *UpdateDeepInfraCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateDeepInfraCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateDeepInfraCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateDeepInfraCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateDeepInfraCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateDeepInfraCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateDeepInfraCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "deepinfra" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "deepinfra", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateDeepInfraCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateDeepInfraCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateDeepInfraCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "deepinfra",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateDeepInfraCredentialDto) String() string {
@@ -48957,31 +52888,79 @@ func (u *UpdateDeepInfraCredentialDto) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
-type UpdateDeepgramCredentialDto struct {
+type UpdateDeepSeekCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
-	// This can be used to point to an onprem Deepgram instance. Defaults to api.deepgram.com.
-	ApiUrl *string `json:"apiUrl,omitempty" url:"apiUrl,omitempty"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateDeepgramCredentialDto) GetApiKey() string {
+func (u *UpdateDeepSeekCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
 
-func (u *UpdateDeepgramCredentialDto) GetApiUrl() *string {
+func (u *UpdateDeepSeekCredentialDto) GetName() *string {
 	if u == nil {
 		return nil
 	}
-	return u.ApiUrl
+	return u.Name
+}
+
+func (u *UpdateDeepSeekCredentialDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateDeepSeekCredentialDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateDeepSeekCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateDeepSeekCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateDeepSeekCredentialDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateDeepgramCredentialDto struct {
+	// This is not returned in the API.
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This can be used to point to an onprem Deepgram instance. Defaults to api.deepgram.com.
+	ApiUrl *string `json:"apiUrl,omitempty" url:"apiUrl,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateDeepgramCredentialDto) GetApiKey() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ApiKey
 }
 
 func (u *UpdateDeepgramCredentialDto) GetName() *string {
@@ -48991,8 +52970,11 @@ func (u *UpdateDeepgramCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateDeepgramCredentialDto) Provider() string {
-	return u.provider
+func (u *UpdateDeepgramCredentialDto) GetApiUrl() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ApiUrl
 }
 
 func (u *UpdateDeepgramCredentialDto) GetExtraProperties() map[string]interface{} {
@@ -49000,40 +52982,19 @@ func (u *UpdateDeepgramCredentialDto) GetExtraProperties() map[string]interface{
 }
 
 func (u *UpdateDeepgramCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateDeepgramCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateDeepgramCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateDeepgramCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "deepgram" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "deepgram", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateDeepgramCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateDeepgramCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateDeepgramCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "deepgram",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateDeepgramCredentialDto) String() string {
@@ -49050,18 +53011,18 @@ func (u *UpdateDeepgramCredentialDto) String() string {
 
 type UpdateElevenLabsCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
 	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Provider *string `json:"provider,omitempty" url:"provider,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateElevenLabsCredentialDto) GetApiKey() string {
+func (u *UpdateElevenLabsCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49073,49 +53034,24 @@ func (u *UpdateElevenLabsCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateElevenLabsCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateElevenLabsCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateElevenLabsCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateElevenLabsCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateElevenLabsCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateElevenLabsCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "11labs" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "11labs", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateElevenLabsCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateElevenLabsCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateElevenLabsCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "11labs",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateElevenLabsCredentialDto) String() string {
@@ -49131,18 +53067,24 @@ func (u *UpdateElevenLabsCredentialDto) String() string {
 }
 
 type UpdateGcpCredentialDto struct {
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 	// This is the GCP key. This is the JSON that can be generated in the Google Cloud Console at https://console.cloud.google.com/iam-admin/serviceaccounts/details/<service-account-id>/keys.
 	//
 	// The schema is identical to the JSON that GCP outputs.
 	GcpKey *GcpKey `json:"gcpKey,omitempty" url:"gcpKey,omitempty"`
 	// This is the bucket plan that can be provided to store call artifacts in GCP.
 	BucketPlan *BucketPlan `json:"bucketPlan,omitempty" url:"bucketPlan,omitempty"`
-	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
+}
+
+func (u *UpdateGcpCredentialDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
 }
 
 func (u *UpdateGcpCredentialDto) GetGcpKey() *GcpKey {
@@ -49159,56 +53101,24 @@ func (u *UpdateGcpCredentialDto) GetBucketPlan() *BucketPlan {
 	return u.BucketPlan
 }
 
-func (u *UpdateGcpCredentialDto) GetName() *string {
-	if u == nil {
-		return nil
-	}
-	return u.Name
-}
-
-func (u *UpdateGcpCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateGcpCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateGcpCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateGcpCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateGcpCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateGcpCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "gcp" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "gcp", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateGcpCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateGcpCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateGcpCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "gcp",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateGcpCredentialDto) String() string {
@@ -49225,18 +53135,17 @@ func (u *UpdateGcpCredentialDto) String() string {
 
 type UpdateGladiaCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateGladiaCredentialDto) GetApiKey() string {
+func (u *UpdateGladiaCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49248,49 +53157,24 @@ func (u *UpdateGladiaCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateGladiaCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateGladiaCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateGladiaCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateGladiaCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateGladiaCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateGladiaCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "gladia" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "gladia", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateGladiaCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateGladiaCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateGladiaCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "gladia",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateGladiaCredentialDto) String() string {
@@ -49307,18 +53191,17 @@ func (u *UpdateGladiaCredentialDto) String() string {
 
 type UpdateGoHighLevelCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateGoHighLevelCredentialDto) GetApiKey() string {
+func (u *UpdateGoHighLevelCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49330,49 +53213,24 @@ func (u *UpdateGoHighLevelCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateGoHighLevelCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateGoHighLevelCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateGoHighLevelCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateGoHighLevelCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateGoHighLevelCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateGoHighLevelCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "gohighlevel" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "gohighlevel", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateGoHighLevelCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateGoHighLevelCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateGoHighLevelCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "gohighlevel",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateGoHighLevelCredentialDto) String() string {
@@ -49388,20 +53246,18 @@ func (u *UpdateGoHighLevelCredentialDto) String() string {
 }
 
 type UpdateGoogleCredentialDto struct {
-	// This is the key for Gemini in Google AI Studio. Get it from here: https://aistudio.google.com/app/apikey
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateGoogleCredentialDto) GetApiKey() string {
+func (u *UpdateGoogleCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49413,49 +53269,24 @@ func (u *UpdateGoogleCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateGoogleCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateGoogleCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateGoogleCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateGoogleCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateGoogleCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateGoogleCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "google" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "google", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateGoogleCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateGoogleCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateGoogleCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "google",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateGoogleCredentialDto) String() string {
@@ -49472,18 +53303,17 @@ func (u *UpdateGoogleCredentialDto) String() string {
 
 type UpdateGroqCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateGroqCredentialDto) GetApiKey() string {
+func (u *UpdateGroqCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49495,49 +53325,24 @@ func (u *UpdateGroqCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateGroqCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateGroqCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateGroqCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateGroqCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateGroqCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateGroqCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "groq" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "groq", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateGroqCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateGroqCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateGroqCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "groq",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateGroqCredentialDto) String() string {
@@ -49553,20 +53358,18 @@ func (u *UpdateGroqCredentialDto) String() string {
 }
 
 type UpdateInflectionAiCredentialDto struct {
-	// This is the api key for Pi in InflectionAI's console. Get it from here: https://developers.inflection.ai/keys, billing will need to be setup
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateInflectionAiCredentialDto) GetApiKey() string {
+func (u *UpdateInflectionAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49578,49 +53381,24 @@ func (u *UpdateInflectionAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateInflectionAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateInflectionAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateInflectionAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateInflectionAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateInflectionAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateInflectionAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "inflection-ai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "inflection-ai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateInflectionAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateInflectionAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateInflectionAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "inflection-ai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateInflectionAiCredentialDto) String() string {
@@ -49637,36 +53415,35 @@ func (u *UpdateInflectionAiCredentialDto) String() string {
 
 type UpdateLangfuseCredentialDto struct {
 	// The public key for Langfuse project. Eg: pk-lf-...
-	PublicKey string `json:"publicKey" url:"publicKey"`
+	PublicKey *string `json:"publicKey,omitempty" url:"publicKey,omitempty"`
 	// The secret key for Langfuse project. Eg: sk-lf-... .This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// The host URL for Langfuse project. Eg: https://cloud.langfuse.com
-	ApiUrl string `json:"apiUrl" url:"apiUrl"`
+	ApiUrl *string `json:"apiUrl,omitempty" url:"apiUrl,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateLangfuseCredentialDto) GetPublicKey() string {
+func (u *UpdateLangfuseCredentialDto) GetPublicKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.PublicKey
 }
 
-func (u *UpdateLangfuseCredentialDto) GetApiKey() string {
+func (u *UpdateLangfuseCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
 
-func (u *UpdateLangfuseCredentialDto) GetApiUrl() string {
+func (u *UpdateLangfuseCredentialDto) GetApiUrl() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiUrl
 }
@@ -49678,49 +53455,24 @@ func (u *UpdateLangfuseCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateLangfuseCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateLangfuseCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateLangfuseCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateLangfuseCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateLangfuseCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateLangfuseCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "langfuse" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "langfuse", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateLangfuseCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateLangfuseCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateLangfuseCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "langfuse",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateLangfuseCredentialDto) String() string {
@@ -49737,18 +53489,17 @@ func (u *UpdateLangfuseCredentialDto) String() string {
 
 type UpdateLmntCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateLmntCredentialDto) GetApiKey() string {
+func (u *UpdateLmntCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49760,49 +53511,24 @@ func (u *UpdateLmntCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateLmntCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateLmntCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateLmntCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateLmntCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateLmntCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateLmntCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "lmnt" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "lmnt", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateLmntCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateLmntCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateLmntCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "lmnt",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateLmntCredentialDto) String() string {
@@ -49819,36 +53545,35 @@ func (u *UpdateLmntCredentialDto) String() string {
 
 type UpdateMakeCredentialDto struct {
 	// Team ID
-	TeamId string `json:"teamId" url:"teamId"`
+	TeamId *string `json:"teamId,omitempty" url:"teamId,omitempty"`
 	// Region of your application. For example: eu1, eu2, us1, us2
-	Region string `json:"region" url:"region"`
+	Region *string `json:"region,omitempty" url:"region,omitempty"`
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateMakeCredentialDto) GetTeamId() string {
+func (u *UpdateMakeCredentialDto) GetTeamId() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.TeamId
 }
 
-func (u *UpdateMakeCredentialDto) GetRegion() string {
+func (u *UpdateMakeCredentialDto) GetRegion() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Region
 }
 
-func (u *UpdateMakeCredentialDto) GetApiKey() string {
+func (u *UpdateMakeCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49860,49 +53585,24 @@ func (u *UpdateMakeCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateMakeCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateMakeCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateMakeCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateMakeCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateMakeCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateMakeCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "make" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "make", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateMakeCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateMakeCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateMakeCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "make",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateMakeCredentialDto) String() string {
@@ -49919,18 +53619,17 @@ func (u *UpdateMakeCredentialDto) String() string {
 
 type UpdateOpenAiCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateOpenAiCredentialDto) GetApiKey() string {
+func (u *UpdateOpenAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -49942,49 +53641,24 @@ func (u *UpdateOpenAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateOpenAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateOpenAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateOpenAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateOpenAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateOpenAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateOpenAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "openai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "openai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateOpenAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateOpenAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateOpenAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "openai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateOpenAiCredentialDto) String() string {
@@ -50001,18 +53675,17 @@ func (u *UpdateOpenAiCredentialDto) String() string {
 
 type UpdateOpenRouterCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateOpenRouterCredentialDto) GetApiKey() string {
+func (u *UpdateOpenRouterCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -50024,49 +53697,24 @@ func (u *UpdateOpenRouterCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateOpenRouterCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateOpenRouterCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateOpenRouterCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateOpenRouterCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateOpenRouterCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateOpenRouterCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "openrouter" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "openrouter", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateOpenRouterCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateOpenRouterCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateOpenRouterCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "openrouter",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateOpenRouterCredentialDto) String() string {
@@ -50094,12 +53742,14 @@ type UpdateOrgDto struct {
 	Channel *UpdateOrgDtoChannel `json:"channel,omitempty" url:"channel,omitempty"`
 	// This is the monthly billing limit for the org. To go beyond $1000/mo, please contact us at support@vapi.ai.
 	BillingLimit *float64 `json:"billingLimit,omitempty" url:"billingLimit,omitempty"`
-	// This is the URL Vapi will communicate with via HTTP GET and POST Requests. This is used for retrieving context, function calling, and end-of-call reports.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// All requests will be sent with the call object among other things relevant to that message. You can find more details in the Server URL documentation.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret you can set that Vapi will send with every request to your server. Will be sent as a header called x-vapi-secret.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// This is the concurrency limit for the org. This is the maximum number of calls that can be active at any given time. To go beyond 10, please contact us at support@vapi.ai.
 	ConcurrencyLimit *float64 `json:"concurrencyLimit,omitempty" url:"concurrencyLimit,omitempty"`
 
@@ -50142,18 +53792,11 @@ func (u *UpdateOrgDto) GetBillingLimit() *float64 {
 	return u.BillingLimit
 }
 
-func (u *UpdateOrgDto) GetServerUrl() *string {
+func (u *UpdateOrgDto) GetServer() *Server {
 	if u == nil {
 		return nil
 	}
-	return u.ServerUrl
-}
-
-func (u *UpdateOrgDto) GetServerUrlSecret() *string {
-	if u == nil {
-		return nil
-	}
-	return u.ServerUrlSecret
+	return u.Server
 }
 
 func (u *UpdateOrgDto) GetConcurrencyLimit() *float64 {
@@ -50220,18 +53863,17 @@ func (u UpdateOrgDtoChannel) Ptr() *UpdateOrgDtoChannel {
 
 type UpdatePerplexityAiCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdatePerplexityAiCredentialDto) GetApiKey() string {
+func (u *UpdatePerplexityAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -50243,49 +53885,24 @@ func (u *UpdatePerplexityAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdatePerplexityAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdatePerplexityAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdatePerplexityAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdatePerplexityAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdatePerplexityAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdatePerplexityAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "perplexity-ai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "perplexity-ai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdatePerplexityAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdatePerplexityAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdatePerplexityAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "perplexity-ai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdatePerplexityAiCredentialDto) String() string {
@@ -50302,28 +53919,20 @@ func (u *UpdatePerplexityAiCredentialDto) String() string {
 
 type UpdatePlayHtCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
-	UserId string `json:"userId" url:"userId"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name   *string `json:"name,omitempty" url:"name,omitempty"`
+	UserId *string `json:"userId,omitempty" url:"userId,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdatePlayHtCredentialDto) GetApiKey() string {
+func (u *UpdatePlayHtCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
-}
-
-func (u *UpdatePlayHtCredentialDto) GetUserId() string {
-	if u == nil {
-		return ""
-	}
-	return u.UserId
 }
 
 func (u *UpdatePlayHtCredentialDto) GetName() *string {
@@ -50333,8 +53942,11 @@ func (u *UpdatePlayHtCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdatePlayHtCredentialDto) Provider() string {
-	return u.provider
+func (u *UpdatePlayHtCredentialDto) GetUserId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.UserId
 }
 
 func (u *UpdatePlayHtCredentialDto) GetExtraProperties() map[string]interface{} {
@@ -50342,40 +53954,19 @@ func (u *UpdatePlayHtCredentialDto) GetExtraProperties() map[string]interface{} 
 }
 
 func (u *UpdatePlayHtCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdatePlayHtCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdatePlayHtCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdatePlayHtCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "playht" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "playht", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdatePlayHtCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdatePlayHtCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdatePlayHtCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "playht",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdatePlayHtCredentialDto) String() string {
@@ -50392,18 +53983,17 @@ func (u *UpdatePlayHtCredentialDto) String() string {
 
 type UpdateRimeAiCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateRimeAiCredentialDto) GetApiKey() string {
+func (u *UpdateRimeAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -50415,49 +54005,24 @@ func (u *UpdateRimeAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateRimeAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateRimeAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateRimeAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateRimeAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateRimeAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateRimeAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "rime-ai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "rime-ai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateRimeAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateRimeAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateRimeAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "rime-ai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateRimeAiCredentialDto) String() string {
@@ -50474,18 +54039,17 @@ func (u *UpdateRimeAiCredentialDto) String() string {
 
 type UpdateRunpodCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateRunpodCredentialDto) GetApiKey() string {
+func (u *UpdateRunpodCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -50497,49 +54061,24 @@ func (u *UpdateRunpodCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateRunpodCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateRunpodCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateRunpodCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateRunpodCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateRunpodCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateRunpodCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "runpod" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "runpod", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateRunpodCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateRunpodCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateRunpodCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "runpod",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateRunpodCredentialDto) String() string {
@@ -50555,56 +54094,54 @@ func (u *UpdateRunpodCredentialDto) String() string {
 }
 
 type UpdateS3CredentialDto struct {
-	// Credential provider. Only allowed value is s3
 	// AWS access key ID.
-	AwsAccessKeyId string `json:"awsAccessKeyId" url:"awsAccessKeyId"`
+	AwsAccessKeyId *string `json:"awsAccessKeyId,omitempty" url:"awsAccessKeyId,omitempty"`
 	// AWS access key secret. This is not returned in the API.
-	AwsSecretAccessKey string `json:"awsSecretAccessKey" url:"awsSecretAccessKey"`
+	AwsSecretAccessKey *string `json:"awsSecretAccessKey,omitempty" url:"awsSecretAccessKey,omitempty"`
 	// AWS region in which the S3 bucket is located.
-	Region string `json:"region" url:"region"`
+	Region *string `json:"region,omitempty" url:"region,omitempty"`
 	// AWS S3 bucket name.
-	S3BucketName string `json:"s3BucketName" url:"s3BucketName"`
+	S3BucketName *string `json:"s3BucketName,omitempty" url:"s3BucketName,omitempty"`
 	// The path prefix for the uploaded recording. Ex. "recordings/"
-	S3PathPrefix string `json:"s3PathPrefix" url:"s3PathPrefix"`
+	S3PathPrefix *string `json:"s3PathPrefix,omitempty" url:"s3PathPrefix,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateS3CredentialDto) GetAwsAccessKeyId() string {
+func (u *UpdateS3CredentialDto) GetAwsAccessKeyId() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.AwsAccessKeyId
 }
 
-func (u *UpdateS3CredentialDto) GetAwsSecretAccessKey() string {
+func (u *UpdateS3CredentialDto) GetAwsSecretAccessKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.AwsSecretAccessKey
 }
 
-func (u *UpdateS3CredentialDto) GetRegion() string {
+func (u *UpdateS3CredentialDto) GetRegion() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.Region
 }
 
-func (u *UpdateS3CredentialDto) GetS3BucketName() string {
+func (u *UpdateS3CredentialDto) GetS3BucketName() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.S3BucketName
 }
 
-func (u *UpdateS3CredentialDto) GetS3PathPrefix() string {
+func (u *UpdateS3CredentialDto) GetS3PathPrefix() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.S3PathPrefix
 }
@@ -50616,49 +54153,24 @@ func (u *UpdateS3CredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateS3CredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateS3CredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateS3CredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateS3CredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateS3CredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateS3CredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "s3" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "s3", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateS3CredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateS3CredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateS3CredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "s3",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateS3CredentialDto) String() string {
@@ -50673,20 +54185,75 @@ func (u *UpdateS3CredentialDto) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
-type UpdateTavusCredentialDto struct {
+type UpdateSmallestAiCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateTavusCredentialDto) GetApiKey() string {
+func (u *UpdateSmallestAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
+	}
+	return u.ApiKey
+}
+
+func (u *UpdateSmallestAiCredentialDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateSmallestAiCredentialDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateSmallestAiCredentialDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateSmallestAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateSmallestAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateSmallestAiCredentialDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateTavusCredentialDto struct {
+	// This is not returned in the API.
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
+	// This is the name of credential. This is just for your reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateTavusCredentialDto) GetApiKey() *string {
+	if u == nil {
+		return nil
 	}
 	return u.ApiKey
 }
@@ -50698,49 +54265,24 @@ func (u *UpdateTavusCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateTavusCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateTavusCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateTavusCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateTavusCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateTavusCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateTavusCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "tavus" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "tavus", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateTavusCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateTavusCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateTavusCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "tavus",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateTavusCredentialDto) String() string {
@@ -50757,18 +54299,17 @@ func (u *UpdateTavusCredentialDto) String() string {
 
 type UpdateTogetherAiCredentialDto struct {
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateTogetherAiCredentialDto) GetApiKey() string {
+func (u *UpdateTogetherAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -50780,49 +54321,24 @@ func (u *UpdateTogetherAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateTogetherAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateTogetherAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateTogetherAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateTogetherAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateTogetherAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateTogetherAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "together-ai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "together-ai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateTogetherAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateTogetherAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateTogetherAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "together-ai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateTogetherAiCredentialDto) String() string {
@@ -50835,6 +54351,94 @@ func (u *UpdateTogetherAiCredentialDto) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateTokenDto struct {
+	// This is the tag for the token. It represents its scope.
+	Tag *UpdateTokenDtoTag `json:"tag,omitempty" url:"tag,omitempty"`
+	// This is the name of the token. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This are the restrictions for the token.
+	Restrictions *TokenRestrictions `json:"restrictions,omitempty" url:"restrictions,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateTokenDto) GetTag() *UpdateTokenDtoTag {
+	if u == nil {
+		return nil
+	}
+	return u.Tag
+}
+
+func (u *UpdateTokenDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateTokenDto) GetRestrictions() *TokenRestrictions {
+	if u == nil {
+		return nil
+	}
+	return u.Restrictions
+}
+
+func (u *UpdateTokenDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateTokenDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateTokenDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateTokenDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateTokenDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+// This is the tag for the token. It represents its scope.
+type UpdateTokenDtoTag string
+
+const (
+	UpdateTokenDtoTagPrivate UpdateTokenDtoTag = "private"
+	UpdateTokenDtoTagPublic  UpdateTokenDtoTag = "public"
+)
+
+func NewUpdateTokenDtoTagFromString(s string) (UpdateTokenDtoTag, error) {
+	switch s {
+	case "private":
+		return UpdateTokenDtoTagPrivate, nil
+	case "public":
+		return UpdateTokenDtoTagPublic, nil
+	}
+	var t UpdateTokenDtoTag
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (u UpdateTokenDtoTag) Ptr() *UpdateTokenDtoTag {
+	return &u
 }
 
 type UpdateToolTemplateDto struct {
@@ -51249,28 +54853,20 @@ func (u UpdateToolTemplateDtoVisibility) Ptr() *UpdateToolTemplateDtoVisibility 
 
 type UpdateTwilioCredentialDto struct {
 	// This is not returned in the API.
-	AuthToken  string `json:"authToken" url:"authToken"`
-	AccountSid string `json:"accountSid" url:"accountSid"`
+	AuthToken *string `json:"authToken,omitempty" url:"authToken,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name       *string `json:"name,omitempty" url:"name,omitempty"`
+	AccountSid *string `json:"accountSid,omitempty" url:"accountSid,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateTwilioCredentialDto) GetAuthToken() string {
+func (u *UpdateTwilioCredentialDto) GetAuthToken() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.AuthToken
-}
-
-func (u *UpdateTwilioCredentialDto) GetAccountSid() string {
-	if u == nil {
-		return ""
-	}
-	return u.AccountSid
 }
 
 func (u *UpdateTwilioCredentialDto) GetName() *string {
@@ -51280,8 +54876,11 @@ func (u *UpdateTwilioCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateTwilioCredentialDto) Provider() string {
-	return u.provider
+func (u *UpdateTwilioCredentialDto) GetAccountSid() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AccountSid
 }
 
 func (u *UpdateTwilioCredentialDto) GetExtraProperties() map[string]interface{} {
@@ -51289,40 +54888,19 @@ func (u *UpdateTwilioCredentialDto) GetExtraProperties() map[string]interface{} 
 }
 
 func (u *UpdateTwilioCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateTwilioCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateTwilioCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateTwilioCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "twilio" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "twilio", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateTwilioCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateTwilioCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateTwilioCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "twilio",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateTwilioCredentialDto) String() string {
@@ -51418,28 +54996,20 @@ func (u UpdateUserRoleDtoRole) Ptr() *UpdateUserRoleDtoRole {
 
 type UpdateVonageCredentialDto struct {
 	// This is not returned in the API.
-	ApiSecret string `json:"apiSecret" url:"apiSecret"`
-	ApiKey    string `json:"apiKey" url:"apiKey"`
+	ApiSecret *string `json:"apiSecret,omitempty" url:"apiSecret,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name   *string `json:"name,omitempty" url:"name,omitempty"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateVonageCredentialDto) GetApiSecret() string {
+func (u *UpdateVonageCredentialDto) GetApiSecret() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiSecret
-}
-
-func (u *UpdateVonageCredentialDto) GetApiKey() string {
-	if u == nil {
-		return ""
-	}
-	return u.ApiKey
 }
 
 func (u *UpdateVonageCredentialDto) GetName() *string {
@@ -51449,8 +55019,11 @@ func (u *UpdateVonageCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateVonageCredentialDto) Provider() string {
-	return u.provider
+func (u *UpdateVonageCredentialDto) GetApiKey() *string {
+	if u == nil {
+		return nil
+	}
+	return u.ApiKey
 }
 
 func (u *UpdateVonageCredentialDto) GetExtraProperties() map[string]interface{} {
@@ -51458,40 +55031,19 @@ func (u *UpdateVonageCredentialDto) GetExtraProperties() map[string]interface{} 
 }
 
 func (u *UpdateVonageCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateVonageCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateVonageCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateVonageCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "vonage" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "vonage", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateVonageCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateVonageCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateVonageCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "vonage",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateVonageCredentialDto) String() string {
@@ -51507,20 +55059,18 @@ func (u *UpdateVonageCredentialDto) String() string {
 }
 
 type UpdateXAiCredentialDto struct {
-	// This is the api key for Grok in XAi's console. Get it from here: https://console.x.ai
 	// This is not returned in the API.
-	ApiKey string `json:"apiKey" url:"apiKey"`
+	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
 	// This is the name of credential. This is just for your reference.
-	Name     *string `json:"name,omitempty" url:"name,omitempty"`
-	provider string
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (u *UpdateXAiCredentialDto) GetApiKey() string {
+func (u *UpdateXAiCredentialDto) GetApiKey() *string {
 	if u == nil {
-		return ""
+		return nil
 	}
 	return u.ApiKey
 }
@@ -51532,49 +55082,24 @@ func (u *UpdateXAiCredentialDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateXAiCredentialDto) Provider() string {
-	return u.provider
-}
-
 func (u *UpdateXAiCredentialDto) GetExtraProperties() map[string]interface{} {
 	return u.extraProperties
 }
 
 func (u *UpdateXAiCredentialDto) UnmarshalJSON(data []byte) error {
-	type embed UpdateXAiCredentialDto
-	var unmarshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed: embed(*u),
-	}
-	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+	type unmarshaler UpdateXAiCredentialDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*u = UpdateXAiCredentialDto(unmarshaler.embed)
-	if unmarshaler.Provider != "xai" {
-		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", u, "xai", unmarshaler.Provider)
-	}
-	u.provider = unmarshaler.Provider
-	extraProperties, err := internal.ExtractExtraProperties(data, *u, "provider")
+	*u = UpdateXAiCredentialDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
 	if err != nil {
 		return err
 	}
 	u.extraProperties = extraProperties
 	u.rawJSON = json.RawMessage(data)
 	return nil
-}
-
-func (u *UpdateXAiCredentialDto) MarshalJSON() ([]byte, error) {
-	type embed UpdateXAiCredentialDto
-	var marshaler = struct {
-		embed
-		Provider string `json:"provider"`
-	}{
-		embed:    embed(*u),
-		Provider: "xai",
-	}
-	return json.Marshal(marshaler)
 }
 
 func (u *UpdateXAiCredentialDto) String() string {

@@ -66,16 +66,14 @@ type ByoPhoneNumber struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// This is the number of the customer.
 	Number *string `json:"number,omitempty" url:"number,omitempty"`
 	// This is the credential of your own SIP trunk or Carrier (type `byo-sip-trunk`) which can be used to make calls to this phone number.
@@ -151,18 +149,11 @@ func (b *ByoPhoneNumber) GetSquadId() *string {
 	return b.SquadId
 }
 
-func (b *ByoPhoneNumber) GetServerUrl() *string {
+func (b *ByoPhoneNumber) GetServer() *Server {
 	if b == nil {
 		return nil
 	}
-	return b.ServerUrl
-}
-
-func (b *ByoPhoneNumber) GetServerUrlSecret() *string {
-	if b == nil {
-		return nil
-	}
-	return b.ServerUrlSecret
+	return b.Server
 }
 
 func (b *ByoPhoneNumber) GetNumber() *string {
@@ -346,17 +337,15 @@ type CreateByoPhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
-	provider        string
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server   *Server `json:"server,omitempty" url:"server,omitempty"`
+	provider string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -411,18 +400,11 @@ func (c *CreateByoPhoneNumberDto) GetSquadId() *string {
 	return c.SquadId
 }
 
-func (c *CreateByoPhoneNumberDto) GetServerUrl() *string {
+func (c *CreateByoPhoneNumberDto) GetServer() *Server {
 	if c == nil {
 		return nil
 	}
-	return c.ServerUrl
-}
-
-func (c *CreateByoPhoneNumberDto) GetServerUrlSecret() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ServerUrlSecret
+	return c.Server
 }
 
 func (c *CreateByoPhoneNumberDto) Provider() string {
@@ -574,17 +556,15 @@ type CreateTwilioPhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
-	provider        string
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server   *Server `json:"server,omitempty" url:"server,omitempty"`
+	provider string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -639,18 +619,11 @@ func (c *CreateTwilioPhoneNumberDto) GetSquadId() *string {
 	return c.SquadId
 }
 
-func (c *CreateTwilioPhoneNumberDto) GetServerUrl() *string {
+func (c *CreateTwilioPhoneNumberDto) GetServer() *Server {
 	if c == nil {
 		return nil
 	}
-	return c.ServerUrl
-}
-
-func (c *CreateTwilioPhoneNumberDto) GetServerUrlSecret() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ServerUrlSecret
+	return c.Server
 }
 
 func (c *CreateTwilioPhoneNumberDto) Provider() string {
@@ -804,17 +777,15 @@ type CreateVapiPhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
-	provider        string
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server   *Server `json:"server,omitempty" url:"server,omitempty"`
+	provider string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -862,18 +833,11 @@ func (c *CreateVapiPhoneNumberDto) GetSquadId() *string {
 	return c.SquadId
 }
 
-func (c *CreateVapiPhoneNumberDto) GetServerUrl() *string {
+func (c *CreateVapiPhoneNumberDto) GetServer() *Server {
 	if c == nil {
 		return nil
 	}
-	return c.ServerUrl
-}
-
-func (c *CreateVapiPhoneNumberDto) GetServerUrlSecret() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ServerUrlSecret
+	return c.Server
 }
 
 func (c *CreateVapiPhoneNumberDto) Provider() string {
@@ -1023,17 +987,15 @@ type CreateVonagePhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
-	provider        string
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server   *Server `json:"server,omitempty" url:"server,omitempty"`
+	provider string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -1081,18 +1043,11 @@ func (c *CreateVonagePhoneNumberDto) GetSquadId() *string {
 	return c.SquadId
 }
 
-func (c *CreateVonagePhoneNumberDto) GetServerUrl() *string {
+func (c *CreateVonagePhoneNumberDto) GetServer() *Server {
 	if c == nil {
 		return nil
 	}
-	return c.ServerUrl
-}
-
-func (c *CreateVonagePhoneNumberDto) GetServerUrlSecret() *string {
-	if c == nil {
-		return nil
-	}
-	return c.ServerUrlSecret
+	return c.Server
 }
 
 func (c *CreateVonagePhoneNumberDto) Provider() string {
@@ -1311,16 +1266,14 @@ type TwilioPhoneNumber struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// These are the digits of the phone number you own on your Twilio.
 	Number string `json:"number" url:"number"`
 	// This is the Twilio Account SID for the phone number.
@@ -1389,18 +1342,11 @@ func (t *TwilioPhoneNumber) GetSquadId() *string {
 	return t.SquadId
 }
 
-func (t *TwilioPhoneNumber) GetServerUrl() *string {
+func (t *TwilioPhoneNumber) GetServer() *Server {
 	if t == nil {
 		return nil
 	}
-	return t.ServerUrl
-}
-
-func (t *TwilioPhoneNumber) GetServerUrlSecret() *string {
-	if t == nil {
-		return nil
-	}
-	return t.ServerUrlSecret
+	return t.Server
 }
 
 func (t *TwilioPhoneNumber) GetNumber() string {
@@ -1557,6 +1503,774 @@ func (t *TwilioPhoneNumberFallbackDestination) Accept(visitor TwilioPhoneNumberF
 	return fmt.Errorf("type %T does not include a non-empty union type", t)
 }
 
+type UpdateByoPhoneNumberDto struct {
+	// This is the fallback destination an inbound call will be transferred to if:
+	// 1. `assistantId` is not set
+	// 2. `squadId` is not set
+	// 3. and, `assistant-request` message to the `serverUrl` fails
+	//
+	// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+	FallbackDestination *UpdateByoPhoneNumberDtoFallbackDestination `json:"fallbackDestination,omitempty" url:"fallbackDestination,omitempty"`
+	// This is the flag to toggle the E164 check for the `number` field. This is an advanced property which should be used if you know your use case requires it.
+	//
+	// Use cases:
+	// - `false`: To allow non-E164 numbers like `+001234567890`, `1234`, or `abc`. This is useful for dialing out to non-E164 numbers on your SIP trunks.
+	// - `true` (default): To allow only E164 numbers like `+14155551234`. This is standard for PSTN calls.
+	//
+	// If `false`, the `number` is still required to only contain alphanumeric characters (regex: `/^\+?[a-zA-Z0-9]+$/`).
+	//
+	// @default true (E164 check is enabled)
+	NumberE164CheckEnabled *bool `json:"numberE164CheckEnabled,omitempty" url:"numberE164CheckEnabled,omitempty"`
+	// This is the name of the phone number. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the assistant that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	// This is the squad that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
+	//
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
+	// This is the number of the customer.
+	Number *string `json:"number,omitempty" url:"number,omitempty"`
+	// This is the credential of your own SIP trunk or Carrier (type `byo-sip-trunk`) which can be used to make calls to this phone number.
+	//
+	// You can add the SIP trunk or Carrier credential in the Provider Credentials page on the Dashboard to get the credentialId.
+	CredentialId *string `json:"credentialId,omitempty" url:"credentialId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateByoPhoneNumberDto) GetFallbackDestination() *UpdateByoPhoneNumberDtoFallbackDestination {
+	if u == nil {
+		return nil
+	}
+	return u.FallbackDestination
+}
+
+func (u *UpdateByoPhoneNumberDto) GetNumberE164CheckEnabled() *bool {
+	if u == nil {
+		return nil
+	}
+	return u.NumberE164CheckEnabled
+}
+
+func (u *UpdateByoPhoneNumberDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateByoPhoneNumberDto) GetAssistantId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AssistantId
+}
+
+func (u *UpdateByoPhoneNumberDto) GetSquadId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SquadId
+}
+
+func (u *UpdateByoPhoneNumberDto) GetServer() *Server {
+	if u == nil {
+		return nil
+	}
+	return u.Server
+}
+
+func (u *UpdateByoPhoneNumberDto) GetNumber() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Number
+}
+
+func (u *UpdateByoPhoneNumberDto) GetCredentialId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.CredentialId
+}
+
+func (u *UpdateByoPhoneNumberDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateByoPhoneNumberDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateByoPhoneNumberDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateByoPhoneNumberDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateByoPhoneNumberDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+// This is the fallback destination an inbound call will be transferred to if:
+// 1. `assistantId` is not set
+// 2. `squadId` is not set
+// 3. and, `assistant-request` message to the `serverUrl` fails
+//
+// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+type UpdateByoPhoneNumberDtoFallbackDestination struct {
+	TransferDestinationNumber *TransferDestinationNumber
+	TransferDestinationSip    *TransferDestinationSip
+
+	typ string
+}
+
+func (u *UpdateByoPhoneNumberDtoFallbackDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationNumber
+}
+
+func (u *UpdateByoPhoneNumberDtoFallbackDestination) GetTransferDestinationSip() *TransferDestinationSip {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationSip
+}
+
+func (u *UpdateByoPhoneNumberDtoFallbackDestination) UnmarshalJSON(data []byte) error {
+	valueTransferDestinationNumber := new(TransferDestinationNumber)
+	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
+		u.typ = "TransferDestinationNumber"
+		u.TransferDestinationNumber = valueTransferDestinationNumber
+		return nil
+	}
+	valueTransferDestinationSip := new(TransferDestinationSip)
+	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
+		u.typ = "TransferDestinationSip"
+		u.TransferDestinationSip = valueTransferDestinationSip
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UpdateByoPhoneNumberDtoFallbackDestination) MarshalJSON() ([]byte, error) {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return json.Marshal(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return json.Marshal(u.TransferDestinationSip)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateByoPhoneNumberDtoFallbackDestinationVisitor interface {
+	VisitTransferDestinationNumber(*TransferDestinationNumber) error
+	VisitTransferDestinationSip(*TransferDestinationSip) error
+}
+
+func (u *UpdateByoPhoneNumberDtoFallbackDestination) Accept(visitor UpdateByoPhoneNumberDtoFallbackDestinationVisitor) error {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return visitor.VisitTransferDestinationNumber(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return visitor.VisitTransferDestinationSip(u.TransferDestinationSip)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateTwilioPhoneNumberDto struct {
+	// This is the fallback destination an inbound call will be transferred to if:
+	// 1. `assistantId` is not set
+	// 2. `squadId` is not set
+	// 3. and, `assistant-request` message to the `serverUrl` fails
+	//
+	// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+	FallbackDestination *UpdateTwilioPhoneNumberDtoFallbackDestination `json:"fallbackDestination,omitempty" url:"fallbackDestination,omitempty"`
+	// This is the name of the phone number. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the assistant that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	// This is the squad that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
+	//
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
+	// These are the digits of the phone number you own on your Twilio.
+	Number *string `json:"number,omitempty" url:"number,omitempty"`
+	// This is the Twilio Account SID for the phone number.
+	TwilioAccountSid *string `json:"twilioAccountSid,omitempty" url:"twilioAccountSid,omitempty"`
+	// This is the Twilio Auth Token for the phone number.
+	TwilioAuthToken *string `json:"twilioAuthToken,omitempty" url:"twilioAuthToken,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetFallbackDestination() *UpdateTwilioPhoneNumberDtoFallbackDestination {
+	if u == nil {
+		return nil
+	}
+	return u.FallbackDestination
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetAssistantId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AssistantId
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetSquadId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SquadId
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetServer() *Server {
+	if u == nil {
+		return nil
+	}
+	return u.Server
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetNumber() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Number
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetTwilioAccountSid() *string {
+	if u == nil {
+		return nil
+	}
+	return u.TwilioAccountSid
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetTwilioAuthToken() *string {
+	if u == nil {
+		return nil
+	}
+	return u.TwilioAuthToken
+}
+
+func (u *UpdateTwilioPhoneNumberDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateTwilioPhoneNumberDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateTwilioPhoneNumberDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateTwilioPhoneNumberDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateTwilioPhoneNumberDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+// This is the fallback destination an inbound call will be transferred to if:
+// 1. `assistantId` is not set
+// 2. `squadId` is not set
+// 3. and, `assistant-request` message to the `serverUrl` fails
+//
+// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+type UpdateTwilioPhoneNumberDtoFallbackDestination struct {
+	TransferDestinationNumber *TransferDestinationNumber
+	TransferDestinationSip    *TransferDestinationSip
+
+	typ string
+}
+
+func (u *UpdateTwilioPhoneNumberDtoFallbackDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationNumber
+}
+
+func (u *UpdateTwilioPhoneNumberDtoFallbackDestination) GetTransferDestinationSip() *TransferDestinationSip {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationSip
+}
+
+func (u *UpdateTwilioPhoneNumberDtoFallbackDestination) UnmarshalJSON(data []byte) error {
+	valueTransferDestinationNumber := new(TransferDestinationNumber)
+	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
+		u.typ = "TransferDestinationNumber"
+		u.TransferDestinationNumber = valueTransferDestinationNumber
+		return nil
+	}
+	valueTransferDestinationSip := new(TransferDestinationSip)
+	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
+		u.typ = "TransferDestinationSip"
+		u.TransferDestinationSip = valueTransferDestinationSip
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UpdateTwilioPhoneNumberDtoFallbackDestination) MarshalJSON() ([]byte, error) {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return json.Marshal(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return json.Marshal(u.TransferDestinationSip)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateTwilioPhoneNumberDtoFallbackDestinationVisitor interface {
+	VisitTransferDestinationNumber(*TransferDestinationNumber) error
+	VisitTransferDestinationSip(*TransferDestinationSip) error
+}
+
+func (u *UpdateTwilioPhoneNumberDtoFallbackDestination) Accept(visitor UpdateTwilioPhoneNumberDtoFallbackDestinationVisitor) error {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return visitor.VisitTransferDestinationNumber(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return visitor.VisitTransferDestinationSip(u.TransferDestinationSip)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateVapiPhoneNumberDto struct {
+	// This is the fallback destination an inbound call will be transferred to if:
+	// 1. `assistantId` is not set
+	// 2. `squadId` is not set
+	// 3. and, `assistant-request` message to the `serverUrl` fails
+	//
+	// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+	FallbackDestination *UpdateVapiPhoneNumberDtoFallbackDestination `json:"fallbackDestination,omitempty" url:"fallbackDestination,omitempty"`
+	// This is the name of the phone number. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the assistant that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	// This is the squad that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
+	//
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
+	// This is the SIP URI of the phone number. You can SIP INVITE this. The assistant attached to this number will answer.
+	//
+	// This is case-insensitive.
+	SipUri *string `json:"sipUri,omitempty" url:"sipUri,omitempty"`
+	// This enables authentication for incoming SIP INVITE requests to the `sipUri`.
+	//
+	// If not set, any username/password to the 401 challenge of the SIP INVITE will be accepted.
+	Authentication *SipAuthentication `json:"authentication,omitempty" url:"authentication,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetFallbackDestination() *UpdateVapiPhoneNumberDtoFallbackDestination {
+	if u == nil {
+		return nil
+	}
+	return u.FallbackDestination
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetAssistantId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AssistantId
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetSquadId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SquadId
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetServer() *Server {
+	if u == nil {
+		return nil
+	}
+	return u.Server
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetSipUri() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SipUri
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetAuthentication() *SipAuthentication {
+	if u == nil {
+		return nil
+	}
+	return u.Authentication
+}
+
+func (u *UpdateVapiPhoneNumberDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateVapiPhoneNumberDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateVapiPhoneNumberDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateVapiPhoneNumberDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateVapiPhoneNumberDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+// This is the fallback destination an inbound call will be transferred to if:
+// 1. `assistantId` is not set
+// 2. `squadId` is not set
+// 3. and, `assistant-request` message to the `serverUrl` fails
+//
+// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+type UpdateVapiPhoneNumberDtoFallbackDestination struct {
+	TransferDestinationNumber *TransferDestinationNumber
+	TransferDestinationSip    *TransferDestinationSip
+
+	typ string
+}
+
+func (u *UpdateVapiPhoneNumberDtoFallbackDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationNumber
+}
+
+func (u *UpdateVapiPhoneNumberDtoFallbackDestination) GetTransferDestinationSip() *TransferDestinationSip {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationSip
+}
+
+func (u *UpdateVapiPhoneNumberDtoFallbackDestination) UnmarshalJSON(data []byte) error {
+	valueTransferDestinationNumber := new(TransferDestinationNumber)
+	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
+		u.typ = "TransferDestinationNumber"
+		u.TransferDestinationNumber = valueTransferDestinationNumber
+		return nil
+	}
+	valueTransferDestinationSip := new(TransferDestinationSip)
+	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
+		u.typ = "TransferDestinationSip"
+		u.TransferDestinationSip = valueTransferDestinationSip
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UpdateVapiPhoneNumberDtoFallbackDestination) MarshalJSON() ([]byte, error) {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return json.Marshal(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return json.Marshal(u.TransferDestinationSip)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateVapiPhoneNumberDtoFallbackDestinationVisitor interface {
+	VisitTransferDestinationNumber(*TransferDestinationNumber) error
+	VisitTransferDestinationSip(*TransferDestinationSip) error
+}
+
+func (u *UpdateVapiPhoneNumberDtoFallbackDestination) Accept(visitor UpdateVapiPhoneNumberDtoFallbackDestinationVisitor) error {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return visitor.VisitTransferDestinationNumber(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return visitor.VisitTransferDestinationSip(u.TransferDestinationSip)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateVonagePhoneNumberDto struct {
+	// This is the fallback destination an inbound call will be transferred to if:
+	// 1. `assistantId` is not set
+	// 2. `squadId` is not set
+	// 3. and, `assistant-request` message to the `serverUrl` fails
+	//
+	// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+	FallbackDestination *UpdateVonagePhoneNumberDtoFallbackDestination `json:"fallbackDestination,omitempty" url:"fallbackDestination,omitempty"`
+	// This is the name of the phone number. This is just for your own reference.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the assistant that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	AssistantId *string `json:"assistantId,omitempty" url:"assistantId,omitempty"`
+	// This is the squad that will be used for incoming calls to this phone number.
+	//
+	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
+	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
+	//
+	// The order of precedence is:
+	//
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
+	// These are the digits of the phone number you own on your Vonage.
+	Number *string `json:"number,omitempty" url:"number,omitempty"`
+	// This is the credential that is used to make outgoing calls, and do operations like call transfer and hang up.
+	CredentialId *string `json:"credentialId,omitempty" url:"credentialId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetFallbackDestination() *UpdateVonagePhoneNumberDtoFallbackDestination {
+	if u == nil {
+		return nil
+	}
+	return u.FallbackDestination
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetAssistantId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.AssistantId
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetSquadId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.SquadId
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetServer() *Server {
+	if u == nil {
+		return nil
+	}
+	return u.Server
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetNumber() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Number
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetCredentialId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.CredentialId
+}
+
+func (u *UpdateVonagePhoneNumberDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateVonagePhoneNumberDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateVonagePhoneNumberDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateVonagePhoneNumberDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateVonagePhoneNumberDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+// This is the fallback destination an inbound call will be transferred to if:
+// 1. `assistantId` is not set
+// 2. `squadId` is not set
+// 3. and, `assistant-request` message to the `serverUrl` fails
+//
+// If this is not set and above conditions are met, the inbound call is hung up with an error message.
+type UpdateVonagePhoneNumberDtoFallbackDestination struct {
+	TransferDestinationNumber *TransferDestinationNumber
+	TransferDestinationSip    *TransferDestinationSip
+
+	typ string
+}
+
+func (u *UpdateVonagePhoneNumberDtoFallbackDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationNumber
+}
+
+func (u *UpdateVonagePhoneNumberDtoFallbackDestination) GetTransferDestinationSip() *TransferDestinationSip {
+	if u == nil {
+		return nil
+	}
+	return u.TransferDestinationSip
+}
+
+func (u *UpdateVonagePhoneNumberDtoFallbackDestination) UnmarshalJSON(data []byte) error {
+	valueTransferDestinationNumber := new(TransferDestinationNumber)
+	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
+		u.typ = "TransferDestinationNumber"
+		u.TransferDestinationNumber = valueTransferDestinationNumber
+		return nil
+	}
+	valueTransferDestinationSip := new(TransferDestinationSip)
+	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
+		u.typ = "TransferDestinationSip"
+		u.TransferDestinationSip = valueTransferDestinationSip
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UpdateVonagePhoneNumberDtoFallbackDestination) MarshalJSON() ([]byte, error) {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return json.Marshal(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return json.Marshal(u.TransferDestinationSip)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateVonagePhoneNumberDtoFallbackDestinationVisitor interface {
+	VisitTransferDestinationNumber(*TransferDestinationNumber) error
+	VisitTransferDestinationSip(*TransferDestinationSip) error
+}
+
+func (u *UpdateVonagePhoneNumberDtoFallbackDestination) Accept(visitor UpdateVonagePhoneNumberDtoFallbackDestinationVisitor) error {
+	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
+		return visitor.VisitTransferDestinationNumber(u.TransferDestinationNumber)
+	}
+	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
+		return visitor.VisitTransferDestinationSip(u.TransferDestinationSip)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
 type VapiPhoneNumber struct {
 	// This is the fallback destination an inbound call will be transferred to if:
 	// 1. `assistantId` is not set
@@ -1583,16 +2297,14 @@ type VapiPhoneNumber struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// This is the SIP URI of the phone number. You can SIP INVITE this. The assistant attached to this number will answer.
 	//
 	// This is case-insensitive.
@@ -1663,18 +2375,11 @@ func (v *VapiPhoneNumber) GetSquadId() *string {
 	return v.SquadId
 }
 
-func (v *VapiPhoneNumber) GetServerUrl() *string {
+func (v *VapiPhoneNumber) GetServer() *Server {
 	if v == nil {
 		return nil
 	}
-	return v.ServerUrl
-}
-
-func (v *VapiPhoneNumber) GetServerUrlSecret() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ServerUrlSecret
+	return v.Server
 }
 
 func (v *VapiPhoneNumber) GetSipUri() string {
@@ -1850,16 +2555,14 @@ type VonagePhoneNumber struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 	// These are the digits of the phone number you own on your Vonage.
 	Number string `json:"number" url:"number"`
 	// This is the credential that is used to make outgoing calls, and do operations like call transfer and hang up.
@@ -1926,18 +2629,11 @@ func (v *VonagePhoneNumber) GetSquadId() *string {
 	return v.SquadId
 }
 
-func (v *VonagePhoneNumber) GetServerUrl() *string {
+func (v *VonagePhoneNumber) GetServer() *Server {
 	if v == nil {
 		return nil
 	}
-	return v.ServerUrl
-}
-
-func (v *VonagePhoneNumber) GetServerUrlSecret() *string {
-	if v == nil {
-		return nil
-	}
-	return v.ServerUrlSecret
+	return v.Server
 }
 
 func (v *VonagePhoneNumber) GetNumber() string {
@@ -2607,6 +3303,110 @@ func (p *PhoneNumbersListResponseItem) Accept(visitor PhoneNumbersListResponseIt
 	return fmt.Errorf("type %T does not include a non-empty union type", p)
 }
 
+type PhoneNumbersUpdateRequest struct {
+	UpdateByoPhoneNumberDto    *UpdateByoPhoneNumberDto
+	UpdateTwilioPhoneNumberDto *UpdateTwilioPhoneNumberDto
+	UpdateVonagePhoneNumberDto *UpdateVonagePhoneNumberDto
+	UpdateVapiPhoneNumberDto   *UpdateVapiPhoneNumberDto
+
+	typ string
+}
+
+func (p *PhoneNumbersUpdateRequest) GetUpdateByoPhoneNumberDto() *UpdateByoPhoneNumberDto {
+	if p == nil {
+		return nil
+	}
+	return p.UpdateByoPhoneNumberDto
+}
+
+func (p *PhoneNumbersUpdateRequest) GetUpdateTwilioPhoneNumberDto() *UpdateTwilioPhoneNumberDto {
+	if p == nil {
+		return nil
+	}
+	return p.UpdateTwilioPhoneNumberDto
+}
+
+func (p *PhoneNumbersUpdateRequest) GetUpdateVonagePhoneNumberDto() *UpdateVonagePhoneNumberDto {
+	if p == nil {
+		return nil
+	}
+	return p.UpdateVonagePhoneNumberDto
+}
+
+func (p *PhoneNumbersUpdateRequest) GetUpdateVapiPhoneNumberDto() *UpdateVapiPhoneNumberDto {
+	if p == nil {
+		return nil
+	}
+	return p.UpdateVapiPhoneNumberDto
+}
+
+func (p *PhoneNumbersUpdateRequest) UnmarshalJSON(data []byte) error {
+	valueUpdateByoPhoneNumberDto := new(UpdateByoPhoneNumberDto)
+	if err := json.Unmarshal(data, &valueUpdateByoPhoneNumberDto); err == nil {
+		p.typ = "UpdateByoPhoneNumberDto"
+		p.UpdateByoPhoneNumberDto = valueUpdateByoPhoneNumberDto
+		return nil
+	}
+	valueUpdateTwilioPhoneNumberDto := new(UpdateTwilioPhoneNumberDto)
+	if err := json.Unmarshal(data, &valueUpdateTwilioPhoneNumberDto); err == nil {
+		p.typ = "UpdateTwilioPhoneNumberDto"
+		p.UpdateTwilioPhoneNumberDto = valueUpdateTwilioPhoneNumberDto
+		return nil
+	}
+	valueUpdateVonagePhoneNumberDto := new(UpdateVonagePhoneNumberDto)
+	if err := json.Unmarshal(data, &valueUpdateVonagePhoneNumberDto); err == nil {
+		p.typ = "UpdateVonagePhoneNumberDto"
+		p.UpdateVonagePhoneNumberDto = valueUpdateVonagePhoneNumberDto
+		return nil
+	}
+	valueUpdateVapiPhoneNumberDto := new(UpdateVapiPhoneNumberDto)
+	if err := json.Unmarshal(data, &valueUpdateVapiPhoneNumberDto); err == nil {
+		p.typ = "UpdateVapiPhoneNumberDto"
+		p.UpdateVapiPhoneNumberDto = valueUpdateVapiPhoneNumberDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, p)
+}
+
+func (p PhoneNumbersUpdateRequest) MarshalJSON() ([]byte, error) {
+	if p.typ == "UpdateByoPhoneNumberDto" || p.UpdateByoPhoneNumberDto != nil {
+		return json.Marshal(p.UpdateByoPhoneNumberDto)
+	}
+	if p.typ == "UpdateTwilioPhoneNumberDto" || p.UpdateTwilioPhoneNumberDto != nil {
+		return json.Marshal(p.UpdateTwilioPhoneNumberDto)
+	}
+	if p.typ == "UpdateVonagePhoneNumberDto" || p.UpdateVonagePhoneNumberDto != nil {
+		return json.Marshal(p.UpdateVonagePhoneNumberDto)
+	}
+	if p.typ == "UpdateVapiPhoneNumberDto" || p.UpdateVapiPhoneNumberDto != nil {
+		return json.Marshal(p.UpdateVapiPhoneNumberDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", p)
+}
+
+type PhoneNumbersUpdateRequestVisitor interface {
+	VisitUpdateByoPhoneNumberDto(*UpdateByoPhoneNumberDto) error
+	VisitUpdateTwilioPhoneNumberDto(*UpdateTwilioPhoneNumberDto) error
+	VisitUpdateVonagePhoneNumberDto(*UpdateVonagePhoneNumberDto) error
+	VisitUpdateVapiPhoneNumberDto(*UpdateVapiPhoneNumberDto) error
+}
+
+func (p *PhoneNumbersUpdateRequest) Accept(visitor PhoneNumbersUpdateRequestVisitor) error {
+	if p.typ == "UpdateByoPhoneNumberDto" || p.UpdateByoPhoneNumberDto != nil {
+		return visitor.VisitUpdateByoPhoneNumberDto(p.UpdateByoPhoneNumberDto)
+	}
+	if p.typ == "UpdateTwilioPhoneNumberDto" || p.UpdateTwilioPhoneNumberDto != nil {
+		return visitor.VisitUpdateTwilioPhoneNumberDto(p.UpdateTwilioPhoneNumberDto)
+	}
+	if p.typ == "UpdateVonagePhoneNumberDto" || p.UpdateVonagePhoneNumberDto != nil {
+		return visitor.VisitUpdateVonagePhoneNumberDto(p.UpdateVonagePhoneNumberDto)
+	}
+	if p.typ == "UpdateVapiPhoneNumberDto" || p.UpdateVapiPhoneNumberDto != nil {
+		return visitor.VisitUpdateVapiPhoneNumberDto(p.UpdateVapiPhoneNumberDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", p)
+}
+
 type PhoneNumbersUpdateResponse struct {
 	ByoPhoneNumber    *ByoPhoneNumber
 	TwilioPhoneNumber *TwilioPhoneNumber
@@ -2709,102 +3509,4 @@ func (p *PhoneNumbersUpdateResponse) Accept(visitor PhoneNumbersUpdateResponseVi
 		return visitor.VisitVapiPhoneNumber(p.VapiPhoneNumber)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", p)
-}
-
-// This is the fallback destination an inbound call will be transferred to if:
-// 1. `assistantId` is not set
-// 2. `squadId` is not set
-// 3. and, `assistant-request` message to the `serverUrl` fails
-//
-// If this is not set and above conditions are met, the inbound call is hung up with an error message.
-type UpdatePhoneNumberDtoFallbackDestination struct {
-	TransferDestinationNumber *TransferDestinationNumber
-	TransferDestinationSip    *TransferDestinationSip
-
-	typ string
-}
-
-func (u *UpdatePhoneNumberDtoFallbackDestination) GetTransferDestinationNumber() *TransferDestinationNumber {
-	if u == nil {
-		return nil
-	}
-	return u.TransferDestinationNumber
-}
-
-func (u *UpdatePhoneNumberDtoFallbackDestination) GetTransferDestinationSip() *TransferDestinationSip {
-	if u == nil {
-		return nil
-	}
-	return u.TransferDestinationSip
-}
-
-func (u *UpdatePhoneNumberDtoFallbackDestination) UnmarshalJSON(data []byte) error {
-	valueTransferDestinationNumber := new(TransferDestinationNumber)
-	if err := json.Unmarshal(data, &valueTransferDestinationNumber); err == nil {
-		u.typ = "TransferDestinationNumber"
-		u.TransferDestinationNumber = valueTransferDestinationNumber
-		return nil
-	}
-	valueTransferDestinationSip := new(TransferDestinationSip)
-	if err := json.Unmarshal(data, &valueTransferDestinationSip); err == nil {
-		u.typ = "TransferDestinationSip"
-		u.TransferDestinationSip = valueTransferDestinationSip
-		return nil
-	}
-	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
-}
-
-func (u UpdatePhoneNumberDtoFallbackDestination) MarshalJSON() ([]byte, error) {
-	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
-		return json.Marshal(u.TransferDestinationNumber)
-	}
-	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
-		return json.Marshal(u.TransferDestinationSip)
-	}
-	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
-}
-
-type UpdatePhoneNumberDtoFallbackDestinationVisitor interface {
-	VisitTransferDestinationNumber(*TransferDestinationNumber) error
-	VisitTransferDestinationSip(*TransferDestinationSip) error
-}
-
-func (u *UpdatePhoneNumberDtoFallbackDestination) Accept(visitor UpdatePhoneNumberDtoFallbackDestinationVisitor) error {
-	if u.typ == "TransferDestinationNumber" || u.TransferDestinationNumber != nil {
-		return visitor.VisitTransferDestinationNumber(u.TransferDestinationNumber)
-	}
-	if u.typ == "TransferDestinationSip" || u.TransferDestinationSip != nil {
-		return visitor.VisitTransferDestinationSip(u.TransferDestinationSip)
-	}
-	return fmt.Errorf("type %T does not include a non-empty union type", u)
-}
-
-type UpdatePhoneNumberDto struct {
-	// This is the fallback destination an inbound call will be transferred to if:
-	// 1. `assistantId` is not set
-	// 2. `squadId` is not set
-	// 3. and, `assistant-request` message to the `serverUrl` fails
-	//
-	// If this is not set and above conditions are met, the inbound call is hung up with an error message.
-	FallbackDestination *UpdatePhoneNumberDtoFallbackDestination `json:"fallbackDestination,omitempty" url:"-"`
-	// This is the name of the phone number. This is just for your own reference.
-	Name *string `json:"name,omitempty" url:"-"`
-	// This is the assistant that will be used for incoming calls to this phone number.
-	//
-	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
-	AssistantId *string `json:"assistantId,omitempty" url:"-"`
-	// This is the squad that will be used for incoming calls to this phone number.
-	//
-	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
-	SquadId *string `json:"squadId,omitempty" url:"-"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
-	//
-	// You can see the shape of the messages sent in `ServerMessage`.
-	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"-"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"-"`
 }

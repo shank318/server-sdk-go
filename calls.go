@@ -1298,46 +1298,6 @@ func (c *CallDestination) Accept(visitor CallDestinationVisitor) error {
 type CallEndedReason string
 
 const (
-	CallEndedReasonPipelineErrorOpenaiVoiceFailed                                                             CallEndedReason = "pipeline-error-openai-voice-failed"
-	CallEndedReasonPipelineErrorCartesiaVoiceFailed                                                           CallEndedReason = "pipeline-error-cartesia-voice-failed"
-	CallEndedReasonPipelineErrorDeepgramVoiceFailed                                                           CallEndedReason = "pipeline-error-deepgram-voice-failed"
-	CallEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         CallEndedReason = "pipeline-error-eleven-labs-voice-failed"
-	CallEndedReasonPipelineErrorPlayhtVoiceFailed                                                             CallEndedReason = "pipeline-error-playht-voice-failed"
-	CallEndedReasonPipelineErrorLmntVoiceFailed                                                               CallEndedReason = "pipeline-error-lmnt-voice-failed"
-	CallEndedReasonPipelineErrorAzureVoiceFailed                                                              CallEndedReason = "pipeline-error-azure-voice-failed"
-	CallEndedReasonPipelineErrorRimeAiVoiceFailed                                                             CallEndedReason = "pipeline-error-rime-ai-voice-failed"
-	CallEndedReasonPipelineErrorNeetsVoiceFailed                                                              CallEndedReason = "pipeline-error-neets-voice-failed"
-	CallEndedReasonDbError                                                                                    CallEndedReason = "db-error"
-	CallEndedReasonAssistantNotFound                                                                          CallEndedReason = "assistant-not-found"
-	CallEndedReasonLicenseCheckFailed                                                                         CallEndedReason = "license-check-failed"
-	CallEndedReasonPipelineErrorVapiLlmFailed                                                                 CallEndedReason = "pipeline-error-vapi-llm-failed"
-	CallEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             CallEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
-	CallEndedReasonPipelineErrorVapi401Unauthorized                                                           CallEndedReason = "pipeline-error-vapi-401-unauthorized"
-	CallEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      CallEndedReason = "pipeline-error-vapi-403-model-access-denied"
-	CallEndedReasonPipelineErrorVapi429ExceededQuota                                                          CallEndedReason = "pipeline-error-vapi-429-exceeded-quota"
-	CallEndedReasonPipelineErrorVapi500ServerError                                                            CallEndedReason = "pipeline-error-vapi-500-server-error"
-	CallEndedReasonPipelineNoAvailableModel                                                                   CallEndedReason = "pipeline-no-available-model"
-	CallEndedReasonWorkerShutdown                                                                             CallEndedReason = "worker-shutdown"
-	CallEndedReasonUnknownError                                                                               CallEndedReason = "unknown-error"
-	CallEndedReasonVonageDisconnected                                                                         CallEndedReason = "vonage-disconnected"
-	CallEndedReasonVonageFailedToConnectCall                                                                  CallEndedReason = "vonage-failed-to-connect-call"
-	CallEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            CallEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
-	CallEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   CallEndedReason = "vapifault-phone-call-worker-setup-socket-error"
-	CallEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           CallEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
-	CallEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   CallEndedReason = "vapifault-phone-call-worker-could-not-find-call"
-	CallEndedReasonVapifaultTransportNeverConnected                                                           CallEndedReason = "vapifault-transport-never-connected"
-	CallEndedReasonVapifaultWebCallWorkerSetupFailed                                                          CallEndedReason = "vapifault-web-call-worker-setup-failed"
-	CallEndedReasonVapifaultTransportConnectedButCallNotActive                                                CallEndedReason = "vapifault-transport-connected-but-call-not-active"
-	CallEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        CallEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
-	CallEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     CallEndedReason = "pipeline-error-deepgram-transcriber-failed"
-	CallEndedReasonPipelineErrorGladiaTranscriberFailed                                                       CallEndedReason = "pipeline-error-gladia-transcriber-failed"
-	CallEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   CallEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
-	CallEndedReasonPipelineErrorOpenaiLlmFailed                                                               CallEndedReason = "pipeline-error-openai-llm-failed"
-	CallEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          CallEndedReason = "pipeline-error-azure-openai-llm-failed"
-	CallEndedReasonPipelineErrorGroqLlmFailed                                                                 CallEndedReason = "pipeline-error-groq-llm-failed"
-	CallEndedReasonPipelineErrorGoogleLlmFailed                                                               CallEndedReason = "pipeline-error-google-llm-failed"
-	CallEndedReasonPipelineErrorXaiLlmFailed                                                                  CallEndedReason = "pipeline-error-xai-llm-failed"
-	CallEndedReasonPipelineErrorInflectionAiLlmFailed                                                         CallEndedReason = "pipeline-error-inflection-ai-llm-failed"
 	CallEndedReasonAssistantNotInvalid                                                                        CallEndedReason = "assistant-not-invalid"
 	CallEndedReasonAssistantNotProvided                                                                       CallEndedReason = "assistant-not-provided"
 	CallEndedReasonCallStartErrorNeitherAssistantNorServerSet                                                 CallEndedReason = "call-start-error-neither-assistant-nor-server-set"
@@ -1359,6 +1319,51 @@ const (
 	CallEndedReasonExceededMaxDuration                                                                        CallEndedReason = "exceeded-max-duration"
 	CallEndedReasonManuallyCanceled                                                                           CallEndedReason = "manually-canceled"
 	CallEndedReasonPhoneCallProviderClosedWebsocket                                                           CallEndedReason = "phone-call-provider-closed-websocket"
+	CallEndedReasonDbError                                                                                    CallEndedReason = "db-error"
+	CallEndedReasonAssistantNotFound                                                                          CallEndedReason = "assistant-not-found"
+	CallEndedReasonLicenseCheckFailed                                                                         CallEndedReason = "license-check-failed"
+	CallEndedReasonPipelineErrorOpenaiVoiceFailed                                                             CallEndedReason = "pipeline-error-openai-voice-failed"
+	CallEndedReasonPipelineErrorCartesiaVoiceFailed                                                           CallEndedReason = "pipeline-error-cartesia-voice-failed"
+	CallEndedReasonPipelineErrorDeepgramVoiceFailed                                                           CallEndedReason = "pipeline-error-deepgram-voice-failed"
+	CallEndedReasonPipelineErrorElevenLabsVoiceFailed                                                         CallEndedReason = "pipeline-error-eleven-labs-voice-failed"
+	CallEndedReasonPipelineErrorPlayhtVoiceFailed                                                             CallEndedReason = "pipeline-error-playht-voice-failed"
+	CallEndedReasonPipelineErrorLmntVoiceFailed                                                               CallEndedReason = "pipeline-error-lmnt-voice-failed"
+	CallEndedReasonPipelineErrorAzureVoiceFailed                                                              CallEndedReason = "pipeline-error-azure-voice-failed"
+	CallEndedReasonPipelineErrorRimeAiVoiceFailed                                                             CallEndedReason = "pipeline-error-rime-ai-voice-failed"
+	CallEndedReasonPipelineErrorNeetsVoiceFailed                                                              CallEndedReason = "pipeline-error-neets-voice-failed"
+	CallEndedReasonPipelineErrorSmallestAiVoiceFailed                                                         CallEndedReason = "pipeline-error-smallest-ai-voice-failed"
+	CallEndedReasonPipelineErrorDeepgramTranscriberFailed                                                     CallEndedReason = "pipeline-error-deepgram-transcriber-failed"
+	CallEndedReasonPipelineErrorGladiaTranscriberFailed                                                       CallEndedReason = "pipeline-error-gladia-transcriber-failed"
+	CallEndedReasonPipelineErrorAssemblyAiTranscriberFailed                                                   CallEndedReason = "pipeline-error-assembly-ai-transcriber-failed"
+	CallEndedReasonPipelineErrorTalkscriberTranscriberFailed                                                  CallEndedReason = "pipeline-error-talkscriber-transcriber-failed"
+	CallEndedReasonPipelineErrorAzureSpeechTranscriberFailed                                                  CallEndedReason = "pipeline-error-azure-speech-transcriber-failed"
+	CallEndedReasonPipelineErrorVapiLlmFailed                                                                 CallEndedReason = "pipeline-error-vapi-llm-failed"
+	CallEndedReasonPipelineErrorVapi400BadRequestValidationFailed                                             CallEndedReason = "pipeline-error-vapi-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorVapi401Unauthorized                                                           CallEndedReason = "pipeline-error-vapi-401-unauthorized"
+	CallEndedReasonPipelineErrorVapi403ModelAccessDenied                                                      CallEndedReason = "pipeline-error-vapi-403-model-access-denied"
+	CallEndedReasonPipelineErrorVapi429ExceededQuota                                                          CallEndedReason = "pipeline-error-vapi-429-exceeded-quota"
+	CallEndedReasonPipelineErrorVapi500ServerError                                                            CallEndedReason = "pipeline-error-vapi-500-server-error"
+	CallEndedReasonPipelineNoAvailableModel                                                                   CallEndedReason = "pipeline-no-available-model"
+	CallEndedReasonWorkerShutdown                                                                             CallEndedReason = "worker-shutdown"
+	CallEndedReasonUnknownError                                                                               CallEndedReason = "unknown-error"
+	CallEndedReasonVonageDisconnected                                                                         CallEndedReason = "vonage-disconnected"
+	CallEndedReasonVonageFailedToConnectCall                                                                  CallEndedReason = "vonage-failed-to-connect-call"
+	CallEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived                                            CallEndedReason = "phone-call-provider-bypass-enabled-but-no-call-received"
+	CallEndedReasonVapifaultPhoneCallWorkerSetupSocketError                                                   CallEndedReason = "vapifault-phone-call-worker-setup-socket-error"
+	CallEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout                                           CallEndedReason = "vapifault-phone-call-worker-worker-setup-socket-timeout"
+	CallEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall                                                   CallEndedReason = "vapifault-phone-call-worker-could-not-find-call"
+	CallEndedReasonVapifaultTransportNeverConnected                                                           CallEndedReason = "vapifault-transport-never-connected"
+	CallEndedReasonVapifaultWebCallWorkerSetupFailed                                                          CallEndedReason = "vapifault-web-call-worker-setup-failed"
+	CallEndedReasonVapifaultTransportConnectedButCallNotActive                                                CallEndedReason = "vapifault-transport-connected-but-call-not-active"
+	CallEndedReasonVapifaultCallStartedButConnectionToTransportMissing                                        CallEndedReason = "vapifault-call-started-but-connection-to-transport-missing"
+	CallEndedReasonPipelineErrorOpenaiLlmFailed                                                               CallEndedReason = "pipeline-error-openai-llm-failed"
+	CallEndedReasonPipelineErrorAzureOpenaiLlmFailed                                                          CallEndedReason = "pipeline-error-azure-openai-llm-failed"
+	CallEndedReasonPipelineErrorGroqLlmFailed                                                                 CallEndedReason = "pipeline-error-groq-llm-failed"
+	CallEndedReasonPipelineErrorGoogleLlmFailed                                                               CallEndedReason = "pipeline-error-google-llm-failed"
+	CallEndedReasonPipelineErrorXaiLlmFailed                                                                  CallEndedReason = "pipeline-error-xai-llm-failed"
+	CallEndedReasonPipelineErrorInflectionAiLlmFailed                                                         CallEndedReason = "pipeline-error-inflection-ai-llm-failed"
+	CallEndedReasonPipelineErrorCerebrasLlmFailed                                                             CallEndedReason = "pipeline-error-cerebras-llm-failed"
+	CallEndedReasonPipelineErrorDeepSeekLlmFailed                                                             CallEndedReason = "pipeline-error-deep-seek-llm-failed"
 	CallEndedReasonPipelineErrorOpenai400BadRequestValidationFailed                                           CallEndedReason = "pipeline-error-openai-400-bad-request-validation-failed"
 	CallEndedReasonPipelineErrorOpenai401Unauthorized                                                         CallEndedReason = "pipeline-error-openai-401-unauthorized"
 	CallEndedReasonPipelineErrorOpenai403ModelAccessDenied                                                    CallEndedReason = "pipeline-error-openai-403-model-access-denied"
@@ -1379,6 +1384,11 @@ const (
 	CallEndedReasonPipelineErrorInflectionAi403ModelAccessDenied                                              CallEndedReason = "pipeline-error-inflection-ai-403-model-access-denied"
 	CallEndedReasonPipelineErrorInflectionAi429ExceededQuota                                                  CallEndedReason = "pipeline-error-inflection-ai-429-exceeded-quota"
 	CallEndedReasonPipelineErrorInflectionAi500ServerError                                                    CallEndedReason = "pipeline-error-inflection-ai-500-server-error"
+	CallEndedReasonPipelineErrorDeepSeek400BadRequestValidationFailed                                         CallEndedReason = "pipeline-error-deep-seek-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorDeepSeek401Unauthorized                                                       CallEndedReason = "pipeline-error-deep-seek-401-unauthorized"
+	CallEndedReasonPipelineErrorDeepSeek403ModelAccessDenied                                                  CallEndedReason = "pipeline-error-deep-seek-403-model-access-denied"
+	CallEndedReasonPipelineErrorDeepSeek429ExceededQuota                                                      CallEndedReason = "pipeline-error-deep-seek-429-exceeded-quota"
+	CallEndedReasonPipelineErrorDeepSeek500ServerError                                                        CallEndedReason = "pipeline-error-deep-seek-500-server-error"
 	CallEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed                                      CallEndedReason = "pipeline-error-azure-openai-400-bad-request-validation-failed"
 	CallEndedReasonPipelineErrorAzureOpenai401Unauthorized                                                    CallEndedReason = "pipeline-error-azure-openai-401-unauthorized"
 	CallEndedReasonPipelineErrorAzureOpenai403ModelAccessDenied                                               CallEndedReason = "pipeline-error-azure-openai-403-model-access-denied"
@@ -1389,6 +1399,11 @@ const (
 	CallEndedReasonPipelineErrorGroq403ModelAccessDenied                                                      CallEndedReason = "pipeline-error-groq-403-model-access-denied"
 	CallEndedReasonPipelineErrorGroq429ExceededQuota                                                          CallEndedReason = "pipeline-error-groq-429-exceeded-quota"
 	CallEndedReasonPipelineErrorGroq500ServerError                                                            CallEndedReason = "pipeline-error-groq-500-server-error"
+	CallEndedReasonPipelineErrorCerebras400BadRequestValidationFailed                                         CallEndedReason = "pipeline-error-cerebras-400-bad-request-validation-failed"
+	CallEndedReasonPipelineErrorCerebras401Unauthorized                                                       CallEndedReason = "pipeline-error-cerebras-401-unauthorized"
+	CallEndedReasonPipelineErrorCerebras403ModelAccessDenied                                                  CallEndedReason = "pipeline-error-cerebras-403-model-access-denied"
+	CallEndedReasonPipelineErrorCerebras429ExceededQuota                                                      CallEndedReason = "pipeline-error-cerebras-429-exceeded-quota"
+	CallEndedReasonPipelineErrorCerebras500ServerError                                                        CallEndedReason = "pipeline-error-cerebras-500-server-error"
 	CallEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed                                        CallEndedReason = "pipeline-error-anthropic-400-bad-request-validation-failed"
 	CallEndedReasonPipelineErrorAnthropic401Unauthorized                                                      CallEndedReason = "pipeline-error-anthropic-401-unauthorized"
 	CallEndedReasonPipelineErrorAnthropic403ModelAccessDenied                                                 CallEndedReason = "pipeline-error-anthropic-403-model-access-denied"
@@ -1476,6 +1491,8 @@ const (
 	CallEndedReasonPipelineErrorPlayht429ExceededQuota                                                        CallEndedReason = "pipeline-error-playht-429-exceeded-quota"
 	CallEndedReasonPipelineErrorPlayht502GatewayError                                                         CallEndedReason = "pipeline-error-playht-502-gateway-error"
 	CallEndedReasonPipelineErrorPlayht504GatewayError                                                         CallEndedReason = "pipeline-error-playht-504-gateway-error"
+	CallEndedReasonPipelineErrorTavusVideoFailed                                                              CallEndedReason = "pipeline-error-tavus-video-failed"
+	CallEndedReasonPipelineErrorCustomTranscriberFailed                                                       CallEndedReason = "pipeline-error-custom-transcriber-failed"
 	CallEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied                                         CallEndedReason = "pipeline-error-deepgram-returning-403-model-access-denied"
 	CallEndedReasonPipelineErrorDeepgramReturning401InvalidCredentials                                        CallEndedReason = "pipeline-error-deepgram-returning-401-invalid-credentials"
 	CallEndedReasonPipelineErrorDeepgramReturning404NotFound                                                  CallEndedReason = "pipeline-error-deepgram-returning-404-not-found"
@@ -1483,8 +1500,6 @@ const (
 	CallEndedReasonPipelineErrorDeepgramReturning500InvalidJson                                               CallEndedReason = "pipeline-error-deepgram-returning-500-invalid-json"
 	CallEndedReasonPipelineErrorDeepgramReturning502NetworkError                                              CallEndedReason = "pipeline-error-deepgram-returning-502-network-error"
 	CallEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach                                    CallEndedReason = "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach"
-	CallEndedReasonPipelineErrorTavusVideoFailed                                                              CallEndedReason = "pipeline-error-tavus-video-failed"
-	CallEndedReasonPipelineErrorCustomTranscriberFailed                                                       CallEndedReason = "pipeline-error-custom-transcriber-failed"
 	CallEndedReasonSilenceTimedOut                                                                            CallEndedReason = "silence-timed-out"
 	CallEndedReasonSipGatewayFailedToConnectCall                                                              CallEndedReason = "sip-gateway-failed-to-connect-call"
 	CallEndedReasonTwilioFailedToConnectCall                                                                  CallEndedReason = "twilio-failed-to-connect-call"
@@ -1495,86 +1510,6 @@ const (
 
 func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
 	switch s {
-	case "pipeline-error-openai-voice-failed":
-		return CallEndedReasonPipelineErrorOpenaiVoiceFailed, nil
-	case "pipeline-error-cartesia-voice-failed":
-		return CallEndedReasonPipelineErrorCartesiaVoiceFailed, nil
-	case "pipeline-error-deepgram-voice-failed":
-		return CallEndedReasonPipelineErrorDeepgramVoiceFailed, nil
-	case "pipeline-error-eleven-labs-voice-failed":
-		return CallEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
-	case "pipeline-error-playht-voice-failed":
-		return CallEndedReasonPipelineErrorPlayhtVoiceFailed, nil
-	case "pipeline-error-lmnt-voice-failed":
-		return CallEndedReasonPipelineErrorLmntVoiceFailed, nil
-	case "pipeline-error-azure-voice-failed":
-		return CallEndedReasonPipelineErrorAzureVoiceFailed, nil
-	case "pipeline-error-rime-ai-voice-failed":
-		return CallEndedReasonPipelineErrorRimeAiVoiceFailed, nil
-	case "pipeline-error-neets-voice-failed":
-		return CallEndedReasonPipelineErrorNeetsVoiceFailed, nil
-	case "db-error":
-		return CallEndedReasonDbError, nil
-	case "assistant-not-found":
-		return CallEndedReasonAssistantNotFound, nil
-	case "license-check-failed":
-		return CallEndedReasonLicenseCheckFailed, nil
-	case "pipeline-error-vapi-llm-failed":
-		return CallEndedReasonPipelineErrorVapiLlmFailed, nil
-	case "pipeline-error-vapi-400-bad-request-validation-failed":
-		return CallEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
-	case "pipeline-error-vapi-401-unauthorized":
-		return CallEndedReasonPipelineErrorVapi401Unauthorized, nil
-	case "pipeline-error-vapi-403-model-access-denied":
-		return CallEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
-	case "pipeline-error-vapi-429-exceeded-quota":
-		return CallEndedReasonPipelineErrorVapi429ExceededQuota, nil
-	case "pipeline-error-vapi-500-server-error":
-		return CallEndedReasonPipelineErrorVapi500ServerError, nil
-	case "pipeline-no-available-model":
-		return CallEndedReasonPipelineNoAvailableModel, nil
-	case "worker-shutdown":
-		return CallEndedReasonWorkerShutdown, nil
-	case "unknown-error":
-		return CallEndedReasonUnknownError, nil
-	case "vonage-disconnected":
-		return CallEndedReasonVonageDisconnected, nil
-	case "vonage-failed-to-connect-call":
-		return CallEndedReasonVonageFailedToConnectCall, nil
-	case "phone-call-provider-bypass-enabled-but-no-call-received":
-		return CallEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
-	case "vapifault-phone-call-worker-setup-socket-error":
-		return CallEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
-	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
-		return CallEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
-	case "vapifault-phone-call-worker-could-not-find-call":
-		return CallEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
-	case "vapifault-transport-never-connected":
-		return CallEndedReasonVapifaultTransportNeverConnected, nil
-	case "vapifault-web-call-worker-setup-failed":
-		return CallEndedReasonVapifaultWebCallWorkerSetupFailed, nil
-	case "vapifault-transport-connected-but-call-not-active":
-		return CallEndedReasonVapifaultTransportConnectedButCallNotActive, nil
-	case "vapifault-call-started-but-connection-to-transport-missing":
-		return CallEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
-	case "pipeline-error-deepgram-transcriber-failed":
-		return CallEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
-	case "pipeline-error-gladia-transcriber-failed":
-		return CallEndedReasonPipelineErrorGladiaTranscriberFailed, nil
-	case "pipeline-error-assembly-ai-transcriber-failed":
-		return CallEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
-	case "pipeline-error-openai-llm-failed":
-		return CallEndedReasonPipelineErrorOpenaiLlmFailed, nil
-	case "pipeline-error-azure-openai-llm-failed":
-		return CallEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
-	case "pipeline-error-groq-llm-failed":
-		return CallEndedReasonPipelineErrorGroqLlmFailed, nil
-	case "pipeline-error-google-llm-failed":
-		return CallEndedReasonPipelineErrorGoogleLlmFailed, nil
-	case "pipeline-error-xai-llm-failed":
-		return CallEndedReasonPipelineErrorXaiLlmFailed, nil
-	case "pipeline-error-inflection-ai-llm-failed":
-		return CallEndedReasonPipelineErrorInflectionAiLlmFailed, nil
 	case "assistant-not-invalid":
 		return CallEndedReasonAssistantNotInvalid, nil
 	case "assistant-not-provided":
@@ -1617,6 +1552,96 @@ func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
 		return CallEndedReasonManuallyCanceled, nil
 	case "phone-call-provider-closed-websocket":
 		return CallEndedReasonPhoneCallProviderClosedWebsocket, nil
+	case "db-error":
+		return CallEndedReasonDbError, nil
+	case "assistant-not-found":
+		return CallEndedReasonAssistantNotFound, nil
+	case "license-check-failed":
+		return CallEndedReasonLicenseCheckFailed, nil
+	case "pipeline-error-openai-voice-failed":
+		return CallEndedReasonPipelineErrorOpenaiVoiceFailed, nil
+	case "pipeline-error-cartesia-voice-failed":
+		return CallEndedReasonPipelineErrorCartesiaVoiceFailed, nil
+	case "pipeline-error-deepgram-voice-failed":
+		return CallEndedReasonPipelineErrorDeepgramVoiceFailed, nil
+	case "pipeline-error-eleven-labs-voice-failed":
+		return CallEndedReasonPipelineErrorElevenLabsVoiceFailed, nil
+	case "pipeline-error-playht-voice-failed":
+		return CallEndedReasonPipelineErrorPlayhtVoiceFailed, nil
+	case "pipeline-error-lmnt-voice-failed":
+		return CallEndedReasonPipelineErrorLmntVoiceFailed, nil
+	case "pipeline-error-azure-voice-failed":
+		return CallEndedReasonPipelineErrorAzureVoiceFailed, nil
+	case "pipeline-error-rime-ai-voice-failed":
+		return CallEndedReasonPipelineErrorRimeAiVoiceFailed, nil
+	case "pipeline-error-neets-voice-failed":
+		return CallEndedReasonPipelineErrorNeetsVoiceFailed, nil
+	case "pipeline-error-smallest-ai-voice-failed":
+		return CallEndedReasonPipelineErrorSmallestAiVoiceFailed, nil
+	case "pipeline-error-deepgram-transcriber-failed":
+		return CallEndedReasonPipelineErrorDeepgramTranscriberFailed, nil
+	case "pipeline-error-gladia-transcriber-failed":
+		return CallEndedReasonPipelineErrorGladiaTranscriberFailed, nil
+	case "pipeline-error-assembly-ai-transcriber-failed":
+		return CallEndedReasonPipelineErrorAssemblyAiTranscriberFailed, nil
+	case "pipeline-error-talkscriber-transcriber-failed":
+		return CallEndedReasonPipelineErrorTalkscriberTranscriberFailed, nil
+	case "pipeline-error-azure-speech-transcriber-failed":
+		return CallEndedReasonPipelineErrorAzureSpeechTranscriberFailed, nil
+	case "pipeline-error-vapi-llm-failed":
+		return CallEndedReasonPipelineErrorVapiLlmFailed, nil
+	case "pipeline-error-vapi-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorVapi400BadRequestValidationFailed, nil
+	case "pipeline-error-vapi-401-unauthorized":
+		return CallEndedReasonPipelineErrorVapi401Unauthorized, nil
+	case "pipeline-error-vapi-403-model-access-denied":
+		return CallEndedReasonPipelineErrorVapi403ModelAccessDenied, nil
+	case "pipeline-error-vapi-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorVapi429ExceededQuota, nil
+	case "pipeline-error-vapi-500-server-error":
+		return CallEndedReasonPipelineErrorVapi500ServerError, nil
+	case "pipeline-no-available-model":
+		return CallEndedReasonPipelineNoAvailableModel, nil
+	case "worker-shutdown":
+		return CallEndedReasonWorkerShutdown, nil
+	case "unknown-error":
+		return CallEndedReasonUnknownError, nil
+	case "vonage-disconnected":
+		return CallEndedReasonVonageDisconnected, nil
+	case "vonage-failed-to-connect-call":
+		return CallEndedReasonVonageFailedToConnectCall, nil
+	case "phone-call-provider-bypass-enabled-but-no-call-received":
+		return CallEndedReasonPhoneCallProviderBypassEnabledButNoCallReceived, nil
+	case "vapifault-phone-call-worker-setup-socket-error":
+		return CallEndedReasonVapifaultPhoneCallWorkerSetupSocketError, nil
+	case "vapifault-phone-call-worker-worker-setup-socket-timeout":
+		return CallEndedReasonVapifaultPhoneCallWorkerWorkerSetupSocketTimeout, nil
+	case "vapifault-phone-call-worker-could-not-find-call":
+		return CallEndedReasonVapifaultPhoneCallWorkerCouldNotFindCall, nil
+	case "vapifault-transport-never-connected":
+		return CallEndedReasonVapifaultTransportNeverConnected, nil
+	case "vapifault-web-call-worker-setup-failed":
+		return CallEndedReasonVapifaultWebCallWorkerSetupFailed, nil
+	case "vapifault-transport-connected-but-call-not-active":
+		return CallEndedReasonVapifaultTransportConnectedButCallNotActive, nil
+	case "vapifault-call-started-but-connection-to-transport-missing":
+		return CallEndedReasonVapifaultCallStartedButConnectionToTransportMissing, nil
+	case "pipeline-error-openai-llm-failed":
+		return CallEndedReasonPipelineErrorOpenaiLlmFailed, nil
+	case "pipeline-error-azure-openai-llm-failed":
+		return CallEndedReasonPipelineErrorAzureOpenaiLlmFailed, nil
+	case "pipeline-error-groq-llm-failed":
+		return CallEndedReasonPipelineErrorGroqLlmFailed, nil
+	case "pipeline-error-google-llm-failed":
+		return CallEndedReasonPipelineErrorGoogleLlmFailed, nil
+	case "pipeline-error-xai-llm-failed":
+		return CallEndedReasonPipelineErrorXaiLlmFailed, nil
+	case "pipeline-error-inflection-ai-llm-failed":
+		return CallEndedReasonPipelineErrorInflectionAiLlmFailed, nil
+	case "pipeline-error-cerebras-llm-failed":
+		return CallEndedReasonPipelineErrorCerebrasLlmFailed, nil
+	case "pipeline-error-deep-seek-llm-failed":
+		return CallEndedReasonPipelineErrorDeepSeekLlmFailed, nil
 	case "pipeline-error-openai-400-bad-request-validation-failed":
 		return CallEndedReasonPipelineErrorOpenai400BadRequestValidationFailed, nil
 	case "pipeline-error-openai-401-unauthorized":
@@ -1657,6 +1682,16 @@ func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
 		return CallEndedReasonPipelineErrorInflectionAi429ExceededQuota, nil
 	case "pipeline-error-inflection-ai-500-server-error":
 		return CallEndedReasonPipelineErrorInflectionAi500ServerError, nil
+	case "pipeline-error-deep-seek-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorDeepSeek400BadRequestValidationFailed, nil
+	case "pipeline-error-deep-seek-401-unauthorized":
+		return CallEndedReasonPipelineErrorDeepSeek401Unauthorized, nil
+	case "pipeline-error-deep-seek-403-model-access-denied":
+		return CallEndedReasonPipelineErrorDeepSeek403ModelAccessDenied, nil
+	case "pipeline-error-deep-seek-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorDeepSeek429ExceededQuota, nil
+	case "pipeline-error-deep-seek-500-server-error":
+		return CallEndedReasonPipelineErrorDeepSeek500ServerError, nil
 	case "pipeline-error-azure-openai-400-bad-request-validation-failed":
 		return CallEndedReasonPipelineErrorAzureOpenai400BadRequestValidationFailed, nil
 	case "pipeline-error-azure-openai-401-unauthorized":
@@ -1677,6 +1712,16 @@ func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
 		return CallEndedReasonPipelineErrorGroq429ExceededQuota, nil
 	case "pipeline-error-groq-500-server-error":
 		return CallEndedReasonPipelineErrorGroq500ServerError, nil
+	case "pipeline-error-cerebras-400-bad-request-validation-failed":
+		return CallEndedReasonPipelineErrorCerebras400BadRequestValidationFailed, nil
+	case "pipeline-error-cerebras-401-unauthorized":
+		return CallEndedReasonPipelineErrorCerebras401Unauthorized, nil
+	case "pipeline-error-cerebras-403-model-access-denied":
+		return CallEndedReasonPipelineErrorCerebras403ModelAccessDenied, nil
+	case "pipeline-error-cerebras-429-exceeded-quota":
+		return CallEndedReasonPipelineErrorCerebras429ExceededQuota, nil
+	case "pipeline-error-cerebras-500-server-error":
+		return CallEndedReasonPipelineErrorCerebras500ServerError, nil
 	case "pipeline-error-anthropic-400-bad-request-validation-failed":
 		return CallEndedReasonPipelineErrorAnthropic400BadRequestValidationFailed, nil
 	case "pipeline-error-anthropic-401-unauthorized":
@@ -1851,6 +1896,10 @@ func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
 		return CallEndedReasonPipelineErrorPlayht502GatewayError, nil
 	case "pipeline-error-playht-504-gateway-error":
 		return CallEndedReasonPipelineErrorPlayht504GatewayError, nil
+	case "pipeline-error-tavus-video-failed":
+		return CallEndedReasonPipelineErrorTavusVideoFailed, nil
+	case "pipeline-error-custom-transcriber-failed":
+		return CallEndedReasonPipelineErrorCustomTranscriberFailed, nil
 	case "pipeline-error-deepgram-returning-403-model-access-denied":
 		return CallEndedReasonPipelineErrorDeepgramReturning403ModelAccessDenied, nil
 	case "pipeline-error-deepgram-returning-401-invalid-credentials":
@@ -1865,10 +1914,6 @@ func NewCallEndedReasonFromString(s string) (CallEndedReason, error) {
 		return CallEndedReasonPipelineErrorDeepgramReturning502NetworkError, nil
 	case "pipeline-error-deepgram-returning-502-bad-gateway-ehostunreach":
 		return CallEndedReasonPipelineErrorDeepgramReturning502BadGatewayEhostunreach, nil
-	case "pipeline-error-tavus-video-failed":
-		return CallEndedReasonPipelineErrorTavusVideoFailed, nil
-	case "pipeline-error-custom-transcriber-failed":
-		return CallEndedReasonPipelineErrorCustomTranscriberFailed, nil
 	case "silence-timed-out":
 		return CallEndedReasonSilenceTimedOut, nil
 	case "sip-gateway-failed-to-connect-call":
@@ -2371,16 +2416,14 @@ type ImportTwilioPhoneNumberDto struct {
 	//
 	// If neither `assistantId` nor `squadId` is set, `assistant-request` will be sent to your Server URL. Check `ServerMessage` and `ServerMessageResponse` for the shape of the message and response that is expected.
 	SquadId *string `json:"squadId,omitempty" url:"squadId,omitempty"`
-	// This is the server URL where messages will be sent for calls on this number. This includes the `assistant-request` message.
+	// This is where Vapi will send webhooks. You can find all webhooks available along with their shape in ServerMessage schema.
 	//
-	// You can see the shape of the messages sent in `ServerMessage`.
+	// The order of precedence is:
 	//
-	// This overrides the `org.serverUrl`. Order of precedence: tool.server.url > assistant.serverUrl > phoneNumber.serverUrl > org.serverUrl.
-	ServerUrl *string `json:"serverUrl,omitempty" url:"serverUrl,omitempty"`
-	// This is the secret Vapi will send with every message to your server. It's sent as a header called x-vapi-secret.
-	//
-	// Same precedence logic as serverUrl.
-	ServerUrlSecret *string `json:"serverUrlSecret,omitempty" url:"serverUrlSecret,omitempty"`
+	// 1. assistant.server
+	// 2. phoneNumber.server
+	// 3. org.server
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -2435,18 +2478,11 @@ func (i *ImportTwilioPhoneNumberDto) GetSquadId() *string {
 	return i.SquadId
 }
 
-func (i *ImportTwilioPhoneNumberDto) GetServerUrl() *string {
+func (i *ImportTwilioPhoneNumberDto) GetServer() *Server {
 	if i == nil {
 		return nil
 	}
-	return i.ServerUrl
-}
-
-func (i *ImportTwilioPhoneNumberDto) GetServerUrlSecret() *string {
-	if i == nil {
-		return nil
-	}
-	return i.ServerUrlSecret
+	return i.Server
 }
 
 func (i *ImportTwilioPhoneNumberDto) GetExtraProperties() map[string]interface{} {

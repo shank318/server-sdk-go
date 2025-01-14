@@ -556,6 +556,172 @@ func (t TrieveKnowledgeBaseVectorStoreSearchPlanSearchType) Ptr() *TrieveKnowled
 	return &t
 }
 
+type UpdateCustomKnowledgeBaseDto struct {
+	// /**
+	// This is where the knowledge base request will be sent.
+	//
+	// Request Example:
+	//
+	// POST https://{server.url}
+	// Content-Type: application/json
+	//
+	//	{
+	//	  "messsage": {
+	//	    "type": "knowledge-base-request",
+	//	    "messages": [
+	//	      {
+	//	        "role": "user",
+	//	        "content": "Why is ocean blue?"
+	//	      }
+	//	    ],
+	//	    ...other metadata about the call...
+	//	  }
+	//	}
+	//
+	// Response Expected:
+	// ```
+	//
+	//	{
+	//	  "message": {
+	//	     "role": "assistant",
+	//	     "content": "The ocean is blue because water absorbs everything but blue.",
+	//	  }, // YOU CAN RETURN THE EXACT RESPONSE TO SPEAK
+	//	  "documents": [
+	//	    {
+	//	      "content": "The ocean is blue primarily because water absorbs colors in the red part of the light spectrum and scatters the blue light, making it more visible to our eyes.",
+	//	      "similarity": 1
+	//	    },
+	//	    {
+	//	      "content": "Blue light is scattered more by the water molecules than other colors, enhancing the blue appearance of the ocean.",
+	//	      "similarity": .5
+	//	    }
+	//	  ] // OR, YOU CAN RETURN AN ARRAY OF DOCUMENTS THAT WILL BE SENT TO THE MODEL
+	//	}
+	//
+	// ```
+	Server *Server `json:"server,omitempty" url:"server,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateCustomKnowledgeBaseDto) GetServer() *Server {
+	if u == nil {
+		return nil
+	}
+	return u.Server
+}
+
+func (u *UpdateCustomKnowledgeBaseDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateCustomKnowledgeBaseDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateCustomKnowledgeBaseDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateCustomKnowledgeBaseDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateCustomKnowledgeBaseDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateTrieveKnowledgeBaseDto struct {
+	// This is the name of the knowledge base.
+	Name *string `json:"name,omitempty" url:"name,omitempty"`
+	// This is the plan on how to search the vector store while a call is going on.
+	VectorStoreSearchPlan *TrieveKnowledgeBaseVectorStoreSearchPlan `json:"vectorStoreSearchPlan,omitempty" url:"vectorStoreSearchPlan,omitempty"`
+	// This is the plan if you want us to create a new vector store on your behalf. To use an existing vector store from your account, use `vectoreStoreProviderId`
+	VectorStoreCreatePlan *TrieveKnowledgeBaseVectorStoreCreatePlan `json:"vectorStoreCreatePlan,omitempty" url:"vectorStoreCreatePlan,omitempty"`
+	// This is an vector store that you already have on your account with the provider. To create a new vector store, use vectorStoreCreatePlan.
+	//
+	// Usage:
+	// - To bring your own vector store from Trieve, go to https://trieve.ai
+	// - Create a dataset, and use the datasetId here.
+	VectorStoreProviderId *string `json:"vectorStoreProviderId,omitempty" url:"vectorStoreProviderId,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) GetVectorStoreSearchPlan() *TrieveKnowledgeBaseVectorStoreSearchPlan {
+	if u == nil {
+		return nil
+	}
+	return u.VectorStoreSearchPlan
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) GetVectorStoreCreatePlan() *TrieveKnowledgeBaseVectorStoreCreatePlan {
+	if u == nil {
+		return nil
+	}
+	return u.VectorStoreCreatePlan
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) GetVectorStoreProviderId() *string {
+	if u == nil {
+		return nil
+	}
+	return u.VectorStoreProviderId
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateTrieveKnowledgeBaseDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateTrieveKnowledgeBaseDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateTrieveKnowledgeBaseDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
 type KnowledgeBasesCreateRequest struct {
 	CreateTrieveKnowledgeBaseDto *CreateTrieveKnowledgeBaseDto
 	CreateCustomKnowledgeBaseDto *CreateCustomKnowledgeBaseDto
@@ -862,6 +1028,68 @@ func (k *KnowledgeBasesListResponseItem) Accept(visitor KnowledgeBasesListRespon
 	}
 	if k.typ == "CustomKnowledgeBase" || k.CustomKnowledgeBase != nil {
 		return visitor.VisitCustomKnowledgeBase(k.CustomKnowledgeBase)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", k)
+}
+
+type KnowledgeBasesUpdateRequest struct {
+	UpdateTrieveKnowledgeBaseDto *UpdateTrieveKnowledgeBaseDto
+	UpdateCustomKnowledgeBaseDto *UpdateCustomKnowledgeBaseDto
+
+	typ string
+}
+
+func (k *KnowledgeBasesUpdateRequest) GetUpdateTrieveKnowledgeBaseDto() *UpdateTrieveKnowledgeBaseDto {
+	if k == nil {
+		return nil
+	}
+	return k.UpdateTrieveKnowledgeBaseDto
+}
+
+func (k *KnowledgeBasesUpdateRequest) GetUpdateCustomKnowledgeBaseDto() *UpdateCustomKnowledgeBaseDto {
+	if k == nil {
+		return nil
+	}
+	return k.UpdateCustomKnowledgeBaseDto
+}
+
+func (k *KnowledgeBasesUpdateRequest) UnmarshalJSON(data []byte) error {
+	valueUpdateTrieveKnowledgeBaseDto := new(UpdateTrieveKnowledgeBaseDto)
+	if err := json.Unmarshal(data, &valueUpdateTrieveKnowledgeBaseDto); err == nil {
+		k.typ = "UpdateTrieveKnowledgeBaseDto"
+		k.UpdateTrieveKnowledgeBaseDto = valueUpdateTrieveKnowledgeBaseDto
+		return nil
+	}
+	valueUpdateCustomKnowledgeBaseDto := new(UpdateCustomKnowledgeBaseDto)
+	if err := json.Unmarshal(data, &valueUpdateCustomKnowledgeBaseDto); err == nil {
+		k.typ = "UpdateCustomKnowledgeBaseDto"
+		k.UpdateCustomKnowledgeBaseDto = valueUpdateCustomKnowledgeBaseDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, k)
+}
+
+func (k KnowledgeBasesUpdateRequest) MarshalJSON() ([]byte, error) {
+	if k.typ == "UpdateTrieveKnowledgeBaseDto" || k.UpdateTrieveKnowledgeBaseDto != nil {
+		return json.Marshal(k.UpdateTrieveKnowledgeBaseDto)
+	}
+	if k.typ == "UpdateCustomKnowledgeBaseDto" || k.UpdateCustomKnowledgeBaseDto != nil {
+		return json.Marshal(k.UpdateCustomKnowledgeBaseDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", k)
+}
+
+type KnowledgeBasesUpdateRequestVisitor interface {
+	VisitUpdateTrieveKnowledgeBaseDto(*UpdateTrieveKnowledgeBaseDto) error
+	VisitUpdateCustomKnowledgeBaseDto(*UpdateCustomKnowledgeBaseDto) error
+}
+
+func (k *KnowledgeBasesUpdateRequest) Accept(visitor KnowledgeBasesUpdateRequestVisitor) error {
+	if k.typ == "UpdateTrieveKnowledgeBaseDto" || k.UpdateTrieveKnowledgeBaseDto != nil {
+		return visitor.VisitUpdateTrieveKnowledgeBaseDto(k.UpdateTrieveKnowledgeBaseDto)
+	}
+	if k.typ == "UpdateCustomKnowledgeBaseDto" || k.UpdateCustomKnowledgeBaseDto != nil {
+		return visitor.VisitUpdateCustomKnowledgeBaseDto(k.UpdateCustomKnowledgeBaseDto)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", k)
 }
