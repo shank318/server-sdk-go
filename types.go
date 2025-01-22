@@ -4424,12 +4424,14 @@ type AzureCredentialRegion string
 
 const (
 	AzureCredentialRegionAustralia      AzureCredentialRegion = "australia"
-	AzureCredentialRegionCanada         AzureCredentialRegion = "canada"
+	AzureCredentialRegionCanadaeast     AzureCredentialRegion = "canadaeast"
+	AzureCredentialRegionCanadacentral  AzureCredentialRegion = "canadacentral"
 	AzureCredentialRegionEastus2        AzureCredentialRegion = "eastus2"
 	AzureCredentialRegionEastus         AzureCredentialRegion = "eastus"
 	AzureCredentialRegionFrance         AzureCredentialRegion = "france"
 	AzureCredentialRegionIndia          AzureCredentialRegion = "india"
-	AzureCredentialRegionJapan          AzureCredentialRegion = "japan"
+	AzureCredentialRegionJapaneast      AzureCredentialRegion = "japaneast"
+	AzureCredentialRegionJapanwest      AzureCredentialRegion = "japanwest"
 	AzureCredentialRegionUaenorth       AzureCredentialRegion = "uaenorth"
 	AzureCredentialRegionNorthcentralus AzureCredentialRegion = "northcentralus"
 	AzureCredentialRegionNorway         AzureCredentialRegion = "norway"
@@ -4445,8 +4447,10 @@ func NewAzureCredentialRegionFromString(s string) (AzureCredentialRegion, error)
 	switch s {
 	case "australia":
 		return AzureCredentialRegionAustralia, nil
-	case "canada":
-		return AzureCredentialRegionCanada, nil
+	case "canadaeast":
+		return AzureCredentialRegionCanadaeast, nil
+	case "canadacentral":
+		return AzureCredentialRegionCanadacentral, nil
 	case "eastus2":
 		return AzureCredentialRegionEastus2, nil
 	case "eastus":
@@ -4455,8 +4459,10 @@ func NewAzureCredentialRegionFromString(s string) (AzureCredentialRegion, error)
 		return AzureCredentialRegionFrance, nil
 	case "india":
 		return AzureCredentialRegionIndia, nil
-	case "japan":
-		return AzureCredentialRegionJapan, nil
+	case "japaneast":
+		return AzureCredentialRegionJapaneast, nil
+	case "japanwest":
+		return AzureCredentialRegionJapanwest, nil
 	case "uaenorth":
 		return AzureCredentialRegionUaenorth, nil
 	case "northcentralus":
@@ -4713,12 +4719,14 @@ type AzureOpenAiCredentialRegion string
 
 const (
 	AzureOpenAiCredentialRegionAustralia      AzureOpenAiCredentialRegion = "australia"
-	AzureOpenAiCredentialRegionCanada         AzureOpenAiCredentialRegion = "canada"
+	AzureOpenAiCredentialRegionCanadaeast     AzureOpenAiCredentialRegion = "canadaeast"
+	AzureOpenAiCredentialRegionCanadacentral  AzureOpenAiCredentialRegion = "canadacentral"
 	AzureOpenAiCredentialRegionEastus2        AzureOpenAiCredentialRegion = "eastus2"
 	AzureOpenAiCredentialRegionEastus         AzureOpenAiCredentialRegion = "eastus"
 	AzureOpenAiCredentialRegionFrance         AzureOpenAiCredentialRegion = "france"
 	AzureOpenAiCredentialRegionIndia          AzureOpenAiCredentialRegion = "india"
-	AzureOpenAiCredentialRegionJapan          AzureOpenAiCredentialRegion = "japan"
+	AzureOpenAiCredentialRegionJapaneast      AzureOpenAiCredentialRegion = "japaneast"
+	AzureOpenAiCredentialRegionJapanwest      AzureOpenAiCredentialRegion = "japanwest"
 	AzureOpenAiCredentialRegionUaenorth       AzureOpenAiCredentialRegion = "uaenorth"
 	AzureOpenAiCredentialRegionNorthcentralus AzureOpenAiCredentialRegion = "northcentralus"
 	AzureOpenAiCredentialRegionNorway         AzureOpenAiCredentialRegion = "norway"
@@ -4734,8 +4742,10 @@ func NewAzureOpenAiCredentialRegionFromString(s string) (AzureOpenAiCredentialRe
 	switch s {
 	case "australia":
 		return AzureOpenAiCredentialRegionAustralia, nil
-	case "canada":
-		return AzureOpenAiCredentialRegionCanada, nil
+	case "canadaeast":
+		return AzureOpenAiCredentialRegionCanadaeast, nil
+	case "canadacentral":
+		return AzureOpenAiCredentialRegionCanadacentral, nil
 	case "eastus2":
 		return AzureOpenAiCredentialRegionEastus2, nil
 	case "eastus":
@@ -4744,8 +4754,10 @@ func NewAzureOpenAiCredentialRegionFromString(s string) (AzureOpenAiCredentialRe
 		return AzureOpenAiCredentialRegionFrance, nil
 	case "india":
 		return AzureOpenAiCredentialRegionIndia, nil
-	case "japan":
-		return AzureOpenAiCredentialRegionJapan, nil
+	case "japaneast":
+		return AzureOpenAiCredentialRegionJapaneast, nil
+	case "japanwest":
+		return AzureOpenAiCredentialRegionJapanwest, nil
 	case "uaenorth":
 		return AzureOpenAiCredentialRegionUaenorth, nil
 	case "northcentralus":
@@ -5480,6 +5492,261 @@ func NewAzureVoiceIdEnumFromString(s string) (AzureVoiceIdEnum, error) {
 
 func (a AzureVoiceIdEnum) Ptr() *AzureVoiceIdEnum {
 	return &a
+}
+
+type BashToolWithToolCall struct {
+	// This determines if the tool is async.
+	//
+	// If async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.
+	//
+	// If sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.
+	//
+	// Defaults to synchronous (`false`).
+	Async *bool `json:"async,omitempty" url:"async,omitempty"`
+	// These are the messages that will be spoken to the user as the tool is running.
+	//
+	// For some tools, this is auto-filled based on special fields like `tool.destinations`. For others like the function tool, these can be custom configured.
+	Messages []*BashToolWithToolCallMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// The type of tool. "bash" for Bash tool.
+	// The sub type of tool.
+	ToolCall *ToolCall `json:"toolCall,omitempty" url:"toolCall,omitempty"`
+	// The name of the tool, fixed to 'bash'
+	// This is the function definition of the tool.
+	//
+	// For `endCall`, `transferCall`, and `dtmf` tools, this is auto-filled based on tool-specific fields like `tool.destinations`. But, even in those cases, you can provide a custom function definition for advanced use cases.
+	//
+	// An example of an advanced use case is if you want to customize the message that's spoken for `endCall` tool. You can specify a function where it returns an argument "reason". Then, in `messages` array, you can have many "request-complete" messages. One of these messages will be triggered if the `messages[].conditions` matches the "reason" argument.
+	Function *OpenAiFunction `json:"function,omitempty" url:"function,omitempty"`
+	// This is the server that will be hit when this tool is requested by the model.
+	//
+	// All requests will be sent with the call object among other things. You can find more details in the Server URL documentation.
+	//
+	// This overrides the serverUrl set on the org and the phoneNumber. Order of precedence: highest tool.server.url, then assistant.serverUrl, then phoneNumber.serverUrl, then org.serverUrl.
+	Server  *Server `json:"server,omitempty" url:"server,omitempty"`
+	type_   string
+	subType string
+	name    string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (b *BashToolWithToolCall) GetAsync() *bool {
+	if b == nil {
+		return nil
+	}
+	return b.Async
+}
+
+func (b *BashToolWithToolCall) GetMessages() []*BashToolWithToolCallMessagesItem {
+	if b == nil {
+		return nil
+	}
+	return b.Messages
+}
+
+func (b *BashToolWithToolCall) GetToolCall() *ToolCall {
+	if b == nil {
+		return nil
+	}
+	return b.ToolCall
+}
+
+func (b *BashToolWithToolCall) GetFunction() *OpenAiFunction {
+	if b == nil {
+		return nil
+	}
+	return b.Function
+}
+
+func (b *BashToolWithToolCall) GetServer() *Server {
+	if b == nil {
+		return nil
+	}
+	return b.Server
+}
+
+func (b *BashToolWithToolCall) Type() string {
+	return b.type_
+}
+
+func (b *BashToolWithToolCall) SubType() string {
+	return b.subType
+}
+
+func (b *BashToolWithToolCall) Name() string {
+	return b.name
+}
+
+func (b *BashToolWithToolCall) GetExtraProperties() map[string]interface{} {
+	return b.extraProperties
+}
+
+func (b *BashToolWithToolCall) UnmarshalJSON(data []byte) error {
+	type embed BashToolWithToolCall
+	var unmarshaler = struct {
+		embed
+		Type    string `json:"type"`
+		SubType string `json:"subType"`
+		Name    string `json:"name"`
+	}{
+		embed: embed(*b),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*b = BashToolWithToolCall(unmarshaler.embed)
+	if unmarshaler.Type != "bash" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", b, "bash", unmarshaler.Type)
+	}
+	b.type_ = unmarshaler.Type
+	if unmarshaler.SubType != "bash_20241022" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", b, "bash_20241022", unmarshaler.SubType)
+	}
+	b.subType = unmarshaler.SubType
+	if unmarshaler.Name != "bash" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", b, "bash", unmarshaler.Name)
+	}
+	b.name = unmarshaler.Name
+	extraProperties, err := internal.ExtractExtraProperties(data, *b, "type", "subType", "name")
+	if err != nil {
+		return err
+	}
+	b.extraProperties = extraProperties
+	b.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (b *BashToolWithToolCall) MarshalJSON() ([]byte, error) {
+	type embed BashToolWithToolCall
+	var marshaler = struct {
+		embed
+		Type    string `json:"type"`
+		SubType string `json:"subType"`
+		Name    string `json:"name"`
+	}{
+		embed:   embed(*b),
+		Type:    "bash",
+		SubType: "bash_20241022",
+		Name:    "bash",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (b *BashToolWithToolCall) String() string {
+	if len(b.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(b.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(b); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", b)
+}
+
+type BashToolWithToolCallMessagesItem struct {
+	ToolMessageStart    *ToolMessageStart
+	ToolMessageComplete *ToolMessageComplete
+	ToolMessageFailed   *ToolMessageFailed
+	ToolMessageDelayed  *ToolMessageDelayed
+
+	typ string
+}
+
+func (b *BashToolWithToolCallMessagesItem) GetToolMessageStart() *ToolMessageStart {
+	if b == nil {
+		return nil
+	}
+	return b.ToolMessageStart
+}
+
+func (b *BashToolWithToolCallMessagesItem) GetToolMessageComplete() *ToolMessageComplete {
+	if b == nil {
+		return nil
+	}
+	return b.ToolMessageComplete
+}
+
+func (b *BashToolWithToolCallMessagesItem) GetToolMessageFailed() *ToolMessageFailed {
+	if b == nil {
+		return nil
+	}
+	return b.ToolMessageFailed
+}
+
+func (b *BashToolWithToolCallMessagesItem) GetToolMessageDelayed() *ToolMessageDelayed {
+	if b == nil {
+		return nil
+	}
+	return b.ToolMessageDelayed
+}
+
+func (b *BashToolWithToolCallMessagesItem) UnmarshalJSON(data []byte) error {
+	valueToolMessageStart := new(ToolMessageStart)
+	if err := json.Unmarshal(data, &valueToolMessageStart); err == nil {
+		b.typ = "ToolMessageStart"
+		b.ToolMessageStart = valueToolMessageStart
+		return nil
+	}
+	valueToolMessageComplete := new(ToolMessageComplete)
+	if err := json.Unmarshal(data, &valueToolMessageComplete); err == nil {
+		b.typ = "ToolMessageComplete"
+		b.ToolMessageComplete = valueToolMessageComplete
+		return nil
+	}
+	valueToolMessageFailed := new(ToolMessageFailed)
+	if err := json.Unmarshal(data, &valueToolMessageFailed); err == nil {
+		b.typ = "ToolMessageFailed"
+		b.ToolMessageFailed = valueToolMessageFailed
+		return nil
+	}
+	valueToolMessageDelayed := new(ToolMessageDelayed)
+	if err := json.Unmarshal(data, &valueToolMessageDelayed); err == nil {
+		b.typ = "ToolMessageDelayed"
+		b.ToolMessageDelayed = valueToolMessageDelayed
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, b)
+}
+
+func (b BashToolWithToolCallMessagesItem) MarshalJSON() ([]byte, error) {
+	if b.typ == "ToolMessageStart" || b.ToolMessageStart != nil {
+		return json.Marshal(b.ToolMessageStart)
+	}
+	if b.typ == "ToolMessageComplete" || b.ToolMessageComplete != nil {
+		return json.Marshal(b.ToolMessageComplete)
+	}
+	if b.typ == "ToolMessageFailed" || b.ToolMessageFailed != nil {
+		return json.Marshal(b.ToolMessageFailed)
+	}
+	if b.typ == "ToolMessageDelayed" || b.ToolMessageDelayed != nil {
+		return json.Marshal(b.ToolMessageDelayed)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", b)
+}
+
+type BashToolWithToolCallMessagesItemVisitor interface {
+	VisitToolMessageStart(*ToolMessageStart) error
+	VisitToolMessageComplete(*ToolMessageComplete) error
+	VisitToolMessageFailed(*ToolMessageFailed) error
+	VisitToolMessageDelayed(*ToolMessageDelayed) error
+}
+
+func (b *BashToolWithToolCallMessagesItem) Accept(visitor BashToolWithToolCallMessagesItemVisitor) error {
+	if b.typ == "ToolMessageStart" || b.ToolMessageStart != nil {
+		return visitor.VisitToolMessageStart(b.ToolMessageStart)
+	}
+	if b.typ == "ToolMessageComplete" || b.ToolMessageComplete != nil {
+		return visitor.VisitToolMessageComplete(b.ToolMessageComplete)
+	}
+	if b.typ == "ToolMessageFailed" || b.ToolMessageFailed != nil {
+		return visitor.VisitToolMessageFailed(b.ToolMessageFailed)
+	}
+	if b.typ == "ToolMessageDelayed" || b.ToolMessageDelayed != nil {
+		return visitor.VisitToolMessageDelayed(b.ToolMessageDelayed)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", b)
 }
 
 type BlockCompleteMessage struct {
@@ -7759,11 +8026,77 @@ func (c ClientInboundMessageControlControl) Ptr() *ClientInboundMessageControlCo
 	return &c
 }
 
+type ClientInboundMessageEndCall struct {
+	// This is the type of the message. Send "end-call" message to end the call.
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ClientInboundMessageEndCall) Type() string {
+	return c.type_
+}
+
+func (c *ClientInboundMessageEndCall) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ClientInboundMessageEndCall) UnmarshalJSON(data []byte) error {
+	type embed ClientInboundMessageEndCall
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ClientInboundMessageEndCall(unmarshaler.embed)
+	if unmarshaler.Type != "end-call" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "end-call", unmarshaler.Type)
+	}
+	c.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ClientInboundMessageEndCall) MarshalJSON() ([]byte, error) {
+	type embed ClientInboundMessageEndCall
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*c),
+		Type:  "end-call",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ClientInboundMessageEndCall) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
 // These are the messages that can be sent from client-side SDKs to control the call.
 type ClientInboundMessageMessage struct {
 	ClientInboundMessageAddMessage *ClientInboundMessageAddMessage
 	ClientInboundMessageControl    *ClientInboundMessageControl
 	ClientInboundMessageSay        *ClientInboundMessageSay
+	ClientInboundMessageEndCall    *ClientInboundMessageEndCall
 	ClientInboundMessageTransfer   *ClientInboundMessageTransfer
 
 	typ string
@@ -7788,6 +8121,13 @@ func (c *ClientInboundMessageMessage) GetClientInboundMessageSay() *ClientInboun
 		return nil
 	}
 	return c.ClientInboundMessageSay
+}
+
+func (c *ClientInboundMessageMessage) GetClientInboundMessageEndCall() *ClientInboundMessageEndCall {
+	if c == nil {
+		return nil
+	}
+	return c.ClientInboundMessageEndCall
 }
 
 func (c *ClientInboundMessageMessage) GetClientInboundMessageTransfer() *ClientInboundMessageTransfer {
@@ -7816,6 +8156,12 @@ func (c *ClientInboundMessageMessage) UnmarshalJSON(data []byte) error {
 		c.ClientInboundMessageSay = valueClientInboundMessageSay
 		return nil
 	}
+	valueClientInboundMessageEndCall := new(ClientInboundMessageEndCall)
+	if err := json.Unmarshal(data, &valueClientInboundMessageEndCall); err == nil {
+		c.typ = "ClientInboundMessageEndCall"
+		c.ClientInboundMessageEndCall = valueClientInboundMessageEndCall
+		return nil
+	}
 	valueClientInboundMessageTransfer := new(ClientInboundMessageTransfer)
 	if err := json.Unmarshal(data, &valueClientInboundMessageTransfer); err == nil {
 		c.typ = "ClientInboundMessageTransfer"
@@ -7835,6 +8181,9 @@ func (c ClientInboundMessageMessage) MarshalJSON() ([]byte, error) {
 	if c.typ == "ClientInboundMessageSay" || c.ClientInboundMessageSay != nil {
 		return json.Marshal(c.ClientInboundMessageSay)
 	}
+	if c.typ == "ClientInboundMessageEndCall" || c.ClientInboundMessageEndCall != nil {
+		return json.Marshal(c.ClientInboundMessageEndCall)
+	}
 	if c.typ == "ClientInboundMessageTransfer" || c.ClientInboundMessageTransfer != nil {
 		return json.Marshal(c.ClientInboundMessageTransfer)
 	}
@@ -7845,6 +8194,7 @@ type ClientInboundMessageMessageVisitor interface {
 	VisitClientInboundMessageAddMessage(*ClientInboundMessageAddMessage) error
 	VisitClientInboundMessageControl(*ClientInboundMessageControl) error
 	VisitClientInboundMessageSay(*ClientInboundMessageSay) error
+	VisitClientInboundMessageEndCall(*ClientInboundMessageEndCall) error
 	VisitClientInboundMessageTransfer(*ClientInboundMessageTransfer) error
 }
 
@@ -7857,6 +8207,9 @@ func (c *ClientInboundMessageMessage) Accept(visitor ClientInboundMessageMessage
 	}
 	if c.typ == "ClientInboundMessageSay" || c.ClientInboundMessageSay != nil {
 		return visitor.VisitClientInboundMessageSay(c.ClientInboundMessageSay)
+	}
+	if c.typ == "ClientInboundMessageEndCall" || c.ClientInboundMessageEndCall != nil {
+		return visitor.VisitClientInboundMessageEndCall(c.ClientInboundMessageEndCall)
 	}
 	if c.typ == "ClientInboundMessageTransfer" || c.ClientInboundMessageTransfer != nil {
 		return visitor.VisitClientInboundMessageTransfer(c.ClientInboundMessageTransfer)
@@ -9140,12 +9493,12 @@ func (c *ClientMessageToolCallsResult) String() string {
 }
 
 type ClientMessageToolCallsToolWithToolCallListItem struct {
-	FunctionToolWithToolCall *FunctionToolWithToolCall
-	GhlToolWithToolCall      *GhlToolWithToolCall
-	MakeToolWithToolCall     *MakeToolWithToolCall
-	Unknown                  interface{}
-	Unknown                  interface{}
-	Unknown                  interface{}
+	FunctionToolWithToolCall   *FunctionToolWithToolCall
+	GhlToolWithToolCall        *GhlToolWithToolCall
+	MakeToolWithToolCall       *MakeToolWithToolCall
+	BashToolWithToolCall       *BashToolWithToolCall
+	ComputerToolWithToolCall   *ComputerToolWithToolCall
+	TextEditorToolWithToolCall *TextEditorToolWithToolCall
 
 	typ string
 }
@@ -9171,25 +9524,25 @@ func (c *ClientMessageToolCallsToolWithToolCallListItem) GetMakeToolWithToolCall
 	return c.MakeToolWithToolCall
 }
 
-func (c *ClientMessageToolCallsToolWithToolCallListItem) GetUnknown() interface{} {
+func (c *ClientMessageToolCallsToolWithToolCallListItem) GetBashToolWithToolCall() *BashToolWithToolCall {
 	if c == nil {
 		return nil
 	}
-	return c.Unknown
+	return c.BashToolWithToolCall
 }
 
-func (c *ClientMessageToolCallsToolWithToolCallListItem) GetUnknown() interface{} {
+func (c *ClientMessageToolCallsToolWithToolCallListItem) GetComputerToolWithToolCall() *ComputerToolWithToolCall {
 	if c == nil {
 		return nil
 	}
-	return c.Unknown
+	return c.ComputerToolWithToolCall
 }
 
-func (c *ClientMessageToolCallsToolWithToolCallListItem) GetUnknown() interface{} {
+func (c *ClientMessageToolCallsToolWithToolCallListItem) GetTextEditorToolWithToolCall() *TextEditorToolWithToolCall {
 	if c == nil {
 		return nil
 	}
-	return c.Unknown
+	return c.TextEditorToolWithToolCall
 }
 
 func (c *ClientMessageToolCallsToolWithToolCallListItem) UnmarshalJSON(data []byte) error {
@@ -9211,22 +9564,22 @@ func (c *ClientMessageToolCallsToolWithToolCallListItem) UnmarshalJSON(data []by
 		c.MakeToolWithToolCall = valueMakeToolWithToolCall
 		return nil
 	}
-	var valueUnknown interface{}
-	if err := json.Unmarshal(data, &valueUnknown); err == nil {
-		c.typ = "Unknown"
-		c.Unknown = valueUnknown
+	valueBashToolWithToolCall := new(BashToolWithToolCall)
+	if err := json.Unmarshal(data, &valueBashToolWithToolCall); err == nil {
+		c.typ = "BashToolWithToolCall"
+		c.BashToolWithToolCall = valueBashToolWithToolCall
 		return nil
 	}
-	var valueUnknown interface{}
-	if err := json.Unmarshal(data, &valueUnknown); err == nil {
-		c.typ = "Unknown"
-		c.Unknown = valueUnknown
+	valueComputerToolWithToolCall := new(ComputerToolWithToolCall)
+	if err := json.Unmarshal(data, &valueComputerToolWithToolCall); err == nil {
+		c.typ = "ComputerToolWithToolCall"
+		c.ComputerToolWithToolCall = valueComputerToolWithToolCall
 		return nil
 	}
-	var valueUnknown interface{}
-	if err := json.Unmarshal(data, &valueUnknown); err == nil {
-		c.typ = "Unknown"
-		c.Unknown = valueUnknown
+	valueTextEditorToolWithToolCall := new(TextEditorToolWithToolCall)
+	if err := json.Unmarshal(data, &valueTextEditorToolWithToolCall); err == nil {
+		c.typ = "TextEditorToolWithToolCall"
+		c.TextEditorToolWithToolCall = valueTextEditorToolWithToolCall
 		return nil
 	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
@@ -9242,14 +9595,14 @@ func (c ClientMessageToolCallsToolWithToolCallListItem) MarshalJSON() ([]byte, e
 	if c.typ == "MakeToolWithToolCall" || c.MakeToolWithToolCall != nil {
 		return json.Marshal(c.MakeToolWithToolCall)
 	}
-	if c.typ == "Unknown" || c.Unknown != nil {
-		return json.Marshal(c.Unknown)
+	if c.typ == "BashToolWithToolCall" || c.BashToolWithToolCall != nil {
+		return json.Marshal(c.BashToolWithToolCall)
 	}
-	if c.typ == "Unknown" || c.Unknown != nil {
-		return json.Marshal(c.Unknown)
+	if c.typ == "ComputerToolWithToolCall" || c.ComputerToolWithToolCall != nil {
+		return json.Marshal(c.ComputerToolWithToolCall)
 	}
-	if c.typ == "Unknown" || c.Unknown != nil {
-		return json.Marshal(c.Unknown)
+	if c.typ == "TextEditorToolWithToolCall" || c.TextEditorToolWithToolCall != nil {
+		return json.Marshal(c.TextEditorToolWithToolCall)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
 }
@@ -9258,9 +9611,9 @@ type ClientMessageToolCallsToolWithToolCallListItemVisitor interface {
 	VisitFunctionToolWithToolCall(*FunctionToolWithToolCall) error
 	VisitGhlToolWithToolCall(*GhlToolWithToolCall) error
 	VisitMakeToolWithToolCall(*MakeToolWithToolCall) error
-	VisitUnknown(interface{}) error
-	VisitUnknown(interface{}) error
-	VisitUnknown(interface{}) error
+	VisitBashToolWithToolCall(*BashToolWithToolCall) error
+	VisitComputerToolWithToolCall(*ComputerToolWithToolCall) error
+	VisitTextEditorToolWithToolCall(*TextEditorToolWithToolCall) error
 }
 
 func (c *ClientMessageToolCallsToolWithToolCallListItem) Accept(visitor ClientMessageToolCallsToolWithToolCallListItemVisitor) error {
@@ -9273,14 +9626,14 @@ func (c *ClientMessageToolCallsToolWithToolCallListItem) Accept(visitor ClientMe
 	if c.typ == "MakeToolWithToolCall" || c.MakeToolWithToolCall != nil {
 		return visitor.VisitMakeToolWithToolCall(c.MakeToolWithToolCall)
 	}
-	if c.typ == "Unknown" || c.Unknown != nil {
-		return visitor.VisitUnknown(c.Unknown)
+	if c.typ == "BashToolWithToolCall" || c.BashToolWithToolCall != nil {
+		return visitor.VisitBashToolWithToolCall(c.BashToolWithToolCall)
 	}
-	if c.typ == "Unknown" || c.Unknown != nil {
-		return visitor.VisitUnknown(c.Unknown)
+	if c.typ == "ComputerToolWithToolCall" || c.ComputerToolWithToolCall != nil {
+		return visitor.VisitComputerToolWithToolCall(c.ComputerToolWithToolCall)
 	}
-	if c.typ == "Unknown" || c.Unknown != nil {
-		return visitor.VisitUnknown(c.Unknown)
+	if c.typ == "TextEditorToolWithToolCall" || c.TextEditorToolWithToolCall != nil {
+		return visitor.VisitTextEditorToolWithToolCall(c.TextEditorToolWithToolCall)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
@@ -10092,6 +10445,288 @@ func (c *CloudflareR2BucketPlan) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", c)
+}
+
+type ComputerToolWithToolCall struct {
+	// This determines if the tool is async.
+	//
+	// If async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.
+	//
+	// If sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.
+	//
+	// Defaults to synchronous (`false`).
+	Async *bool `json:"async,omitempty" url:"async,omitempty"`
+	// These are the messages that will be spoken to the user as the tool is running.
+	//
+	// For some tools, this is auto-filled based on special fields like `tool.destinations`. For others like the function tool, these can be custom configured.
+	Messages []*ComputerToolWithToolCallMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// The type of tool. "computer" for Computer tool.
+	// The sub type of tool.
+	ToolCall *ToolCall `json:"toolCall,omitempty" url:"toolCall,omitempty"`
+	// The name of the tool, fixed to 'computer'
+	// The display width in pixels
+	DisplayWidthPx float64 `json:"displayWidthPx" url:"displayWidthPx"`
+	// The display height in pixels
+	DisplayHeightPx float64 `json:"displayHeightPx" url:"displayHeightPx"`
+	// Optional display number
+	DisplayNumber *float64 `json:"displayNumber,omitempty" url:"displayNumber,omitempty"`
+	// This is the function definition of the tool.
+	//
+	// For `endCall`, `transferCall`, and `dtmf` tools, this is auto-filled based on tool-specific fields like `tool.destinations`. But, even in those cases, you can provide a custom function definition for advanced use cases.
+	//
+	// An example of an advanced use case is if you want to customize the message that's spoken for `endCall` tool. You can specify a function where it returns an argument "reason". Then, in `messages` array, you can have many "request-complete" messages. One of these messages will be triggered if the `messages[].conditions` matches the "reason" argument.
+	Function *OpenAiFunction `json:"function,omitempty" url:"function,omitempty"`
+	// This is the server that will be hit when this tool is requested by the model.
+	//
+	// All requests will be sent with the call object among other things. You can find more details in the Server URL documentation.
+	//
+	// This overrides the serverUrl set on the org and the phoneNumber. Order of precedence: highest tool.server.url, then assistant.serverUrl, then phoneNumber.serverUrl, then org.serverUrl.
+	Server  *Server `json:"server,omitempty" url:"server,omitempty"`
+	type_   string
+	subType string
+	name    string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *ComputerToolWithToolCall) GetAsync() *bool {
+	if c == nil {
+		return nil
+	}
+	return c.Async
+}
+
+func (c *ComputerToolWithToolCall) GetMessages() []*ComputerToolWithToolCallMessagesItem {
+	if c == nil {
+		return nil
+	}
+	return c.Messages
+}
+
+func (c *ComputerToolWithToolCall) GetToolCall() *ToolCall {
+	if c == nil {
+		return nil
+	}
+	return c.ToolCall
+}
+
+func (c *ComputerToolWithToolCall) GetDisplayWidthPx() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.DisplayWidthPx
+}
+
+func (c *ComputerToolWithToolCall) GetDisplayHeightPx() float64 {
+	if c == nil {
+		return 0
+	}
+	return c.DisplayHeightPx
+}
+
+func (c *ComputerToolWithToolCall) GetDisplayNumber() *float64 {
+	if c == nil {
+		return nil
+	}
+	return c.DisplayNumber
+}
+
+func (c *ComputerToolWithToolCall) GetFunction() *OpenAiFunction {
+	if c == nil {
+		return nil
+	}
+	return c.Function
+}
+
+func (c *ComputerToolWithToolCall) GetServer() *Server {
+	if c == nil {
+		return nil
+	}
+	return c.Server
+}
+
+func (c *ComputerToolWithToolCall) Type() string {
+	return c.type_
+}
+
+func (c *ComputerToolWithToolCall) SubType() string {
+	return c.subType
+}
+
+func (c *ComputerToolWithToolCall) Name() string {
+	return c.name
+}
+
+func (c *ComputerToolWithToolCall) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *ComputerToolWithToolCall) UnmarshalJSON(data []byte) error {
+	type embed ComputerToolWithToolCall
+	var unmarshaler = struct {
+		embed
+		Type    string `json:"type"`
+		SubType string `json:"subType"`
+		Name    string `json:"name"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = ComputerToolWithToolCall(unmarshaler.embed)
+	if unmarshaler.Type != "computer" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "computer", unmarshaler.Type)
+	}
+	c.type_ = unmarshaler.Type
+	if unmarshaler.SubType != "computer_20241022" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "computer_20241022", unmarshaler.SubType)
+	}
+	c.subType = unmarshaler.SubType
+	if unmarshaler.Name != "computer" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "computer", unmarshaler.Name)
+	}
+	c.name = unmarshaler.Name
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "type", "subType", "name")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *ComputerToolWithToolCall) MarshalJSON() ([]byte, error) {
+	type embed ComputerToolWithToolCall
+	var marshaler = struct {
+		embed
+		Type    string `json:"type"`
+		SubType string `json:"subType"`
+		Name    string `json:"name"`
+	}{
+		embed:   embed(*c),
+		Type:    "computer",
+		SubType: "computer_20241022",
+		Name:    "computer",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *ComputerToolWithToolCall) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type ComputerToolWithToolCallMessagesItem struct {
+	ToolMessageStart    *ToolMessageStart
+	ToolMessageComplete *ToolMessageComplete
+	ToolMessageFailed   *ToolMessageFailed
+	ToolMessageDelayed  *ToolMessageDelayed
+
+	typ string
+}
+
+func (c *ComputerToolWithToolCallMessagesItem) GetToolMessageStart() *ToolMessageStart {
+	if c == nil {
+		return nil
+	}
+	return c.ToolMessageStart
+}
+
+func (c *ComputerToolWithToolCallMessagesItem) GetToolMessageComplete() *ToolMessageComplete {
+	if c == nil {
+		return nil
+	}
+	return c.ToolMessageComplete
+}
+
+func (c *ComputerToolWithToolCallMessagesItem) GetToolMessageFailed() *ToolMessageFailed {
+	if c == nil {
+		return nil
+	}
+	return c.ToolMessageFailed
+}
+
+func (c *ComputerToolWithToolCallMessagesItem) GetToolMessageDelayed() *ToolMessageDelayed {
+	if c == nil {
+		return nil
+	}
+	return c.ToolMessageDelayed
+}
+
+func (c *ComputerToolWithToolCallMessagesItem) UnmarshalJSON(data []byte) error {
+	valueToolMessageStart := new(ToolMessageStart)
+	if err := json.Unmarshal(data, &valueToolMessageStart); err == nil {
+		c.typ = "ToolMessageStart"
+		c.ToolMessageStart = valueToolMessageStart
+		return nil
+	}
+	valueToolMessageComplete := new(ToolMessageComplete)
+	if err := json.Unmarshal(data, &valueToolMessageComplete); err == nil {
+		c.typ = "ToolMessageComplete"
+		c.ToolMessageComplete = valueToolMessageComplete
+		return nil
+	}
+	valueToolMessageFailed := new(ToolMessageFailed)
+	if err := json.Unmarshal(data, &valueToolMessageFailed); err == nil {
+		c.typ = "ToolMessageFailed"
+		c.ToolMessageFailed = valueToolMessageFailed
+		return nil
+	}
+	valueToolMessageDelayed := new(ToolMessageDelayed)
+	if err := json.Unmarshal(data, &valueToolMessageDelayed); err == nil {
+		c.typ = "ToolMessageDelayed"
+		c.ToolMessageDelayed = valueToolMessageDelayed
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c ComputerToolWithToolCallMessagesItem) MarshalJSON() ([]byte, error) {
+	if c.typ == "ToolMessageStart" || c.ToolMessageStart != nil {
+		return json.Marshal(c.ToolMessageStart)
+	}
+	if c.typ == "ToolMessageComplete" || c.ToolMessageComplete != nil {
+		return json.Marshal(c.ToolMessageComplete)
+	}
+	if c.typ == "ToolMessageFailed" || c.ToolMessageFailed != nil {
+		return json.Marshal(c.ToolMessageFailed)
+	}
+	if c.typ == "ToolMessageDelayed" || c.ToolMessageDelayed != nil {
+		return json.Marshal(c.ToolMessageDelayed)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type ComputerToolWithToolCallMessagesItemVisitor interface {
+	VisitToolMessageStart(*ToolMessageStart) error
+	VisitToolMessageComplete(*ToolMessageComplete) error
+	VisitToolMessageFailed(*ToolMessageFailed) error
+	VisitToolMessageDelayed(*ToolMessageDelayed) error
+}
+
+func (c *ComputerToolWithToolCallMessagesItem) Accept(visitor ComputerToolWithToolCallMessagesItemVisitor) error {
+	if c.typ == "ToolMessageStart" || c.ToolMessageStart != nil {
+		return visitor.VisitToolMessageStart(c.ToolMessageStart)
+	}
+	if c.typ == "ToolMessageComplete" || c.ToolMessageComplete != nil {
+		return visitor.VisitToolMessageComplete(c.ToolMessageComplete)
+	}
+	if c.typ == "ToolMessageFailed" || c.ToolMessageFailed != nil {
+		return visitor.VisitToolMessageFailed(c.ToolMessageFailed)
+	}
+	if c.typ == "ToolMessageDelayed" || c.ToolMessageDelayed != nil {
+		return visitor.VisitToolMessageDelayed(c.ToolMessageDelayed)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
 
 type Condition struct {
@@ -12560,12 +13195,14 @@ type CreateAzureCredentialDtoRegion string
 
 const (
 	CreateAzureCredentialDtoRegionAustralia      CreateAzureCredentialDtoRegion = "australia"
-	CreateAzureCredentialDtoRegionCanada         CreateAzureCredentialDtoRegion = "canada"
+	CreateAzureCredentialDtoRegionCanadaeast     CreateAzureCredentialDtoRegion = "canadaeast"
+	CreateAzureCredentialDtoRegionCanadacentral  CreateAzureCredentialDtoRegion = "canadacentral"
 	CreateAzureCredentialDtoRegionEastus2        CreateAzureCredentialDtoRegion = "eastus2"
 	CreateAzureCredentialDtoRegionEastus         CreateAzureCredentialDtoRegion = "eastus"
 	CreateAzureCredentialDtoRegionFrance         CreateAzureCredentialDtoRegion = "france"
 	CreateAzureCredentialDtoRegionIndia          CreateAzureCredentialDtoRegion = "india"
-	CreateAzureCredentialDtoRegionJapan          CreateAzureCredentialDtoRegion = "japan"
+	CreateAzureCredentialDtoRegionJapaneast      CreateAzureCredentialDtoRegion = "japaneast"
+	CreateAzureCredentialDtoRegionJapanwest      CreateAzureCredentialDtoRegion = "japanwest"
 	CreateAzureCredentialDtoRegionUaenorth       CreateAzureCredentialDtoRegion = "uaenorth"
 	CreateAzureCredentialDtoRegionNorthcentralus CreateAzureCredentialDtoRegion = "northcentralus"
 	CreateAzureCredentialDtoRegionNorway         CreateAzureCredentialDtoRegion = "norway"
@@ -12581,8 +13218,10 @@ func NewCreateAzureCredentialDtoRegionFromString(s string) (CreateAzureCredentia
 	switch s {
 	case "australia":
 		return CreateAzureCredentialDtoRegionAustralia, nil
-	case "canada":
-		return CreateAzureCredentialDtoRegionCanada, nil
+	case "canadaeast":
+		return CreateAzureCredentialDtoRegionCanadaeast, nil
+	case "canadacentral":
+		return CreateAzureCredentialDtoRegionCanadacentral, nil
 	case "eastus2":
 		return CreateAzureCredentialDtoRegionEastus2, nil
 	case "eastus":
@@ -12591,8 +13230,10 @@ func NewCreateAzureCredentialDtoRegionFromString(s string) (CreateAzureCredentia
 		return CreateAzureCredentialDtoRegionFrance, nil
 	case "india":
 		return CreateAzureCredentialDtoRegionIndia, nil
-	case "japan":
-		return CreateAzureCredentialDtoRegionJapan, nil
+	case "japaneast":
+		return CreateAzureCredentialDtoRegionJapaneast, nil
+	case "japanwest":
+		return CreateAzureCredentialDtoRegionJapanwest, nil
 	case "uaenorth":
 		return CreateAzureCredentialDtoRegionUaenorth, nil
 	case "northcentralus":
@@ -12805,12 +13446,14 @@ type CreateAzureOpenAiCredentialDtoRegion string
 
 const (
 	CreateAzureOpenAiCredentialDtoRegionAustralia      CreateAzureOpenAiCredentialDtoRegion = "australia"
-	CreateAzureOpenAiCredentialDtoRegionCanada         CreateAzureOpenAiCredentialDtoRegion = "canada"
+	CreateAzureOpenAiCredentialDtoRegionCanadaeast     CreateAzureOpenAiCredentialDtoRegion = "canadaeast"
+	CreateAzureOpenAiCredentialDtoRegionCanadacentral  CreateAzureOpenAiCredentialDtoRegion = "canadacentral"
 	CreateAzureOpenAiCredentialDtoRegionEastus2        CreateAzureOpenAiCredentialDtoRegion = "eastus2"
 	CreateAzureOpenAiCredentialDtoRegionEastus         CreateAzureOpenAiCredentialDtoRegion = "eastus"
 	CreateAzureOpenAiCredentialDtoRegionFrance         CreateAzureOpenAiCredentialDtoRegion = "france"
 	CreateAzureOpenAiCredentialDtoRegionIndia          CreateAzureOpenAiCredentialDtoRegion = "india"
-	CreateAzureOpenAiCredentialDtoRegionJapan          CreateAzureOpenAiCredentialDtoRegion = "japan"
+	CreateAzureOpenAiCredentialDtoRegionJapaneast      CreateAzureOpenAiCredentialDtoRegion = "japaneast"
+	CreateAzureOpenAiCredentialDtoRegionJapanwest      CreateAzureOpenAiCredentialDtoRegion = "japanwest"
 	CreateAzureOpenAiCredentialDtoRegionUaenorth       CreateAzureOpenAiCredentialDtoRegion = "uaenorth"
 	CreateAzureOpenAiCredentialDtoRegionNorthcentralus CreateAzureOpenAiCredentialDtoRegion = "northcentralus"
 	CreateAzureOpenAiCredentialDtoRegionNorway         CreateAzureOpenAiCredentialDtoRegion = "norway"
@@ -12826,8 +13469,10 @@ func NewCreateAzureOpenAiCredentialDtoRegionFromString(s string) (CreateAzureOpe
 	switch s {
 	case "australia":
 		return CreateAzureOpenAiCredentialDtoRegionAustralia, nil
-	case "canada":
-		return CreateAzureOpenAiCredentialDtoRegionCanada, nil
+	case "canadaeast":
+		return CreateAzureOpenAiCredentialDtoRegionCanadaeast, nil
+	case "canadacentral":
+		return CreateAzureOpenAiCredentialDtoRegionCanadacentral, nil
 	case "eastus2":
 		return CreateAzureOpenAiCredentialDtoRegionEastus2, nil
 	case "eastus":
@@ -12836,8 +13481,10 @@ func NewCreateAzureOpenAiCredentialDtoRegionFromString(s string) (CreateAzureOpe
 		return CreateAzureOpenAiCredentialDtoRegionFrance, nil
 	case "india":
 		return CreateAzureOpenAiCredentialDtoRegionIndia, nil
-	case "japan":
-		return CreateAzureOpenAiCredentialDtoRegionJapan, nil
+	case "japaneast":
+		return CreateAzureOpenAiCredentialDtoRegionJapaneast, nil
+	case "japanwest":
+		return CreateAzureOpenAiCredentialDtoRegionJapanwest, nil
 	case "uaenorth":
 		return CreateAzureOpenAiCredentialDtoRegionUaenorth, nil
 	case "northcentralus":
@@ -13450,7 +14097,6 @@ func (c *CreateConversationBlockDtoMessagesItem) Accept(visitor CreateConversati
 }
 
 type CreateCustomKnowledgeBaseDto struct {
-	// /**
 	// This is where the knowledge base request will be sent.
 	//
 	// Request Example:
@@ -19100,6 +19746,198 @@ func (c *CreateWorkflowBlockDtoStepsItem) Accept(visitor CreateWorkflowBlockDtoS
 	return fmt.Errorf("type %T does not include a non-empty union type", c)
 }
 
+type CreateWorkflowDto struct {
+	Nodes []*CreateWorkflowDtoNodesItem `json:"nodes,omitempty" url:"nodes,omitempty"`
+	Name  string                        `json:"name" url:"name"`
+	Edges []*Edge                       `json:"edges,omitempty" url:"edges,omitempty"`
+	type_ string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (c *CreateWorkflowDto) GetNodes() []*CreateWorkflowDtoNodesItem {
+	if c == nil {
+		return nil
+	}
+	return c.Nodes
+}
+
+func (c *CreateWorkflowDto) GetName() string {
+	if c == nil {
+		return ""
+	}
+	return c.Name
+}
+
+func (c *CreateWorkflowDto) GetEdges() []*Edge {
+	if c == nil {
+		return nil
+	}
+	return c.Edges
+}
+
+func (c *CreateWorkflowDto) Type() string {
+	return c.type_
+}
+
+func (c *CreateWorkflowDto) GetExtraProperties() map[string]interface{} {
+	return c.extraProperties
+}
+
+func (c *CreateWorkflowDto) UnmarshalJSON(data []byte) error {
+	type embed CreateWorkflowDto
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*c),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*c = CreateWorkflowDto(unmarshaler.embed)
+	if unmarshaler.Type != "workflow" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", c, "workflow", unmarshaler.Type)
+	}
+	c.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *c, "type")
+	if err != nil {
+		return err
+	}
+	c.extraProperties = extraProperties
+	c.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (c *CreateWorkflowDto) MarshalJSON() ([]byte, error) {
+	type embed CreateWorkflowDto
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*c),
+		Type:  "workflow",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (c *CreateWorkflowDto) String() string {
+	if len(c.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(c.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(c); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", c)
+}
+
+type CreateWorkflowDtoNodesItem struct {
+	Say               *Say
+	Gather            *Gather
+	Unknown           interface{}
+	CreateWorkflowDto *CreateWorkflowDto
+
+	typ string
+}
+
+func (c *CreateWorkflowDtoNodesItem) GetSay() *Say {
+	if c == nil {
+		return nil
+	}
+	return c.Say
+}
+
+func (c *CreateWorkflowDtoNodesItem) GetGather() *Gather {
+	if c == nil {
+		return nil
+	}
+	return c.Gather
+}
+
+func (c *CreateWorkflowDtoNodesItem) GetUnknown() interface{} {
+	if c == nil {
+		return nil
+	}
+	return c.Unknown
+}
+
+func (c *CreateWorkflowDtoNodesItem) GetCreateWorkflowDto() *CreateWorkflowDto {
+	if c == nil {
+		return nil
+	}
+	return c.CreateWorkflowDto
+}
+
+func (c *CreateWorkflowDtoNodesItem) UnmarshalJSON(data []byte) error {
+	valueSay := new(Say)
+	if err := json.Unmarshal(data, &valueSay); err == nil {
+		c.typ = "Say"
+		c.Say = valueSay
+		return nil
+	}
+	valueGather := new(Gather)
+	if err := json.Unmarshal(data, &valueGather); err == nil {
+		c.typ = "Gather"
+		c.Gather = valueGather
+		return nil
+	}
+	var valueUnknown interface{}
+	if err := json.Unmarshal(data, &valueUnknown); err == nil {
+		c.typ = "Unknown"
+		c.Unknown = valueUnknown
+		return nil
+	}
+	valueCreateWorkflowDto := new(CreateWorkflowDto)
+	if err := json.Unmarshal(data, &valueCreateWorkflowDto); err == nil {
+		c.typ = "CreateWorkflowDto"
+		c.CreateWorkflowDto = valueCreateWorkflowDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CreateWorkflowDtoNodesItem) MarshalJSON() ([]byte, error) {
+	if c.typ == "Say" || c.Say != nil {
+		return json.Marshal(c.Say)
+	}
+	if c.typ == "Gather" || c.Gather != nil {
+		return json.Marshal(c.Gather)
+	}
+	if c.typ == "Unknown" || c.Unknown != nil {
+		return json.Marshal(c.Unknown)
+	}
+	if c.typ == "CreateWorkflowDto" || c.CreateWorkflowDto != nil {
+		return json.Marshal(c.CreateWorkflowDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CreateWorkflowDtoNodesItemVisitor interface {
+	VisitSay(*Say) error
+	VisitGather(*Gather) error
+	VisitUnknown(interface{}) error
+	VisitCreateWorkflowDto(*CreateWorkflowDto) error
+}
+
+func (c *CreateWorkflowDtoNodesItem) Accept(visitor CreateWorkflowDtoNodesItemVisitor) error {
+	if c.typ == "Say" || c.Say != nil {
+		return visitor.VisitSay(c.Say)
+	}
+	if c.typ == "Gather" || c.Gather != nil {
+		return visitor.VisitGather(c.Gather)
+	}
+	if c.typ == "Unknown" || c.Unknown != nil {
+		return visitor.VisitUnknown(c.Unknown)
+	}
+	if c.typ == "CreateWorkflowDto" || c.CreateWorkflowDto != nil {
+		return visitor.VisitCreateWorkflowDto(c.CreateWorkflowDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
 type CreateXAiCredentialDto struct {
 	// This is the api key for Grok in XAi's console. Get it from here: https://console.x.ai
 	// This is not returned in the API.
@@ -21856,6 +22694,130 @@ func NewDeepgramVoiceIdEnumFromString(s string) (DeepgramVoiceIdEnum, error) {
 
 func (d DeepgramVoiceIdEnum) Ptr() *DeepgramVoiceIdEnum {
 	return &d
+}
+
+type Edge struct {
+	Condition *EdgeCondition `json:"condition,omitempty" url:"condition,omitempty"`
+	From      string         `json:"from" url:"from"`
+	To        string         `json:"to" url:"to"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (e *Edge) GetCondition() *EdgeCondition {
+	if e == nil {
+		return nil
+	}
+	return e.Condition
+}
+
+func (e *Edge) GetFrom() string {
+	if e == nil {
+		return ""
+	}
+	return e.From
+}
+
+func (e *Edge) GetTo() string {
+	if e == nil {
+		return ""
+	}
+	return e.To
+}
+
+func (e *Edge) GetExtraProperties() map[string]interface{} {
+	return e.extraProperties
+}
+
+func (e *Edge) UnmarshalJSON(data []byte) error {
+	type unmarshaler Edge
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*e = Edge(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *e)
+	if err != nil {
+		return err
+	}
+	e.extraProperties = extraProperties
+	e.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (e *Edge) String() string {
+	if len(e.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(e.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(e); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", e)
+}
+
+type EdgeCondition struct {
+	SemanticEdgeCondition     *SemanticEdgeCondition
+	ProgrammaticEdgeCondition *ProgrammaticEdgeCondition
+
+	typ string
+}
+
+func (e *EdgeCondition) GetSemanticEdgeCondition() *SemanticEdgeCondition {
+	if e == nil {
+		return nil
+	}
+	return e.SemanticEdgeCondition
+}
+
+func (e *EdgeCondition) GetProgrammaticEdgeCondition() *ProgrammaticEdgeCondition {
+	if e == nil {
+		return nil
+	}
+	return e.ProgrammaticEdgeCondition
+}
+
+func (e *EdgeCondition) UnmarshalJSON(data []byte) error {
+	valueSemanticEdgeCondition := new(SemanticEdgeCondition)
+	if err := json.Unmarshal(data, &valueSemanticEdgeCondition); err == nil {
+		e.typ = "SemanticEdgeCondition"
+		e.SemanticEdgeCondition = valueSemanticEdgeCondition
+		return nil
+	}
+	valueProgrammaticEdgeCondition := new(ProgrammaticEdgeCondition)
+	if err := json.Unmarshal(data, &valueProgrammaticEdgeCondition); err == nil {
+		e.typ = "ProgrammaticEdgeCondition"
+		e.ProgrammaticEdgeCondition = valueProgrammaticEdgeCondition
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, e)
+}
+
+func (e EdgeCondition) MarshalJSON() ([]byte, error) {
+	if e.typ == "SemanticEdgeCondition" || e.SemanticEdgeCondition != nil {
+		return json.Marshal(e.SemanticEdgeCondition)
+	}
+	if e.typ == "ProgrammaticEdgeCondition" || e.ProgrammaticEdgeCondition != nil {
+		return json.Marshal(e.ProgrammaticEdgeCondition)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", e)
+}
+
+type EdgeConditionVisitor interface {
+	VisitSemanticEdgeCondition(*SemanticEdgeCondition) error
+	VisitProgrammaticEdgeCondition(*ProgrammaticEdgeCondition) error
+}
+
+func (e *EdgeCondition) Accept(visitor EdgeConditionVisitor) error {
+	if e.typ == "SemanticEdgeCondition" || e.SemanticEdgeCondition != nil {
+		return visitor.VisitSemanticEdgeCondition(e.SemanticEdgeCondition)
+	}
+	if e.typ == "ProgrammaticEdgeCondition" || e.ProgrammaticEdgeCondition != nil {
+		return visitor.VisitProgrammaticEdgeCondition(e.ProgrammaticEdgeCondition)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", e)
 }
 
 type ElevenLabsCredential struct {
@@ -25508,14 +26470,14 @@ func (f *FallbackTavusVoice) String() string {
 
 // This is the provider-specific ID that will be used.
 type FallbackTavusVoiceVoiceId struct {
-	r52da2535aStringLiteral string
+	R52da2535aStringLiteral string
 	String                  string
 
 	typ string
 }
 
 func NewFallbackTavusVoiceVoiceIdWithR52da2535aStringLiteral() *FallbackTavusVoiceVoiceId {
-	return &FallbackTavusVoiceVoiceId{typ: "r52da2535aStringLiteral", r52da2535aStringLiteral: "r52da2535a"}
+	return &FallbackTavusVoiceVoiceId{typ: "R52da2535aStringLiteral", R52da2535aStringLiteral: "r52da2535a"}
 }
 
 func (f *FallbackTavusVoiceVoiceId) GetString() string {
@@ -25525,16 +26487,12 @@ func (f *FallbackTavusVoiceVoiceId) GetString() string {
 	return f.String
 }
 
-func (f *FallbackTavusVoiceVoiceId) R52da2535aStringLiteral() string {
-	return f.r52da2535aStringLiteral
-}
-
 func (f *FallbackTavusVoiceVoiceId) UnmarshalJSON(data []byte) error {
 	var valueR52da2535aStringLiteral string
 	if err := json.Unmarshal(data, &valueR52da2535aStringLiteral); err == nil {
-		f.typ = "r52da2535aStringLiteral"
-		f.r52da2535aStringLiteral = valueR52da2535aStringLiteral
-		if f.r52da2535aStringLiteral != "r52da2535a" {
+		f.typ = "R52da2535aStringLiteral"
+		f.R52da2535aStringLiteral = valueR52da2535aStringLiteral
+		if f.R52da2535aStringLiteral != "r52da2535a" {
 			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", f, "r52da2535a", valueR52da2535aStringLiteral)
 		}
 		return nil
@@ -25549,7 +26507,7 @@ func (f *FallbackTavusVoiceVoiceId) UnmarshalJSON(data []byte) error {
 }
 
 func (f FallbackTavusVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if f.typ == "r52da2535aStringLiteral" || f.r52da2535aStringLiteral != "" {
+	if f.typ == "R52da2535aStringLiteral" || f.R52da2535aStringLiteral != "" {
 		return json.Marshal("r52da2535a")
 	}
 	if f.typ == "String" || f.String != "" {
@@ -25564,8 +26522,8 @@ type FallbackTavusVoiceVoiceIdVisitor interface {
 }
 
 func (f *FallbackTavusVoiceVoiceId) Accept(visitor FallbackTavusVoiceVoiceIdVisitor) error {
-	if f.typ == "r52da2535aStringLiteral" || f.r52da2535aStringLiteral != "" {
-		return visitor.VisitR52da2535aStringLiteral(f.r52da2535aStringLiteral)
+	if f.typ == "R52da2535aStringLiteral" || f.R52da2535aStringLiteral != "" {
+		return visitor.VisitR52da2535aStringLiteral(f.R52da2535aStringLiteral)
 	}
 	if f.typ == "String" || f.String != "" {
 		return visitor.VisitString(f.String)
@@ -26031,6 +26989,94 @@ func (f *FunctionToolWithToolCallMessagesItem) Accept(visitor FunctionToolWithTo
 		return visitor.VisitToolMessageDelayed(f.ToolMessageDelayed)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", f)
+}
+
+type Gather struct {
+	Schema      *JsonSchema `json:"schema,omitempty" url:"schema,omitempty"`
+	Instruction string      `json:"instruction" url:"instruction"`
+	Name        string      `json:"name" url:"name"`
+	type_       string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (g *Gather) GetSchema() *JsonSchema {
+	if g == nil {
+		return nil
+	}
+	return g.Schema
+}
+
+func (g *Gather) GetInstruction() string {
+	if g == nil {
+		return ""
+	}
+	return g.Instruction
+}
+
+func (g *Gather) GetName() string {
+	if g == nil {
+		return ""
+	}
+	return g.Name
+}
+
+func (g *Gather) Type() string {
+	return g.type_
+}
+
+func (g *Gather) GetExtraProperties() map[string]interface{} {
+	return g.extraProperties
+}
+
+func (g *Gather) UnmarshalJSON(data []byte) error {
+	type embed Gather
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*g),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*g = Gather(unmarshaler.embed)
+	if unmarshaler.Type != "gather" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", g, "gather", unmarshaler.Type)
+	}
+	g.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *g, "type")
+	if err != nil {
+		return err
+	}
+	g.extraProperties = extraProperties
+	g.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (g *Gather) MarshalJSON() ([]byte, error) {
+	type embed Gather
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*g),
+		Type:  "gather",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (g *Gather) String() string {
+	if len(g.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(g.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(g); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", g)
 }
 
 type GcpCredential struct {
@@ -29724,6 +30770,8 @@ type JsonSchema struct {
 	//
 	// This only makes sense if the type is "object".
 	Required []string `json:"required,omitempty" url:"required,omitempty"`
+	// This array specifies the allowed values that can be used to restrict the output of the model.
+	Enum []string `json:"enum,omitempty" url:"enum,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -29762,6 +30810,13 @@ func (j *JsonSchema) GetRequired() []string {
 		return nil
 	}
 	return j.Required
+}
+
+func (j *JsonSchema) GetEnum() []string {
+	if j == nil {
+		return nil
+	}
+	return j.Enum
 }
 
 func (j *JsonSchema) GetExtraProperties() map[string]interface{} {
@@ -34990,6 +36045,78 @@ func (p PlayHtVoiceModel) Ptr() *PlayHtVoiceModel {
 	return &p
 }
 
+type ProgrammaticEdgeCondition struct {
+	BooleanExpression *string `json:"booleanExpression,omitempty" url:"booleanExpression,omitempty"`
+	type_             string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (p *ProgrammaticEdgeCondition) GetBooleanExpression() *string {
+	if p == nil {
+		return nil
+	}
+	return p.BooleanExpression
+}
+
+func (p *ProgrammaticEdgeCondition) Type() string {
+	return p.type_
+}
+
+func (p *ProgrammaticEdgeCondition) GetExtraProperties() map[string]interface{} {
+	return p.extraProperties
+}
+
+func (p *ProgrammaticEdgeCondition) UnmarshalJSON(data []byte) error {
+	type embed ProgrammaticEdgeCondition
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*p),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*p = ProgrammaticEdgeCondition(unmarshaler.embed)
+	if unmarshaler.Type != "programmatic" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", p, "programmatic", unmarshaler.Type)
+	}
+	p.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *p, "type")
+	if err != nil {
+		return err
+	}
+	p.extraProperties = extraProperties
+	p.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (p *ProgrammaticEdgeCondition) MarshalJSON() ([]byte, error) {
+	type embed ProgrammaticEdgeCondition
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*p),
+		Type:  "programmatic",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (p *ProgrammaticEdgeCondition) String() string {
+	if len(p.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(p.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(p); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", p)
+}
+
 type PunctuationBoundary string
 
 const (
@@ -36310,6 +37437,86 @@ func (s *S3Credential) String() string {
 	return fmt.Sprintf("%#v", s)
 }
 
+type Say struct {
+	Instruction string `json:"instruction" url:"instruction"`
+	Name        string `json:"name" url:"name"`
+	type_       string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *Say) GetInstruction() string {
+	if s == nil {
+		return ""
+	}
+	return s.Instruction
+}
+
+func (s *Say) GetName() string {
+	if s == nil {
+		return ""
+	}
+	return s.Name
+}
+
+func (s *Say) Type() string {
+	return s.type_
+}
+
+func (s *Say) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *Say) UnmarshalJSON(data []byte) error {
+	type embed Say
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = Say(unmarshaler.embed)
+	if unmarshaler.Type != "say" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", s, "say", unmarshaler.Type)
+	}
+	s.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *s, "type")
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *Say) MarshalJSON() ([]byte, error) {
+	type embed Say
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*s),
+		Type:  "say",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *Say) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
 type SbcConfiguration struct {
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -36336,6 +37543,78 @@ func (s *SbcConfiguration) UnmarshalJSON(data []byte) error {
 }
 
 func (s *SbcConfiguration) String() string {
+	if len(s.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(s); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", s)
+}
+
+type SemanticEdgeCondition struct {
+	Matches []string `json:"matches,omitempty" url:"matches,omitempty"`
+	type_   string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (s *SemanticEdgeCondition) GetMatches() []string {
+	if s == nil {
+		return nil
+	}
+	return s.Matches
+}
+
+func (s *SemanticEdgeCondition) Type() string {
+	return s.type_
+}
+
+func (s *SemanticEdgeCondition) GetExtraProperties() map[string]interface{} {
+	return s.extraProperties
+}
+
+func (s *SemanticEdgeCondition) UnmarshalJSON(data []byte) error {
+	type embed SemanticEdgeCondition
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*s),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*s = SemanticEdgeCondition(unmarshaler.embed)
+	if unmarshaler.Type != "semantic" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", s, "semantic", unmarshaler.Type)
+	}
+	s.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *s, "type")
+	if err != nil {
+		return err
+	}
+	s.extraProperties = extraProperties
+	s.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (s *SemanticEdgeCondition) MarshalJSON() ([]byte, error) {
+	type embed SemanticEdgeCondition
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*s),
+		Type:  "semantic",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (s *SemanticEdgeCondition) String() string {
 	if len(s.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(s.rawJSON); err == nil {
 			return value
@@ -42562,12 +43841,12 @@ func (s *ServerMessageToolCallsPhoneNumber) Accept(visitor ServerMessageToolCall
 }
 
 type ServerMessageToolCallsToolWithToolCallListItem struct {
-	FunctionToolWithToolCall *FunctionToolWithToolCall
-	GhlToolWithToolCall      *GhlToolWithToolCall
-	MakeToolWithToolCall     *MakeToolWithToolCall
-	Unknown                  interface{}
-	Unknown                  interface{}
-	Unknown                  interface{}
+	FunctionToolWithToolCall   *FunctionToolWithToolCall
+	GhlToolWithToolCall        *GhlToolWithToolCall
+	MakeToolWithToolCall       *MakeToolWithToolCall
+	BashToolWithToolCall       *BashToolWithToolCall
+	ComputerToolWithToolCall   *ComputerToolWithToolCall
+	TextEditorToolWithToolCall *TextEditorToolWithToolCall
 
 	typ string
 }
@@ -42593,25 +43872,25 @@ func (s *ServerMessageToolCallsToolWithToolCallListItem) GetMakeToolWithToolCall
 	return s.MakeToolWithToolCall
 }
 
-func (s *ServerMessageToolCallsToolWithToolCallListItem) GetUnknown() interface{} {
+func (s *ServerMessageToolCallsToolWithToolCallListItem) GetBashToolWithToolCall() *BashToolWithToolCall {
 	if s == nil {
 		return nil
 	}
-	return s.Unknown
+	return s.BashToolWithToolCall
 }
 
-func (s *ServerMessageToolCallsToolWithToolCallListItem) GetUnknown() interface{} {
+func (s *ServerMessageToolCallsToolWithToolCallListItem) GetComputerToolWithToolCall() *ComputerToolWithToolCall {
 	if s == nil {
 		return nil
 	}
-	return s.Unknown
+	return s.ComputerToolWithToolCall
 }
 
-func (s *ServerMessageToolCallsToolWithToolCallListItem) GetUnknown() interface{} {
+func (s *ServerMessageToolCallsToolWithToolCallListItem) GetTextEditorToolWithToolCall() *TextEditorToolWithToolCall {
 	if s == nil {
 		return nil
 	}
-	return s.Unknown
+	return s.TextEditorToolWithToolCall
 }
 
 func (s *ServerMessageToolCallsToolWithToolCallListItem) UnmarshalJSON(data []byte) error {
@@ -42633,22 +43912,22 @@ func (s *ServerMessageToolCallsToolWithToolCallListItem) UnmarshalJSON(data []by
 		s.MakeToolWithToolCall = valueMakeToolWithToolCall
 		return nil
 	}
-	var valueUnknown interface{}
-	if err := json.Unmarshal(data, &valueUnknown); err == nil {
-		s.typ = "Unknown"
-		s.Unknown = valueUnknown
+	valueBashToolWithToolCall := new(BashToolWithToolCall)
+	if err := json.Unmarshal(data, &valueBashToolWithToolCall); err == nil {
+		s.typ = "BashToolWithToolCall"
+		s.BashToolWithToolCall = valueBashToolWithToolCall
 		return nil
 	}
-	var valueUnknown interface{}
-	if err := json.Unmarshal(data, &valueUnknown); err == nil {
-		s.typ = "Unknown"
-		s.Unknown = valueUnknown
+	valueComputerToolWithToolCall := new(ComputerToolWithToolCall)
+	if err := json.Unmarshal(data, &valueComputerToolWithToolCall); err == nil {
+		s.typ = "ComputerToolWithToolCall"
+		s.ComputerToolWithToolCall = valueComputerToolWithToolCall
 		return nil
 	}
-	var valueUnknown interface{}
-	if err := json.Unmarshal(data, &valueUnknown); err == nil {
-		s.typ = "Unknown"
-		s.Unknown = valueUnknown
+	valueTextEditorToolWithToolCall := new(TextEditorToolWithToolCall)
+	if err := json.Unmarshal(data, &valueTextEditorToolWithToolCall); err == nil {
+		s.typ = "TextEditorToolWithToolCall"
+		s.TextEditorToolWithToolCall = valueTextEditorToolWithToolCall
 		return nil
 	}
 	return fmt.Errorf("%s cannot be deserialized as a %T", data, s)
@@ -42664,14 +43943,14 @@ func (s ServerMessageToolCallsToolWithToolCallListItem) MarshalJSON() ([]byte, e
 	if s.typ == "MakeToolWithToolCall" || s.MakeToolWithToolCall != nil {
 		return json.Marshal(s.MakeToolWithToolCall)
 	}
-	if s.typ == "Unknown" || s.Unknown != nil {
-		return json.Marshal(s.Unknown)
+	if s.typ == "BashToolWithToolCall" || s.BashToolWithToolCall != nil {
+		return json.Marshal(s.BashToolWithToolCall)
 	}
-	if s.typ == "Unknown" || s.Unknown != nil {
-		return json.Marshal(s.Unknown)
+	if s.typ == "ComputerToolWithToolCall" || s.ComputerToolWithToolCall != nil {
+		return json.Marshal(s.ComputerToolWithToolCall)
 	}
-	if s.typ == "Unknown" || s.Unknown != nil {
-		return json.Marshal(s.Unknown)
+	if s.typ == "TextEditorToolWithToolCall" || s.TextEditorToolWithToolCall != nil {
+		return json.Marshal(s.TextEditorToolWithToolCall)
 	}
 	return nil, fmt.Errorf("type %T does not include a non-empty union type", s)
 }
@@ -42680,9 +43959,9 @@ type ServerMessageToolCallsToolWithToolCallListItemVisitor interface {
 	VisitFunctionToolWithToolCall(*FunctionToolWithToolCall) error
 	VisitGhlToolWithToolCall(*GhlToolWithToolCall) error
 	VisitMakeToolWithToolCall(*MakeToolWithToolCall) error
-	VisitUnknown(interface{}) error
-	VisitUnknown(interface{}) error
-	VisitUnknown(interface{}) error
+	VisitBashToolWithToolCall(*BashToolWithToolCall) error
+	VisitComputerToolWithToolCall(*ComputerToolWithToolCall) error
+	VisitTextEditorToolWithToolCall(*TextEditorToolWithToolCall) error
 }
 
 func (s *ServerMessageToolCallsToolWithToolCallListItem) Accept(visitor ServerMessageToolCallsToolWithToolCallListItemVisitor) error {
@@ -42695,14 +43974,14 @@ func (s *ServerMessageToolCallsToolWithToolCallListItem) Accept(visitor ServerMe
 	if s.typ == "MakeToolWithToolCall" || s.MakeToolWithToolCall != nil {
 		return visitor.VisitMakeToolWithToolCall(s.MakeToolWithToolCall)
 	}
-	if s.typ == "Unknown" || s.Unknown != nil {
-		return visitor.VisitUnknown(s.Unknown)
+	if s.typ == "BashToolWithToolCall" || s.BashToolWithToolCall != nil {
+		return visitor.VisitBashToolWithToolCall(s.BashToolWithToolCall)
 	}
-	if s.typ == "Unknown" || s.Unknown != nil {
-		return visitor.VisitUnknown(s.Unknown)
+	if s.typ == "ComputerToolWithToolCall" || s.ComputerToolWithToolCall != nil {
+		return visitor.VisitComputerToolWithToolCall(s.ComputerToolWithToolCall)
 	}
-	if s.typ == "Unknown" || s.Unknown != nil {
-		return visitor.VisitUnknown(s.Unknown)
+	if s.typ == "TextEditorToolWithToolCall" || s.TextEditorToolWithToolCall != nil {
+		return visitor.VisitTextEditorToolWithToolCall(s.TextEditorToolWithToolCall)
 	}
 	return fmt.Errorf("type %T does not include a non-empty union type", s)
 }
@@ -45756,8 +47035,8 @@ type Subscription struct {
 	//
 	// Note: This is a string to avoid floating point precision issues.
 	Credits string `json:"credits" url:"credits"`
-	// This is the total concurrency limit for the subscription.
-	ConcurrencyLimit float64 `json:"concurrencyLimit" url:"concurrencyLimit"`
+	// This is the total number of active calls (concurrency) across all orgs under this subscription.
+	ConcurrencyCounter float64 `json:"concurrencyCounter" url:"concurrencyCounter"`
 	// This is the default concurrency limit for the subscription.
 	ConcurrencyLimitIncluded float64 `json:"concurrencyLimitIncluded" url:"concurrencyLimitIncluded"`
 	// This is the purchased add-on concurrency limit for the subscription.
@@ -45854,11 +47133,11 @@ func (s *Subscription) GetCredits() string {
 	return s.Credits
 }
 
-func (s *Subscription) GetConcurrencyLimit() float64 {
+func (s *Subscription) GetConcurrencyCounter() float64 {
 	if s == nil {
 		return 0
 	}
-	return s.ConcurrencyLimit
+	return s.ConcurrencyCounter
 }
 
 func (s *Subscription) GetConcurrencyLimitIncluded() float64 {
@@ -47298,14 +48577,14 @@ func (t *TavusVoice) String() string {
 
 // This is the provider-specific ID that will be used.
 type TavusVoiceVoiceId struct {
-	r52da2535aStringLiteral string
+	R52da2535aStringLiteral string
 	String                  string
 
 	typ string
 }
 
 func NewTavusVoiceVoiceIdWithR52da2535aStringLiteral() *TavusVoiceVoiceId {
-	return &TavusVoiceVoiceId{typ: "r52da2535aStringLiteral", r52da2535aStringLiteral: "r52da2535a"}
+	return &TavusVoiceVoiceId{typ: "R52da2535aStringLiteral", R52da2535aStringLiteral: "r52da2535a"}
 }
 
 func (t *TavusVoiceVoiceId) GetString() string {
@@ -47315,16 +48594,12 @@ func (t *TavusVoiceVoiceId) GetString() string {
 	return t.String
 }
 
-func (t *TavusVoiceVoiceId) R52da2535aStringLiteral() string {
-	return t.r52da2535aStringLiteral
-}
-
 func (t *TavusVoiceVoiceId) UnmarshalJSON(data []byte) error {
 	var valueR52da2535aStringLiteral string
 	if err := json.Unmarshal(data, &valueR52da2535aStringLiteral); err == nil {
-		t.typ = "r52da2535aStringLiteral"
-		t.r52da2535aStringLiteral = valueR52da2535aStringLiteral
-		if t.r52da2535aStringLiteral != "r52da2535a" {
+		t.typ = "R52da2535aStringLiteral"
+		t.R52da2535aStringLiteral = valueR52da2535aStringLiteral
+		if t.R52da2535aStringLiteral != "r52da2535a" {
 			return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "r52da2535a", valueR52da2535aStringLiteral)
 		}
 		return nil
@@ -47339,7 +48614,7 @@ func (t *TavusVoiceVoiceId) UnmarshalJSON(data []byte) error {
 }
 
 func (t TavusVoiceVoiceId) MarshalJSON() ([]byte, error) {
-	if t.typ == "r52da2535aStringLiteral" || t.r52da2535aStringLiteral != "" {
+	if t.typ == "R52da2535aStringLiteral" || t.R52da2535aStringLiteral != "" {
 		return json.Marshal("r52da2535a")
 	}
 	if t.typ == "String" || t.String != "" {
@@ -47354,8 +48629,8 @@ type TavusVoiceVoiceIdVisitor interface {
 }
 
 func (t *TavusVoiceVoiceId) Accept(visitor TavusVoiceVoiceIdVisitor) error {
-	if t.typ == "r52da2535aStringLiteral" || t.r52da2535aStringLiteral != "" {
-		return visitor.VisitR52da2535aStringLiteral(t.r52da2535aStringLiteral)
+	if t.typ == "R52da2535aStringLiteral" || t.R52da2535aStringLiteral != "" {
+		return visitor.VisitR52da2535aStringLiteral(t.R52da2535aStringLiteral)
 	}
 	if t.typ == "String" || t.String != "" {
 		return visitor.VisitString(t.String)
@@ -48466,6 +49741,261 @@ func NewTextContentLanguageFromString(s string) (TextContentLanguage, error) {
 
 func (t TextContentLanguage) Ptr() *TextContentLanguage {
 	return &t
+}
+
+type TextEditorToolWithToolCall struct {
+	// This determines if the tool is async.
+	//
+	// If async, the assistant will move forward without waiting for your server to respond. This is useful if you just want to trigger something on your server.
+	//
+	// If sync, the assistant will wait for your server to respond. This is useful if want assistant to respond with the result from your server.
+	//
+	// Defaults to synchronous (`false`).
+	Async *bool `json:"async,omitempty" url:"async,omitempty"`
+	// These are the messages that will be spoken to the user as the tool is running.
+	//
+	// For some tools, this is auto-filled based on special fields like `tool.destinations`. For others like the function tool, these can be custom configured.
+	Messages []*TextEditorToolWithToolCallMessagesItem `json:"messages,omitempty" url:"messages,omitempty"`
+	// The type of tool. "textEditor" for Text Editor tool.
+	// The sub type of tool.
+	ToolCall *ToolCall `json:"toolCall,omitempty" url:"toolCall,omitempty"`
+	// The name of the tool, fixed to 'str_replace_editor'
+	// This is the function definition of the tool.
+	//
+	// For `endCall`, `transferCall`, and `dtmf` tools, this is auto-filled based on tool-specific fields like `tool.destinations`. But, even in those cases, you can provide a custom function definition for advanced use cases.
+	//
+	// An example of an advanced use case is if you want to customize the message that's spoken for `endCall` tool. You can specify a function where it returns an argument "reason". Then, in `messages` array, you can have many "request-complete" messages. One of these messages will be triggered if the `messages[].conditions` matches the "reason" argument.
+	Function *OpenAiFunction `json:"function,omitempty" url:"function,omitempty"`
+	// This is the server that will be hit when this tool is requested by the model.
+	//
+	// All requests will be sent with the call object among other things. You can find more details in the Server URL documentation.
+	//
+	// This overrides the serverUrl set on the org and the phoneNumber. Order of precedence: highest tool.server.url, then assistant.serverUrl, then phoneNumber.serverUrl, then org.serverUrl.
+	Server  *Server `json:"server,omitempty" url:"server,omitempty"`
+	type_   string
+	subType string
+	name    string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TextEditorToolWithToolCall) GetAsync() *bool {
+	if t == nil {
+		return nil
+	}
+	return t.Async
+}
+
+func (t *TextEditorToolWithToolCall) GetMessages() []*TextEditorToolWithToolCallMessagesItem {
+	if t == nil {
+		return nil
+	}
+	return t.Messages
+}
+
+func (t *TextEditorToolWithToolCall) GetToolCall() *ToolCall {
+	if t == nil {
+		return nil
+	}
+	return t.ToolCall
+}
+
+func (t *TextEditorToolWithToolCall) GetFunction() *OpenAiFunction {
+	if t == nil {
+		return nil
+	}
+	return t.Function
+}
+
+func (t *TextEditorToolWithToolCall) GetServer() *Server {
+	if t == nil {
+		return nil
+	}
+	return t.Server
+}
+
+func (t *TextEditorToolWithToolCall) Type() string {
+	return t.type_
+}
+
+func (t *TextEditorToolWithToolCall) SubType() string {
+	return t.subType
+}
+
+func (t *TextEditorToolWithToolCall) Name() string {
+	return t.name
+}
+
+func (t *TextEditorToolWithToolCall) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TextEditorToolWithToolCall) UnmarshalJSON(data []byte) error {
+	type embed TextEditorToolWithToolCall
+	var unmarshaler = struct {
+		embed
+		Type    string `json:"type"`
+		SubType string `json:"subType"`
+		Name    string `json:"name"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TextEditorToolWithToolCall(unmarshaler.embed)
+	if unmarshaler.Type != "textEditor" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "textEditor", unmarshaler.Type)
+	}
+	t.type_ = unmarshaler.Type
+	if unmarshaler.SubType != "text_editor_20241022" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "text_editor_20241022", unmarshaler.SubType)
+	}
+	t.subType = unmarshaler.SubType
+	if unmarshaler.Name != "str_replace_editor" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "str_replace_editor", unmarshaler.Name)
+	}
+	t.name = unmarshaler.Name
+	extraProperties, err := internal.ExtractExtraProperties(data, *t, "type", "subType", "name")
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TextEditorToolWithToolCall) MarshalJSON() ([]byte, error) {
+	type embed TextEditorToolWithToolCall
+	var marshaler = struct {
+		embed
+		Type    string `json:"type"`
+		SubType string `json:"subType"`
+		Name    string `json:"name"`
+	}{
+		embed:   embed(*t),
+		Type:    "textEditor",
+		SubType: "text_editor_20241022",
+		Name:    "str_replace_editor",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TextEditorToolWithToolCall) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TextEditorToolWithToolCallMessagesItem struct {
+	ToolMessageStart    *ToolMessageStart
+	ToolMessageComplete *ToolMessageComplete
+	ToolMessageFailed   *ToolMessageFailed
+	ToolMessageDelayed  *ToolMessageDelayed
+
+	typ string
+}
+
+func (t *TextEditorToolWithToolCallMessagesItem) GetToolMessageStart() *ToolMessageStart {
+	if t == nil {
+		return nil
+	}
+	return t.ToolMessageStart
+}
+
+func (t *TextEditorToolWithToolCallMessagesItem) GetToolMessageComplete() *ToolMessageComplete {
+	if t == nil {
+		return nil
+	}
+	return t.ToolMessageComplete
+}
+
+func (t *TextEditorToolWithToolCallMessagesItem) GetToolMessageFailed() *ToolMessageFailed {
+	if t == nil {
+		return nil
+	}
+	return t.ToolMessageFailed
+}
+
+func (t *TextEditorToolWithToolCallMessagesItem) GetToolMessageDelayed() *ToolMessageDelayed {
+	if t == nil {
+		return nil
+	}
+	return t.ToolMessageDelayed
+}
+
+func (t *TextEditorToolWithToolCallMessagesItem) UnmarshalJSON(data []byte) error {
+	valueToolMessageStart := new(ToolMessageStart)
+	if err := json.Unmarshal(data, &valueToolMessageStart); err == nil {
+		t.typ = "ToolMessageStart"
+		t.ToolMessageStart = valueToolMessageStart
+		return nil
+	}
+	valueToolMessageComplete := new(ToolMessageComplete)
+	if err := json.Unmarshal(data, &valueToolMessageComplete); err == nil {
+		t.typ = "ToolMessageComplete"
+		t.ToolMessageComplete = valueToolMessageComplete
+		return nil
+	}
+	valueToolMessageFailed := new(ToolMessageFailed)
+	if err := json.Unmarshal(data, &valueToolMessageFailed); err == nil {
+		t.typ = "ToolMessageFailed"
+		t.ToolMessageFailed = valueToolMessageFailed
+		return nil
+	}
+	valueToolMessageDelayed := new(ToolMessageDelayed)
+	if err := json.Unmarshal(data, &valueToolMessageDelayed); err == nil {
+		t.typ = "ToolMessageDelayed"
+		t.ToolMessageDelayed = valueToolMessageDelayed
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, t)
+}
+
+func (t TextEditorToolWithToolCallMessagesItem) MarshalJSON() ([]byte, error) {
+	if t.typ == "ToolMessageStart" || t.ToolMessageStart != nil {
+		return json.Marshal(t.ToolMessageStart)
+	}
+	if t.typ == "ToolMessageComplete" || t.ToolMessageComplete != nil {
+		return json.Marshal(t.ToolMessageComplete)
+	}
+	if t.typ == "ToolMessageFailed" || t.ToolMessageFailed != nil {
+		return json.Marshal(t.ToolMessageFailed)
+	}
+	if t.typ == "ToolMessageDelayed" || t.ToolMessageDelayed != nil {
+		return json.Marshal(t.ToolMessageDelayed)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type TextEditorToolWithToolCallMessagesItemVisitor interface {
+	VisitToolMessageStart(*ToolMessageStart) error
+	VisitToolMessageComplete(*ToolMessageComplete) error
+	VisitToolMessageFailed(*ToolMessageFailed) error
+	VisitToolMessageDelayed(*ToolMessageDelayed) error
+}
+
+func (t *TextEditorToolWithToolCallMessagesItem) Accept(visitor TextEditorToolWithToolCallMessagesItemVisitor) error {
+	if t.typ == "ToolMessageStart" || t.ToolMessageStart != nil {
+		return visitor.VisitToolMessageStart(t.ToolMessageStart)
+	}
+	if t.typ == "ToolMessageComplete" || t.ToolMessageComplete != nil {
+		return visitor.VisitToolMessageComplete(t.ToolMessageComplete)
+	}
+	if t.typ == "ToolMessageFailed" || t.ToolMessageFailed != nil {
+		return visitor.VisitToolMessageFailed(t.ToolMessageFailed)
+	}
+	if t.typ == "ToolMessageDelayed" || t.ToolMessageDelayed != nil {
+		return visitor.VisitToolMessageDelayed(t.ToolMessageDelayed)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", t)
 }
 
 type TimeRange struct {
@@ -52187,12 +53717,14 @@ type UpdateAzureCredentialDtoRegion string
 
 const (
 	UpdateAzureCredentialDtoRegionAustralia      UpdateAzureCredentialDtoRegion = "australia"
-	UpdateAzureCredentialDtoRegionCanada         UpdateAzureCredentialDtoRegion = "canada"
+	UpdateAzureCredentialDtoRegionCanadaeast     UpdateAzureCredentialDtoRegion = "canadaeast"
+	UpdateAzureCredentialDtoRegionCanadacentral  UpdateAzureCredentialDtoRegion = "canadacentral"
 	UpdateAzureCredentialDtoRegionEastus2        UpdateAzureCredentialDtoRegion = "eastus2"
 	UpdateAzureCredentialDtoRegionEastus         UpdateAzureCredentialDtoRegion = "eastus"
 	UpdateAzureCredentialDtoRegionFrance         UpdateAzureCredentialDtoRegion = "france"
 	UpdateAzureCredentialDtoRegionIndia          UpdateAzureCredentialDtoRegion = "india"
-	UpdateAzureCredentialDtoRegionJapan          UpdateAzureCredentialDtoRegion = "japan"
+	UpdateAzureCredentialDtoRegionJapaneast      UpdateAzureCredentialDtoRegion = "japaneast"
+	UpdateAzureCredentialDtoRegionJapanwest      UpdateAzureCredentialDtoRegion = "japanwest"
 	UpdateAzureCredentialDtoRegionUaenorth       UpdateAzureCredentialDtoRegion = "uaenorth"
 	UpdateAzureCredentialDtoRegionNorthcentralus UpdateAzureCredentialDtoRegion = "northcentralus"
 	UpdateAzureCredentialDtoRegionNorway         UpdateAzureCredentialDtoRegion = "norway"
@@ -52208,8 +53740,10 @@ func NewUpdateAzureCredentialDtoRegionFromString(s string) (UpdateAzureCredentia
 	switch s {
 	case "australia":
 		return UpdateAzureCredentialDtoRegionAustralia, nil
-	case "canada":
-		return UpdateAzureCredentialDtoRegionCanada, nil
+	case "canadaeast":
+		return UpdateAzureCredentialDtoRegionCanadaeast, nil
+	case "canadacentral":
+		return UpdateAzureCredentialDtoRegionCanadacentral, nil
 	case "eastus2":
 		return UpdateAzureCredentialDtoRegionEastus2, nil
 	case "eastus":
@@ -52218,8 +53752,10 @@ func NewUpdateAzureCredentialDtoRegionFromString(s string) (UpdateAzureCredentia
 		return UpdateAzureCredentialDtoRegionFrance, nil
 	case "india":
 		return UpdateAzureCredentialDtoRegionIndia, nil
-	case "japan":
-		return UpdateAzureCredentialDtoRegionJapan, nil
+	case "japaneast":
+		return UpdateAzureCredentialDtoRegionJapaneast, nil
+	case "japanwest":
+		return UpdateAzureCredentialDtoRegionJapanwest, nil
 	case "uaenorth":
 		return UpdateAzureCredentialDtoRegionUaenorth, nil
 	case "northcentralus":
@@ -52406,12 +53942,14 @@ type UpdateAzureOpenAiCredentialDtoRegion string
 
 const (
 	UpdateAzureOpenAiCredentialDtoRegionAustralia      UpdateAzureOpenAiCredentialDtoRegion = "australia"
-	UpdateAzureOpenAiCredentialDtoRegionCanada         UpdateAzureOpenAiCredentialDtoRegion = "canada"
+	UpdateAzureOpenAiCredentialDtoRegionCanadaeast     UpdateAzureOpenAiCredentialDtoRegion = "canadaeast"
+	UpdateAzureOpenAiCredentialDtoRegionCanadacentral  UpdateAzureOpenAiCredentialDtoRegion = "canadacentral"
 	UpdateAzureOpenAiCredentialDtoRegionEastus2        UpdateAzureOpenAiCredentialDtoRegion = "eastus2"
 	UpdateAzureOpenAiCredentialDtoRegionEastus         UpdateAzureOpenAiCredentialDtoRegion = "eastus"
 	UpdateAzureOpenAiCredentialDtoRegionFrance         UpdateAzureOpenAiCredentialDtoRegion = "france"
 	UpdateAzureOpenAiCredentialDtoRegionIndia          UpdateAzureOpenAiCredentialDtoRegion = "india"
-	UpdateAzureOpenAiCredentialDtoRegionJapan          UpdateAzureOpenAiCredentialDtoRegion = "japan"
+	UpdateAzureOpenAiCredentialDtoRegionJapaneast      UpdateAzureOpenAiCredentialDtoRegion = "japaneast"
+	UpdateAzureOpenAiCredentialDtoRegionJapanwest      UpdateAzureOpenAiCredentialDtoRegion = "japanwest"
 	UpdateAzureOpenAiCredentialDtoRegionUaenorth       UpdateAzureOpenAiCredentialDtoRegion = "uaenorth"
 	UpdateAzureOpenAiCredentialDtoRegionNorthcentralus UpdateAzureOpenAiCredentialDtoRegion = "northcentralus"
 	UpdateAzureOpenAiCredentialDtoRegionNorway         UpdateAzureOpenAiCredentialDtoRegion = "norway"
@@ -52427,8 +53965,10 @@ func NewUpdateAzureOpenAiCredentialDtoRegionFromString(s string) (UpdateAzureOpe
 	switch s {
 	case "australia":
 		return UpdateAzureOpenAiCredentialDtoRegionAustralia, nil
-	case "canada":
-		return UpdateAzureOpenAiCredentialDtoRegionCanada, nil
+	case "canadaeast":
+		return UpdateAzureOpenAiCredentialDtoRegionCanadaeast, nil
+	case "canadacentral":
+		return UpdateAzureOpenAiCredentialDtoRegionCanadacentral, nil
 	case "eastus2":
 		return UpdateAzureOpenAiCredentialDtoRegionEastus2, nil
 	case "eastus":
@@ -52437,8 +53977,10 @@ func NewUpdateAzureOpenAiCredentialDtoRegionFromString(s string) (UpdateAzureOpe
 		return UpdateAzureOpenAiCredentialDtoRegionFrance, nil
 	case "india":
 		return UpdateAzureOpenAiCredentialDtoRegionIndia, nil
-	case "japan":
-		return UpdateAzureOpenAiCredentialDtoRegionJapan, nil
+	case "japaneast":
+		return UpdateAzureOpenAiCredentialDtoRegionJapaneast, nil
+	case "japanwest":
+		return UpdateAzureOpenAiCredentialDtoRegionJapanwest, nil
 	case "uaenorth":
 		return UpdateAzureOpenAiCredentialDtoRegionUaenorth, nil
 	case "northcentralus":
@@ -55058,6 +56600,172 @@ func (u *UpdateVonageCredentialDto) String() string {
 	return fmt.Sprintf("%#v", u)
 }
 
+type UpdateWorkflowDto struct {
+	Nodes []*UpdateWorkflowDtoNodesItem `json:"nodes,omitempty" url:"nodes,omitempty"`
+	Name  *string                       `json:"name,omitempty" url:"name,omitempty"`
+	Edges []*Edge                       `json:"edges,omitempty" url:"edges,omitempty"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (u *UpdateWorkflowDto) GetNodes() []*UpdateWorkflowDtoNodesItem {
+	if u == nil {
+		return nil
+	}
+	return u.Nodes
+}
+
+func (u *UpdateWorkflowDto) GetName() *string {
+	if u == nil {
+		return nil
+	}
+	return u.Name
+}
+
+func (u *UpdateWorkflowDto) GetEdges() []*Edge {
+	if u == nil {
+		return nil
+	}
+	return u.Edges
+}
+
+func (u *UpdateWorkflowDto) GetExtraProperties() map[string]interface{} {
+	return u.extraProperties
+}
+
+func (u *UpdateWorkflowDto) UnmarshalJSON(data []byte) error {
+	type unmarshaler UpdateWorkflowDto
+	var value unmarshaler
+	if err := json.Unmarshal(data, &value); err != nil {
+		return err
+	}
+	*u = UpdateWorkflowDto(value)
+	extraProperties, err := internal.ExtractExtraProperties(data, *u)
+	if err != nil {
+		return err
+	}
+	u.extraProperties = extraProperties
+	u.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (u *UpdateWorkflowDto) String() string {
+	if len(u.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(u.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(u); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", u)
+}
+
+type UpdateWorkflowDtoNodesItem struct {
+	Say               *Say
+	Gather            *Gather
+	Unknown           interface{}
+	CreateWorkflowDto *CreateWorkflowDto
+
+	typ string
+}
+
+func (u *UpdateWorkflowDtoNodesItem) GetSay() *Say {
+	if u == nil {
+		return nil
+	}
+	return u.Say
+}
+
+func (u *UpdateWorkflowDtoNodesItem) GetGather() *Gather {
+	if u == nil {
+		return nil
+	}
+	return u.Gather
+}
+
+func (u *UpdateWorkflowDtoNodesItem) GetUnknown() interface{} {
+	if u == nil {
+		return nil
+	}
+	return u.Unknown
+}
+
+func (u *UpdateWorkflowDtoNodesItem) GetCreateWorkflowDto() *CreateWorkflowDto {
+	if u == nil {
+		return nil
+	}
+	return u.CreateWorkflowDto
+}
+
+func (u *UpdateWorkflowDtoNodesItem) UnmarshalJSON(data []byte) error {
+	valueSay := new(Say)
+	if err := json.Unmarshal(data, &valueSay); err == nil {
+		u.typ = "Say"
+		u.Say = valueSay
+		return nil
+	}
+	valueGather := new(Gather)
+	if err := json.Unmarshal(data, &valueGather); err == nil {
+		u.typ = "Gather"
+		u.Gather = valueGather
+		return nil
+	}
+	var valueUnknown interface{}
+	if err := json.Unmarshal(data, &valueUnknown); err == nil {
+		u.typ = "Unknown"
+		u.Unknown = valueUnknown
+		return nil
+	}
+	valueCreateWorkflowDto := new(CreateWorkflowDto)
+	if err := json.Unmarshal(data, &valueCreateWorkflowDto); err == nil {
+		u.typ = "CreateWorkflowDto"
+		u.CreateWorkflowDto = valueCreateWorkflowDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UpdateWorkflowDtoNodesItem) MarshalJSON() ([]byte, error) {
+	if u.typ == "Say" || u.Say != nil {
+		return json.Marshal(u.Say)
+	}
+	if u.typ == "Gather" || u.Gather != nil {
+		return json.Marshal(u.Gather)
+	}
+	if u.typ == "Unknown" || u.Unknown != nil {
+		return json.Marshal(u.Unknown)
+	}
+	if u.typ == "CreateWorkflowDto" || u.CreateWorkflowDto != nil {
+		return json.Marshal(u.CreateWorkflowDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateWorkflowDtoNodesItemVisitor interface {
+	VisitSay(*Say) error
+	VisitGather(*Gather) error
+	VisitUnknown(interface{}) error
+	VisitCreateWorkflowDto(*CreateWorkflowDto) error
+}
+
+func (u *UpdateWorkflowDtoNodesItem) Accept(visitor UpdateWorkflowDtoNodesItemVisitor) error {
+	if u.typ == "Say" || u.Say != nil {
+		return visitor.VisitSay(u.Say)
+	}
+	if u.typ == "Gather" || u.Gather != nil {
+		return visitor.VisitGather(u.Gather)
+	}
+	if u.typ == "Unknown" || u.Unknown != nil {
+		return visitor.VisitUnknown(u.Unknown)
+	}
+	if u.typ == "CreateWorkflowDto" || u.CreateWorkflowDto != nil {
+		return visitor.VisitCreateWorkflowDto(u.CreateWorkflowDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
 type UpdateXAiCredentialDto struct {
 	// This is not returned in the API.
 	ApiKey *string `json:"apiKey,omitempty" url:"apiKey,omitempty"`
@@ -55235,6 +56943,10 @@ type VapiModel struct {
 	// This is the ID of the knowledge base the model will use.
 	KnowledgeBaseId *string               `json:"knowledgeBaseId,omitempty" url:"knowledgeBaseId,omitempty"`
 	Steps           []*VapiModelStepsItem `json:"steps,omitempty" url:"steps,omitempty"`
+	// This is the workflow that will be used for the call. To use a transient workflow, use `workflow` instead.
+	WorkflowId *string `json:"workflowId,omitempty" url:"workflowId,omitempty"`
+	// This is the workflow that will be used for the call. To use an existing workflow, use `workflowId` instead.
+	Workflow *Workflow `json:"workflow,omitempty" url:"workflow,omitempty"`
 	// This is the name of the model. Ex. cognitivecomputations/dolphin-mixtral-8x7b
 	Model string `json:"model" url:"model"`
 	// This is the temperature that will be used for calls. Default is 0 to leverage caching for lower latency.
@@ -55299,6 +57011,20 @@ func (v *VapiModel) GetSteps() []*VapiModelStepsItem {
 		return nil
 	}
 	return v.Steps
+}
+
+func (v *VapiModel) GetWorkflowId() *string {
+	if v == nil {
+		return nil
+	}
+	return v.WorkflowId
+}
+
+func (v *VapiModel) GetWorkflow() *Workflow {
+	if v == nil {
+		return nil
+	}
+	return v.Workflow
 }
 
 func (v *VapiModel) GetModel() string {
@@ -56257,6 +57983,238 @@ func (w *WebhookCredential) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", w)
+}
+
+type Workflow struct {
+	Nodes     []*WorkflowNodesItem `json:"nodes,omitempty" url:"nodes,omitempty"`
+	Id        string               `json:"id" url:"id"`
+	OrgId     string               `json:"orgId" url:"orgId"`
+	CreatedAt time.Time            `json:"createdAt" url:"createdAt"`
+	UpdatedAt time.Time            `json:"updatedAt" url:"updatedAt"`
+	Name      string               `json:"name" url:"name"`
+	Edges     []*Edge              `json:"edges,omitempty" url:"edges,omitempty"`
+	type_     string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (w *Workflow) GetNodes() []*WorkflowNodesItem {
+	if w == nil {
+		return nil
+	}
+	return w.Nodes
+}
+
+func (w *Workflow) GetId() string {
+	if w == nil {
+		return ""
+	}
+	return w.Id
+}
+
+func (w *Workflow) GetOrgId() string {
+	if w == nil {
+		return ""
+	}
+	return w.OrgId
+}
+
+func (w *Workflow) GetCreatedAt() time.Time {
+	if w == nil {
+		return time.Time{}
+	}
+	return w.CreatedAt
+}
+
+func (w *Workflow) GetUpdatedAt() time.Time {
+	if w == nil {
+		return time.Time{}
+	}
+	return w.UpdatedAt
+}
+
+func (w *Workflow) GetName() string {
+	if w == nil {
+		return ""
+	}
+	return w.Name
+}
+
+func (w *Workflow) GetEdges() []*Edge {
+	if w == nil {
+		return nil
+	}
+	return w.Edges
+}
+
+func (w *Workflow) Type() string {
+	return w.type_
+}
+
+func (w *Workflow) GetExtraProperties() map[string]interface{} {
+	return w.extraProperties
+}
+
+func (w *Workflow) UnmarshalJSON(data []byte) error {
+	type embed Workflow
+	var unmarshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed: embed(*w),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*w = Workflow(unmarshaler.embed)
+	w.CreatedAt = unmarshaler.CreatedAt.Time()
+	w.UpdatedAt = unmarshaler.UpdatedAt.Time()
+	if unmarshaler.Type != "workflow" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", w, "workflow", unmarshaler.Type)
+	}
+	w.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *w, "type")
+	if err != nil {
+		return err
+	}
+	w.extraProperties = extraProperties
+	w.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (w *Workflow) MarshalJSON() ([]byte, error) {
+	type embed Workflow
+	var marshaler = struct {
+		embed
+		CreatedAt *internal.DateTime `json:"createdAt"`
+		UpdatedAt *internal.DateTime `json:"updatedAt"`
+		Type      string             `json:"type"`
+	}{
+		embed:     embed(*w),
+		CreatedAt: internal.NewDateTime(w.CreatedAt),
+		UpdatedAt: internal.NewDateTime(w.UpdatedAt),
+		Type:      "workflow",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (w *Workflow) String() string {
+	if len(w.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(w.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(w); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", w)
+}
+
+type WorkflowNodesItem struct {
+	Say               *Say
+	Gather            *Gather
+	Unknown           interface{}
+	CreateWorkflowDto *CreateWorkflowDto
+
+	typ string
+}
+
+func (w *WorkflowNodesItem) GetSay() *Say {
+	if w == nil {
+		return nil
+	}
+	return w.Say
+}
+
+func (w *WorkflowNodesItem) GetGather() *Gather {
+	if w == nil {
+		return nil
+	}
+	return w.Gather
+}
+
+func (w *WorkflowNodesItem) GetUnknown() interface{} {
+	if w == nil {
+		return nil
+	}
+	return w.Unknown
+}
+
+func (w *WorkflowNodesItem) GetCreateWorkflowDto() *CreateWorkflowDto {
+	if w == nil {
+		return nil
+	}
+	return w.CreateWorkflowDto
+}
+
+func (w *WorkflowNodesItem) UnmarshalJSON(data []byte) error {
+	valueSay := new(Say)
+	if err := json.Unmarshal(data, &valueSay); err == nil {
+		w.typ = "Say"
+		w.Say = valueSay
+		return nil
+	}
+	valueGather := new(Gather)
+	if err := json.Unmarshal(data, &valueGather); err == nil {
+		w.typ = "Gather"
+		w.Gather = valueGather
+		return nil
+	}
+	var valueUnknown interface{}
+	if err := json.Unmarshal(data, &valueUnknown); err == nil {
+		w.typ = "Unknown"
+		w.Unknown = valueUnknown
+		return nil
+	}
+	valueCreateWorkflowDto := new(CreateWorkflowDto)
+	if err := json.Unmarshal(data, &valueCreateWorkflowDto); err == nil {
+		w.typ = "CreateWorkflowDto"
+		w.CreateWorkflowDto = valueCreateWorkflowDto
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, w)
+}
+
+func (w WorkflowNodesItem) MarshalJSON() ([]byte, error) {
+	if w.typ == "Say" || w.Say != nil {
+		return json.Marshal(w.Say)
+	}
+	if w.typ == "Gather" || w.Gather != nil {
+		return json.Marshal(w.Gather)
+	}
+	if w.typ == "Unknown" || w.Unknown != nil {
+		return json.Marshal(w.Unknown)
+	}
+	if w.typ == "CreateWorkflowDto" || w.CreateWorkflowDto != nil {
+		return json.Marshal(w.CreateWorkflowDto)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", w)
+}
+
+type WorkflowNodesItemVisitor interface {
+	VisitSay(*Say) error
+	VisitGather(*Gather) error
+	VisitUnknown(interface{}) error
+	VisitCreateWorkflowDto(*CreateWorkflowDto) error
+}
+
+func (w *WorkflowNodesItem) Accept(visitor WorkflowNodesItemVisitor) error {
+	if w.typ == "Say" || w.Say != nil {
+		return visitor.VisitSay(w.Say)
+	}
+	if w.typ == "Gather" || w.Gather != nil {
+		return visitor.VisitGather(w.Gather)
+	}
+	if w.typ == "Unknown" || w.Unknown != nil {
+		return visitor.VisitUnknown(w.Unknown)
+	}
+	if w.typ == "CreateWorkflowDto" || w.CreateWorkflowDto != nil {
+		return visitor.VisitCreateWorkflowDto(w.CreateWorkflowDto)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", w)
 }
 
 type XAiCredential struct {

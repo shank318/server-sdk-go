@@ -33,17 +33,15 @@ type KnowledgeBasesListRequest struct {
 type CreateTrieveKnowledgeBaseDto struct {
 	// This is the name of the knowledge base.
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// This is the plan on how to search the vector store while a call is going on.
-	VectorStoreSearchPlan *TrieveKnowledgeBaseVectorStoreSearchPlan `json:"vectorStoreSearchPlan,omitempty" url:"vectorStoreSearchPlan,omitempty"`
-	// This is the plan if you want us to create a new vector store on your behalf. To use an existing vector store from your account, use `vectoreStoreProviderId`
-	VectorStoreCreatePlan *TrieveKnowledgeBaseVectorStoreCreatePlan `json:"vectorStoreCreatePlan,omitempty" url:"vectorStoreCreatePlan,omitempty"`
-	// This is an vector store that you already have on your account with the provider. To create a new vector store, use vectorStoreCreatePlan.
+	// This is the searching plan used when searching for relevant chunks from the vector store.
 	//
-	// Usage:
-	// - To bring your own vector store from Trieve, go to https://trieve.ai
-	// - Create a dataset, and use the datasetId here.
-	VectorStoreProviderId *string `json:"vectorStoreProviderId,omitempty" url:"vectorStoreProviderId,omitempty"`
-	provider              string
+	// You should configure this if you're running into these issues:
+	// - Too much unnecessary context is being fed as knowledge base context.
+	// - Not enough relevant context is being fed as knowledge base context.
+	SearchPlan *TrieveKnowledgeBaseSearchPlan `json:"searchPlan,omitempty" url:"searchPlan,omitempty"`
+	// This is the plan if you want us to create/import a new vector store using Trieve.
+	CreatePlan *CreateTrieveKnowledgeBaseDtoCreatePlan `json:"createPlan,omitempty" url:"createPlan,omitempty"`
+	provider   string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -56,25 +54,18 @@ func (c *CreateTrieveKnowledgeBaseDto) GetName() *string {
 	return c.Name
 }
 
-func (c *CreateTrieveKnowledgeBaseDto) GetVectorStoreSearchPlan() *TrieveKnowledgeBaseVectorStoreSearchPlan {
+func (c *CreateTrieveKnowledgeBaseDto) GetSearchPlan() *TrieveKnowledgeBaseSearchPlan {
 	if c == nil {
 		return nil
 	}
-	return c.VectorStoreSearchPlan
+	return c.SearchPlan
 }
 
-func (c *CreateTrieveKnowledgeBaseDto) GetVectorStoreCreatePlan() *TrieveKnowledgeBaseVectorStoreCreatePlan {
+func (c *CreateTrieveKnowledgeBaseDto) GetCreatePlan() *CreateTrieveKnowledgeBaseDtoCreatePlan {
 	if c == nil {
 		return nil
 	}
-	return c.VectorStoreCreatePlan
-}
-
-func (c *CreateTrieveKnowledgeBaseDto) GetVectorStoreProviderId() *string {
-	if c == nil {
-		return nil
-	}
-	return c.VectorStoreProviderId
+	return c.CreatePlan
 }
 
 func (c *CreateTrieveKnowledgeBaseDto) Provider() string {
@@ -134,8 +125,70 @@ func (c *CreateTrieveKnowledgeBaseDto) String() string {
 	return fmt.Sprintf("%#v", c)
 }
 
+// This is the plan if you want us to create/import a new vector store using Trieve.
+type CreateTrieveKnowledgeBaseDtoCreatePlan struct {
+	TrieveKnowledgeBaseCreate *TrieveKnowledgeBaseCreate
+	TrieveKnowledgeBaseImport *TrieveKnowledgeBaseImport
+
+	typ string
+}
+
+func (c *CreateTrieveKnowledgeBaseDtoCreatePlan) GetTrieveKnowledgeBaseCreate() *TrieveKnowledgeBaseCreate {
+	if c == nil {
+		return nil
+	}
+	return c.TrieveKnowledgeBaseCreate
+}
+
+func (c *CreateTrieveKnowledgeBaseDtoCreatePlan) GetTrieveKnowledgeBaseImport() *TrieveKnowledgeBaseImport {
+	if c == nil {
+		return nil
+	}
+	return c.TrieveKnowledgeBaseImport
+}
+
+func (c *CreateTrieveKnowledgeBaseDtoCreatePlan) UnmarshalJSON(data []byte) error {
+	valueTrieveKnowledgeBaseCreate := new(TrieveKnowledgeBaseCreate)
+	if err := json.Unmarshal(data, &valueTrieveKnowledgeBaseCreate); err == nil {
+		c.typ = "TrieveKnowledgeBaseCreate"
+		c.TrieveKnowledgeBaseCreate = valueTrieveKnowledgeBaseCreate
+		return nil
+	}
+	valueTrieveKnowledgeBaseImport := new(TrieveKnowledgeBaseImport)
+	if err := json.Unmarshal(data, &valueTrieveKnowledgeBaseImport); err == nil {
+		c.typ = "TrieveKnowledgeBaseImport"
+		c.TrieveKnowledgeBaseImport = valueTrieveKnowledgeBaseImport
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, c)
+}
+
+func (c CreateTrieveKnowledgeBaseDtoCreatePlan) MarshalJSON() ([]byte, error) {
+	if c.typ == "TrieveKnowledgeBaseCreate" || c.TrieveKnowledgeBaseCreate != nil {
+		return json.Marshal(c.TrieveKnowledgeBaseCreate)
+	}
+	if c.typ == "TrieveKnowledgeBaseImport" || c.TrieveKnowledgeBaseImport != nil {
+		return json.Marshal(c.TrieveKnowledgeBaseImport)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
+type CreateTrieveKnowledgeBaseDtoCreatePlanVisitor interface {
+	VisitTrieveKnowledgeBaseCreate(*TrieveKnowledgeBaseCreate) error
+	VisitTrieveKnowledgeBaseImport(*TrieveKnowledgeBaseImport) error
+}
+
+func (c *CreateTrieveKnowledgeBaseDtoCreatePlan) Accept(visitor CreateTrieveKnowledgeBaseDtoCreatePlanVisitor) error {
+	if c.typ == "TrieveKnowledgeBaseCreate" || c.TrieveKnowledgeBaseCreate != nil {
+		return visitor.VisitTrieveKnowledgeBaseCreate(c.TrieveKnowledgeBaseCreate)
+	}
+	if c.typ == "TrieveKnowledgeBaseImport" || c.TrieveKnowledgeBaseImport != nil {
+		return visitor.VisitTrieveKnowledgeBaseImport(c.TrieveKnowledgeBaseImport)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", c)
+}
+
 type CustomKnowledgeBase struct {
-	// /**
 	// This is where the knowledge base request will be sent.
 	//
 	// Request Example:
@@ -269,16 +322,14 @@ func (c *CustomKnowledgeBase) String() string {
 type TrieveKnowledgeBase struct {
 	// This is the name of the knowledge base.
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// This is the plan on how to search the vector store while a call is going on.
-	VectorStoreSearchPlan *TrieveKnowledgeBaseVectorStoreSearchPlan `json:"vectorStoreSearchPlan,omitempty" url:"vectorStoreSearchPlan,omitempty"`
-	// This is the plan if you want us to create a new vector store on your behalf. To use an existing vector store from your account, use `vectoreStoreProviderId`
-	VectorStoreCreatePlan *TrieveKnowledgeBaseVectorStoreCreatePlan `json:"vectorStoreCreatePlan,omitempty" url:"vectorStoreCreatePlan,omitempty"`
-	// This is an vector store that you already have on your account with the provider. To create a new vector store, use vectorStoreCreatePlan.
+	// This is the searching plan used when searching for relevant chunks from the vector store.
 	//
-	// Usage:
-	// - To bring your own vector store from Trieve, go to https://trieve.ai
-	// - Create a dataset, and use the datasetId here.
-	VectorStoreProviderId *string `json:"vectorStoreProviderId,omitempty" url:"vectorStoreProviderId,omitempty"`
+	// You should configure this if you're running into these issues:
+	// - Too much unnecessary context is being fed as knowledge base context.
+	// - Not enough relevant context is being fed as knowledge base context.
+	SearchPlan *TrieveKnowledgeBaseSearchPlan `json:"searchPlan,omitempty" url:"searchPlan,omitempty"`
+	// This is the plan if you want us to create/import a new vector store using Trieve.
+	CreatePlan *TrieveKnowledgeBaseCreatePlan `json:"createPlan,omitempty" url:"createPlan,omitempty"`
 	// This is the id of the knowledge base.
 	Id string `json:"id" url:"id"`
 	// This is the org id of the knowledge base.
@@ -296,25 +347,18 @@ func (t *TrieveKnowledgeBase) GetName() *string {
 	return t.Name
 }
 
-func (t *TrieveKnowledgeBase) GetVectorStoreSearchPlan() *TrieveKnowledgeBaseVectorStoreSearchPlan {
+func (t *TrieveKnowledgeBase) GetSearchPlan() *TrieveKnowledgeBaseSearchPlan {
 	if t == nil {
 		return nil
 	}
-	return t.VectorStoreSearchPlan
+	return t.SearchPlan
 }
 
-func (t *TrieveKnowledgeBase) GetVectorStoreCreatePlan() *TrieveKnowledgeBaseVectorStoreCreatePlan {
+func (t *TrieveKnowledgeBase) GetCreatePlan() *TrieveKnowledgeBaseCreatePlan {
 	if t == nil {
 		return nil
 	}
-	return t.VectorStoreCreatePlan
-}
-
-func (t *TrieveKnowledgeBase) GetVectorStoreProviderId() *string {
-	if t == nil {
-		return nil
-	}
-	return t.VectorStoreProviderId
+	return t.CreatePlan
 }
 
 func (t *TrieveKnowledgeBase) GetId() string {
@@ -388,9 +432,11 @@ func (t *TrieveKnowledgeBase) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-type TrieveKnowledgeBaseVectorStoreCreatePlan struct {
+type TrieveKnowledgeBaseChunkPlan struct {
 	// These are the file ids that will be used to create the vector store. To upload files, use the `POST /files` endpoint.
 	FileIds []string `json:"fileIds,omitempty" url:"fileIds,omitempty"`
+	// These are the websites that will be used to create the vector store.
+	Websites []string `json:"websites,omitempty" url:"websites,omitempty"`
 	// This is an optional field which allows you to specify the number of splits you want per chunk. If not specified, the default 20 is used. However, you may want to use a different number.
 	TargetSplitsPerChunk *float64 `json:"targetSplitsPerChunk,omitempty" url:"targetSplitsPerChunk,omitempty"`
 	// This is an optional field which allows you to specify the delimiters to use when splitting the file before chunking the text. If not specified, the default [.!?\n] are used to split into sentences. However, you may want to use spaces or other delimiters.
@@ -402,45 +448,52 @@ type TrieveKnowledgeBaseVectorStoreCreatePlan struct {
 	rawJSON         json.RawMessage
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) GetFileIds() []string {
+func (t *TrieveKnowledgeBaseChunkPlan) GetFileIds() []string {
 	if t == nil {
 		return nil
 	}
 	return t.FileIds
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) GetTargetSplitsPerChunk() *float64 {
+func (t *TrieveKnowledgeBaseChunkPlan) GetWebsites() []string {
+	if t == nil {
+		return nil
+	}
+	return t.Websites
+}
+
+func (t *TrieveKnowledgeBaseChunkPlan) GetTargetSplitsPerChunk() *float64 {
 	if t == nil {
 		return nil
 	}
 	return t.TargetSplitsPerChunk
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) GetSplitDelimiters() []string {
+func (t *TrieveKnowledgeBaseChunkPlan) GetSplitDelimiters() []string {
 	if t == nil {
 		return nil
 	}
 	return t.SplitDelimiters
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) GetRebalanceChunks() *bool {
+func (t *TrieveKnowledgeBaseChunkPlan) GetRebalanceChunks() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.RebalanceChunks
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) GetExtraProperties() map[string]interface{} {
+func (t *TrieveKnowledgeBaseChunkPlan) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) UnmarshalJSON(data []byte) error {
-	type unmarshaler TrieveKnowledgeBaseVectorStoreCreatePlan
+func (t *TrieveKnowledgeBaseChunkPlan) UnmarshalJSON(data []byte) error {
+	type unmarshaler TrieveKnowledgeBaseChunkPlan
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*t = TrieveKnowledgeBaseVectorStoreCreatePlan(value)
+	*t = TrieveKnowledgeBaseChunkPlan(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
@@ -450,7 +503,7 @@ func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) String() string {
+func (t *TrieveKnowledgeBaseChunkPlan) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -462,50 +515,261 @@ func (t *TrieveKnowledgeBaseVectorStoreCreatePlan) String() string {
 	return fmt.Sprintf("%#v", t)
 }
 
-type TrieveKnowledgeBaseVectorStoreSearchPlan struct {
-	// If true, stop words (specified in server/src/stop-words.txt in the git repo) will be removed. This will preserve queries that are entirely stop words.
-	RemoveStopWords *bool `json:"removeStopWords,omitempty" url:"removeStopWords,omitempty"`
-	// This is the score threshold to filter out chunks with a score below the threshold for cosine distance metric. For Manhattan Distance, Euclidean Distance, and Dot Product, it will filter out scores above the threshold distance. This threshold applies before weight and bias modifications. If not specified, this defaults to no threshold. A threshold of 0 will default to no threshold.
-	ScoreThreshold *float64 `json:"scoreThreshold,omitempty" url:"scoreThreshold,omitempty"`
-	// This is the search method used when searching for relevant chunks from the vector store.
-	SearchType TrieveKnowledgeBaseVectorStoreSearchPlanSearchType `json:"searchType" url:"searchType"`
+type TrieveKnowledgeBaseCreate struct {
+	// This is to create a new dataset on Trieve.
+	// These are the chunk plans used to create the dataset.
+	ChunkPlans []*TrieveKnowledgeBaseChunkPlan `json:"chunkPlans,omitempty" url:"chunkPlans,omitempty"`
+	type_      string
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) GetRemoveStopWords() *bool {
+func (t *TrieveKnowledgeBaseCreate) GetChunkPlans() []*TrieveKnowledgeBaseChunkPlan {
+	if t == nil {
+		return nil
+	}
+	return t.ChunkPlans
+}
+
+func (t *TrieveKnowledgeBaseCreate) Type() string {
+	return t.type_
+}
+
+func (t *TrieveKnowledgeBaseCreate) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TrieveKnowledgeBaseCreate) UnmarshalJSON(data []byte) error {
+	type embed TrieveKnowledgeBaseCreate
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TrieveKnowledgeBaseCreate(unmarshaler.embed)
+	if unmarshaler.Type != "create" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "create", unmarshaler.Type)
+	}
+	t.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *t, "type")
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TrieveKnowledgeBaseCreate) MarshalJSON() ([]byte, error) {
+	type embed TrieveKnowledgeBaseCreate
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+		Type:  "create",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TrieveKnowledgeBaseCreate) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+// This is the plan if you want us to create/import a new vector store using Trieve.
+type TrieveKnowledgeBaseCreatePlan struct {
+	TrieveKnowledgeBaseCreate *TrieveKnowledgeBaseCreate
+	TrieveKnowledgeBaseImport *TrieveKnowledgeBaseImport
+
+	typ string
+}
+
+func (t *TrieveKnowledgeBaseCreatePlan) GetTrieveKnowledgeBaseCreate() *TrieveKnowledgeBaseCreate {
+	if t == nil {
+		return nil
+	}
+	return t.TrieveKnowledgeBaseCreate
+}
+
+func (t *TrieveKnowledgeBaseCreatePlan) GetTrieveKnowledgeBaseImport() *TrieveKnowledgeBaseImport {
+	if t == nil {
+		return nil
+	}
+	return t.TrieveKnowledgeBaseImport
+}
+
+func (t *TrieveKnowledgeBaseCreatePlan) UnmarshalJSON(data []byte) error {
+	valueTrieveKnowledgeBaseCreate := new(TrieveKnowledgeBaseCreate)
+	if err := json.Unmarshal(data, &valueTrieveKnowledgeBaseCreate); err == nil {
+		t.typ = "TrieveKnowledgeBaseCreate"
+		t.TrieveKnowledgeBaseCreate = valueTrieveKnowledgeBaseCreate
+		return nil
+	}
+	valueTrieveKnowledgeBaseImport := new(TrieveKnowledgeBaseImport)
+	if err := json.Unmarshal(data, &valueTrieveKnowledgeBaseImport); err == nil {
+		t.typ = "TrieveKnowledgeBaseImport"
+		t.TrieveKnowledgeBaseImport = valueTrieveKnowledgeBaseImport
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, t)
+}
+
+func (t TrieveKnowledgeBaseCreatePlan) MarshalJSON() ([]byte, error) {
+	if t.typ == "TrieveKnowledgeBaseCreate" || t.TrieveKnowledgeBaseCreate != nil {
+		return json.Marshal(t.TrieveKnowledgeBaseCreate)
+	}
+	if t.typ == "TrieveKnowledgeBaseImport" || t.TrieveKnowledgeBaseImport != nil {
+		return json.Marshal(t.TrieveKnowledgeBaseImport)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type TrieveKnowledgeBaseCreatePlanVisitor interface {
+	VisitTrieveKnowledgeBaseCreate(*TrieveKnowledgeBaseCreate) error
+	VisitTrieveKnowledgeBaseImport(*TrieveKnowledgeBaseImport) error
+}
+
+func (t *TrieveKnowledgeBaseCreatePlan) Accept(visitor TrieveKnowledgeBaseCreatePlanVisitor) error {
+	if t.typ == "TrieveKnowledgeBaseCreate" || t.TrieveKnowledgeBaseCreate != nil {
+		return visitor.VisitTrieveKnowledgeBaseCreate(t.TrieveKnowledgeBaseCreate)
+	}
+	if t.typ == "TrieveKnowledgeBaseImport" || t.TrieveKnowledgeBaseImport != nil {
+		return visitor.VisitTrieveKnowledgeBaseImport(t.TrieveKnowledgeBaseImport)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", t)
+}
+
+type TrieveKnowledgeBaseImport struct {
+	// This is to import an existing dataset from Trieve.
+	// This is the `datasetId` of the dataset on your Trieve account.
+	ProviderId string `json:"providerId" url:"providerId"`
+	type_      string
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TrieveKnowledgeBaseImport) GetProviderId() string {
+	if t == nil {
+		return ""
+	}
+	return t.ProviderId
+}
+
+func (t *TrieveKnowledgeBaseImport) Type() string {
+	return t.type_
+}
+
+func (t *TrieveKnowledgeBaseImport) GetExtraProperties() map[string]interface{} {
+	return t.extraProperties
+}
+
+func (t *TrieveKnowledgeBaseImport) UnmarshalJSON(data []byte) error {
+	type embed TrieveKnowledgeBaseImport
+	var unmarshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+	}
+	if err := json.Unmarshal(data, &unmarshaler); err != nil {
+		return err
+	}
+	*t = TrieveKnowledgeBaseImport(unmarshaler.embed)
+	if unmarshaler.Type != "import" {
+		return fmt.Errorf("unexpected value for literal on type %T; expected %v got %v", t, "import", unmarshaler.Type)
+	}
+	t.type_ = unmarshaler.Type
+	extraProperties, err := internal.ExtractExtraProperties(data, *t, "type")
+	if err != nil {
+		return err
+	}
+	t.extraProperties = extraProperties
+	t.rawJSON = json.RawMessage(data)
+	return nil
+}
+
+func (t *TrieveKnowledgeBaseImport) MarshalJSON() ([]byte, error) {
+	type embed TrieveKnowledgeBaseImport
+	var marshaler = struct {
+		embed
+		Type string `json:"type"`
+	}{
+		embed: embed(*t),
+		Type:  "import",
+	}
+	return json.Marshal(marshaler)
+}
+
+func (t *TrieveKnowledgeBaseImport) String() string {
+	if len(t.rawJSON) > 0 {
+		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
+			return value
+		}
+	}
+	if value, err := internal.StringifyJSON(t); err == nil {
+		return value
+	}
+	return fmt.Sprintf("%#v", t)
+}
+
+type TrieveKnowledgeBaseSearchPlan struct {
+	// If true, stop words (specified in server/src/stop-words.txt in the git repo) will be removed. This will preserve queries that are entirely stop words.
+	RemoveStopWords *bool `json:"removeStopWords,omitempty" url:"removeStopWords,omitempty"`
+	// This is the score threshold to filter out chunks with a score below the threshold for cosine distance metric. For Manhattan Distance, Euclidean Distance, and Dot Product, it will filter out scores above the threshold distance. This threshold applies before weight and bias modifications. If not specified, this defaults to no threshold. A threshold of 0 will default to no threshold.
+	ScoreThreshold *float64 `json:"scoreThreshold,omitempty" url:"scoreThreshold,omitempty"`
+	// This is the search method used when searching for relevant chunks from the vector store.
+	SearchType TrieveKnowledgeBaseSearchPlanSearchType `json:"searchType" url:"searchType"`
+
+	extraProperties map[string]interface{}
+	rawJSON         json.RawMessage
+}
+
+func (t *TrieveKnowledgeBaseSearchPlan) GetRemoveStopWords() *bool {
 	if t == nil {
 		return nil
 	}
 	return t.RemoveStopWords
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) GetScoreThreshold() *float64 {
+func (t *TrieveKnowledgeBaseSearchPlan) GetScoreThreshold() *float64 {
 	if t == nil {
 		return nil
 	}
 	return t.ScoreThreshold
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) GetSearchType() TrieveKnowledgeBaseVectorStoreSearchPlanSearchType {
+func (t *TrieveKnowledgeBaseSearchPlan) GetSearchType() TrieveKnowledgeBaseSearchPlanSearchType {
 	if t == nil {
 		return ""
 	}
 	return t.SearchType
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) GetExtraProperties() map[string]interface{} {
+func (t *TrieveKnowledgeBaseSearchPlan) GetExtraProperties() map[string]interface{} {
 	return t.extraProperties
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) UnmarshalJSON(data []byte) error {
-	type unmarshaler TrieveKnowledgeBaseVectorStoreSearchPlan
+func (t *TrieveKnowledgeBaseSearchPlan) UnmarshalJSON(data []byte) error {
+	type unmarshaler TrieveKnowledgeBaseSearchPlan
 	var value unmarshaler
 	if err := json.Unmarshal(data, &value); err != nil {
 		return err
 	}
-	*t = TrieveKnowledgeBaseVectorStoreSearchPlan(value)
+	*t = TrieveKnowledgeBaseSearchPlan(value)
 	extraProperties, err := internal.ExtractExtraProperties(data, *t)
 	if err != nil {
 		return err
@@ -515,7 +779,7 @@ func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) UnmarshalJSON(data []byte) er
 	return nil
 }
 
-func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) String() string {
+func (t *TrieveKnowledgeBaseSearchPlan) String() string {
 	if len(t.rawJSON) > 0 {
 		if value, err := internal.StringifyJSON(t.rawJSON); err == nil {
 			return value
@@ -528,36 +792,35 @@ func (t *TrieveKnowledgeBaseVectorStoreSearchPlan) String() string {
 }
 
 // This is the search method used when searching for relevant chunks from the vector store.
-type TrieveKnowledgeBaseVectorStoreSearchPlanSearchType string
+type TrieveKnowledgeBaseSearchPlanSearchType string
 
 const (
-	TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeFulltext TrieveKnowledgeBaseVectorStoreSearchPlanSearchType = "fulltext"
-	TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeSemantic TrieveKnowledgeBaseVectorStoreSearchPlanSearchType = "semantic"
-	TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeHybrid   TrieveKnowledgeBaseVectorStoreSearchPlanSearchType = "hybrid"
-	TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeBm25     TrieveKnowledgeBaseVectorStoreSearchPlanSearchType = "bm25"
+	TrieveKnowledgeBaseSearchPlanSearchTypeFulltext TrieveKnowledgeBaseSearchPlanSearchType = "fulltext"
+	TrieveKnowledgeBaseSearchPlanSearchTypeSemantic TrieveKnowledgeBaseSearchPlanSearchType = "semantic"
+	TrieveKnowledgeBaseSearchPlanSearchTypeHybrid   TrieveKnowledgeBaseSearchPlanSearchType = "hybrid"
+	TrieveKnowledgeBaseSearchPlanSearchTypeBm25     TrieveKnowledgeBaseSearchPlanSearchType = "bm25"
 )
 
-func NewTrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeFromString(s string) (TrieveKnowledgeBaseVectorStoreSearchPlanSearchType, error) {
+func NewTrieveKnowledgeBaseSearchPlanSearchTypeFromString(s string) (TrieveKnowledgeBaseSearchPlanSearchType, error) {
 	switch s {
 	case "fulltext":
-		return TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeFulltext, nil
+		return TrieveKnowledgeBaseSearchPlanSearchTypeFulltext, nil
 	case "semantic":
-		return TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeSemantic, nil
+		return TrieveKnowledgeBaseSearchPlanSearchTypeSemantic, nil
 	case "hybrid":
-		return TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeHybrid, nil
+		return TrieveKnowledgeBaseSearchPlanSearchTypeHybrid, nil
 	case "bm25":
-		return TrieveKnowledgeBaseVectorStoreSearchPlanSearchTypeBm25, nil
+		return TrieveKnowledgeBaseSearchPlanSearchTypeBm25, nil
 	}
-	var t TrieveKnowledgeBaseVectorStoreSearchPlanSearchType
+	var t TrieveKnowledgeBaseSearchPlanSearchType
 	return "", fmt.Errorf("%s is not a valid %T", s, t)
 }
 
-func (t TrieveKnowledgeBaseVectorStoreSearchPlanSearchType) Ptr() *TrieveKnowledgeBaseVectorStoreSearchPlanSearchType {
+func (t TrieveKnowledgeBaseSearchPlanSearchType) Ptr() *TrieveKnowledgeBaseSearchPlanSearchType {
 	return &t
 }
 
 type UpdateCustomKnowledgeBaseDto struct {
-	// /**
 	// This is where the knowledge base request will be sent.
 	//
 	// Request Example:
@@ -647,16 +910,14 @@ func (u *UpdateCustomKnowledgeBaseDto) String() string {
 type UpdateTrieveKnowledgeBaseDto struct {
 	// This is the name of the knowledge base.
 	Name *string `json:"name,omitempty" url:"name,omitempty"`
-	// This is the plan on how to search the vector store while a call is going on.
-	VectorStoreSearchPlan *TrieveKnowledgeBaseVectorStoreSearchPlan `json:"vectorStoreSearchPlan,omitempty" url:"vectorStoreSearchPlan,omitempty"`
-	// This is the plan if you want us to create a new vector store on your behalf. To use an existing vector store from your account, use `vectoreStoreProviderId`
-	VectorStoreCreatePlan *TrieveKnowledgeBaseVectorStoreCreatePlan `json:"vectorStoreCreatePlan,omitempty" url:"vectorStoreCreatePlan,omitempty"`
-	// This is an vector store that you already have on your account with the provider. To create a new vector store, use vectorStoreCreatePlan.
+	// This is the searching plan used when searching for relevant chunks from the vector store.
 	//
-	// Usage:
-	// - To bring your own vector store from Trieve, go to https://trieve.ai
-	// - Create a dataset, and use the datasetId here.
-	VectorStoreProviderId *string `json:"vectorStoreProviderId,omitempty" url:"vectorStoreProviderId,omitempty"`
+	// You should configure this if you're running into these issues:
+	// - Too much unnecessary context is being fed as knowledge base context.
+	// - Not enough relevant context is being fed as knowledge base context.
+	SearchPlan *TrieveKnowledgeBaseSearchPlan `json:"searchPlan,omitempty" url:"searchPlan,omitempty"`
+	// This is the plan if you want us to create/import a new vector store using Trieve.
+	CreatePlan *UpdateTrieveKnowledgeBaseDtoCreatePlan `json:"createPlan,omitempty" url:"createPlan,omitempty"`
 
 	extraProperties map[string]interface{}
 	rawJSON         json.RawMessage
@@ -669,25 +930,18 @@ func (u *UpdateTrieveKnowledgeBaseDto) GetName() *string {
 	return u.Name
 }
 
-func (u *UpdateTrieveKnowledgeBaseDto) GetVectorStoreSearchPlan() *TrieveKnowledgeBaseVectorStoreSearchPlan {
+func (u *UpdateTrieveKnowledgeBaseDto) GetSearchPlan() *TrieveKnowledgeBaseSearchPlan {
 	if u == nil {
 		return nil
 	}
-	return u.VectorStoreSearchPlan
+	return u.SearchPlan
 }
 
-func (u *UpdateTrieveKnowledgeBaseDto) GetVectorStoreCreatePlan() *TrieveKnowledgeBaseVectorStoreCreatePlan {
+func (u *UpdateTrieveKnowledgeBaseDto) GetCreatePlan() *UpdateTrieveKnowledgeBaseDtoCreatePlan {
 	if u == nil {
 		return nil
 	}
-	return u.VectorStoreCreatePlan
-}
-
-func (u *UpdateTrieveKnowledgeBaseDto) GetVectorStoreProviderId() *string {
-	if u == nil {
-		return nil
-	}
-	return u.VectorStoreProviderId
+	return u.CreatePlan
 }
 
 func (u *UpdateTrieveKnowledgeBaseDto) GetExtraProperties() map[string]interface{} {
@@ -720,6 +974,69 @@ func (u *UpdateTrieveKnowledgeBaseDto) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", u)
+}
+
+// This is the plan if you want us to create/import a new vector store using Trieve.
+type UpdateTrieveKnowledgeBaseDtoCreatePlan struct {
+	TrieveKnowledgeBaseCreate *TrieveKnowledgeBaseCreate
+	TrieveKnowledgeBaseImport *TrieveKnowledgeBaseImport
+
+	typ string
+}
+
+func (u *UpdateTrieveKnowledgeBaseDtoCreatePlan) GetTrieveKnowledgeBaseCreate() *TrieveKnowledgeBaseCreate {
+	if u == nil {
+		return nil
+	}
+	return u.TrieveKnowledgeBaseCreate
+}
+
+func (u *UpdateTrieveKnowledgeBaseDtoCreatePlan) GetTrieveKnowledgeBaseImport() *TrieveKnowledgeBaseImport {
+	if u == nil {
+		return nil
+	}
+	return u.TrieveKnowledgeBaseImport
+}
+
+func (u *UpdateTrieveKnowledgeBaseDtoCreatePlan) UnmarshalJSON(data []byte) error {
+	valueTrieveKnowledgeBaseCreate := new(TrieveKnowledgeBaseCreate)
+	if err := json.Unmarshal(data, &valueTrieveKnowledgeBaseCreate); err == nil {
+		u.typ = "TrieveKnowledgeBaseCreate"
+		u.TrieveKnowledgeBaseCreate = valueTrieveKnowledgeBaseCreate
+		return nil
+	}
+	valueTrieveKnowledgeBaseImport := new(TrieveKnowledgeBaseImport)
+	if err := json.Unmarshal(data, &valueTrieveKnowledgeBaseImport); err == nil {
+		u.typ = "TrieveKnowledgeBaseImport"
+		u.TrieveKnowledgeBaseImport = valueTrieveKnowledgeBaseImport
+		return nil
+	}
+	return fmt.Errorf("%s cannot be deserialized as a %T", data, u)
+}
+
+func (u UpdateTrieveKnowledgeBaseDtoCreatePlan) MarshalJSON() ([]byte, error) {
+	if u.typ == "TrieveKnowledgeBaseCreate" || u.TrieveKnowledgeBaseCreate != nil {
+		return json.Marshal(u.TrieveKnowledgeBaseCreate)
+	}
+	if u.typ == "TrieveKnowledgeBaseImport" || u.TrieveKnowledgeBaseImport != nil {
+		return json.Marshal(u.TrieveKnowledgeBaseImport)
+	}
+	return nil, fmt.Errorf("type %T does not include a non-empty union type", u)
+}
+
+type UpdateTrieveKnowledgeBaseDtoCreatePlanVisitor interface {
+	VisitTrieveKnowledgeBaseCreate(*TrieveKnowledgeBaseCreate) error
+	VisitTrieveKnowledgeBaseImport(*TrieveKnowledgeBaseImport) error
+}
+
+func (u *UpdateTrieveKnowledgeBaseDtoCreatePlan) Accept(visitor UpdateTrieveKnowledgeBaseDtoCreatePlanVisitor) error {
+	if u.typ == "TrieveKnowledgeBaseCreate" || u.TrieveKnowledgeBaseCreate != nil {
+		return visitor.VisitTrieveKnowledgeBaseCreate(u.TrieveKnowledgeBaseCreate)
+	}
+	if u.typ == "TrieveKnowledgeBaseImport" || u.TrieveKnowledgeBaseImport != nil {
+		return visitor.VisitTrieveKnowledgeBaseImport(u.TrieveKnowledgeBaseImport)
+	}
+	return fmt.Errorf("type %T does not include a non-empty union type", u)
 }
 
 type KnowledgeBasesCreateRequest struct {

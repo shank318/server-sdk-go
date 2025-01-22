@@ -10,10 +10,9 @@ import (
 )
 
 type LoggingControllerLogsDeleteQueryRequest struct {
-	// This is the unique identifier for the org that this log belongs to.
-	OrgId *string `json:"-" url:"orgId,omitempty"`
-	// This is the ID of the assistant.
-	AssistantId *string `json:"-" url:"assistantId,omitempty"`
+	// This is the type of the log.
+	Type        *LoggingControllerLogsDeleteQueryRequestType `json:"-" url:"type,omitempty"`
+	AssistantId *string                                      `json:"-" url:"assistantId,omitempty"`
 	// This is the ID of the phone number.
 	PhoneNumberId *string `json:"-" url:"phoneNumberId,omitempty"`
 	// This is the ID of the customer.
@@ -25,8 +24,6 @@ type LoggingControllerLogsDeleteQueryRequest struct {
 }
 
 type LogsGetRequest struct {
-	// This is the unique identifier for the org that this log belongs to.
-	OrgId *string `json:"-" url:"orgId,omitempty"`
 	// This is the type of the log.
 	Type *LogsGetRequestType `json:"-" url:"type,omitempty"`
 	// This is the type of the webhook, given the log is from a webhook.
@@ -123,23 +120,23 @@ type Log struct {
 	// This is the specific resource, relevant only to API logs.
 	Resource *LogResource `json:"resource,omitempty" url:"resource,omitempty"`
 	// 'This is how long the request took.
-	RequestDurationSeconds float64 `json:"requestDurationSeconds" url:"requestDurationSeconds"`
+	RequestDurationSeconds *float64 `json:"requestDurationSeconds,omitempty" url:"requestDurationSeconds,omitempty"`
 	// This is the timestamp at which the request began.
-	RequestStartedAt string `json:"requestStartedAt" url:"requestStartedAt"`
+	RequestStartedAt *string `json:"requestStartedAt,omitempty" url:"requestStartedAt,omitempty"`
 	// This is the timestamp at which the request finished.
-	RequestFinishedAt string `json:"requestFinishedAt" url:"requestFinishedAt"`
+	RequestFinishedAt *string `json:"requestFinishedAt,omitempty" url:"requestFinishedAt,omitempty"`
 	// This is the body of the request.
 	RequestBody map[string]interface{} `json:"requestBody,omitempty" url:"requestBody,omitempty"`
 	// This is the request method.
-	RequestHttpMethod LogRequestHttpMethod `json:"requestHttpMethod" url:"requestHttpMethod"`
+	RequestHttpMethod *LogRequestHttpMethod `json:"requestHttpMethod,omitempty" url:"requestHttpMethod,omitempty"`
 	// This is the request URL.
-	RequestUrl string `json:"requestUrl" url:"requestUrl"`
+	RequestUrl *string `json:"requestUrl,omitempty" url:"requestUrl,omitempty"`
 	// This is the request path.
-	RequestPath string `json:"requestPath" url:"requestPath"`
+	RequestPath *string `json:"requestPath,omitempty" url:"requestPath,omitempty"`
 	// This is the request query.
 	RequestQuery *string `json:"requestQuery,omitempty" url:"requestQuery,omitempty"`
 	// This the HTTP status code of the response.
-	ResponseHttpCode float64 `json:"responseHttpCode" url:"responseHttpCode"`
+	ResponseHttpCode *float64 `json:"responseHttpCode,omitempty" url:"responseHttpCode,omitempty"`
 	// This is the request IP address.
 	RequestIpAddress *string `json:"requestIpAddress,omitempty" url:"requestIpAddress,omitempty"`
 	// This is the origin of the request
@@ -200,23 +197,23 @@ func (l *Log) GetResource() *LogResource {
 	return l.Resource
 }
 
-func (l *Log) GetRequestDurationSeconds() float64 {
+func (l *Log) GetRequestDurationSeconds() *float64 {
 	if l == nil {
-		return 0
+		return nil
 	}
 	return l.RequestDurationSeconds
 }
 
-func (l *Log) GetRequestStartedAt() string {
+func (l *Log) GetRequestStartedAt() *string {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.RequestStartedAt
 }
 
-func (l *Log) GetRequestFinishedAt() string {
+func (l *Log) GetRequestFinishedAt() *string {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.RequestFinishedAt
 }
@@ -228,23 +225,23 @@ func (l *Log) GetRequestBody() map[string]interface{} {
 	return l.RequestBody
 }
 
-func (l *Log) GetRequestHttpMethod() LogRequestHttpMethod {
+func (l *Log) GetRequestHttpMethod() *LogRequestHttpMethod {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.RequestHttpMethod
 }
 
-func (l *Log) GetRequestUrl() string {
+func (l *Log) GetRequestUrl() *string {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.RequestUrl
 }
 
-func (l *Log) GetRequestPath() string {
+func (l *Log) GetRequestPath() *string {
 	if l == nil {
-		return ""
+		return nil
 	}
 	return l.RequestPath
 }
@@ -256,9 +253,9 @@ func (l *Log) GetRequestQuery() *string {
 	return l.RequestQuery
 }
 
-func (l *Log) GetResponseHttpCode() float64 {
+func (l *Log) GetResponseHttpCode() *float64 {
 	if l == nil {
-		return 0
+		return nil
 	}
 	return l.ResponseHttpCode
 }
@@ -605,6 +602,34 @@ func (p *PaginationMeta) String() string {
 		return value
 	}
 	return fmt.Sprintf("%#v", p)
+}
+
+type LoggingControllerLogsDeleteQueryRequestType string
+
+const (
+	LoggingControllerLogsDeleteQueryRequestTypeApi      LoggingControllerLogsDeleteQueryRequestType = "API"
+	LoggingControllerLogsDeleteQueryRequestTypeWebhook  LoggingControllerLogsDeleteQueryRequestType = "Webhook"
+	LoggingControllerLogsDeleteQueryRequestTypeCall     LoggingControllerLogsDeleteQueryRequestType = "Call"
+	LoggingControllerLogsDeleteQueryRequestTypeProvider LoggingControllerLogsDeleteQueryRequestType = "Provider"
+)
+
+func NewLoggingControllerLogsDeleteQueryRequestTypeFromString(s string) (LoggingControllerLogsDeleteQueryRequestType, error) {
+	switch s {
+	case "API":
+		return LoggingControllerLogsDeleteQueryRequestTypeApi, nil
+	case "Webhook":
+		return LoggingControllerLogsDeleteQueryRequestTypeWebhook, nil
+	case "Call":
+		return LoggingControllerLogsDeleteQueryRequestTypeCall, nil
+	case "Provider":
+		return LoggingControllerLogsDeleteQueryRequestTypeProvider, nil
+	}
+	var t LoggingControllerLogsDeleteQueryRequestType
+	return "", fmt.Errorf("%s is not a valid %T", s, t)
+}
+
+func (l LoggingControllerLogsDeleteQueryRequestType) Ptr() *LoggingControllerLogsDeleteQueryRequestType {
+	return &l
 }
 
 type LogsGetRequestSortOrder string
