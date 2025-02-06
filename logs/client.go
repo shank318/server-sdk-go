@@ -72,7 +72,7 @@ func (c *Client) Get(
 			Response:        pageRequest.Response,
 		}
 	}
-	next := 1
+	next := 1.0
 	if request.Page != nil {
 		next = *request.Page
 	}
